@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<export-data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://labbench.io http://labbench.io/xsd/3.1.0/export_action.xsd"
+               name="Exporting session to MATLAB"
+               location="C:\CPAR"
+               filename="dynamic: '{session}-{time}.mat'.format(session = SESSION_NAME, time = SESSION_TIME)"
+               format="matlab"/>

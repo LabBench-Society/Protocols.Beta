@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/3.2.0/experiment.xsd"
+            name="Scripting Demonstration"
+            id="scriptdemo"
+            protocol="scriptdemo@example.labbench.io">
+  <description />
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />  
+  <experimental-setup>
+    <description />
+    <devices>
+      <cpar id="dev" compressor-mode="AUTO"/>
+    </devices>
+    <device-mapping>
+      <device-assignment test-type="algometry-stimulus-response" instrument-name="Algometer" device-id="dev" />
+      <device-assignment test-type="algometry-temporal-summation" instrument-name="Algometer" device-id="dev" />
+      <device-assignment test-type="psychophysics-cold-pressor" instrument-name="Button" device-id="dev" />
+    </device-mapping>
+  </experimental-setup>
+</experiment>
+

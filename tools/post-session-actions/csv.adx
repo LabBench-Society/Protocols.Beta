@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<export-to-csv xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://labbench.io ..\csvaction.xsd"
+               name="Exporting session to CSV"
+               location="C:\CPAR"
+               header="true"
+               seperator=";"
+               filename="dynamic: '{session}-{time}.csv'.format(session = SESSION_NAME, time = SESSION_TIME)">
+    <item name="PDT"
+          value="PDT.PDT"
+          default="NA"/>
+    <item name="Operator"
+          value="PDT.Operator"
+          default="NA"/>
+    <item name="RecordingTime"
+          value="PDT.RecordingTime"
+          default="NA"/>
+
+</export-to-csv>
