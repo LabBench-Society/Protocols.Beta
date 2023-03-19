@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/3.2.0/repository.xsd"
-            id="example.labbench.io">
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
+            id="beta.labbench.io">
     <protocols>
         <protocol id="scriptdemo"
                   name="Scripting Demonstration" 
                   category="Demonstration Protocol" />
     </protocols>
 </repository>
-

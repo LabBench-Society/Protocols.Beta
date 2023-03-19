@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/3.2.0/experiment.xsd"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
             name="Scripting Demonstration"
             id="scriptdemo"
-            protocol="scriptdemo@example.labbench.io">
+            protocol="scriptdemo@beta.labbench.io">
   <description />
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />  
@@ -19,4 +19,3 @@
     </device-mapping>
   </experimental-setup>
 </experiment>
-
