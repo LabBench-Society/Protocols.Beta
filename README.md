@@ -11,7 +11,7 @@ Currently, the following laboratories and sites participate in the LabBench Beta
 | [Translational Biomarkers in Pain and Precision Medicine Research Group, Aalborg University]() | [Laura Petrini](https://vbn.aau.dk/da/persons/112436)| Research in how to assess pain in elderly and vulnerable populations.  **Beta Program focus: Development of functionality in LabBench for studying pain catastrophizing** |
 | [?]() | [Sabata Gervasio]() | **Beta Program focus: Development of functionality in LabBench for studying sensory processing, such as auditory and tactile psychophysical tests, and functionality for recording auditory and tactile evoked potentials** |
 
-If LabBench does not adequately support your research and you would like to see that change, then write to (help@labbench.io) to become a member of this Beta program. By participating in this program, you will gain access to versions of LabBench before they become generally available, have its development tailored to fit your exact research needs, and have access to extensive support in running your experiments.
+If LabBench does not adequately support your research and you would like to see that change, then write to (help@labbench.io) to become a member of this Beta program. By participating in this program, you will gain access to versions of LabBench before they become generally available, have its development tailored to fit your exact research needs, and have access to extensive support in running your experiments. In return the LabBench developers gain access to your expert knowledge and help in making LabBench better for your area of research.
 
 ## LabBench Beta
 
