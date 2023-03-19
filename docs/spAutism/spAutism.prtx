@@ -54,8 +54,6 @@
                          channel="3"
                          name="Sine (1000Hz)"
                          Imax="40">
-                    <catch-trials order="block-randomized"
-                                  interval="4" />
                     <up-down-method down-rule="1"
                                     up-rule="1"
                                     skip-rule="0"
@@ -98,7 +96,7 @@
                          trigger="1"
                          channel="3"
                          name="Sine (1000Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 40.0 else 40.0">
+                         Imax="Imult * TA1['C01'] if Imult * TA1['C01'] &lt; 40.0 else 40.0">
                     <psi-method number-of-trials="5">
                         <quick alpha="0.5"
                                beta="1"
@@ -151,7 +149,7 @@
                          trigger="1"
                          channel="3"
                          name="Sine (1000Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 40.0 else 40.0">
+                         Imax="Imult * TA1['C01'] if Imult * TA1['C01'] &lt; 40.0 else 40.0">
                     <catch-trials order="block-randomized"
                                   interval="5" />
                     <psi-method number-of-trials="Trials">
@@ -246,7 +244,7 @@
                          trigger="1"
                          channel="1"
                          name="Sine (100Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
+                         Imax="Imult * TV1['C01'] if Imult * TV1['C01'] &lt; 0.5 else 0.5">
                     <psi-method number-of-trials="5">
                         <quick alpha="0.5"
                                beta="1"
@@ -299,7 +297,7 @@
                          trigger="1"
                          channel="1"
                          name="Sine (100Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
+                         Imax="Imult * TV1['C01'] if Imult * TV1['C01'] &lt; 0.5 else 0.5">
                     <catch-trials order="block-randomized"
                                   interval="5" />
                     <psi-method number-of-trials="Trials">

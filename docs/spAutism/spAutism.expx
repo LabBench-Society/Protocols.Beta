@@ -41,6 +41,14 @@
                                test-id="TV1"
                                instrument-name="Stimulator"
                                device-id="tactor" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TV2"
+                               instrument-name="Stimulator"
+                               device-id="tactor" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TV3"
+                               instrument-name="Stimulator"
+                               device-id="tactor" />
         </device-mapping>
     </experimental-setup>
 </experiment>
