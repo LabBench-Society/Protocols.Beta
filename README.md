@@ -95,7 +95,11 @@ This opens the repository configuration dialog, in this dialog write or copy the
 
 ![](AddingBetaRepository.png)
 
+This add the LabBench Beta Protocol repository to LabBench. You can now return to the Protocols tab by click the OK button.
 
+To select the repository, click the dropdown in the upper left corner and select the ```beta.labbench.io``` repository.
+
+![](SelectingBetaRepository.png)
 
 ### Contributing your changes back to the LabBench Beta Protocol repository
 
