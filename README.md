@@ -5,7 +5,7 @@ This repository contains protocols that are intended for testing Beta versions o
 Currently, the following laboratories and sites participate in the LabBench Beta Program:
 
 | Site  | Principal Investigator  | Area         |
-|-------|----------|----|
+|-------|----------|:----|
 | [Integrative Neuroscience Research Group, Aalborg University](https://vbn.aau.dk/en/organisations/integrative-neuroscience) | [Carsten D. Mørch]() | Research into the neuroscience of pain that aims at understanding the basic mechanisms of the pain system. Development of methods to investigate how nociceptors generate and mediate pain signals in healthy humans and pathological situations. <br /> **Beta Program focus: Development of functionality in LabBench for Perception Threshold Tracking.**
 | [Steno Diabetes Center Northen Jutland](https://stenodiabetescenter.rn.dk/Forskning/Forskningsprojekter-i-SDCN/MEDON) | [Johan Røikjer]() | Research aimed at early detection of diabetic polyneuropathy which includes the use of perception threshold tracking. <br /> **Beta Program focus: Development of functionality in LabBench for Perception Threshold Tracking.** |
 | [Translational Biomarkers in Pain and Precision Medicine Research Group, Aalborg University]() | [Laura Petrini](https://vbn.aau.dk/da/persons/112436)| Research in how to assess pain in elderly and vulnerable populations. <br /> **Beta Program focus: Development of functionality in LabBench for studying pain catastrophizing** |
