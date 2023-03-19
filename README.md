@@ -61,6 +61,9 @@ Follow the URL in Method 1 for instructions on adding the repository to LabBench
 
 #### Download from Github
 
+To download a copy of the LabBench Beta Repository, click the ```<> Code``` button in the top right corner of this page. This opens a dropdown menu, in that menu select Download Zip:
+
+![](AccessRepository.png)
 
 #### Cloning or forking the repository from Github
 
@@ -79,6 +82,6 @@ Once your protocol is perfected and ready for your study, you are encouraged to 
 
 How to do this depends on how you obtained a copy of the repository:
 
-1. [Direct download from Github]: Zip the your copy of the repository and place it in a storage that allows you to send a link to this file (such as Sharepoint or Dropbox (preferred). Then send this link to ```help@labbench.io```.
+1. [Download from Github]: Zip the your copy of the repository and place it in a storage that allows you to send a link to this file (such as Sharepoint or Dropbox (preferred). Then send this link to ```help@labbench.io```.
 2. [Cloning or Forking the repository] Submit a pull request. 
 
