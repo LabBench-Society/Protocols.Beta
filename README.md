@@ -65,6 +65,16 @@ To download a copy of the LabBench Beta Repository, click the ```<> Code``` butt
 
 ![](AccessRepository.png)
 
+Once you have downloaded the zip file with the repository's contents, the contents of a subdirectory (docs) in this zip file must be copied to a directory on your computer. We suggest placing it in ```C:\Tools\Repositories\Protocols.Beta```. 
+
+Multiple directories exist within the downloaded zip file, as this file contains the entire site content you are now reading, including this guide.
+
+The actual repository is located in the docs subfolder of this zip file, and it is the content of that directory that must be placed in the C:\Tools\Repositories\Protocols.Beta folder. If done correctly, the contents of this folder will look something like this once you copied the contents of the docs folder:
+
+![](ProtocolsBetaContent.png)
+
+When you perform this installation, the repository hopefully contains many more subfolders (protocols); however, most importantly, the ```repository.xml``` must be located in the root of the ```C:\Tools\Repositories\Protocols.Beta``` folder, as it is this file that turns a folder into a LabBench Repository.
+
 #### Cloning or forking the repository from Github
 
 Without question, the best way to access a copy of the repository is to clone it (for members of the LabBench Society) or fork it (outside collaborators), as this will allow you to submit pull requests to have your changes merged back into the official repository. This way also provides a much higher degree of certainty that the version of your protocol will be preserved with no ambiguities about the protocol when you are to write your scientific papers.
