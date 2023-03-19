@@ -26,11 +26,19 @@
                                instrument-name="Button"
                                device-id="dev.response" />
             <device-assignment test-type="psychophysics-threshold-estimation"
-                               test-id="T1"
+                               test-id="TA1"
                                instrument-name="Stimulator"
                                device-id="sound" />
             <device-assignment test-type="psychophysics-threshold-estimation"
-                               test-id="T2"
+                               test-id="TA2"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TA3"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TV1"
                                instrument-name="Stimulator"
                                device-id="tactor" />
         </device-mapping>
