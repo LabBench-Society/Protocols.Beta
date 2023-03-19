@@ -19,12 +19,18 @@
                 </response-devices>
             </lio>
             <tactor id="tactor" />
+            <sound id="sound" />
         </devices>
         <device-mapping>
             <device-assignment test-type="psychophysics-threshold-estimation"
                                instrument-name="Button"
                                device-id="dev.response" />
             <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="T01"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="T02"
                                instrument-name="Stimulator"
                                device-id="tactor" />
         </device-mapping>

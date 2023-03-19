@@ -3,10 +3,14 @@ from System import Random
 def CreateRandom():
     return Random()
 
-
-def GetIntensity():
+def GetVibraIntensity():
     if random.Next(2) == 1:
-        return Is + x
+        return VibraIs + x
     else:
-        return Is - x
+        return VibraIs - x
 
+def GetSoundIntensity():
+    if random.Next(2) == 1:
+        return SndIs + x
+    else:
+        return SndIs - x

@@ -3,17 +3,28 @@
           xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
           name="Sensory Processing in Autism"
           id="spAutism">
-  <description />
+    <description />
     <defines>
         <!-- Stimulus parameters -->
-        <define name="Is"
+        <define name="VibraIs"
                 value="0.5" />
-        <define name="Ts"
+        <define name="VibraTs"
                 value="50"/>
-        <define name="Tisi"
+        <define name="VibraTisi"
                 value="500"/>
-        <define name="Fs"
+        <define name="VibraFs"
                 value="100"/>
+
+        <!-- Sound Stimulus parameters -->
+        <define name="SndIs"
+                value="65" />
+        <define name="SndTs"
+                value="250"/>
+        <define name="SndTisi"
+                value="1000"/>
+        <define name="SndFs"
+                value="1000"/>
+
 
         <!-- Psi Method -->
         <define name="Trials"
@@ -31,7 +42,51 @@
     </defines>
     <tests>
         <psychophysics-threshold-estimation ID="T1"
-                                            name="Up/Down Method">
+                                            name="Sound Threshold (Up/Down Method)">
+            <dependencies />
+            <update-rate-deterministic value="5000" />
+            <yes-no-task stimulus-update-rate="44100" />
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         trigger="1"
+                         channel="3"
+                         name="Sine (1000Hz)"
+                         Imax="40">
+                    <catch-trials order="block-randomized"
+                                  interval="4" />
+                    <up-down-method down-rule="1"
+                                    up-rule="1"
+                                    skip-rule="0"
+                                    start-intensity="2.0/40"
+                                    step-size-up="0.25"
+                                    step-size-down="0.25"
+                                    step-size-type="relative"
+                                    terminate-on-limit-reached="true"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    stop-criterion="reversals"
+                                    stop-rule="6" />
+
+                    <combined>
+                        <sine Is="SndIs"
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="0" />
+
+                        <sine Is="func: Functions.GetSoundIntensity"
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="SndTs + SndTisi" />
+                    </combined>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+
+        <psychophysics-threshold-estimation ID="T2"
+                                            name="Vibration Threshold (Up/Down Method)">
             <dependencies />
             <update-rate-deterministic value="5000" />
             <yes-no-task stimulus-update-rate="44100" />
@@ -57,122 +112,21 @@
                                     stop-rule="6" />
 
                     <combined>
-                        <sine Is="Is"
-                              Ts="Ts"
-                              Frequency="Fs"
+                        <sine Is="VibraIs"
+                              Ts="VibraTs"
+                              Frequency="VibraFs"
                               Tdelay="0" />
 
-                        <sine Is="func: Functions.GetIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
+                        <sine Is="func: Functions.GetVibraIntensity"
+                              Ts="VibraTs"
+                              Frequency="VibraFs"
+                              Tdelay="VibraTs + VibraTisi" />
                     </combined>
                 </channel>
             </channels>
         </psychophysics-threshold-estimation>
 
-        <psychophysics-threshold-estimation ID="T2"
-                                            name="Psi Method (Trial Run)">
-            <dependencies>
-                <dependency ID="T1"/>
-            </dependencies>
-            <update-rate-deterministic value="5000" />
-            <yes-no-task stimulus-update-rate="44100" />
 
-            <channels>
-                <channel ID="C01"
-                         channel-type="single-sample"
-                         trigger="1"
-                         channel="1"
-                         name="Sine (100Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
-                    <psi-method number-of-trials="5">
-                        <quick alpha="0.5"
-                               beta="1"
-                               lambda="0.02"
-                               gamma="0.0" />
-                        <beta type="linspace"
-                              base="10"
-                              x0="-1.2041"
-                              x1="1.2041"
-                              n="20"/>
-                        <alpha type="linspace"
-                               x0="alphaX0"
-                               x1="1"
-                               n="alphaN" />
-                        <intensity type="linspace"
-                                   x0="alphaX0"
-                                   x1="1"
-                                   n="intensityN" />
-                    </psi-method>
-
-                    <combined>
-                        <sine Is="Is"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="0" />
-
-                        <sine Is="func: Functions.GetIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
-                    </combined>
-                </channel>
-            </channels>
-        </psychophysics-threshold-estimation>
-
-        <psychophysics-threshold-estimation ID="T3"
-                                            name="Psi Method">
-            <properties>
-                <auto-start value="true"/>
-            </properties>
-            <dependencies>
-                <dependency ID="T2"/>
-            </dependencies>
-            <update-rate-deterministic value="5000" />
-            <yes-no-task stimulus-update-rate="44100" />
-
-            <channels>
-                <channel ID="C01"
-                         channel-type="single-sample"
-                         trigger="1"
-                         channel="1"
-                         name="Sine (100Hz)"
-                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
-                    <psi-method number-of-trials="Trials">
-                        <quick alpha="0.5"
-                               beta="1"
-                               lambda="0.02"
-                               gamma="0.0" />
-                        <beta type="linspace"
-                              base="10"
-                              x0="-1.2041"
-                              x1="1.2041"
-                              n="20"/>
-                        <alpha type="linspace"
-                               x0="alphaX0"
-                               x1="1"
-                               n="alphaN" />
-                        <intensity type="linspace"
-                                   x0="alphaX0"
-                                   x1="1"
-                                   n="intensityN" />
-                    </psi-method>
-
-                    <combined>
-                        <sine Is="Is"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="0" />
-
-                        <sine Is="func: Functions.GetIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
-                    </combined>
-                </channel>
-            </channels>
-        </psychophysics-threshold-estimation>
     </tests>
     <assets>
         <file-asset id="Functions"
