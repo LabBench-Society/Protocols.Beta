@@ -48,3 +48,24 @@ To update LabBench Beta.
 
 ## LabBench Beta Protocol Repository
 
+To use protocols from the LabBench Beta Protocol Repository, you will need to add this repository to LabBench. There are two methods by which LabBench can access a repository:
+
+1. The repository is served from a  web server and is accessed through its URL. The URL of the LabBench Beta Protocol Repository is [https://labbench-society.github.io/Protocols.Beta/](https://labbench-society.github.io/Protocols.Beta/).
+2. The repository is available as a folder on the lab computer or as a folder on a network.
+
+Method 1 can be used if you do not need to modify your protocol. Method 1 may be the case if the LabBench developers handle all of the protocol development for you as part of the LabBench Beta program. Method 2 is needed if you want to change the protocol by yourself.
+
+Follow the URL in Method 1 for instructions on adding the repository to LabBench when accessed directly from Github. The rest of this guide assumes that you will need to change the protocols and will access the repository with Method 2.
+
+### Access to the content of the repository
+
+#### Download from Github
+
+
+#### Forking from Github
+
+
+### Adding the repository to LabBench
+
+
+
