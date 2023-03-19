@@ -62,10 +62,23 @@ Follow the URL in Method 1 for instructions on adding the repository to LabBench
 #### Download from Github
 
 
-#### Forking from Github
+#### Cloning or forking the repository from Github
 
+Without question, the best way to access a copy of the repository is to clone it (for members of the LabBench Society) or fork it (outside collaborators), as this will allow you to submit pull requests to have your changes merged back into the official repository. This way also provides a much higher degree of certainty that the version of your protocol will be preserved with no ambiguities about the protocol when you are to write your scientific papers.
+
+If this is your preferred way of working with the repository, it means you are an accomplished Git user, and we will not insult you by providing a guide on how to Clone or Fork repositories.
+
+If you are unfamiliar with Git but this has sparked your curiosity, [here](https://www.cprime.com/resources/blog/the-7-best-git-tutorials-to-get-you-started-quickly/) is a list of excellent Git tutorials. This guide is from the point of view of a software developer. Still, there are many similarities between the demands for version control and reproducibility in software development and scientific studies. 
 
 ### Adding the repository to LabBench
 
 
+### Contributing your changes back to the LabBench Beta Protocol repository
+
+Once your protocol is perfected and ready for your study, you are encouraged to submit the final protocol back to the LabBench Beta Protocol repository if you want the protocol saved for posterity.
+
+How to do this depends on how you obtained a copy of the repository:
+
+1. [Direct download from Github]: Zip the your copy of the repository and place it in a storage that allows you to send a link to this file (such as Sharepoint or Dropbox (preferred). Then send this link to ```help@labbench.io```.
+2. [Cloning or Forking the repository] Submit a pull request. 
 
