@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          name="Sensory Processing in Autism"
+          id="spAutism">
+  <description />
+    <defines>
+        <!-- Stimulus parameters -->
+        <define name="Is"
+                value="0.5" />
+        <define name="Ts"
+                value="50"/>
+        <define name="Tisi"
+                value="500"/>
+        <define name="Fs"
+                value="100"/>
+
+        <!-- Psi Method -->
+        <define name="Trials"
+                value="30"/>
+        <define name="Imult"
+                value="4"/>
+        <define name="alphaX0"
+                value="0.05"/>
+        <define name="alphaN"
+                value="200"/>
+        <define name="intensityN"
+                value="100"/>
+        <define name="random"
+                value="func: Functions.CreateRandom"/>
+    </defines>
+    <tests>
+        <psychophysics-threshold-estimation ID="T1"
+                                            name="Up/Down Method">
+            <dependencies />
+            <update-rate-deterministic value="5000" />
+            <yes-no-task stimulus-update-rate="44100" />
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         trigger="1"
+                         channel="1"
+                         name="Sine (100Hz)"
+                         Imax="0.5">
+                    <up-down-method down-rule="1"
+                                    up-rule="1"
+                                    skip-rule="0"
+                                    start-intensity="0.05"
+                                    step-size-up="0.25"
+                                    step-size-down="0.25"
+                                    step-size-type="relative"
+                                    terminate-on-limit-reached="true"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    stop-criterion="reversals"
+                                    stop-rule="6" />
+
+                    <combined>
+                        <sine Is="Is"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="0" />
+
+                        <sine Is="func: Functions.GetIntensity"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="Ts + Tisi" />
+                    </combined>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="T2"
+                                            name="Psi Method (Trial Run)">
+            <dependencies>
+                <dependency ID="T1"/>
+            </dependencies>
+            <update-rate-deterministic value="5000" />
+            <yes-no-task stimulus-update-rate="44100" />
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         trigger="1"
+                         channel="1"
+                         name="Sine (100Hz)"
+                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
+                    <psi-method number-of-trials="5">
+                        <quick alpha="0.5"
+                               beta="1"
+                               lambda="0.02"
+                               gamma="0.0" />
+                        <beta type="linspace"
+                              base="10"
+                              x0="-1.2041"
+                              x1="1.2041"
+                              n="20"/>
+                        <alpha type="linspace"
+                               x0="alphaX0"
+                               x1="1"
+                               n="alphaN" />
+                        <intensity type="linspace"
+                                   x0="alphaX0"
+                                   x1="1"
+                                   n="intensityN" />
+                    </psi-method>
+
+                    <combined>
+                        <sine Is="Is"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="0" />
+
+                        <sine Is="func: Functions.GetIntensity"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="Ts + Tisi" />
+                    </combined>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="T3"
+                                            name="Psi Method">
+            <properties>
+                <auto-start value="true"/>
+            </properties>
+            <dependencies>
+                <dependency ID="T2"/>
+            </dependencies>
+            <update-rate-deterministic value="5000" />
+            <yes-no-task stimulus-update-rate="44100" />
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         trigger="1"
+                         channel="1"
+                         name="Sine (100Hz)"
+                         Imax="Imult * T1['C01'] if Imult * T1['C01'] &lt; 0.5 else 0.5">
+                    <psi-method number-of-trials="Trials">
+                        <quick alpha="0.5"
+                               beta="1"
+                               lambda="0.02"
+                               gamma="0.0" />
+                        <beta type="linspace"
+                              base="10"
+                              x0="-1.2041"
+                              x1="1.2041"
+                              n="20"/>
+                        <alpha type="linspace"
+                               x0="alphaX0"
+                               x1="1"
+                               n="alphaN" />
+                        <intensity type="linspace"
+                                   x0="alphaX0"
+                                   x1="1"
+                                   n="intensityN" />
+                    </psi-method>
+
+                    <combined>
+                        <sine Is="Is"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="0" />
+
+                        <sine Is="func: Functions.GetIntensity"
+                              Ts="Ts"
+                              Frequency="Fs"
+                              Tdelay="Ts + Tisi" />
+                    </combined>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+    </tests>
+    <assets>
+        <file-asset id="Functions"
+                    file="Functions.py" />
+    </assets>
+</protocol>

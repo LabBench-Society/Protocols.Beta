@@ -3,8 +3,8 @@
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
             id="beta.labbench.io">
     <protocols>
-        <protocol id="scriptdemo"
+        <protocol id="Sensory Processing in Autism"
                   name="Scripting Demonstration" 
-                  category="Demonstration Protocol" />
+                  category="Tactile Testing;Audiotory Testing;Autism" />
     </protocols>
 </repository>
