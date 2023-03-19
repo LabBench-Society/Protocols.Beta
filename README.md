@@ -85,6 +85,17 @@ If you are unfamiliar with Git but this has sparked your curiosity, [here](https
 
 ### Adding the repository to LabBench
 
+Adding a repository to LabBench, allow you to install protocols from this repository as experiments on your lab computer. In essence, to do anything with LabBench, you need access to a repository from which you can install protocols.
+
+To add the LabBench Beta Protocol Repository you copied to ```C:\Tools\Repositories\Protocols.Beta``` previously, open the LabBench Designer program, go to the Protocols tab, and click the repository configuration button (marked with red in the figure below).
+
+![](LabBenchProtocolsView.png)
+
+This opens the repository configuration dialog, in this dialog write or copy the path (```C:\Tools\Repositories\Protocols.Beta```) to the repository on the green line and click the ADD button:
+
+![](AddingBetaRepository.png)
+
+
 
 ### Contributing your changes back to the LabBench Beta Protocol repository
 
