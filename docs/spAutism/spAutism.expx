@@ -12,10 +12,7 @@
         <devices>
             <lio id="dev">
                 <response-devices>
-                    <response-indicator id="response">
-                        <label value="A"/>
-                        <label value="B"/>
-                    </response-indicator>
+                    <button id="button"/>
                 </response-devices>
             </lio>
             <tactor id="tactor" />
@@ -24,7 +21,7 @@
         <device-mapping>
             <device-assignment test-type="psychophysics-threshold-estimation"
                                instrument-name="Button"
-                               device-id="dev.response" />
+                               device-id="dev.button" />
             <device-assignment test-type="psychophysics-threshold-estimation"
                                test-id="TA1"
                                instrument-name="Stimulator"
