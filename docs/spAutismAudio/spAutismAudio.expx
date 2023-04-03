@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Sensory Processing in Autism (Audio Only)"
+            id="spAutismAudio"
+            protocol="spAutismAudio@beta.labbench.io">
+    <description />
+    <subject-validator regex="^S[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <description />
+        <devices>
+            <lio id="dev">
+                <response-devices>
+                    <button id="button"/>
+                </response-devices>
+            </lio>
+            <sound id="sound" />
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               test-id="TA0"
+                               instrument-name="Stimulator"
+                               device-id="sound"/>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Response"
+                               device-id="dev.button"/>
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Button"
+                               device-id="dev.button" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TA1"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TA2"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               test-id="TA3"
+                               instrument-name="Stimulator"
+                               device-id="sound" />
+        </device-mapping>
+    </experimental-setup>
+</experiment>
