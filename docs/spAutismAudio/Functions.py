@@ -16,16 +16,16 @@ def CreateRandom():
 
 def GetFirstIntensity():
     if random.isFirst():
-        return Is + x
+        return SndIs + x
     else:
-        return Is
+        return SndIs
 
 
 def GetSecondIntensity():
     if random.isFirst():
-        retValue = Is
+        retValue = SndIs
     else:
-        retValue = Is + x
+        retValue = SndIs + x
 
     random.next()
     return retValue

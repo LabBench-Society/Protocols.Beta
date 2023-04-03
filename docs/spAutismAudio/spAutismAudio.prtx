@@ -51,14 +51,14 @@
                        n="20" />
             <combined>
                 <sine Is="func: Functions.GetFirstIntensity"
-                      Ts="Ts"
-                      Frequency="Fs"
+                      Ts="SndTs"
+                      Frequency="SndFs"
                       Tdelay="0" />
 
                 <sine Is="func: Functions.GetSecondIntensity"
-                      Ts="Ts"
-                      Frequency="Fs"
-                      Tdelay="Ts + Tisi" />
+                      Ts="SndTs"
+                      Frequency="SndFs"
+                      Tdelay="SndTs + SndTisi" />
             </combined>
         </psychophysics-stimulus-presentation>
         
@@ -90,14 +90,14 @@
 
                     <combined>
                         <sine Is="func: Functions.GetFirstIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
+                              Ts="SndTs"
+                              Frequency="SndFs"
                               Tdelay="0" />
 
                         <sine Is="func: Functions.GetSecondIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="SndTs + SndTisi" />
                     </combined>
                 </channel>
             </channels>
@@ -140,14 +140,14 @@
 
                     <combined>
                         <sine Is="func: Functions.GetFirstIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
+                              Ts="SndTs"
+                              Frequency="SndFs"
                               Tdelay="0" />
 
                         <sine Is="func: Functions.GetSecondIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="SndTs + SndTisi" />
                     </combined>
                 </channel>
             </channels>
@@ -195,14 +195,14 @@
 
                     <combined>
                         <sine Is="func: Functions.GetFirstIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
+                              Ts="SndTs"
+                              Frequency="SndFs"
                               Tdelay="0" />
 
                         <sine Is="func: Functions.GetSecondIntensity"
-                              Ts="Ts"
-                              Frequency="Fs"
-                              Tdelay="Ts + Tisi" />
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="SndTs + SndTisi" />
                     </combined>
                 </channel>
             </channels>
