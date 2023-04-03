@@ -1,16 +1,32 @@
 from System import Random
 
+class StimulusRandomizer():
+    def __init__(self):
+        self.random = Random()
+        self.first = self.random.Next(2) == 1
+
+    def next(self):
+        self.first = self.random.Next(2) == 1
+
+    def isFirst(self):
+        return self.first
+
 def CreateRandom():
-    return Random()
+    return StimulusRandomizer()
 
-def GetVibraIntensity():
-    if random.Next(2) == 1:
-        return VibraIs + x
+def GetFirstIntensity():
+    if random.isFirst():
+        return Is + x
     else:
-        return VibraIs - x
+        return Is
 
-def GetSoundIntensity():
-    if random.Next(2) == 1:
-        return SndIs + x
+
+def GetSecondIntensity():
+    if random.isFirst():
+        retValue = Is
     else:
-        return SndIs - x
+        retValue = Is + x
+
+    random.next()
+    return retValue
+
