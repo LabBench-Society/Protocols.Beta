@@ -4,7 +4,10 @@
             id="beta.labbench.io">
     <protocols>
         <protocol id="spAutism"
-                  name="Sensory Processing in Autism" 
+                  name="Sensory Processing in Autism"
+                  category="Tactile Testing;Audiotory Testing;Autism" />
+        <protocol id="spAutismAudio"
+                  name="Sensory Processing in Autism (Audio Only)"
                   category="Tactile Testing;Audiotory Testing;Autism" />
     </protocols>
 </repository>
