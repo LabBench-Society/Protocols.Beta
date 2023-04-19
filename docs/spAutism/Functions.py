@@ -1,7 +1,7 @@
 from System import Random
 
 def CreateRandom():
-    return Random()
+    return Random(66)
 
 def GetVibraIntensity():
     if random.Next(2) == 1:
