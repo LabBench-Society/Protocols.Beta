@@ -6,5 +6,11 @@
         <protocol id="spAutism"
                   name="Sensory Processing in Autism"
                   category="Tactile Testing;Audiotory Testing;Autism" />
+		<!--
+		  PI: Ken Steffen Frahm
+		-->
+		<protocol id="tpdDN"
+				  name="Two-Point Discrimination (Diabetic Neuropathy)"
+				  category="Tactile Testing;Diabetes"/>
     </protocols>
 </repository>
