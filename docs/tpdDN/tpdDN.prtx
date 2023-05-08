@@ -7,47 +7,28 @@
     <defines>
     </defines>
     <tests>
-        <psychophysics-manual-threshold-estimation ID="TPD_UP_INC_YESNO"
-                                                   name="2PD (Up/Down Increasing, Yes/No)">
-            <up-down-algorithm stop-rule="6"
-                               terminate-on-limit-reached="true"
-                               initial-direction="increasing"
-                               intensities="[2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25]"/>
-            <yes-no-task question="Do you feel one or two points?"
-                         positive-answer="Two"
-                         negative-answer="One"
-                         task-illustration-image="TwoProngs" />
-        </psychophysics-manual-threshold-estimation>
-
-        <psychophysics-manual-threshold-estimation ID="TPD_UP_DEC_YESNO"
-                                                   name="2PD (Up/Down Decreasing, Yes/No)">
+        <psychophysics-manual-threshold-estimation ID="T01"
+                                                   name="Two Point Discrimination (Up/Down)">
+            <!-- 
+               Add: initial-step
+               Add: skip-rule
+               Add: catch trial
+               -->
             <up-down-algorithm stop-rule="6"
                                terminate-on-limit-reached="true"
                                initial-direction="decreasing"
-                               intensities="[2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25]"/>
+                               intensities="range(10, 81, 5)"/>
             <yes-no-task question="Do you feel one or two points?"
                          positive-answer="Two"
                          negative-answer="One"
                          task-illustration-image="TwoProngs" />
         </psychophysics-manual-threshold-estimation>
 
-        <psychophysics-manual-threshold-estimation ID="TPD_UP_FC1I2A"
-                                                   name="2PD (Up/Down Increasing, Forced Choice (1I2A))">
-            <up-down-algorithm stop-rule="6"
-                               terminate-on-limit-reached="true"
-                               initial-direction="increasing"
-                               intensities="[2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25]"/>
-            <one-interval-forced-choice-task alternative-a-image="TwoProngsAlong"
-                                             alternative-a="Along"
-                                             alternative-b-image="TwoProngsAcross"
-                                             alternative-b="Across"
-                                             question="What is the orientation of the two points (Along or Across the finder)?"/>
-        </psychophysics-manual-threshold-estimation>
 
-        <psychophysics-manual-threshold-estimation ID="TPD_PSI_FC1I2A"
-                                                   name="2PD (Psi, Forced Choice (1I2A)">
+        <psychophysics-manual-threshold-estimation ID="T02"
+                                                   name="Two Point Discrimination (Psi)">
             <psi-algorithm number-of-trials="30"
-                           intensities="[2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25]">
+                           intensities="range(10, 81, 5)">
                 <quick alpha="0.5"
                        beta="1"
                        gamma="0.5"
@@ -63,133 +44,21 @@
                        x1="1"
                        n="100" />
             </psi-algorithm>
-            <one-interval-forced-choice-task alternative-a-image="TwoProngsAlong"
-                                             alternative-a="Along"
-                                             alternative-b-image="TwoProngsAcross"
-                                             alternative-b="Across"
-                                             question="What is the orientation of the two points (Along or Across the finder)?"/>
-        </psychophysics-manual-threshold-estimation>
-
-        <psychophysics-manual-threshold-estimation ID="TPD_PSI_FC2I2A"
-                                                   name="2PD (Psi, Forced Choice (1I2A)">
-            <psi-algorithm number-of-trials="30"
-                           intensities="[2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25]">
-                <quick alpha="0.5"
-                       beta="1"
-                       gamma="0.5"
-                       lambda="0.02" />
-                <beta type="linspace"
-                      base="10"
-                      x0="-1.2041"
-                      x1="1.2041"
-                      n="20"/>
-                <!-- Change the 2.0 and 25.0 to the min/max from the intensities. Be sure to include a .0 to make it a floating point number. -->
-                <alpha type="linspace"
-                       x0="2.0/25.0"
-                       x1="1"
-                       n="100" />
-            </psi-algorithm>
-            <two-interval-forced-choice-task interval-a="A"
-                                             interval-b="B"
-                                             no-stimulus-image="OneProng"
-                                             question="In which interval did you find two points (A or B)?"
-                                             stimulus-image="TwoProngs"  />
-        </psychophysics-manual-threshold-estimation>
-
-        <psychophysics-manual-threshold-estimation ID="YESNO_INC"
-                                                   name="vonFrey (Up/Down, Yes/No, Increasing)">
-            <up-down-algorithm stop-rule="6"
-                               terminate-on-limit-reached="true"
-                               initial-direction="increasing"
-                               intensities="[0.064,0.14,0.32,1.7,5.1,8.3,24]"/>
-            <yes-no-task question="Do fell a touch on the skin?"
-                         positive-answer="Yes"
-                         negative-answer="No"
-                         task-illustration-image="Filament" />
-        </psychophysics-manual-threshold-estimation>
-
-        <psychophysics-manual-threshold-estimation ID="YESNO_DEC"
-                                                   name="vonFrey (Up/Down, Yes/No, Decreasing)">
-            <up-down-algorithm stop-rule="6"
-                               terminate-on-limit-reached="true"
-                               initial-direction="decreasing"
-                               intensities="[0.064,0.14,0.32,1.7,5.1,8.3,24]"/>
-            <yes-no-task question="Do you feel a touch on the skin?"
-                         positive-answer="Yes"
-                         negative-answer="No"
-                         task-illustration-image="Filament" />
-        </psychophysics-manual-threshold-estimation>
-
-
-        <psychophysics-manual-threshold-estimation ID="PSI_YES_NO"
-                                                   name="vonFrey (Psi method, Yes/No)">
-            <psi-algorithm intensities="[0.064,0.14,0.32,1.7,5.1,8.3,24]"
-                           number-of-trials='30'>
-                <quick alpha="0.5"
-                       beta="1"
-                       gamma="0"
-                       lambda="0.02" />
-                <beta type="linspace"
-                      base="10"
-                      x0="-1.2041"
-                      x1="1.2041"
-                      n="20"/>
-                <alpha type="linspace"
-                       x0="0.064/24.0"
-                       x1="1"
-                       n="100" />
-            </psi-algorithm>
-            <yes-no-task question="Do you feel a touch on the skin?"
-                         positive-answer="Yes"
-                         negative-answer="No"
-                         task-illustration-image="Filament" />
-        </psychophysics-manual-threshold-estimation>
-
-        <psychophysics-manual-threshold-estimation ID="PSI_FC2I2A"
-                                                   name="vonFrey (Psi method, Forced Choice)">
-            <psi-algorithm number-of-trials="30"
-                           intensities="[0.064,0.14,0.32,1.7,5.1,8.3,24]">
-                <quick alpha="0.5"
-                       beta="1"
-                       gamma="0.5"
-                       lambda="0.02" />
-                <beta type="linspace"
-                      base="10"
-                      x0="-1.2041"
-                      x1="1.2041"
-                      n="20"/>
-                <alpha type="linspace"
-                       x0="0.064/24.0"
-                       x1="1"
-                       n="100" />
-            </psi-algorithm>
-            <two-interval-forced-choice-task interval-a="A"
-                                             interval-b="B"
-                                             no-stimulus-image="NoFilament"
-                                             question="When did you feel a touch on the skin? In interval A or interval B?"
-                                             stimulus-image="Filament"  />
+            <yes-no-task question="Do you feel one or two points?"
+                         positive-answer="Two"
+                         negative-answer="One"
+                         task-illustration-image="TwoProngs" />
         </psychophysics-manual-threshold-estimation>
     </tests>
 
     <assets>
         <!-- Text Database -->
+        <!-- Use for catch trials -->
         <file-asset id="OneProng"
                     file="OneProng.png" />
 
         <file-asset id="TwoProngs"
                     file="TwoProngs.png" />
-
-        <file-asset id="TwoProngsAcross"
-                    file="TwoProngsAcross.png" />
-
-        <file-asset id="TwoProngsAlong"
-                    file="TwoProngsAlong.png" />
-
-       <file-asset id="Filament"
-                    file="Filament.png" />
-
-        <file-asset id="NoFilament"
-                    file="NoFilament.png" />        
     </assets>
 </protocol>
 
