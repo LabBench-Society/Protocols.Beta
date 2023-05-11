@@ -8,17 +8,36 @@
     </defines>
     <tests>
         <psychophysics-manual-threshold-estimation ID="T01"
-                                                   name="Two Point Discrimination (Up/Down)">
+                                                   name="Two Point Discrimination (Up/Down)"
+                                                   stimulus-unit="mm">
+            <properties>
+                <instructions default-instructions="T01INSTRUCTIONS"
+                              override-results="true"/>
+            </properties>
+            
+            <!--
+              The intensity transformation is used when the probe has to be set to a different 
+              value (y) else than the intensity (x) to test, meaning that:
+              
+                  y = a * x + b
+                  
+              For example, if you use a calibrer where the actual test distance is 5 more than
+              the measure on the calibre, the you would use the intensity transformation below,
+              which add 5 to the test intensity.
+            -->
+            <intensity-transformation a="1" b="-5" />
+            
+            <catch-trials order="block-randomized" 
+                          interval="4" />
             <!-- 
-               Add: initial-step
-               Add: skip-rule
-               Add: catch trial
-               -->
-			<!-- KSF example -->
+                
+            -->
             <up-down-algorithm stop-rule="6"
+                               skip-rule="0"
                                terminate-on-limit-reached="true"
                                initial-direction="decreasing"
-                               intensities="range(10, 81, 5)"/>
+                               initial-step-size="4"
+                               intensities="range(5, 101, 5)"/>
             <yes-no-task question="Do you feel one or two points?"
                          positive-answer="Two"
                          negative-answer="One"
@@ -27,9 +46,16 @@
 
 
         <psychophysics-manual-threshold-estimation ID="T02"
-                                                   name="Two Point Discrimination (Psi)">
+                                                   name="Two Point Discrimination (Psi)"
+                                                   stimulus-unit="mm">
+            <intensity-transformation a="1"
+                                      b="-5" />
+
+            <catch-trials order="block-randomized"
+                          interval="4" />
+
             <psi-algorithm number-of-trials="30"
-                           intensities="range(10, 81, 5)">
+                           intensities="range(5, 101, 5)">
                 <quick alpha="0.5"
                        beta="1"
                        gamma="0.5"
@@ -45,6 +71,10 @@
                        x1="1"
                        n="100" />
             </psi-algorithm>
+            
+            <!--
+                Make it possible to define a catch trial image and a catch trial instruction text.
+            -->
             <yes-no-task question="Do you feel one or two points?"
                          positive-answer="Two"
                          negative-answer="One"
@@ -60,6 +90,9 @@
 
         <file-asset id="TwoProngs"
                     file="TwoProngs.png" />
+
+        <file-asset id="T01INSTRUCTIONS"
+                    file="T01INSTRUCTIONS.rtf" />
     </assets>
 </protocol>
 
