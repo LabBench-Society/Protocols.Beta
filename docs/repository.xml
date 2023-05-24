@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/3.2.0/repository.xsd"
-            id="example.labbench.io">
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
+            id="beta.labbench.io">
+
+    <protocol id="tpdDN"
+              name="Two-Point Discrimination (Diabetic Neuropathy)"
+              category="Tactile Testing;Diabetes"/>
+
+    <!--
+       These are legacy protocols prior to Rev. 3.4.0
+    -->
     <protocols>
-        <protocol id="scriptdemo"
-                  name="Scripting Demonstration" 
-                  category="Demonstration Protocol" />
+        <protocol id="spAutism"
+                  name="Sensory Processing in Autism"
+                  category="Tactile Testing;Audiotory Testing;Autism" />
+		<!--
+		  PI: Ken Steffen Frahm
+		-->
+		<protocol id="tpdDN"
+				  name="Two-Point Discrimination (Diabetic Neuropathy)"
+				  category="Tactile Testing;Diabetes"/>
     </protocols>
 </repository>
-

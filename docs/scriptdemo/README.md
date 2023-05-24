@@ -1,3 +1,0 @@
-﻿# Scripting Demonstration Protocol (```scriptdemo```)
-
-
