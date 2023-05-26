@@ -37,7 +37,7 @@
                                terminate-on-limit-reached="true"
                                initial-direction="decreasing"
                                initial-step-size="4"
-                               intensities="range(10, 101, 5)"/>
+                               intensities="range(5, 101, 5)"/>
             <yes-no-task question="Do you feel one or two points?"
                          positive-answer="Two"
                          negative-answer="One"
@@ -55,7 +55,7 @@
                           interval="4" />
 
             <psi-algorithm number-of-trials="30"
-                           intensities="range(10, 101, 5)">
+                           intensities="range(5, 101, 5)">
                 <quick alpha="0.5"
                        beta="1"
                        gamma="0.5"
