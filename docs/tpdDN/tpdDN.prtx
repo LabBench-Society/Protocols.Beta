@@ -38,6 +38,7 @@
                                initial-direction="decreasing"
                                initial-step-size="4"
                                intensities="range(5, 101, 5)"/>
+			
             <yes-no-task question="Do you feel one or two points?"
                          positive-answer="Two"
                          negative-answer="One"
