@@ -7,7 +7,15 @@
               name="Two-Point Discrimination (Diabetic Neuropathy)"
               category="Tactile Testing;Diabetes"/>
 
-    <!--
+	<!--
+		  PI: Ken Steffen Frahm
+		-->
+	<protocol id="taVNS"
+			  name="Transcutaneous auricular vagal nerve stimulation"
+			  category="Vagus Nerve Stimulation"/>
+
+
+	<!--
        These are legacy protocols prior to Rev. 3.4.0
     -->
     <protocols>
@@ -20,5 +28,6 @@
 		<protocol id="tpdDN"
 				  name="Two-Point Discrimination (Diabetic Neuropathy)"
 				  category="Tactile Testing;Diabetes"/>
-    </protocols>
+
+	</protocols>
 </repository>

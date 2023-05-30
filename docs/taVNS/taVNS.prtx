@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          name="Transcutaneous auricular vagal nerve stimulation"
+          id="taVNS">
+    <description />
+    <defines>
+		<!-- Configuration of the Up/Down Algorithm -->
+		<define name="StepSizeReduction"
+                value="0.5"/>
+		<define name="MaxStepSizeReduction"
+                value="0.1"/>
+		<define name="StepSize"
+                value="0.25"/>
+		<define name="SkipRule"
+                value="2"/>
+		<define name="StartIntensity"
+                value="1"/>
+		<define name="StopRule"
+                value="8"/>
+		
+		<define name="StimFreq"
+                value="25"/> <!-- Hz -->
+		<define name="StimTestDuration"
+				value="0.2"/> <!-- s-->
+		<define name="StimDuration"
+				value="30"/> <!-- s-->
+		<define name="Ts"
+                value="0.2"/> <!-- ms -->
+    </defines>
+    <tests>
+		<psychophysics-stimulus-presentation ID="T01"
+											 name="Stimulus Presentation"
+											 stimulus-update-rate="20000">
+			<intensity type="geomspace"
+					   x0="Stimulator.Imax/50"
+					   x1="Stimulator.Imax"
+					   n="50"/>
+
+			<responses response-collection="yes-no" />
+
+			<stimulation>
+				<stimulus>
+					<repeated N="(int) (StimTestDuration*StimFreq)"
+							  Tperiod="1000/StimFreq">
+						<arbitrary expression="x"
+								   Ts="Ts"/>
+					</repeated>
+				</stimulus>
+			</stimulation>
+		</psychophysics-stimulus-presentation>
+
+		<psychophysics-threshold-estimation ID="T02"
+											name="Threshold Determination"
+											stimulus-update-rate="20000">
+			<update-rate-deterministic value="2500" />	
+			
+			<yes-no-task />
+
+			<channels>
+				<channel ID="PULSE"
+						 channel-type="single-sample"
+						 Imax="Stimulator.Imax"
+						 name="Pulse (200us)">
+					<up-down-method down-rule="1"
+                                    up-rule="1"
+                                    max-intensity="1"
+                                    min-intensity="0"
+                                    skip-rule="SkipRule"
+                                    start-intensity="StartIntensity/Stimulator.Imax"
+                                    step-size-up="StepSize"
+                                    step-size-down="StepSize"
+                                    step-size-type="relative"
+                                    terminate-on-limit-reached="true"
+                                    max-step-size-reduction="MaxStepSizeReduction"
+                                    step-size-reduction="StepSizeReduction"
+                                    stop-criterion="reversals"
+                                    stop-rule="StopRule">
+						<quick alpha="0.5"
+                               beta="1"
+                               lambda="0.02"
+                               gamma="0.0" />
+					</up-down-method>
+
+					<stimulus>
+						<repeated N="(int) (StimTestDuration*StimFreq)"
+								  Tperiod="1000/StimFreq">
+							<arbitrary expression="x"
+									   Ts="Ts"/>
+						</repeated>
+					</stimulus>
+				</channel>
+			</channels>
+		</psychophysics-threshold-estimation>
+
+		<meta-survey ID="T03"
+					 name="Stimulation Multiplier">
+			<properties>
+				<auto-start value="true"/>
+			</properties>
+			<dependencies>
+				<dependency ID="T02"/>
+			</dependencies>
+			<content>
+				<likert id="MULT"
+						title="Stimulus Multiplier"
+						instruction="Multiplier that the threshold will be multiplied with for the VGN stimulatoin">
+					<choice value="1" label="x 1"/>
+					<choice value="2" label="x 1.5"/>
+					<choice value="3" label="x 2.0"/>
+					<choice value="4" label="x 3.0"/>
+				</likert>
+			</content>
+		</meta-survey>
+
+		<electrophysiology-evoked-potentials ID="T04"
+											 name="Vagus Nerve Stimulation"
+											 stimulus-update-rate="20000"
+											 response-collection="none">
+			<dependencies>
+				<dependency ID="T02"/>
+				<dependency ID="T03"/>
+			</dependencies>
+
+			<stimulation-pattern time-base="seconds">
+				<sequence Tperiod="60"
+						  iterations="20" />
+			</stimulation-pattern>
+
+			<stimuli order="round-robin">
+				<stimulus name="VNS"
+						  count="1"
+						  intensity="func: Functions.GetIntensity(tc)">
+					<stimulus>
+						<repeated N="(int) (StimDuration*StimFreq)"
+							  Tperiod="1000/StimFreq">
+							<arbitrary expression="x"
+									   Ts="Ts"/>
+						</repeated>
+					</stimulus>
+				</stimulus>
+			</stimuli>
+		</electrophysiology-evoked-potentials>
+		
+    </tests>
+    <assets>
+		<file-asset id="Functions" file="Functions.py" />
+    </assets>
+</protocol>
