@@ -1,15 +1,10 @@
+def GetIntensity(tc, x):
+    intensities = [tc.T02['PULSE'], 
+                   (tc.T03['PULSE'] - tc.T02['PULSE'])*(1/3) + tc.T02['PULSE'], 
+                   (tc.T03['PULSE'] - tc.T02['PULSE'])*(2/3) + tc.T02['PULSE'], 
+                   tc.T03['PULSE']]
+    index = (int)(x)
+    return intensities[index]
 
-def GetIntensity(tc):
-    index = tc.T03['MULT']
-    retValue = tc.T02['PULSE']
 
-    if index == 1:
-        retValue = retValue * 1
-    elif index == 2:
-        retValue = retValue * 1.5
-    elif index == 3:
-        retValue = retValue * 2.0
-    elif index == 4:
-        retValue = retValue * 3.0    
-    
-    return retValue
+
