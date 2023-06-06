@@ -153,29 +153,40 @@
 			</channels>
 		</psychophysics-threshold-estimation>
 
-	    <psychophysics-stimulus-presentation ID="T04"
-											 name="VGN Stimulation"
-											 stimulus-update-rate="20000">
-			<intensity type="array"
-					   value="[0, 1, 2, 3]" />
+        <electrophysiology-evoked-potentials ID="T04"
+                                             name="VGN Stimulation (Pain Threshold)"
+                                             stimulus-update-rate="20000"
+                                             response-collection="none">
+            <dependencies>
+                <dependency ID="T02"/>
+                <dependency ID="T03"/>
+            </dependencies>
 
-			<responses response-collection="yes-no" />
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="1"
+                          Tperiod="StimDuration" />
+            </stimulation-pattern>
 
-			<stimulation>
-				<stimulus>
-					<repeated N="StimFreq*StimDuration"
-							  Tperiod="1000/StimFreq">
-						<combined>
-							<arbitrary expression="func: Functions.GetIntensity(tc,x)"
-									Ts="Ts"/>
-							<arbitrary expression="func: Functions.GetIntensity(tc,x)"
-									Tdelay="Ts"
-									Ts="ChBalRat*Ts"/>
-						</combined>			
-					</repeated>
-				</stimulus>
-			</stimulation>
-		</psychophysics-stimulus-presentation>		
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="T02['PULSE']">
+                    <stimulus>
+                        <repeated N="StimFreq*StimDuration"
+                                  Tperiod="1000/StimFreq">
+                            <combined>
+                                <arbitrary expression="func: Functions.GetIntensity(tc,x)"
+                                        Ts="Ts"/>
+                                <arbitrary expression="func: Functions.GetIntensity(tc,x)"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+                            </combined>
+                        </repeated>
+                    </stimulus>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
     </tests>
     <assets>
 		<file-asset id="Functions" file="Functions.py" />
