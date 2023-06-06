@@ -175,9 +175,9 @@
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
                             <combined>
-                                <arbitrary expression="func: Functions.GetIntensity(tc,x)"
+                                <arbitrary expression="x"
                                         Ts="Ts"/>
-                                <arbitrary expression="func: Functions.GetIntensity(tc,x)"
+                                <arbitrary expression="-x/ChBalRat"
                                         Tdelay="Ts"
                                         Ts="ChBalRat*Ts"/>
                             </combined>
@@ -187,8 +187,109 @@
             </stimuli>
         </electrophysiology-evoked-potentials>
 
+        <electrophysiology-evoked-potentials ID="T05"
+                                             name="VGN Stimulation (1/3 x Pain Range)"
+                                             stimulus-update-rate="20000"
+                                             response-collection="none">
+            <dependencies>
+                <dependency ID="T02"/>
+                <dependency ID="T03"/>
+            </dependencies>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="1"
+                          Tperiod="StimDuration" />
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="(T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
+                    <stimulus>
+                        <repeated N="StimFreq*StimDuration"
+                                  Tperiod="1000/StimFreq">
+                            <combined>
+                                <arbitrary expression="x"
+                                        Ts="Ts"/>
+                                <arbitrary expression="-x/ChBalRat"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+                            </combined>
+                        </repeated>
+                    </stimulus>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="T06"
+                                             name="VGN Stimulation (2/3 x Pain Range)"
+                                             stimulus-update-rate="20000"
+                                             response-collection="none">
+            <dependencies>
+                <dependency ID="T02"/>
+                <dependency ID="T03"/>
+            </dependencies>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="1"
+                          Tperiod="StimDuration" />
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="2 * (T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
+                    <stimulus>
+                        <repeated N="StimFreq*StimDuration"
+                                  Tperiod="1000/StimFreq">
+                            <combined>
+                                <arbitrary expression="x"
+                                        Ts="Ts"/>
+                                <arbitrary expression="-x/ChBalRat"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+                            </combined>
+                        </repeated>
+                    </stimulus>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="T07"
+                                             name="VGN Stimulation (Pain Tolerance)"
+                                             stimulus-update-rate="20000"
+                                             response-collection="none">
+            <dependencies>
+                <dependency ID="T02"/>
+                <dependency ID="T03"/>
+            </dependencies>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="1"
+                          Tperiod="StimDuration" />
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="T03['PULSE']">
+                    <stimulus>
+                        <repeated N="StimFreq*StimDuration"
+                                  Tperiod="1000/StimFreq">
+                            <combined>
+                                <arbitrary expression="x"
+                                        Ts="Ts"/>
+                                <arbitrary expression="-x/ChBalRat"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+                            </combined>
+                        </repeated>
+                    </stimulus>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+        
     </tests>
     <assets>
-		<file-asset id="Functions" file="Functions.py" />
     </assets>
 </protocol>
