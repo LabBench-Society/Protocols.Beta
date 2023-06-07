@@ -38,9 +38,13 @@
             <device-assignment test-type="psychophysics-threshold-estimation"
                                instrument-name="Stimulator"
                                device-id="dev" />
-			<device-assignment test-type="electrophysiology-evoked-potentials"
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
                                instrument-name="Button"
-                               device-id="dev.button" />
+                               device-id="dev.button" />            
 			<device-assignment test-type="electrophysiology-evoked-potentials"
                                instrument-name="Stimulator"
                                device-id="dev" />

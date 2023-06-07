@@ -69,6 +69,10 @@
 											stimulus-update-rate="20000">
 			<update-rate-deterministic value="2500" />	
 			
+            <configuration>
+                <trigger-generation trigger-source="internal"/>
+            </configuration>
+
 			<yes-no-task />
 
 			<channels>
@@ -96,6 +100,13 @@
                                gamma="0.0" />
 					</up-down-method>
 
+                    <triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
+                    
 					<stimulus>
 						<repeated N="(int) (StimTestDuration*StimFreq)"
 								  Tperiod="1000/StimFreq">
@@ -117,6 +128,10 @@
 											stimulus-update-rate="20000">
 			<update-rate-deterministic value="2500" />	
 			
+            <configuration>
+                <trigger-generation trigger-source="internal"/>
+            </configuration>
+            
 			<yes-no-task />
 
 			<channels>
@@ -144,7 +159,15 @@
                                gamma="0.0" />
 					</up-down-method>
 
+                    <triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
+                    
 					<stimulus>
+
 						<repeated N="(int) (StimTestDuration*StimFreq)"
 								  Tperiod="1000/StimFreq">
 							<combined>
