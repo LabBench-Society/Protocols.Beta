@@ -14,8 +14,10 @@
                 value="0.25"/>
 		<define name="SkipRule"
                 value="2"/>
-		<define name="StartIntensity"
-                value="1"/>
+		<define name="StartIntensityPerception"
+                value="0.2"/>
+		<define name="StartIntensityTolerance"
+				value="1"/>
 		<define name="StopRule"
                 value="8"/>
 		
@@ -85,7 +87,7 @@
                                     max-intensity="1"
                                     min-intensity="0"
                                     skip-rule="SkipRule"
-                                    start-intensity="StartIntensity/Stimulator.Imax"
+                                    start-intensity="StartIntensityPerception/Stimulator.Imax"
                                     step-size-up="StepSize"
                                     step-size-down="StepSize"
                                     step-size-type="relative"
@@ -144,7 +146,7 @@
                                     max-intensity="1"
                                     min-intensity="0"
                                     skip-rule="SkipRule"
-                                    start-intensity="StartIntensity/Stimulator.Imax"
+                                    start-intensity="StartIntensityTolerance/Stimulator.Imax"
                                     step-size-up="StepSize"
                                     step-size-down="StepSize"
                                     step-size-type="relative"
