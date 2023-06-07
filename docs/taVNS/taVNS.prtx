@@ -41,6 +41,13 @@
 
 			<responses response-collection="yes-no" />
 
+			<triggers start-triggger="internal">
+				<trigger duration="10">
+					<code output="Digital" value="1" />
+					<code output="Code" value="1"/>
+				</trigger>
+			</triggers>
+
 			<stimulation>
 				<stimulus>
 					<repeated N="(int) (StimTestDuration*StimFreq)"
@@ -162,6 +169,10 @@
                 <dependency ID="T03"/>
             </dependencies>
 
+			<configuration>
+				<trigger-generation trigger-source="internal"/>
+			</configuration>
+
             <stimulation-pattern time-base="seconds">
                 <sequence iterations="1"
                           Tperiod="StimDuration" />
@@ -171,7 +182,14 @@
                 <stimulus name="Stimulus"
                           count="1"
                           intensity="T02['PULSE']">
-                    <stimulus>
+					<triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
+
+					<stimulus>
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
                             <combined>
@@ -196,6 +214,10 @@
                 <dependency ID="T03"/>
             </dependencies>
 
+			<configuration>
+				<trigger-generation trigger-source="internal"/>
+			</configuration>
+			
             <stimulation-pattern time-base="seconds">
                 <sequence iterations="1"
                           Tperiod="StimDuration" />
@@ -205,7 +227,14 @@
                 <stimulus name="Stimulus"
                           count="1"
                           intensity="(T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
-                    <stimulus>
+					<triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
+
+					<stimulus>
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
                             <combined>
@@ -230,6 +259,10 @@
                 <dependency ID="T03"/>
             </dependencies>
 
+			<configuration>
+				<trigger-generation trigger-source="internal"/>
+			</configuration>
+
             <stimulation-pattern time-base="seconds">
                 <sequence iterations="1"
                           Tperiod="StimDuration" />
@@ -239,7 +272,14 @@
                 <stimulus name="Stimulus"
                           count="1"
                           intensity="2 * (T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
-                    <stimulus>
+					<triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
+
+					<stimulus>
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
                             <combined>
@@ -264,6 +304,10 @@
                 <dependency ID="T03"/>
             </dependencies>
 
+			<configuration>
+				<trigger-generation trigger-source="internal"/>
+			</configuration>
+
             <stimulation-pattern time-base="seconds">
                 <sequence iterations="1"
                           Tperiod="StimDuration" />
@@ -273,6 +317,12 @@
                 <stimulus name="Stimulus"
                           count="1"
                           intensity="T03['PULSE']">
+					<triggers>
+						<trigger duration="10">
+							<code output="Digital" value="1" />
+							<code output="Code" value="1"/>
+						</trigger>
+					</triggers>
                     <stimulus>
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
