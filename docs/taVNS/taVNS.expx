@@ -26,6 +26,9 @@
                                instrument-name="Stimulator"
                                device-id="dev"/>
 			<device-assignment test-type="psychophysics-stimulus-presentation"
+				               instrument-name="Trigger"
+				               device-id="dev"/>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
                                instrument-name="Response"
                                device-id="dev.button"/>
 			
@@ -41,7 +44,10 @@
 			<device-assignment test-type="electrophysiology-evoked-potentials"
                                instrument-name="Stimulator"
                                device-id="dev" />
-		
-        </device-mapping>
+			<device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+		</device-mapping>
     </experimental-setup>
 </experiment>
