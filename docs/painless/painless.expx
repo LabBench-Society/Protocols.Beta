@@ -28,16 +28,19 @@ Develop an assessment protocol for biomarkers indicative of central pain process
     <experimental-setup>
         <description />
         <devices>
-            <server id="server">
-                <visual-analog-scale id="scale"
-                                     length="10"
-                                     modality="Pain"
-                                     sample-period="200"
-                                     timing-source="none">
-                    <top-anchor text="Maximal Pain" />
-                    <bottom-anchor text="No Pain" />
-                </visual-analog-scale>
-            </server>
+            <lio id="lio">
+                <response-devices>
+                    <numerical-rating-scale id="scale"
+                                            modality="Pain"
+                                            sample-period="200"
+                                            timing-source="none"                                            
+                                            maximum="10"
+                                            minimum="10">
+                        <top-anchor text="Maximal Pain" />
+                        <bottom-anchor text="No Pain" />
+                    </numerical-rating-scale>                   
+                </response-devices>
+            </lio>
             <tcs id="tcs"
                  minimal-temperature="0"
                  neutral-temperature="32"
@@ -54,7 +57,7 @@ Develop an assessment protocol for biomarkers indicative of central pain process
                                device-id="tcs" />
             <device-assignment test-type="psychophysics-stimulus-presentation"
                                instrument-name="Response"
-                               device-id="server.scale" />
+                               device-id="lio.scale" />
 
             <device-assignment test-type="psychophysics-threshold-estimation"
                                instrument-name="Stimulator"
@@ -65,7 +68,7 @@ Develop an assessment protocol for biomarkers indicative of central pain process
                                device-id="plate"/>
             <device-assignment test-type="thermal-plate-setup"
                                instrument-name="Response"
-                               device-id="server.scale" />
+                               device-id="lio.scale" />
             
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Response"
@@ -76,7 +79,7 @@ Develop an assessment protocol for biomarkers indicative of central pain process
                                device-id="tcs"/>
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Response"
-                               device-id="server.scale" />
+                               device-id="lio.scale" />
 
             <device-assignment test-type="thermal-threshold-estimation"
                                instrument-name="Algometer"

@@ -7,13 +7,13 @@
     <defines />
     <tests>
         
-        <psychophysics-stimulus-presentation ID="T01"
+        <psychophysics-stimulus-presentation ID="TEST"
                                      name="Familiarization (Heat and Cold)"
                                      stimulus-update-rate="100">
             <intensity type="array"
                        value="[0, 45]" />
             
-            <responses response-collection="ratio-rating" />
+            <responses response-collection="numerical-rating" />
 
             <stimulation>
                 <stimulus>
@@ -26,10 +26,12 @@
             </stimulation>
         </psychophysics-stimulus-presentation>
 
-        <psychophysics-threshold-estimation ID="T02"
+        <psychophysics-threshold-estimation ID="ThrTSPT01"
                                             name="Pain5 for TSP"
                                             stimulus-update-rate="100">
-            <dependencies />
+            <dependencies>
+                <dependency ID="TEST"/>
+            </dependencies>
             <update-rate-deterministic value="50"/>
             <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
                                          target="5"
@@ -59,10 +61,12 @@
             </channels>
         </psychophysics-threshold-estimation>
 
-        <psychophysics-threshold-estimation ID="T03"
+        <psychophysics-threshold-estimation ID="ThrCPM01"
                                             name="Pain5 for CPM and OA"
                                             stimulus-update-rate="100">
-            <dependencies />
+            <dependencies>
+                <dependency ID="ThrTSPT01"/>
+            </dependencies>
             <update-rate-deterministic value="50"/>
             <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
                                          target="5"
@@ -91,6 +95,114 @@
                 </channel>
             </channels>
         </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="ThrTSPT02"
+                                            name="Pain5 for TSP"
+                                            stimulus-update-rate="100">
+            <dependencies>
+                <dependency ID="ThrCPM01"/>
+            </dependencies>
+            <update-rate-deterministic value="50"/>
+            <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
+                                         target="5"
+                                         minimum="1"
+                                         maximum="10"/>
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         name="Rect (0.5s)"
+                         Imax="Stimulator.Imax"
+                         Imin="32">
+                    <discrete-up-down-method initial-direction="increasing"
+                                             initial-intensity="45"
+                                             intensities="range(32, 61, 1)"
+                                             skip-rule="0"
+                                             stop-rule="2"
+                                             terminate-on-limit-reached="true" />
+                    <stimulus>
+                        <linear-segments baseline="Stimulator.Neutral">
+                            <segment duration="100" value="x"/>
+                            <segment duration="300" value="x"/>
+                            <segment duration="100" value="Stimulator.Neutral"/>
+                        </linear-segments>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="ThrCPM02"
+                                            name="Pain5 for CPM and OA"
+                                            stimulus-update-rate="100">
+            <dependencies>
+                <dependency ID="ThrTSPT02"/>
+            </dependencies>
+            <update-rate-deterministic value="50"/>
+            <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
+                                         target="5"
+                                         minimum="1"
+                                         maximum="10"/>
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         name="Rect (0.5s)"
+                         Imax="Stimulator.Imax"
+                         Imin="32">
+                    <discrete-up-down-method initial-direction="increasing"
+                                             initial-intensity="45"
+                                             intensities="range(32, 61, 1)"
+                                             skip-rule="0"
+                                             stop-rule="2"
+                                             terminate-on-limit-reached="true" />
+                    <stimulus>
+                        <linear-segments baseline="Stimulator.Neutral">
+                            <segment duration="100" value="x"/>
+                            <segment duration="9800" value="x"/>
+                            <segment duration="100" value="Stimulator.Neutral"/>
+                        </linear-segments>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <thermal-rated-stimulation ID="TSP01"
+                                   name="Temporal Summation (Single Stimulus)"
+                                   response-collection="none"
+                                   intensity="(ThrTSPT01['C01'] + ThrTSPT02['C01'])/2"
+                                   minimal-display-temperature="Algometer.Neutral"
+                                   maximal-display-temperature="Algometer.Max"
+                                   sample-times="[14.9, 24.9]">
+            <dependencies>
+                <dependency ID="T03"/>
+            </dependencies>
+            <stimulus>
+                <linear-segments>
+                    <segment duration="100" value="x"/>
+                    <segment duration="300" value="x"/>
+                    <segment duration="100" value="Algometer.Neutral" />
+                </linear-segments>
+            </stimulus>
+        </thermal-rated-stimulation>
+
+        <meta-survey ID="TSP01Rating"
+                     name="Temporal Summation (Single Stimulus Rating)">
+            <properties>
+                <auto-start value="true" />
+            </properties>
+            <dependencies>
+                <dependency ID="TSP01"/>
+            </dependencies>            
+            <content>
+                <likert id="Rating"
+                        title="Temporal Summation (Single Stimulus)"
+                        instruction="Please rate the intensity of the stimulus">
+                    <choice value="1" label="1"/>
+                </likert>
+                
+            </content>
+        </meta-survey>
+                     
 
         <thermal-plate-setup ID="CPSetup"
                                   name="Cold Plate Setup"
