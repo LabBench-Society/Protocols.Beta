@@ -3,7 +3,7 @@
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
             name="Tactile Demonstration"
             id="tactiledemo"
-            protocol="tactiledemo@test.labbench.io">
+            protocol="tactiledemo@beta.labbench.io">
 <description>This protocol demonstrate how two-point-discrimination discs and von Frey hairs can be used to test tactile sensitivity.       
 </description>
   <subject-validator regex="^S[0-9]{3}$"

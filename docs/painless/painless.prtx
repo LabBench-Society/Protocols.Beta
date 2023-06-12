@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          name="PAINLESS: Pain Relief in Cancer (WP1)"
+          id="painless">
+    <description />
+    <defines />
+    <tests>
+        
+        <psychophysics-stimulus-presentation ID="T01"
+                                     name="Familiarization (Heat and Cold)"
+                                     stimulus-update-rate="100">
+            <intensity type="array"
+                       value="[0, 45]" />
+            
+            <responses response-collection="ratio-rating" />
+
+            <stimulation>
+                <stimulus>
+                    <linear-segments baseline="Stimulator.Neutral">
+                        <segment duration="100" value="x"/>
+                        <segment duration="4800" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral"/>
+                    </linear-segments>
+                </stimulus>
+            </stimulation>
+        </psychophysics-stimulus-presentation>
+
+        <psychophysics-threshold-estimation ID="T02"
+                                            name="Pain5 for TSP"
+                                            stimulus-update-rate="100">
+            <dependencies />
+            <update-rate-deterministic value="50"/>
+            <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
+                                         target="5"
+                                         minimum="1"
+                                         maximum="10"/>
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         name="Rect (0.5s)"
+                         Imax="Stimulator.Imax"
+                         Imin="32">
+                    <discrete-up-down-method initial-direction="increasing"
+                                             initial-intensity="45"
+                                             intensities="range(32, 61, 1)"
+                                             skip-rule="0"
+                                             stop-rule="2"
+                                             terminate-on-limit-reached="true" />
+                    <stimulus>
+                        <linear-segments baseline="Stimulator.Neutral">
+                            <segment duration="100" value="x"/>
+                            <segment duration="300" value="x"/>
+                            <segment duration="100" value="Stimulator.Neutral"/>
+                        </linear-segments>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="T03"
+                                            name="Pain5 for CPM and OA"
+                                            stimulus-update-rate="100">
+            <dependencies />
+            <update-rate-deterministic value="50"/>
+            <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 1-10?"
+                                         target="5"
+                                         minimum="1"
+                                         maximum="10"/>
+
+            <channels>
+                <channel ID="C01"
+                         channel-type="single-sample"
+                         name="Rect (0.5s)"
+                         Imax="Stimulator.Imax"
+                         Imin="32">
+                    <discrete-up-down-method initial-direction="increasing"
+                                             initial-intensity="45"
+                                             intensities="range(32, 61, 1)"
+                                             skip-rule="0"
+                                             stop-rule="2"
+                                             terminate-on-limit-reached="true" />
+                    <stimulus>
+                        <linear-segments baseline="Stimulator.Neutral">
+                            <segment duration="100" value="x"/>
+                            <segment duration="9800" value="x"/>
+                            <segment duration="100" value="Stimulator.Neutral"/>
+                        </linear-segments>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <thermal-plate-setup ID="CPSetup"
+                                  name="Cold Plate Setup"
+                                  initial-intensity="15"
+                                  intensity-tolerance="0.5"
+                                  response-collection="ratio-rating"
+                                  sample-rate="5" />
+
+        <thermal-rated-stimulation ID="T04"
+                                   name="Offset Analgesia"
+                                   response-collection="ratio-rating"
+                                   intensity="T03['C01']"
+                                   minimal-display-temperature="Algometer.Neutral"
+                                   maximal-display-temperature="Algometer.Max"
+                                   sample-times="[14.9, 24.9]">
+            <dependencies>
+                <dependency ID="T03"/>
+            </dependencies>
+            <stimulus>
+                <linear-segments>
+                    <segment duration="100" value="x - 2"/>
+                    <segment duration="9900" value="x - 2"/>
+                    <segment duration="100" value="x" />
+                    <segment duration="4800" value="x"/>
+                    <segment duration="100" value="x - 2"/>
+                    <segment duration="5000" value="x - 2"/>
+                    <segment duration="5000" value="x - 2"/>
+                    <segment duration="5000" value="x - 2"/>
+                    <segment duration="5000" value="x - 2"/>
+                </linear-segments>
+            </stimulus>
+        </thermal-rated-stimulation>
+
+        <thermal-threshold-estimation ID="HPT"
+                                      name="Heat Pain Threshold (HPT)"
+                                      maximal-temperature="Algometer.Max"
+                                      initial-stimulation-delay="2"
+                                      stimulation-rate="1"
+                                      return-rate="8"
+                                      repetitions="3"
+                                      stimulation-interval="2"
+                                      threshold-type="heat-pain-threshold" />
+
+        <thermal-threshold-estimation ID="CPT"
+                                      name="Cold Pain Threshold (CPT)"
+                                      maximal-temperature="Algometer.Min"
+                                      initial-stimulation-delay="2"
+                                      stimulation-rate="1"
+                                      return-rate="170"
+                                      repetitions="3"
+                                      stimulation-interval="2"
+                                      threshold-type="cold-pain-threshold" />
+
+        <thermal-plate-setup ID="EEGetup"
+                             name="EEG Cold Plate Setup"
+                             initial-intensity="20"
+                             intensity-tolerance="0.5"
+                             response-collection="ratio-rating"
+                             display-duration="10"
+                             sample-rate="5">
+            <intensity type="array"
+                       value="[6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0, 26.0, 28.0, 30.0]"/>
+        </thermal-plate-setup>
+    </tests>
+    <assets />
+</protocol>
