@@ -74,7 +74,7 @@
             <configuration>
                 <trigger-generation trigger-source="internal"/>
             </configuration>
-
+            
 			<yes-no-task />
 
 			<channels>

@@ -54,17 +54,21 @@
             
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Response"
-                               device-id="server.scale" />
+                               device-id="lio.scale" />
 
             <device-assignment test-type="thermal-rated-stimulation"
-                               instrument-name="Algometer"
+                               instrument-name="Stimulator"
                                device-id="tcs"/>
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Response"
                                device-id="lio.scale" />
 
             <device-assignment test-type="thermal-threshold-estimation"
-                               instrument-name="Algometer"
+                               instrument-name="Stimulator"
+                               device-id="tcs"/>
+            
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Stimulator"
                                device-id="tcs"/>
         </device-mapping>
     </experimental-setup>
