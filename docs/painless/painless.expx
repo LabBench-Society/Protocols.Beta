@@ -5,25 +5,7 @@
             id="painless"
             protocol="painless@beta.labbench.io">
     <description>
-The PAINLESS project, an international, multidisciplinary endeavor coordinated by Universidade de Santiago de Compostela and comprising over twenty institutions, aspires to delve into the understanding of cancer-associated pain mechanisms. The ultimate goal of this initiative is to develop a non-pharmacological alternative for pain management. The approach is rooted in evidence and innovation, focusing on a unique, affordable, and home-based intervention using neuromodulation to manage cancer-related pain.
 
-THE PAINLESS CONCEPT
-
-Under the leadership of Prof. María Teresa Carillo de la Peña at USC, the project is exploring a groundbreaking non-invasive and evidence-based pain management technique.
-
-Cancer-associated pain, a prevalent symptom that detrimentally impacts the quality of life, can be managed by medications in roughly 80% of the patients. However, for the remaining 20%, the response to pharmacological treatments is limited, necessitating the need for alternate pain alleviation methods.
-
-PAINLESS targets this problem by employing neuromodulation, a non-invasive method that utilizes low-frequency currents to modulate neuronal excitability, thus promising to alleviate pain and enhance life quality for cancer patients.
-
-This technique uses transcranial electric stimulation, where tiny electric currents are administered through scalp electrodes. As time progresses, this approach can alter the neural mechanisms associated with chronic pain, providing pain relief. Overall, transcranial stimulation is considered non-invasive, generally well-tolerated, and safe.
-
-THE PAINLESS EXPERIMENT PROTOCOL
-
-The experiment protocol of the PAINLESS project is centered around the development and testing of an innovative, evidence-based service model for managing cancer pain.
-
-To fulfill this objective, the present protocol has been developed to:
-
-Develop an assessment protocol for biomarkers indicative of central pain processing.
     </description>
     <experimental-setup>
         <description />
