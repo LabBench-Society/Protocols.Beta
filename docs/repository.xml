@@ -14,8 +14,15 @@
 			  name="Transcutaneous auricular vagal nerve stimulation"
 			  category="Vagus Nerve Stimulation"/>
 
+    <protocol id="painless"
+			  name="PAINLESS: Pain Relief in Cancer (WP1)"
+			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
 
-	<!--
+    <protocol id="condnwr"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (NWR)"
+			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+
+    <!--
        These are legacy protocols prior to Rev. 3.4.0
     -->
     <protocols>

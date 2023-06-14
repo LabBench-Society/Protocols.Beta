@@ -348,7 +348,6 @@
 							<code output="Code" value="1"/>
 						</trigger>
 					</triggers>
-
                     <stimulus>
                         <repeated N="StimFreq*StimDuration"
                                   Tperiod="1000/StimFreq">
