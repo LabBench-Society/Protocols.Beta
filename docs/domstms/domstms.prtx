@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          name="DOMS TMS model with EEG"
+          id="domstms">
+    <description />
+    <defines>
+        <define name="StimulusInterval" value="3" />
+        <define name="StimulusJitter" value="0.2 * StimulusInterval"/>
+        <define name="Repetitions" value="200"/>
+	</defines>
+    <tests>
+        <electrophysiology-evoked-potentials ID="rTMS"
+                                             name="TMS Stimulation"
+                                             trigger-update-rate="20000"
+                                             response-collection="none">
+			<configuration>
+				<trigger-generation trigger-source="none"/>
+			</configuration>
+
+            <stimulation-pattern time-base="seconds">
+                <uniformly-distributed-sequence iterations="Repetitions"
+                                                Toffset="5"
+                                                minTperiod="StimulusInterval - StimulusJitter"
+                                                maxTperiod="StimulusInterval - StimulusJitter">
+                </uniformly-distributed-sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="1">
+					<triggers>
+                        <trigger duration="10">
+                            <code output="Stimulus" value="1"/>
+                        </trigger>
+                    </triggers>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+    </tests>
+    <assets>
+    </assets>
+</protocol>

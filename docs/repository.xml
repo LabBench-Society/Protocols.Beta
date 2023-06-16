@@ -7,6 +7,10 @@
               name="Two-Point Discrimination (Diabetic Neuropathy)"
               category="Tactile Testing;Diabetes"/>
 
+    <protocol id="domstms"
+			  name="DOMS TMS model with EEG"
+			  category="Vagus Nerve Stimulation"/>
+    
 	<!--
 		  PI: Ken Steffen Frahm
 		-->
