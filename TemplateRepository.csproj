@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="docs\condnwr - Copy\" />
+    <Compile Remove="docs\condnwr - Copy\**" />
+    <EmbeddedResource Remove="docs\condnwr - Copy\**" />
+    <None Remove="docs\condnwr - Copy\**" />
   </ItemGroup>
 
 </Project>
