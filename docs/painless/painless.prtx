@@ -502,7 +502,9 @@
                 <dependency ID="EEGSetup"/>
             </dependencies>
             <content>
-                <instruction id="Instruction" />
+                <instruction id="Instruction" 
+                             instruction="EEGInstruction"
+                             title="EEG Setup and Resting EEG" />
             </content>
         </meta-survey>
        
@@ -619,5 +621,7 @@
         </thermal-rated-stimulation>
         
     </tests>
-    <assets />
+    <assets>
+        <file-asset id="EEGInstruction" file="EEGInstruction.rtf" />
+    </assets>
 </protocol>
