@@ -45,7 +45,7 @@
                          Imin="Stimulator.Neutral">
                     <discrete-up-down-method initial-direction="increasing"
                                              initial-intensity="45"
-                                             intensities="range(Stimulator.Neutral, Stimulator.Max + 1, 1)"
+                                             intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
                                              skip-rule="0"
                                              stop-rule="2"
                                              terminate-on-limit-reached="true" />
@@ -80,15 +80,15 @@
                          Imin="Stimulator.Neutral">
                     <discrete-up-down-method initial-direction="increasing"
                                              initial-intensity="45"
-                                             intensities="range(Stimulator.Neutral, Stimulator.Max + 1, 1)"
+                                             intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
                                              skip-rule="0"
                                              stop-rule="2"
                                              terminate-on-limit-reached="true" />
                     <stimulus>
-                        <linear-segments baseline="Stimulator.Neutral">
+                        <linear-segments baseline="32">
                             <segment duration="100" value="x"/>
                             <segment duration="9800" value="x"/>
-                            <segment duration="100" value="Stimulator.Neutral"/>
+                            <segment duration="100" value="32"/>
                         </linear-segments>
                     </stimulus>
                 </channel>
@@ -99,7 +99,7 @@
                                             name="C: Pain5 for TSP"
                                             stimulus-update-rate="100">
             <dependencies>
-                <dependency ID="TEST"/>
+                <dependency ID="ThrCPM01"/>
             </dependencies>
             <update-rate-deterministic value="50"/>
             <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
@@ -115,7 +115,7 @@
                          Imin="Stimulator.Neutral">
                     <discrete-up-down-method initial-direction="increasing"
                                              initial-intensity="45"
-                                             intensities="range(Stimulator.Neutral, Stimulator.Max + 1, 1)"
+                                             intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
                                              skip-rule="0"
                                              stop-rule="2"
                                              terminate-on-limit-reached="true" />
@@ -134,7 +134,7 @@
                                             name="D: Pain5 for CPM and OA"
                                             stimulus-update-rate="100">
             <dependencies>
-                <dependency ID="ThrTSPT01"/>
+                <dependency ID="ThrTSPT02"/>
             </dependencies>
             <update-rate-deterministic value="50"/>
             <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
@@ -150,7 +150,7 @@
                          Imin="Stimulator.Neutral">
                     <discrete-up-down-method initial-direction="increasing"
                                              initial-intensity="45"
-                                             intensities="range(Stimulator.Neutral, Stimulator.Max + 1, 1)"
+                                             intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
                                              skip-rule="0"
                                              stop-rule="2"
                                              terminate-on-limit-reached="true" />
@@ -325,10 +325,11 @@
         </meta-survey>
         
         <thermal-plate-setup ID="CPSetup"
-                                  name="Cold Plate Setup"
-                                  initial-intensity="10"
-                                  intensity-tolerance="0.5"
-                                  response-collection="none" />
+                             name="Cold Plate Setup"
+                             initial-intensity="10"
+                             intensity-tolerance="0.5"
+                             response-collection="numerical-rating" 
+                             sample-rate="5"/>
 
         <psychophysics-stimulus-presentation ID="UCPMTS"
                              name="Unconditioned Test Stimulus"
@@ -482,7 +483,7 @@
                                       stimulation-interval="5"
                                       threshold-type="cold-pain-threshold" />
 
-        <thermal-plate-setup ID="EEGetup"
+        <thermal-plate-setup ID="EEGSetup"
                              name="EEG Cold Plate Setup"
                              initial-intensity="20"
                              intensity-tolerance="0.5"
@@ -493,7 +494,7 @@
                        value="[6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0, 26.0, 28.0, 30.0]"/>
         </thermal-plate-setup>
 
-        <meta-survey ID="EEGSetup"
+        <meta-survey ID="EEG"
                      name="EEG Setup and Resting EEG">
             <properties>
                 <auto-start value="true"/>

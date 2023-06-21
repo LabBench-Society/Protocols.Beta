@@ -17,7 +17,7 @@
                                             sample-period="200"
                                             timing-source="none"                                            
                                             maximum="10"
-                                            minimum="10">
+                                            minimum="0">
                         <top-anchor text="Maximal Pain" />
                         <bottom-anchor text="No Pain" />
                     </numerical-rating-scale>                   
