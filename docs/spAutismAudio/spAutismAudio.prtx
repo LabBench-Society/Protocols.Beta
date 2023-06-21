@@ -47,136 +47,90 @@
 		<!--- This was added for beta v.3 by DSMJ -->
 		<psychophysics-stimulus-presentation ID="TA0"
                                              name="Loudness Discrimination Acuity (Stimulus Presentation)"
-                                             stimulus-update-rate="44100"
-                                             response-collection="yes-no">
+                                             stimulus-update-rate="44100">
 			<intensity type="geomspace"
                        x0="0.1"
                        x1="15"
                        n="20" />
-			<combined>
-				<!--
-				<sine Is="0" Ts="2 * (SndTs + SndTisi)" Frequency="SndFs" Tdelay="0" />
-				-->
-				<sine Is="0" Ts="2 * (SndTs + SndTisi)" Frequency="SndFs" Tdelay="0" />
-				<window window= "Tukey" parameter= "0.05">
-					<sine Is="SndIs"
-                      Ts="SndTs"
-                      Frequency="SndFs"
-                      Tdelay="0" />
-				</window>
 
-				<window window= "Tukey" parameter= "0.05">
-					<sine Is="SndIs + x"
-                      Ts="SndTs"
-                      Frequency="SndFs"
-                      Tdelay="SndTs + SndTisi" />
-				</window>
-			</combined>
+            <responses response-collection="yes-no"/>
+
+            <stimulation>
+
+                <stimulus>                    
+                    <combined>
+                        <sine Is="0" Ts="1.5 * (SndTs + SndTisi)" Frequency="SndFs" Tdelay="0" />
+
+                        <window window= "Tukey" parameter= "0.5">
+                            <sine Is="SndIs"
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="0" />
+                        </window>
+
+                        <window window= "Tukey" parameter= "0.5">
+                            <sine Is="SndIs + x"
+                              Ts="SndTs"
+                              Frequency="SndFs"
+                              Tdelay="SndTs + SndTisi" />
+                        </window>
+                    </combined>
+                </stimulus>
+            </stimulation>
 		</psychophysics-stimulus-presentation>
 		<!--- This was added for beta v.3 by DSMJ -->
 		
 		<psychophysics-threshold-estimation ID="TA1"
-                                            name="Loudness Discrimination Acuity (Dynamic Range)">
+                                            name="Loudness Discrimination Acuity (Dynamic Range)"
+                                            stimulus-update-rate="44100">
             <dependencies />
-            <update-rate-deterministic value="5000" />
-            <yes-no-task stimulus-update-rate="44100" />
+            <update-rate-deterministic value="5000" />            
+            <yes-no-task />
 
 			<!-- Imax was 40 and start-intensity was 2.0/40 and my former was 4/15-->
             <channels>
                 <channel ID="C01"
                          channel-type="single-sample"
-                         trigger="1"
-                         channel="3"
                          name="Sine (1000Hz)"
                          Imax="15">
                     <up-down-method down-rule="1"
                                     up-rule="1"
                                     skip-rule="1"
-                                    start-intensity="0.3990"
+                                    start-intensity="15"
                                     step-size-up="0.25"
                                     step-size-down="0.25"
                                     step-size-type="relative"
-                                    terminate-on-limit-reached="true"
                                     max-step-size-reduction="0.1"
                                     step-size-reduction="0.5"
-                                    stop-criterion="reversals"
+                                    initial-direction="decreasing"
                                     stop-rule="7" />
 
-					<!-- Is="func: Functions.GetSoundIntensity"-->
-					<combined>
-						<window window= "Tukey" parameter= "0.05">
-							<sine Is="SndIs"
-                              Ts="SndTs"
-                              Frequency="SndFs"
-                              Tdelay="0" />
-						</window>
-						<window window= "Tukey" parameter= "0.05">
-                            <sine Is="SndIs + x"
-                              Ts="SndTs"
-                              Frequency="SndFs"
-                              Tdelay="SndTs + SndTisi" />
-						</window>
-                    </combined>
+                    <stimulus>
+                        <combined>
+                            <sine Is="0" Ts="1.5 * (SndTs + SndTisi)" Frequency="SndFs" Tdelay="0" />
+
+                            <window window= "Tukey" parameter= "0.5">
+                                <sine Is="SndIs"
+                                  Ts="SndTs"
+                                  Frequency="SndFs"
+                                  Tdelay="0" />
+                            </window>
+
+                            <window window= "Tukey" parameter= "0.5">
+                                <sine Is="SndIs + x"
+                                  Ts="SndTs"
+                                  Frequency="SndFs"
+                                  Tdelay="SndTs + SndTisi" />
+                            </window>
+                        </combined>
+                    </stimulus>
                 </channel>
             </channels>
         </psychophysics-threshold-estimation>
-
-		<!--
-        <psychophysics-threshold-estimation ID="TA2" 
-                                            name="Loudness Discrimination Acuity (Trial Run)"> 
-            <dependencies> 
-                <dependency ID="TA1"/> 
-            </dependencies> 
-            <update-rate-deterministic value="5000" /> 
-            <yes-no-task stimulus-update-rate="44100" /> 
- 
-			 Imax was "Imult * TA1['C01'] if Imult * TA1['C01'] &lt; 40.0 else 40.0"> 
-			Beta, n was 20>  
-            <channels> 
-                <channel ID="C01" 
-                         channel-type="single-sample" 
-                         trigger="1" 
-                         channel="3" 
-                         name="Sine (1000Hz)" 
-                         Imax="15"> 
-                    <psi-method number-of-trials="5">  
-                        <quick alpha="0.5" 
-                               beta="1" 
-                               lambda="0.02" 
-                               gamma="0.0" /> 
-                        <beta type="linspace" 
-                              base="10" 
-                              x0="-1.2041" 
-                              x1="1.2041" 
-                              n="50"/> 
-                        <alpha type="linspace" 
-                               x0="alphaX0" 
-                               x1="1" 
-                               n="alphaN" /> 
-                        <intensity type="linspace" 
-                                   x0="alphaX0" 
-                                   x1="1" 
-                                   n="intensityN" /> 
-                    </psi-method> 
- 
-                    <combined>  
-                        <sine Is="SndIs" 
-                              Ts="SndTs" 
-                              Frequency="SndFs" 
-                              Tdelay="0" /> 
-						sine Is="func: Functions.GetSoundIntensity" 
-                        <sine Is="SndIs + x" 
-                              Ts="SndTs" 
-                              Frequency="SndFs" 
-                              Tdelay="SndTs + SndTisi" /> 
-                    </combined> 
-                </channel> 
-            </channels> 
-        </psychophysics-threshold-estimation> 
-        --> 
-		
+	
         <psychophysics-threshold-estimation ID="TA3"
-                                            name="Loudness Discrimination Acuity">
+                                            name="Loudness Discrimination Acuity"
+                                            stimulus-update-rate="44100">
             <properties>
                 <auto-start value="true"/>
             </properties>
@@ -184,15 +138,13 @@
                 <dependency ID="TA1"/>
             </dependencies>
             <update-rate-deterministic value="5000" />
-            <yes-no-task stimulus-update-rate="44100" />
+            <yes-no-task />
 
 			<!-- Imax was "Imult * TA1['C01'] if Imult * TA1['C01'] &lt; 40.0 else 40.0"> -->
 			<!-- Beta, n was 20> -->
             <channels>
                 <channel ID="C01"
                          channel-type="single-sample"
-                         trigger="1"
-                         channel="3"
                          name="Sine (1000Hz)"
                          Imax="15">
                     <catch-trials order="block-randomized"
@@ -217,21 +169,25 @@
                                    n="intensityN" />
                     </psi-method>
 
-                    <combined>
-						<window window= "Tukey" parameter= "0.05">
-							<sine Is="SndIs"
-                              Ts="SndTs"
-                              Frequency="SndFs"
-                              Tdelay="0" />
-						</window>
-						<!-- sine Is="func: Functions.GetSoundIntensity" -->
-					    <window window= "Tukey" parameter= "0.05">
-						    <sine Is="SndIs + x"
-                              Ts="SndTs"
-                              Frequency="SndFs"
-                              Tdelay="SndTs + SndTisi" />
-						</window>
-                    </combined>
+                    <stimulus>
+                        <combined>
+                            <sine Is="0" Ts="1.5 * (SndTs + SndTisi)" Frequency="SndFs" Tdelay="0" />
+
+                            <window window= "Tukey" parameter= "0.5">
+                                <sine Is="SndIs"
+                                  Ts="SndTs"
+                                  Frequency="SndFs"
+                                  Tdelay="0" />
+                            </window>
+
+                            <window window= "Tukey" parameter= "0.5">
+                                <sine Is="SndIs + x"
+                                  Ts="SndTs"
+                                  Frequency="SndFs"
+                                  Tdelay="SndTs + SndTisi" />
+                            </window>
+                        </combined>
+                    </stimulus>
                 </channel>
             </channels>
         </psychophysics-threshold-estimation>
