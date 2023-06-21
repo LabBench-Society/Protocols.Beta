@@ -3,7 +3,7 @@
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
             name="Sensorisk Diskriminations Test"
             id="SensoriskTest"
-            protocol="spAutism@beta.labbench.io">
+            protocol="spAutismAudio@beta.labbench.io">
     <description />
     <subject-validator regex="^S[0-9]{3}$"
                        advice="Please enter an ID in the form of SXXX, where X is a digit" />
@@ -16,7 +16,6 @@
 					<audio-trigger arming-period="200" timing-source="none"/>
                 </response-devices>
             </lio>
-            <tactor id="tactor" />
             <sound id="sound" />
         </devices>
         <device-mapping>
@@ -46,30 +45,7 @@
             <device-assignment test-type="psychophysics-threshold-estimation"
                                test-id="TA3"
                                instrument-name="Stimulator"
-                               device-id="sound" />
-			<!--- This was added for beta v.3 by DSMJ -->
-			<device-assignment test-type="psychophysics-stimulus-presentation"
-                               test-id="TV0"
-                               instrument-name="Stimulator"
-                               device-id="tactor"/>
-			<device-assignment test-type="psychophysics-stimulus-presentation"
-                               instrument-name="Response"
-                               device-id="dev.button"/>
-			<!--- This was added for beta v.3 by DSMJ -->
-			<device-assignment test-type="psychophysics-threshold-estimation"
-                               test-id="TV1"
-                               instrument-name="Stimulator"
-                               device-id="tactor" />
-			<!--
-			<device-assignment test-type="psychophysics-threshold-estimation" 
-                               test-id="TV2" 
-                               instrument-name="Stimulator" 
-                               device-id="tactor" /> 
-			--> 				   
-            <device-assignment test-type="psychophysics-threshold-estimation"
-                               test-id="TV3"
-                               instrument-name="Stimulator"
-                               device-id="tactor" />
+                               device-id="sound" />            
         </device-mapping>
     </experimental-setup>
 </experiment>
