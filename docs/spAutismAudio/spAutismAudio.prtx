@@ -43,8 +43,6 @@
                 value="func: Functions.CreateRandom"/>
     </defines>
     <tests>
-
-		<!--- This was added for beta v.3 by DSMJ -->
 		<psychophysics-stimulus-presentation ID="TA0"
                                              name="Loudness Discrimination Acuity (Stimulus Presentation)"
                                              stimulus-update-rate="44100">
@@ -78,7 +76,6 @@
                 </stimulus>
             </stimulation>
 		</psychophysics-stimulus-presentation>
-		<!--- This was added for beta v.3 by DSMJ -->
 		
 		<psychophysics-threshold-estimation ID="TA1"
                                             name="Loudness Discrimination Acuity (Dynamic Range)"
@@ -87,7 +84,6 @@
             <update-rate-deterministic value="5000" />            
             <yes-no-task />
 
-			<!-- Imax was 40 and start-intensity was 2.0/40 and my former was 4/15-->
             <channels>
                 <channel ID="C01"
                          channel-type="single-sample"
@@ -140,8 +136,6 @@
             <update-rate-deterministic value="5000" />
             <yes-no-task />
 
-			<!-- Imax was "Imult * TA1['C01'] if Imult * TA1['C01'] &lt; 40.0 else 40.0"> -->
-			<!-- Beta, n was 20> -->
             <channels>
                 <channel ID="C01"
                          channel-type="single-sample"
