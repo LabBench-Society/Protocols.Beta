@@ -26,6 +26,10 @@
 			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (NWR)"
 			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
 
+    <protocol id="condnwrs"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (Single Burst) (NWR)"
+			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+    
     <protocol id="spAutism"
               name="Sensory Processing in Autism"
               category="Tactile Testing;Audiotory Testing;Autism" />
