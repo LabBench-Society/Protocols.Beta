@@ -51,9 +51,6 @@
                                              name="Before Conditioning"
                                              trigger-update-rate="20000"
                                              response-collection="none">
-            <dependencies>
-                <dependency ID="StimIntensity"/>
-            </dependencies>
 
 			<configuration>
 				<trigger-generation trigger-source="none"/>
@@ -104,7 +101,6 @@
                             required="true"/>
             </test-events>
             <dependencies>
-                <dependency ID="StimIntensity"/>
                 <dependency ID="SR"/>
             </dependencies>            
 
@@ -149,9 +145,6 @@
                                              name="After Conditioning"
                                              trigger-update-rate="20000"
                                              response-collection="none">
-            <dependencies>
-                <dependency ID="StimIntensity"/>
-            </dependencies>
 
             <configuration>
                 <trigger-generation trigger-source="none"/>
