@@ -26,7 +26,7 @@
 		<define name="StimTestDuration"
 				value="1.0"/> <!-- s-->
 		<define name="StimDuration"
-				value="5*60"/> <!-- s-->
+				value="2*60"/> <!-- s-->
 		<define name="Ts"
                 value="0.2"/> <!-- ms -->
 		<define name="ChBalRat" 
