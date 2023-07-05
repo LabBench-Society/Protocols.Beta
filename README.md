@@ -27,26 +27,31 @@ Installation and use of LabBench Beta is done in close collaboration with the de
 
 **FIRST TIME INSTALLATION:**
 
-1. Unpack the zip file to ```C:\Tools\LabBench```
-2. Mark the labbench.exe file in that directory, and press Ctrl + C. 
-3. Goto the Desktop, right click on the desktop and choose "Paste shortcut". Do this twice.
-4. Setup one shortcut to start the LabBench Designer program:
-    1. Mark the shortcut and press F2. Rename it to say ```LabBench Designer (Beta)```.
-    2. Right click the shortcut and click on Properties.
-    3. Change Target to: ```C:\Tools\LabBench\LabBench.exe designer -p C:\LabBeta```. If you kept the path ```C:\Tools\LabBench``` in step 1, you can copy paste this line from here to the Target property in the shortcut.
-    4. Test the shortcut by double clicking it and see that it start the LabBench Designer. Close the program before you proceed to step 5 in this installation procedure.
-5. Setup the other shortcut to start the LabBench Runner program:
-    1. Mark the shortcut and press F2. Rename it to say ```LabBench Runner (Beta)```.
-    2. Right click the shortcut and click on Properties.
-    3. Change Target to: ```C:\Tools\LabBench\LabBench.exe runner -p C:\LabBeta```. If you kept the path ```C:\Tools\LabBench``` in step 1, you can copy paste this line from here to the Target property in the shortcut.
-    4. Test the shortcut by double clicking it and see that it start the LabBench Runner. Close the program before you proceed to step 5 in this installation procedure.
+1. Open the zip file in the Windows File Manager, and go to the ```win-x64``` directory within that zip file. The contents of this directory should look like this:
+![](win-x64.png)
+2. Mark all the files by pressing Ctrl + A, and then select all for copying by pressing Ctrl + C
+3. Goto the root of your C: drive.
+4. Create a folder named ```Tools```
+5. Within this folder create a folder named ```LabBench```
+6. Go into that folder, this should look like this:
+![](ToolLabBenchFolder.png)
+7. Click in the empty white area in the Windows File Explorer, and press Ctrl + V. This should start copying all the files of LabBench Beta into that folder. When it completes the folder should look like this.
+![](FilledToolLabBenchFolder.png)
+8. The next step is to create links on the Desktop that will allow us to open the LabBench Beta version, instead of the LabBench that might be installed on the computer. To do this go back to the root of zip file and the selct the two link files that are in the root of the zip file:
+![](MarkedLinks.png)
+9. Select for copy by pressing Ctrl + C
+10. Go to your Windows Desktop, click on it, and press Ctrl + V, after this your Desktop should look like this with two links to LabBench Beta:
+![](LinksOnDesktop.png)
+11. Now test that the links work  by double clicking them, one should open the LabBench Designer the other the LabBench Runner.
+
+If you experience problems during this install please write to: ```help@labbench.io```.
 
 **UPDATING LABBENCH BETA:**
 
 To update LabBench Beta.
 
 1. Delete all files in ```C:\Tools\LabBench```
-2. Unpack the zip file to ```C:\Tools\LabBench```
+2. Unpack the content of the ```win-x64``` folder in the zip file to ```C:\Tools\LabBench```
 
 ## LabBench Beta Protocol Repository
 
