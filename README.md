@@ -30,7 +30,7 @@ Installation and use of LabBench Beta is done in close collaboration with the de
 1. Open the zip file you have been sent with the current version of the LabBench Beta program in the Windows File Manager, and go to the ```win-x64``` directory within that zip file. The contents of this directory should look like this:
 ![](win-x64.png)
 2. Mark all the files by pressing Ctrl + A, and then select all for copying by pressing Ctrl + C
-3. Goto the root of your C: drive.
+3. In the File Explorer goto This PC, and then goto the C: drive.
 4. Create a folder named ```Tools```
 5. Within this folder create a folder named ```LabBench```
 6. Go into that folder, this should look like this:
