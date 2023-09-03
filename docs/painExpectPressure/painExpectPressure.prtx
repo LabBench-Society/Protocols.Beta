@@ -21,7 +21,6 @@
         <define name="TestTaskBlockSize" value="12"/>
         <define name="NumberOfTestTrials" value="NumberOfTestBlocks * TestTaskBlockSize"/>
         <define name="TestBlockPause" value="30"/>
-        <define name="TestBlockDuration" value="0.5 + 2 + 5 + 6 + 5 + 2"/>
 
         <define name="LearningTask" value="func: Script.CreateLearningTask(tc)"/>
         <define name="TestTask" value="func: Script.CreateTestTask(tc)"/>
@@ -176,7 +175,8 @@
                             <sequence Tperiod="2" />
                         </sequence>
 
-                        <sequence Tperiod="LearningBlockPause" />
+                        <sequence Tperiod="LearningBlockPause"                                  
+                                  stimulate="false" />
                     </sequence>
                 </sequence>
             </stimulation-pattern>
@@ -215,25 +215,29 @@
             </stimulation-scripts>
 
             <stimulation-pattern time-base="seconds">
-                <sequence iterations="NumberOfTestBlocks"
-                          Tperiod="TestTaskBlockSize * NumberOfStimuli * TestBlockDuration + TestBlockPause">
-                    <sequence iterations="20">
-                        <!-- Marker1 -->
-                        <sequence Tperiod="0.5" />
-                        <!-- Cue -->
-                        <sequence Tperiod="2" />
-                        <!-- RateExpected -->
-                        <sequence Tperiod="5" />
-                        <!-- Marker2 -->
-                        <sequence Tperiod="2" />
-                        <!-- Stimulate-->
-                        <sequence Tperiod="2" />
-                        <!-- Marker3 -->
-                        <sequence Tperiod="2" />
-                        <!-- Rate -->
-                        <sequence Tperiod="5" />
-                        <!-- Blank -->
-                        <sequence Tperiod="2" />
+                <sequence iterations="NumberOfTestBlocks">
+                    <sequence iterations="1">                       
+                        <sequence iterations="TestTaskBlockSize">
+                            <!-- Marker1 -->
+                            <sequence Tperiod="0.5" />
+                            <!-- Cue -->
+                            <sequence Tperiod="2" />
+                            <!-- RateExpected -->
+                            <sequence Tperiod="5" />
+                            <!-- Marker2 -->
+                            <sequence Tperiod="2" />
+                            <!-- Stimulate-->
+                            <sequence Tperiod="2" />
+                            <!-- Marker3 -->
+                            <sequence Tperiod="2" />
+                            <!-- Rate -->
+                            <sequence Tperiod="5" />
+                            <!-- Blank -->
+                            <sequence Tperiod="2" />
+                        </sequence>
+
+                        <sequence Tperiod="TestBlockPause"
+                                  stimulate="false" />                        
                     </sequence>
                 </sequence>
             </stimulation-pattern>
