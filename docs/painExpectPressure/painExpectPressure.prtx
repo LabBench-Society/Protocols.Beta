@@ -27,6 +27,118 @@
                 </scripts>
             </stimulation>        
         </psychophysics-stimulus-presentation>
+
+        <psychophysics-threshold-estimation ID="THR30"
+                                            name="Threshold (VAS 3)"
+                                            experimental-setup-id="display"
+                                            stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="PRESENTATION"/>
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="3"/>
+
+            <stimulation-scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel ID="PULSE"
+                         name="Pulse (1s)"
+                         Imax="100"
+                         Imin="0"
+                         channel-type="single-sample">
+                    <up-down-method reversal-rule="1"
+                                    step-size="0.1"
+                                    initial-direction="increasing"
+                                    start-intensity="PRESENTATION.Intensity"
+                                    step-size-type="relative"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    skip-rule="0"
+                                    stop-rule="2" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" Tdelay="0"/>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="THR70"
+                                            name="Threshold (VAS 7)"
+                                            experimental-setup-id="display"
+                                            stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="PRESENTATION"/>
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="7"/>
+
+            <stimulation-scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel ID="PULSE"
+                         name="Pulse (1s)"
+                         Imax="100"
+                         Imin="0"
+                         channel-type="single-sample">
+                    <up-down-method reversal-rule="1"
+                                    step-size="0.1"
+                                    initial-direction="increasing"
+                                    start-intensity="PRESENTATION.Intensity"
+                                    step-size-type="relative"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    skip-rule="0"
+                                    stop-rule="2" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" Tdelay="0"/>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <electrophysiology-evoked-potentials ID="LEARNING"
+                                             name="Learning Phase"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+            </dependencies>
+            
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TEST"
+                                     name="Test Phase"
+                                     experimental-setup-id="display"
+                                     response-collection="ratio-rating"
+                                     stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+            </dependencies>
+
+        </electrophysiology-evoked-potentials>
     </tests>
     <assets>
         <file-asset id="Script" file="Script.py"  />

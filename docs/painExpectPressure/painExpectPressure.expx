@@ -40,6 +40,13 @@
                                device-id="cpar"
                                instrument-name="Response"/>
             
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="cpar"
+                               instrument-name="Scale"/>
+
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>            
         </device-mapping>
     </experimental-setup>    
 </experiment>
