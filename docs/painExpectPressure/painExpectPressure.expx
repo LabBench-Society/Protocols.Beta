@@ -46,7 +46,19 @@
 
             <device-assignment test-type="psychophysics-threshold-estimation"
                                device-id="cpar"
-                               instrument-name="Algometer"/>            
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="cpar"
+                               instrument-name="Response"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="display.image"
+                               instrument-name="Display"/>            
         </device-mapping>
     </experimental-setup>    
 </experiment>
