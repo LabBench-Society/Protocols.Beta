@@ -10,10 +10,12 @@
     </languages>
     <defines>
         <define name="NumberOfLearningBlocks" value="4"/>
+        <!--
         <define name="LearningTaskBlockSize" value="20"/>
+        -->
+        <define name="LearningTaskBlockSize" value="4"/>
         <define name="NumberOfLearningTrials" value="NumberOfLearningBlocks * LearningTaskBlockSize"/>
         <define name="LearningBlockPause" value="60"/>
-        <define name="LearningBlockDuration" value="0.5 + 2 + 5 + 2 + 3 +2"/>
 
         <define name="NumberOfTestBlocks" value="5"/>
         <define name="TestTaskBlockSize" value="12"/>
@@ -157,22 +159,25 @@
             </stimulation-scripts>
 
             <stimulation-pattern time-base="seconds">
-                <sequence iterations="NumberOfLearningBlocks"
-                          Tperiod="LearningTaskBlockSize * NumberOfStimuli * LearningBlockDuration + LearningBlockPause">
-                    <sequence iterations="20">
-                        <!-- Marker -->
-                        <sequence Tperiod="0.5" /> 
-                        <!-- Cue -->
-                        <sequence Tperiod="2" />   
-                        <!-- RateExpected -->
-                        <sequence Tperiod="5" />   
-                        <!-- Marker-->
-                        <sequence Tperiod="2" />   
-                        <!-- Feedback -->
-                        <sequence Tperiod="3" />   
-                        <!-- Blank -->
-                        <sequence Tperiod="2" />   
-                    </sequence>                              
+                <sequence iterations="NumberOfLearningBlocks">
+                    <sequence iterations="1">
+                        <sequence iterations="LearningTaskBlockSize">
+                            <!-- Marker -->
+                            <sequence Tperiod="0.5" />
+                            <!-- Cue -->
+                            <sequence Tperiod="2" />
+                            <!-- RateExpected -->
+                            <sequence Tperiod="5" />
+                            <!-- Marker-->
+                            <sequence Tperiod="2" />
+                            <!-- Feedback -->
+                            <sequence Tperiod="3" />
+                            <!-- Blank -->
+                            <sequence Tperiod="2" />
+                        </sequence>
+
+                        <sequence Tperiod="LearningBlockPause" />
+                    </sequence>
                 </sequence>
             </stimulation-pattern>
 
@@ -188,10 +193,10 @@
         </electrophysiology-evoked-potentials>
 
         <electrophysiology-evoked-potentials ID="TEST"
-                                     name="Test Phase"
-                                     experimental-setup-id="display"
-                                     response-collection="ratio-rating"
-                                     stimulus-update-rate="50">
+                                             name="Test Phase"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
             <dependencies>
                 <dependency ID="THR30"/>
                 <dependency ID="THR70"/>
