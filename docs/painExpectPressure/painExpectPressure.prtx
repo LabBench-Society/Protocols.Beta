@@ -10,15 +10,12 @@
     </languages>
     <defines>
         <define name="NumberOfLearningBlocks" value="4"/>
-        <!--
-        <define name="LearningTaskBlockSize" value="20"/>
-        -->
-        <define name="LearningTaskBlockSize" value="4"/>
+        <define name="LearningTaskBlockSize" value="4"/> <!-- correct value: 20 -->
         <define name="NumberOfLearningTrials" value="NumberOfLearningBlocks * LearningTaskBlockSize"/>
         <define name="LearningBlockPause" value="60"/>
 
         <define name="NumberOfTestBlocks" value="5"/>
-        <define name="TestTaskBlockSize" value="12"/>
+        <define name="TestTaskBlockSize" value="4"/> <!--correct value: 12 -->
         <define name="NumberOfTestTrials" value="NumberOfTestBlocks * TestTaskBlockSize"/>
         <define name="TestBlockPause" value="30"/>
 
@@ -135,7 +132,7 @@
             </channels>
         </psychophysics-threshold-estimation>
 
-        <electrophysiology-evoked-potentials ID="LEARNING"
+        <electrophysiology-evoked-potentials ID="LEARNINGPHASE"
                                              name="Learning Phase"
                                              experimental-setup-id="display"
                                              response-collection="ratio-rating"
@@ -192,7 +189,7 @@
             
         </electrophysiology-evoked-potentials>
 
-        <electrophysiology-evoked-potentials ID="TEST"
+        <electrophysiology-evoked-potentials ID="TESTPHASE"
                                              name="Test Phase"
                                              experimental-setup-id="display"
                                              response-collection="ratio-rating"
@@ -200,6 +197,7 @@
             <dependencies>
                 <dependency ID="THR30"/>
                 <dependency ID="THR70"/>
+                <dependency ID="LEARNINGPHASE"/>
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
@@ -243,12 +241,12 @@
             </stimulation-pattern>
             
             <stimuli order="round-robin">
-                <stimulus name="Marker1" />
+                <stimulus name="Marker" />
                 <stimulus name="Cue" />
                 <stimulus name="RateExpected" />
-                <stimulus name="Marker2" />
+                <stimulus name="Marker" />
                 <stimulus name="Stimulate" />
-                <stimulus name="Marker3" />
+                <stimulus name="Marker" />
                 <stimulus name="Rate" />
                 <stimulus name="Blank" />                          
             </stimuli>

@@ -114,7 +114,7 @@ class LearningTask:
     def __init__(self, tc):
         self._images = ImageRepository(tc)
         self._iteration = 0
-        self._trials = []
+        self.trials = []
         numberOfBlocks = tc.NumberOfLearningTrials / 4
         
         for n in range(numberOfBlocks):
@@ -125,17 +125,17 @@ class LearningTask:
             random.shuffle(block)
             
             for trial in block:
-                self._trials.append(trial)
+                self.trials.append(trial)
         
     def reset(self):
-        Log.Information("Resetting learning task with {n} trials".format(n = len(self._trials)))
+        Log.Information("Resetting learning task with {n} trials".format(n = len(self.trials)))
         
         self._iteration = 0
         return True
         
     def printTrial(self):
-        if (self._iteration < len(self._trials)):
-            current = self._trials[self._iteration]
+        if (self._iteration < len(self.trials)):
+            current = self.trials[self._iteration]
             Log.Information("TRIAL (high = {high}, variant = {variant}, cue = {cue})".format(high = current.high, 
                                                                                              variant = current.variant, 
                                                                                              cue = current.cue))
@@ -147,42 +147,95 @@ class LearningTask:
         return self._images.get(id)
     
     def getCue(self):
-        if (self._iteration >= len(self._trials)):
+        if (self._iteration >= len(self.trials)):
             raise ValueError("No trial for iteration: {n}".format(n = self._iteration))
 
-        current = self._trials[self._iteration]
+        current = self.trials[self._iteration]
         return current.getCue(self._images)
     
     def getFeedback(self):
-        if (self._iteration >= len(self._trials)):
+        if (self._iteration >= len(self.trials)):
             raise ValueError("No trial for iteration: {n}".format(n = self._iteration))
 
-        current = self._trials[self._iteration]
+        current = self.trials[self._iteration]
         return current.getFeedback(self._images)
+
+class TestTrial:
+    def __init__(self, high, variant, correct):
+        self.high = high
+        self.variant = variant        
+        self.correct = correct
+        
+    def getCue(self, images):
+        return images.getHighCue(self.variant) if self.high == 1 else images.getLowCue(self.variant)
+                
+    def getIntensity(self, tc):
+        if self.high == 1:
+            return tc.THR30['PULSE'] if self.correct == 0 else tc.THR70['PULSE']
+        elif self.high == 0:
+            return tc.THR70['PULSE'] if self.correct == 0 else tc.THR30['PULSE']
+        else:
+            raise ValueError("Invalid high value: {high}".format(high = self.high))
+    
 
 class TestTask:
     def __init__(self, tc):
         self._images = ImageRepository(tc)
+        self._iteration = 0
+        self.trials = []
+        numberOfBlocks = tc.NumberOfTestTrials / 4
+        
+        for n in range(numberOfBlocks):
+            highCorrect = [0, 1]
+            lowCorrect = [0, 1]
+            random.shuffle(highCorrect)
+            random.shuffle(lowCorrect)
+            block = [TestTrial(1, 0, highCorrect[0]), 
+                     TestTrial(1, 1, highCorrect[1]), 
+                     TestTrial(0, 0, lowCorrect[0]), 
+                     TestTrial(0, 1, lowCorrect[1])]
+            random.shuffle(block)
+            
+            for trial in block:
+                self.trials.append(trial)
         
     def reset(self):
+        Log.Information("Resetting test task with {n} trials".format(n = len(self.trials)))
+        
+        self._iteration = 0
         return True
     
-    def nextTrial():
-        pass
+    def nextTrial(self):
+        self._iteration = self._iteration + 1
     
     def getImage(self, id):
         return self._images.get(id)
     
     def getCue(self):
-        return self._images.get("HighCue1")
+        if (self._iteration >= len(self.trials)):
+            raise ValueError("No trial for iteration: {n}".format(n = self._iteration))
+
+        current = self.trials[self._iteration]
+        
+        return current.getCue(self._images)
     
     def stimulate(self, tc):
+        if (self._iteration >= len(self.trials)):
+            raise ValueError("No trial for iteration: {n}".format(n = self._iteration))
+
+        current = self.trials[self._iteration]
+        intensity = current.getIntensity(tc)
+        Stimulate(tc, intensity)
+        
         return self._images.get("MarkerWithFiducial")    
 
 def CreateLearningTask(tc):
     return LearningTask(tc)
 
 def InitializeLearning(tc):
+    tc.LEARNINGPHASE.Annotations.Add("high", [trial.high for trial in tc.LearningTask.trials])
+    tc.LEARNINGPHASE.Annotations.Add("variant", [trial.high for trial in tc.LearningTask.trials])
+    tc.LEARNINGPHASE.Annotations.Add("cue", [trial.high for trial in tc.LearningTask.trials])
     return tc.LearningTask.reset()
 
 def RunLearning(tc, x):
@@ -214,6 +267,9 @@ def CreateTestTask(tc):
     return TestTask(tc)
 
 def InitializeTest(tc):
+    tc.TESTPHASE.Annotations.Add("high", [trial.high for trial in tc.TestTask.trials])
+    tc.TESTPHASE.Annotations.Add("variant", [trial.high for trial in tc.TestTask.trials])
+    tc.TESTPHASE.Annotations.Add("correct", [trial.correct for trial in tc.TestTask.trials])
     return tc.TestTask.reset()
 
 def RunTest(tc, x):
@@ -223,18 +279,14 @@ def RunTest(tc, x):
         display = tc.Devices.Display
         task = tc.TestTask
 
-        if (tc.StimulusName == "Marker1"):
+        if (tc.StimulusName == "Marker"):
             display.Display(task.getImage("Marker"))
         elif (tc.StimulusName == "Cue"):
             display.Display(task.getCue())
         elif (tc.StimulusName == "RateExpected"):
             display.Display(task.getImage("TestRateExpectedPain"))
-        elif (tc.StimulusName == "Marker2"):
-            display.Display(task.getImage("Marker"))
         elif (tc.StimulusName == "Stimulate"):
             display.Display(task.stimulate(tc))
-        elif (tc.StimulusName == "Marker3"):
-            display.Display(task.getImage("Marker"))
         elif (tc.StimulusName == "Rate"):
             display.Display(task.getImage("TestRatePain"))
         elif (tc.StimulusName == "Blank"):
