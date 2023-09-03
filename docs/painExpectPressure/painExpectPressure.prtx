@@ -7,8 +7,27 @@
     <defines>
     </defines>
     <tests>
-    </tests>
+        <psychophysics-stimulus-presentation ID="PRESENTATION"
+                                             name="Presentation of pressure stimuli"
+                                             experimental-setup-id="display"
+                                             stimulus-update-rate="50">
+            <intensity type="array"
+                       value="range(5, 101, 5)" />
 
+            <responses response-collection="ratio-rating"/>
+            
+            <stimulation>
+                <scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                    <instrument name="Algometer"
+                                interface="pressure-algometer"
+                                required="true"/>                
+                </scripts>
+            </stimulation>        
+        </psychophysics-stimulus-presentation>
+    </tests>
     <assets>
         <file-asset id="Script" file="Script.py"  />
         <file-asset id="VisualStimuli" file="VisualStimuli.zip" />

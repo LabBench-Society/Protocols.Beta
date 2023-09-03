@@ -10,9 +10,35 @@
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup>
         <devices>
-            
+            <cpar id="cpar" compressor-mode="MANUAL" />
+            <display id="display"
+                     active-color="rgb(255, 255, 255)"
+                     background-color="rgb(255, 255, 255)"
+                     inactive-color="rgb(0, 0, 0)"
+                     normative-distance="40"
+                     position="upper-right"
+                     screen="primary">
+                
+                <monitor diagonal-size="13"
+                         diagonal-size-unit="inch"
+                         distance="40"
+                         length-unit="cm"/>
+
+                <configurations>
+                    <image-display id="image"
+                                   experimental-setup-id="display"
+                                   background-color="rgb(255, 255, 255)"/>
+                </configurations>
+            </display>
         </devices>
         <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="cpar"
+                               instrument-name="Response"/>
             
         </device-mapping>
     </experimental-setup>    
