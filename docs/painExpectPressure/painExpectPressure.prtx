@@ -11,6 +11,7 @@
 
     <assets>
         <file-asset id="Script" file="Script.py"  />
+        <file-asset id="VisualStimuli" file="VisualStimuli.zip" />
     </assets>
 </protocol>
 
