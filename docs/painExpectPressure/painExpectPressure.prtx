@@ -4,7 +4,25 @@
           name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
           id="painExpectPressure">
     <description />
+    <languages>
+        <language name="German" code="de"/>
+        <language name="English" code="en"/>
+    </languages>
     <defines>
+        <define name="NumberOfLearningBlocks" value="4"/>
+        <define name="LearningTaskBlockSize" value="20"/>
+        <define name="NumberOfLearningTrials" value="NumberOfLearningBlocks * LearningTaskBlockSize"/>
+        <define name="LearningBlockPause" value="60"/>
+        <define name="LearningBlockDuration" value="0.5 + 2 + 5 + 2 + 3 +2"/>
+
+        <define name="NumberOfTestBlocks" value="5"/>
+        <define name="TestTaskBlockSize" value="12"/>
+        <define name="NumberOfTestTrials" value="NumberOfTestBlocks * TestTaskBlockSize"/>
+        <define name="TestBlockPause" value="30"/>
+        <define name="TestBlockDuration" value="0.5 + 2 + 5 + 6 + 5 + 2"/>
+
+        <define name="LearningTask" value="func: Script.CreateLearningTask(tc)"/>
+        <define name="TestTask" value="func: Script.CreateTestTask(tc)"/>
     </defines>
     <tests>
         <psychophysics-stimulus-presentation ID="PRESENTATION"
@@ -125,6 +143,47 @@
                 <dependency ID="THR30"/>
                 <dependency ID="THR70"/>
             </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 initialize="func: Script.InitializeLearning(tc)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>                
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="NumberOfLearningBlocks"
+                          Tperiod="LearningTaskBlockSize * NumberOfStimuli * LearningBlockDuration + LearningBlockPause">
+                    <sequence iterations="20">
+                        <!-- Marker -->
+                        <sequence Tperiod="0.5" /> 
+                        <!-- Cue -->
+                        <sequence Tperiod="2" />   
+                        <!-- RateExpected -->
+                        <sequence Tperiod="5" />   
+                        <!-- Marker-->
+                        <sequence Tperiod="2" />   
+                        <!-- Feedback -->
+                        <sequence Tperiod="3" />   
+                        <!-- Blank -->
+                        <sequence Tperiod="2" />   
+                    </sequence>                              
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Feedback" />
+                <stimulus name="Blank" />
+            </stimuli>
             
         </electrophysiology-evoked-potentials>
 
@@ -138,6 +197,52 @@
                 <dependency ID="THR70"/>
             </dependencies>
 
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTest(tc)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="NumberOfTestBlocks"
+                          Tperiod="TestTaskBlockSize * NumberOfStimuli * TestBlockDuration + TestBlockPause">
+                    <sequence iterations="20">
+                        <!-- Marker1 -->
+                        <sequence Tperiod="0.5" />
+                        <!-- Cue -->
+                        <sequence Tperiod="2" />
+                        <!-- RateExpected -->
+                        <sequence Tperiod="5" />
+                        <!-- Marker2 -->
+                        <sequence Tperiod="2" />
+                        <!-- Stimulate-->
+                        <sequence Tperiod="2" />
+                        <!-- Marker3 -->
+                        <sequence Tperiod="2" />
+                        <!-- Rate -->
+                        <sequence Tperiod="5" />
+                        <!-- Blank -->
+                        <sequence Tperiod="2" />
+                    </sequence>
+                </sequence>
+            </stimulation-pattern>
+            
+            <stimuli order="round-robin">
+                <stimulus name="Marker1" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker2" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker3" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />                          
+            </stimuli>
         </electrophysiology-evoked-potentials>
     </tests>
     <assets>
