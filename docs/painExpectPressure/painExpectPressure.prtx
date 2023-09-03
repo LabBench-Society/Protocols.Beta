@@ -149,9 +149,6 @@
                 <instrument interface="image-display"
                             name="Display"
                             required="true"/>
-                <instrument name="Algometer"
-                            interface="pressure-algometer"
-                            required="true"/>                
             </stimulation-scripts>
 
             <stimulation-pattern time-base="seconds">
