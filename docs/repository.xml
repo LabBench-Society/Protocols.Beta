@@ -3,6 +3,10 @@
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
             id="beta.labbench.io">
 
+    <protocol id="painExpectPressure"
+              name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+              category="CPAR;Pain Perception Processes"/>
+
     <protocol id="tpdDN"
               name="Two-Point Discrimination (Diabetic Neuropathy)"
               category="Tactile Testing;Diabetes"/>

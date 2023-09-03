@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+            id="painExpectPressure"
+            protocol="painExpectPressure@beta.labbench.io">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <devices>
+            <cpar id="cpar" compressor-mode="MANUAL" />
+            <display id="display"
+                     active-color="rgb(255, 255, 255)"
+                     background-color="rgb(255, 255, 255)"
+                     inactive-color="rgb(0, 0, 0)"
+                     normative-distance="40"
+                     position="upper-right"
+                     screen="primary">
+                
+                <monitor diagonal-size="13"
+                         diagonal-size-unit="inch"
+                         distance="40"
+                         length-unit="cm"/>
+
+                <configurations>
+                    <image-display id="image"
+                                   experimental-setup-id="display"
+                                   background-color="rgb(255, 255, 255)"/>
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="cpar"
+                               instrument-name="Response"/>
+            
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="cpar"
+                               instrument-name="Scale"/>
+
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="cpar"
+                               instrument-name="Algometer"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="cpar"
+                               instrument-name="Response"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="display.image"
+                               instrument-name="Display"/>            
+        </device-mapping>
+    </experimental-setup>    
+</experiment>
