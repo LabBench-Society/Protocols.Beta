@@ -233,9 +233,9 @@ def CreateLearningTask(tc):
     return LearningTask(tc)
 
 def InitializeLearning(tc):
-    tc.LEARNINGPHASE.Annotations.Add("high", [trial.high for trial in tc.LearningTask.trials])
-    tc.LEARNINGPHASE.Annotations.Add("variant", [trial.high for trial in tc.LearningTask.trials])
-    tc.LEARNINGPHASE.Annotations.Add("cue", [trial.high for trial in tc.LearningTask.trials])
+    tc.Current.Annotations.Add("high", [trial.high for trial in tc.LearningTask.trials])
+    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.LearningTask.trials])
+    tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.LearningTask.trials])
     return tc.LearningTask.reset()
 
 def RunLearning(tc, x):
@@ -267,9 +267,9 @@ def CreateTestTask(tc):
     return TestTask(tc)
 
 def InitializeTest(tc):
-    tc.TESTPHASE.Annotations.Add("high", [trial.high for trial in tc.TestTask.trials])
-    tc.TESTPHASE.Annotations.Add("variant", [trial.high for trial in tc.TestTask.trials])
-    tc.TESTPHASE.Annotations.Add("correct", [trial.correct for trial in tc.TestTask.trials])
+    tc.Current.Annotations.Add("high", [trial.high for trial in tc.TestTask.trials])
+    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.TestTask.trials])
+    tc.Current.Annotations.Add("correct", [trial.correct for trial in tc.TestTask.trials])
     return tc.TestTask.reset()
 
 def RunTest(tc, x):
