@@ -22,7 +22,11 @@
 			  name="Transcutaneous auricular vagal nerve stimulation"
 			  category="Vagus Nerve Stimulation"/>
 
-    <protocol id="painless"
+	<protocol id="taVNS40"
+			  name="Transcutaneous auricular vagal nerve stimulation"
+			  category="Vagus Nerve Stimulation;LabBench 4.0 Version"/>
+
+	<protocol id="painless"
 			  name="PAINLESS: Pain Relief in Cancer (WP1)"
 			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
 

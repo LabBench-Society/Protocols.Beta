@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Transcutaneous auricular vagal nerve stimulation"
+            id="taVNS40"
+            protocol="taVNS40@beta.labbench.io">
+    <description />
+    <subject-validator regex="^S[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <description />
+        <devices>
+            <lio id="dev">
+				<stimulators>
+					<ds5 id="ds5" 
+						 name="DS5" 
+						 transconductance="1mA_1V"/>
+				</stimulators>
+                <response-devices>
+                    <button id="button" timing-source="internal"/>
+                </response-devices>
+            </lio>
+        </devices>
+        <device-mapping>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Stimulator"
+                               device-id="dev"/>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+				               instrument-name="Trigger"
+				               device-id="dev"/>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Response"
+                               device-id="dev.button"/>
+			
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Button"
+                               device-id="dev.button" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Stimulator"
+                               device-id="dev" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Button"
+                               device-id="dev.button" />            
+			<device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Stimulator"
+                               device-id="dev" />
+			<device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+		</device-mapping>
+    </experimental-setup>
+</experiment>
