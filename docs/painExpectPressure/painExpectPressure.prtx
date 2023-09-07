@@ -10,12 +10,12 @@
     </languages>
     <defines>
         <define name="NumberOfLearningBlocks" value="4"/>
-        <define name="LearningTaskBlockSize" value="4"/> <!-- correct value: 20 -->
+        <define name="LearningTaskBlockSize" value="20"/> <!-- correct value: 20 -->
         <define name="NumberOfLearningTrials" value="NumberOfLearningBlocks * LearningTaskBlockSize"/>
         <define name="LearningBlockPause" value="60"/>
 
         <define name="NumberOfTestBlocks" value="5"/>
-        <define name="TestTaskBlockSize" value="4"/> <!--correct value: 12 -->
+        <define name="TestTaskBlockSize" value="12"/> <!--correct value: 12 -->
         <define name="NumberOfTestTrials" value="NumberOfTestBlocks * TestTaskBlockSize"/>
         <define name="TestBlockPause" value="30"/>
 
