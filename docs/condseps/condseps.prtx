@@ -6,7 +6,7 @@
     <description />
     <defines>
         <define name="StimulationFrequency" value="4.0"/>
-        <define name="NumberOfStimuli" value="500"/>
+        <define name="nOfStimuli" value="500"/>
 	</defines>
     <tests>
 		<psychophysics-stimulus-presentation ID="StimIntensity"
@@ -59,7 +59,7 @@
 
             <stimulation-pattern time-base="seconds">
                 <sequence Tperiod="1/StimulationFrequency"
-                          iterations="NumberOfStimuli" />
+                          iterations="nOfStimuli" />
             </stimulation-pattern>
 
             <stimuli order="round-robin">
@@ -104,7 +104,7 @@
 
             <stimulation-pattern time-base="seconds">
                 <sequence Tperiod="1/StimulationFrequency"
-                          iterations="NumberOfStimuli" />
+                          iterations="nOfStimuli" />
             </stimulation-pattern>
 
             <stimuli order="round-robin">
@@ -141,7 +141,7 @@
 
             <stimulation-pattern time-base="seconds">
                 <sequence Tperiod="1/StimulationFrequency"
-                          iterations="NumberOfStimuli" />
+                          iterations="nOfStimuli" />
             </stimulation-pattern>
 
             <stimuli order="round-robin">
