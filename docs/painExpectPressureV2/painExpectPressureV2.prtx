@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+          id="painExpectPressureV2">
+    <description />
+    <languages>
+        <language name="German" code="de"/>
+        <language name="English" code="en"/>
+    </languages>
+    <defines>
+        <define name="NumberOfLearningBlocks" value="4"/>
+        <define name="LearningTaskBlockSize" value="20"/> <!-- correct value: 20 -->
+        <define name="NumberOfLearningTrials" value="NumberOfLearningBlocks * LearningTaskBlockSize"/>
+        <define name="LearningBlockPause" value="60"/>
+
+        <define name="NumberOfTestBlocks" value="5"/>
+        <define name="TestTaskBlockSize" value="12"/> <!--correct value: 12 -->
+        <define name="NumberOfTestTrials" value="NumberOfTestBlocks * TestTaskBlockSize"/>
+        <define name="TestBlockPause" value="30"/>
+
+        <define name="LearningTask" value="func: Script.CreateLearningTask(tc)"/>
+        <define name="TestTask" value="func: Script.CreateTestTask(tc)"/>
+    </defines>
+    <tests>
+        <psychophysics-stimulus-presentation ID="PRESENTATION"
+                                             name="Presentation of pressure stimuli"
+                                             experimental-setup-id="display"
+                                             stimulus-update-rate="50">
+            <intensity type="array"
+                       value="range(5, 101, 5)" />
+
+            <responses response-collection="ratio-rating"/>
+            
+            <stimulation>
+                <scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                    <instrument name="Algometer"
+                                interface="pressure-algometer"
+                                required="true"/>                
+                </scripts>
+            </stimulation>        
+        </psychophysics-stimulus-presentation>
+
+        <psychophysics-threshold-estimation ID="THR30"
+                                            name="Threshold (VAS 3)"
+                                            experimental-setup-id="display"
+                                            stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="PRESENTATION"/>
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="3"/>
+
+            <stimulation-scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel ID="PULSE"
+                         name="Pulse (1s)"
+                         Imax="100"
+                         Imin="0"
+                         channel-type="single-sample">
+                    <up-down-method reversal-rule="1"
+                                    step-size="0.1"
+                                    initial-direction="increasing"
+                                    start-intensity="PRESENTATION.Intensity"
+                                    step-size-type="relative"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    skip-rule="0"
+                                    stop-rule="2" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" Tdelay="0"/>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation ID="THR70"
+                                            name="Threshold (VAS 7)"
+                                            experimental-setup-id="display"
+                                            stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="PRESENTATION"/>
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="7"/>
+
+            <stimulation-scripts initialize="True"
+                         stimulate="func: Script.Stimulate(tc,x)"
+                         stimulus-description="Pressure"
+                         stimulus-unit="kPa">
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel ID="PULSE"
+                         name="Pulse (1s)"
+                         Imax="100"
+                         Imin="0"
+                         channel-type="single-sample">
+                    <up-down-method reversal-rule="1"
+                                    step-size="0.1"
+                                    initial-direction="increasing"
+                                    start-intensity="PRESENTATION.Intensity"
+                                    step-size-type="relative"
+                                    max-step-size-reduction="0.1"
+                                    step-size-reduction="0.5"
+                                    skip-rule="0"
+                                    stop-rule="2" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" Tdelay="0"/>
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <electrophysiology-evoked-potentials ID="LP1"
+                                             name="Learning Phase (Block 1)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 initialize="func: Script.InitializeLearning(tc)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="LearningTaskBlockSize">
+                    <!-- Marker -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker-->
+                    <sequence Tperiod="0.5" />
+                    <!-- Feedback -->
+                    <sequence Tperiod="3" />
+                    <!-- Blank -->
+                    <sequence Tperiod="0.5" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Feedback" />
+                <stimulus name="Blank" />
+            </stimuli>            
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="LP2"
+                                             name="Learning Phase (Block 2)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="LP1"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="LearningTaskBlockSize">
+                    <!-- Marker -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker-->
+                    <sequence Tperiod="0.5" />
+                    <!-- Feedback -->
+                    <sequence Tperiod="3" />
+                    <!-- Blank -->
+                    <sequence Tperiod="0.5" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Feedback" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="LP3"
+                                             name="Learning Phase (Block 3)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="LP3"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="LearningTaskBlockSize">
+                    <!-- Marker -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker-->
+                    <sequence Tperiod="0.5" />
+                    <!-- Feedback -->
+                    <sequence Tperiod="3" />
+                    <!-- Blank -->
+                    <sequence Tperiod="0.5" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Feedback" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="LP4"
+                                             name="Learning Phase (Block 4)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="LP3"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="LearningTaskBlockSize">
+                    <!-- Marker -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker-->
+                    <sequence Tperiod="0.5" />
+                    <!-- Feedback -->
+                    <sequence Tperiod="3" />
+                    <!-- Blank -->
+                    <sequence Tperiod="0.5" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Feedback" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TP1"
+                                             name="Test Phase (Block 1)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="LP4"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTest(tc)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="TestTaskBlockSize">
+                    <!-- Marker1 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker2 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Stimulate-->
+                    <sequence Tperiod="2" />
+                    <!-- Marker3 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Rate -->
+                    <sequence Tperiod="5" />
+                    <!-- Blank -->
+                    <sequence Tperiod="2" />
+                </sequence>
+            </stimulation-pattern>
+            
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />                          
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TP2"
+                                             name="Test Phase (Block 2)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="TP1"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="TestTaskBlockSize">
+                    <!-- Marker1 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker2 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Stimulate-->
+                    <sequence Tperiod="2" />
+                    <!-- Marker3 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Rate -->
+                    <sequence Tperiod="5" />
+                    <!-- Blank -->
+                    <sequence Tperiod="2" />
+                </sequence>
+            </stimulation-pattern>
+            
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />                          
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TP3"
+                                             name="Test Phase (Block 3)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="TP2"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="TestTaskBlockSize">
+                    <!-- Marker1 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker2 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Stimulate-->
+                    <sequence Tperiod="2" />
+                    <!-- Marker3 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Rate -->
+                    <sequence Tperiod="5" />
+                    <!-- Blank -->
+                    <sequence Tperiod="2" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TP4"
+                                             name="Test Phase (Block 4)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="TP3"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="TestTaskBlockSize">
+                    <!-- Marker1 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker2 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Stimulate-->
+                    <sequence Tperiod="2" />
+                    <!-- Marker3 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Rate -->
+                    <sequence Tperiod="5" />
+                    <!-- Blank -->
+                    <sequence Tperiod="2" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <algometry-stimulus-response ID="SR01"
+                                     name="Stimulus-Response (Cuff 1)"
+                                     delta-pressure="1"
+                                     pressure-limit="100"
+                                     primary-cuff="1"
+                                     second-cuff="false"
+                                     stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                                     vas-pdt="0.1">
+            <dependencies />
+        </algometry-stimulus-response>
+
+        <algometry-temporal-summation ID="TS"
+                                      name="Temporal Summation (Cuff 1)"
+                                      no-of-stimuli="10"
+                                      pressure-static="5"
+                                      pressure-stimulate="1.0 * SR01.PTT"
+                                      primary-cuff="1"
+                                      second-cuff="false"
+                                      t-off="1"
+                                      t-on="1">
+            <dependencies>
+                <dependency ID="SR01"/>
+            </dependencies>
+        </algometry-temporal-summation>
+
+    </tests>
+    <assets>
+        <file-asset id="Script" file="Script.py"  />
+        <file-asset id="VisualStimuli" file="VisualStimuli.zip" />
+    </assets>
+</protocol>
+
