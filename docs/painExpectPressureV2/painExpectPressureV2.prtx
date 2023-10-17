@@ -143,7 +143,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
-                                 initialize="func: Script.InitializeLearning(tc)"
+                                 initialize="func: Script.InitializeLearningB1(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -190,6 +190,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 initialize="func: Script.InitializeLearningB2(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -232,10 +233,11 @@
             <dependencies>
                 <dependency ID="THR30"/>
                 <dependency ID="THR70"/>
-                <dependency ID="LP3"/>
+                <dependency ID="LP2"/>
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 initialize="func: Script.InitializeLearningB3(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -282,6 +284,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunLearning(tc,x)"
+                                 initialize="func: Script.InitializeLearningB4(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -328,7 +331,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
-                                 initialize="func: Script.InitializeTest(tc)"
+                                 initialize="func: Script.InitializeTestB1(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -384,6 +387,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTestB2(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -439,6 +443,7 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTestB3(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"
@@ -494,6 +499,63 @@
             </dependencies>
 
             <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTestB4(tc)"
+                                 stimulus-description="Pressure"
+                                 stimulus-unit="kPa">
+                <instrument interface="image-display"
+                            name="Display"
+                            required="true"/>
+                <instrument name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence iterations="TestTaskBlockSize">
+                    <!-- Marker1 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Cue -->
+                    <sequence Tperiod="2" />
+                    <!-- RateExpected -->
+                    <sequence Tperiod="4" />
+                    <!-- Marker2 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Stimulate-->
+                    <sequence Tperiod="2" />
+                    <!-- Marker3 -->
+                    <sequence Tperiod="0.5" />
+                    <!-- Rate -->
+                    <sequence Tperiod="5" />
+                    <!-- Blank -->
+                    <sequence Tperiod="2" />
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Marker" />
+                <stimulus name="Cue" />
+                <stimulus name="RateExpected" />
+                <stimulus name="Marker" />
+                <stimulus name="Stimulate" />
+                <stimulus name="Marker" />
+                <stimulus name="Rate" />
+                <stimulus name="Blank" />
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="TP5"
+                                             name="Test Phase (Block 5)"
+                                             experimental-setup-id="display"
+                                             response-collection="ratio-rating"
+                                             stimulus-update-rate="50">
+            <dependencies>
+                <dependency ID="THR30"/>
+                <dependency ID="THR70"/>
+                <dependency ID="TP4"/>
+            </dependencies>
+
+            <stimulation-scripts stimulate="func: Script.RunTest(tc,x)"
+                                 initialize="func: Script.InitializeTestB5(tc)"
                                  stimulus-description="Pressure"
                                  stimulus-unit="kPa">
                 <instrument interface="image-display"

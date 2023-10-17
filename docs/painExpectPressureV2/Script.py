@@ -108,7 +108,7 @@ class LearningTrial:
         if self.high == 1:
             return images.getHighFeedback(self.cue)
         else:
-            return images.getLowFeedback(self.cue)      
+            return images.getLowFeedback(self.cue)        
 
 class LearningTask:
     def __init__(self, tc):
@@ -126,19 +126,20 @@ class LearningTask:
             
             for trial in block:
                 self.trials.append(trial)
-        
-    def reset(self):
+                
+    def reset(self, iteration):
         Log.Information("Resetting learning task with {n} trials".format(n = len(self.trials)))
         
-        self._iteration = 0
+        self._iteration = iteration
         return True
         
     def printTrial(self):
         if (self._iteration < len(self.trials)):
             current = self.trials[self._iteration]
-            Log.Information("TRIAL (high = {high}, variant = {variant}, cue = {cue})".format(high = current.high, 
-                                                                                             variant = current.variant, 
-                                                                                             cue = current.cue))
+            Log.Information("[ {iteration} ] LEARNING TRIAL (high = {high}, variant = {variant}, cue = {cue})".format(iteration = self._iteration, 
+                                                                                                                      high = current.high, 
+                                                                                                                      variant = current.variant, 
+                                                                                                                      cue = current.cue))
         
     def nextTrial(self):
         self._iteration = self._iteration + 1
@@ -160,12 +161,56 @@ class LearningTask:
         current = self.trials[self._iteration]
         return current.getFeedback(self._images)
 
+def CreateLearningTask(tc):
+    return LearningTask(tc)
+
+def InitializeLearningB1(tc):
+    tc.Current.Annotations.Add("high", [trial.high for trial in tc.LearningTask.trials])
+    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.LearningTask.trials])
+    tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.LearningTask.trials])
+    return tc.LearningTask.reset(0)
+
+def InitializeLearningB2(tc):
+    return tc.LearningTask.reset(int(round(tc.LearningTaskBlockSize)))
+
+def InitializeLearningB3(tc):
+    return tc.LearningTask.reset(int(round(2 * tc.LearningTaskBlockSize)))
+
+def InitializeLearningB4(tc):
+    return tc.LearningTask.reset(int(round(3* tc.LearningTaskBlockSize)))
+    
+def RunLearning(tc, x):
+    retValue = True
+    
+    try:
+        display = tc.Devices.Display
+        task = tc.LearningTask
+        Log.Information("Running the learning task for step: {name}".format(name = tc.StimulusName))
+
+        if (tc.StimulusName == "Marker"):
+            display.Display(task.getImage("Marker"))
+        elif (tc.StimulusName == "Cue"):
+            task.printTrial()
+            display.Display(task.getCue())
+        elif (tc.StimulusName == "RateExpected"):
+            display.Display(task.getImage("LearningRateExpectedPain"))
+        elif (tc.StimulusName == "Feedback"):
+            display.Display(task.getFeedback())
+        elif (tc.StimulusName == "Blank"):
+            display.Display(task.getImage("Blank"))
+            task.nextTrial()
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+        retValue = False
+        
+    return retValue
+
 class TestTrial:
     def __init__(self, high, variant, correct):
         self.high = high
         self.variant = variant        
         self.correct = correct
-        
+               
     def getCue(self, images):
         return images.getHighCue(self.variant) if self.high == 1 else images.getLowCue(self.variant)
                 
@@ -199,11 +244,21 @@ class TestTask:
             for trial in block:
                 self.trials.append(trial)
         
-    def reset(self):
-        Log.Information("Resetting test task with {n} trials".format(n = len(self.trials)))
-        
-        self._iteration = 0
-        return True
+    def printTrial(self):
+        if (self._iteration < len(self.trials)):
+            current = self.trials[self._iteration]
+            Log.Information("[ {iteration} ] TEST TRIAL (high = {high}, variant = {variant}, correct = {correct})".format(iteration = self._iteration, 
+                                                                                                                          high = current.high, 
+                                                                                                                          variant = current.variant, 
+                                                                                                                          correct = current.correct))
+
+    def reset(self, iteration):
+        try:        
+            self._iteration = iteration
+            return True
+        except Exception as e:
+            Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+            retValue = False
     
     def nextTrial(self):
         self._iteration = self._iteration + 1
@@ -229,48 +284,26 @@ class TestTask:
         
         return self._images.get("MarkerWithFiducial")    
 
-def CreateLearningTask(tc):
-    return LearningTask(tc)
-
-def InitializeLearning(tc):
-    tc.Current.Annotations.Add("high", [trial.high for trial in tc.LearningTask.trials])
-    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.LearningTask.trials])
-    tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.LearningTask.trials])
-    return tc.LearningTask.reset()
-
-def RunLearning(tc, x):
-    retValue = True
-    
-    try:
-        display = tc.Devices.Display
-        task = tc.LearningTask
-        Log.Information("Running the learning task for step: {name}".format(name = tc.StimulusName))
-
-        if (tc.StimulusName == "Marker"):
-            display.Display(task.getImage("Marker"))
-        elif (tc.StimulusName == "Cue"):
-            display.Display(task.getCue())
-        elif (tc.StimulusName == "RateExpected"):
-            display.Display(task.getImage("LearningRateExpectedPain"))
-        elif (tc.StimulusName == "Feedback"):
-            display.Display(task.getFeedback())
-        elif (tc.StimulusName == "Blank"):
-            display.Display(task.getImage("Blank"))
-            task.nextTrial()
-    except Exception as e:
-        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
-        retValue = False
-        
-    return retValue
-
 def CreateTestTask(tc):
     return TestTask(tc)
 
-def InitializeTest(tc):
+def InitializeTestB1(tc):
     tc.Current.Annotations.Add("high", [trial.high for trial in tc.TestTask.trials])
     tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.TestTask.trials])
     tc.Current.Annotations.Add("correct", [trial.correct for trial in tc.TestTask.trials])
-    return tc.TestTask.reset()
+    return tc.TestTask.reset(0)
+
+def InitializeTestB2(tc):
+    return tc.TestTask.reset(int(round(1*tc.TestTaskBlockSize)))
+
+def InitializeTestB3(tc):
+    return tc.TestTask.reset(int(round(2*tc.TestTaskBlockSize)))
+
+def InitializeTestB4(tc):
+    return tc.TestTask.reset(int(round(3*tc.TestTaskBlockSize)))
+
+def InitializeTestB5(tc):
+    return tc.TestTask.reset(int(round(4*tc.TestTaskBlockSize)))
 
 def RunTest(tc, x):
     retValue = True
@@ -282,6 +315,7 @@ def RunTest(tc, x):
         if (tc.StimulusName == "Marker"):
             display.Display(task.getImage("Marker"))
         elif (tc.StimulusName == "Cue"):
+            task.printTrial()
             display.Display(task.getCue())
         elif (tc.StimulusName == "RateExpected"):
             display.Display(task.getImage("TestRateExpectedPain"))
