@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Ice Pain Protocol"
+            id="icePain"
+            protocol="icePain@beta.labbench.io">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <devices>
+            
+        </devices>
+        <device-mapping>
+            
+        </device-mapping>
+    </experimental-setup>    
+</experiment>

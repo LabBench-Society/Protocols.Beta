@@ -3,6 +3,10 @@
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
             id="beta.labbench.io">
 
+    <protocol id="icePain"
+              name="Ice Pain Protocol"
+              category="Pain Protocol"/>
+
     <protocol id="painExpectPressure"
               name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
               category="CPAR;Pain Perception Processes"/>
