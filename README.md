@@ -26,7 +26,7 @@ The Beta version of LabBench is what we call a release candidate (rc) for the ne
 
 Installation and use of LabBench Beta is done in close collaboration with the developers of LabBench. The current version of LabBench Beta can be downloaded from:
 
-* [LabBench Beta, Rev. 4.0.0rc7](https://www.dropbox.com/scl/fi/upfjubocaoiq7dnn9vmot/LabBench4.0.0rc7.zip?rlkey=rmm846ehwuvwtj2kxaboxxj70&dl=0)
+* [LabBench Beta, Rev. 4.0.0rc9](https://www.dropbox.com/scl/fi/0cutdcfzw5fax0t8pg5h9/LabBench4.0.0rc9.zip?rlkey=m6feg3ed6xzccse44iysp7j72&dl=0)
 
 However, as it is not officially released there is not an installer for the program. Instead to use LabBench Beta you will go through the following steps the first time you install LabBench Beta on your lab computer.
 
