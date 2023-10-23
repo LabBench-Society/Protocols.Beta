@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/repository.xsd"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/repository.xsd"
             id="beta.labbench.io">
 
+    <protocol id="nwr"
+              name="Nociceptive Withdrawal Reflex (NWR)"
+              labbench-version="4.0.0"
+              category="LabBench I/O; Reflexes" />
+    
     <protocol id="painExpectPressure"
               name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
               category="CPAR;Pain Perception Processes"/>
