@@ -58,6 +58,10 @@
                     <survey id="survey"
                             experimental-setup-id="survey"
                             background-color="rgb(255,255,255)" />
+
+                    <image-display id="image"
+                                   background-color="rgb(255,255,255)"
+                                   experimental-setup-id="image"/>
                 </configurations>
                 
             </display>
@@ -140,6 +144,102 @@
                 </content>
             </meta-survey>
 
+            <meta-survey ID="QSTLL"
+                         name="Pressure Pain Thresholds (Leg)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01LEG"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02LEG"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03LEG"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <meta-survey ID="QSTUL"
+                         name="Pressure Pain Thresholds (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <meta-survey ID="QSTFACE"
+                         name="Pressure Pain Thresholds (Face)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01FACE"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02FACE"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03FACE"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <!-- Stoop Task -->
+            
+            <!-- von Frey Filaments (Up/Down) -->
+            
+            <!-- Pin Prick (Up/Down) -->
+            
+            <!-- Temporal summation -->
+            <!--
+            256g pin prick, with metronome
+            VAS Recording
+            evoked potential tests
+            -->
+            
+            <!-- Three location on the body,  -->
+        
+            <!-- Instruction to inflate the cuff to a certain level -->
+            
+            <!-- Conditioned Pain Modulation -->
         </tests>
 
         <assets>
