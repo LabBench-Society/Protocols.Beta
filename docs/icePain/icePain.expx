@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <devices>
+            <!--
+            <lio id="lio"
+                 default-analog-output="0">
+                <response-devices>
+                    <response-pad id="pad"
+                                  timing-source="response-port02"
+                                  type="button-4-cross">
+                        <map experimental-setup-id="survey">
+                            <button-assignment code="1" button="up" label="up"/>
+                            
+                        </map>
+                    </response-pad>
+                    <visual-trigger id="trigger"
+                                    timing-source="response-port02"
+                                    arming-period="200"
+                                    gain="128"
+                                    threshold="128"/>
+                </response-devices>
+            </lio>
+            -->
+            <joystick id="joystick">
+                <map experimental-setup-id="survey">
+                    <button-assignment code="1" button="up"/>
+                    <button-assignment code="2" button="increase" />
+                    <button-assignment code="4" button="down" />
+                    <button-assignment code="8" button="decrease" />
+                    <button-assignment code="16" button="previous"/>
+                    <button-assignment code="64" button="previous"/>
+                    <button-assignment code="32" button="next"/>
+                    <button-assignment code="128" button="next"/>
+                </map>
+                <map experimental-setup-id="vas">
+                    <button-assignment code="2" button="increase" />
+                    <button-assignment code="8" button="decrease" />
+                </map>
+            </joystick>
+                      
+                 
+            <display id="display"
+                     screen="primary"
+                     position="fullscreen"
+                     active-color="rgb(0,0,0)"
+                     background-color="rgb(255,255,255)"
+                     inactive-color="rgb(64,64,64)"
+                     normative-distance="40">
+                
+                <monitor diagonal-size="13"
+                         diagonal-size-unit="inch"
+                         distance="40"
+                         length-unit="cm"/>
+
+                <configurations>
+                    <survey id="survey"
+                            experimental-setup-id="survey"
+                            background-color="rgb(255,255,255)" />
+
+                    <image-display id="image"
+                                   background-color="rgb(255,255,255)"
+                                   experimental-setup-id="image"/>
+
+                    <visual-analog-scale controller-device="joystick"
+                                         id="vas"
+                                         experimental-setup-id="vas">
+                        <scale length="10"
+                               sample-period="200"
+                               timing-source="none">
+                            <anchors>
+                                <top-anchor text="Maximal Pain">
+                                    <localized-text language="DA" text="Maksimal Smerte"/>
+                                </top-anchor>
+                                <bottom-anchor text="No Pain">
+                                    <localized-text language="DA" text="Ingen smerte"/>
+                                </bottom-anchor>
+                            </anchors>
+                        </scale>
+                    </visual-analog-scale>
+                </configurations>
+                
+            </display>
+
+            <sound id="sound" />
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="meta-survey"
+                   instrument-name="Response"
+                   device-id="joystick" />
+
+            <device-assignment test-type="meta-survey"
+                               instrument-name="Display"
+                               device-id="display.survey" />            
+        </device-mapping>
+    </experimental-setup>
+    <protocol>
+        <languages>
+            <language code="EN"
+                      name="English"/>
+            <language code="DA"
+                      name="Danish"/>
+        </languages>        
+        <defines>
+            <define name="Text" value="func: TEXT.CreateText(tc)"/>
+        </defines>
+        <tests>
+            <meta-survey ID="PCS"
+                         control="subject"
+                         experimental-setup-id="survey"
+                         name="Pain Catastrophizing">
+                <templates>
+                    <likert id="PCS"
+                            title="dynamic: Text['QUESTION']">
+                        <choice value="0" label="dynamic: Text['L0']"/>
+                        <choice value="1" label="dynamic: Text['L1']"/>
+                        <choice value="2" label="dynamic: Text['L2']"/>
+                        <choice value="3" label="dynamic: Text['L3']"/>
+                        <choice value="4" label="dynamic: Text['L4']"/>
+                    </likert>
+                </templates>
+                <content>
+                    <likert id="I01"
+                            template="PCS"
+                            instruction="dynamic: Text['I01']" />
+                    <likert id="I02"
+                            template="PCS"
+                            instruction="dynamic: Text['I02']" />
+                    <likert id="I03"
+                            template="PCS"
+                            instruction="dynamic: Text['I03']" />
+                    <likert id="I04"
+                            template="PCS"
+                            instruction="dynamic: Text['I04']" />
+                    <likert id="I05"
+                            template="PCS"
+                            instruction="dynamic: Text['I05']" />
+                    <likert id="I06"
+                            template="PCS"
+                            instruction="dynamic: Text['I06']" />
+                    <likert id="I07"
+                            template="PCS"
+                            instruction="dynamic: Text['I07']" />
+                    <likert id="I08"
+                            template="PCS"
+                            instruction="dynamic: Text['I08']" />
+                    <likert id="I09"
+                            template="PCS"
+                            instruction="dynamic: Text['I09']" />
+                    <likert id="I10"
+                            template="PCS"
+                            instruction="dynamic: Text['I10']" />
+                    <likert id="I11"
+                            template="PCS"
+                            instruction="dynamic: Text['I11']" />
+                    <likert id="I12"
+                            template="PCS"
+                            instruction="dynamic: Text['I12']" />
+                    <likert id="I13"
+                            template="PCS"
+                            instruction="dynamic: Text['I13']" />
+                </content>
+            </meta-survey>
+
+            <meta-survey ID="QSTLL"
+                         name="Pressure Pain Thresholds (Leg)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01LEG"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02LEG"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03LEG"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the leg">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <meta-survey ID="QSTUL"
+                         name="Pressure Pain Thresholds (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <meta-survey ID="QSTFACE"
+                         name="Pressure Pain Thresholds (Face)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01FACE"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02FACE"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03FACE"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the face">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <!-- Stoop Task -->
+            
+            <!-- Emotional Stoop Task -->
+            
+            <!-- von Frey Filaments (Up/Down) -->
+
+            <psychophysics-manual-threshold-estimation ID="QSTVF"
+                                           name="Tactile Sensitivity (von Frey)">
+                <up-down-algorithm stop-rule="4"
+                                   terminate-on-limit-reached="true"
+                                   initial-direction="increasing"
+                                   intensities="[0.008, 0.02, 0.04, 0,07, 0.16, 0.4, 0.6, 1.0, 1.4, 2]"/>
+                <yes-no-task question="Do fell a touch on the skin?"
+                             positive-answer="Yes"
+                             negative-answer="No"
+                             task-illustration-image="Filament" />
+            </psychophysics-manual-threshold-estimation>
+            
+
+            <!-- Pin Prick (Up/Down) -->
+            <psychophysics-manual-threshold-estimation ID="QSTVF"
+                                           name="Tactile Sensitivity (Pin Prick)">
+                <up-down-algorithm stop-rule="4"
+                                   terminate-on-limit-reached="true"
+                                   initial-direction="increasing"
+                                   intensities="[8.0, 16.0, 32.0, 64.0, 128.0, 256.0, 512.0]"/>
+                <yes-no-task question="Do fell a pain from the pin prick"
+                             positive-answer="Yes"
+                             negative-answer="No"
+                             task-illustration-image="PinPrick" />
+            </psychophysics-manual-threshold-estimation>
+
+            <!-- Temporal summation
+                256g pin prick, with metronome
+                VAS Recording
+                evoked potential tests
+            -->
+
+            <electrophysiology-evoked-potentials ID="TS"
+                                                 name="Temporal Summation (pin prick)"
+                                                 response-collection="ratio-rating"
+                                                 experimental-setup-id="vas"
+                                                 stimulus-update-rate="44100">
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1"
+                              stimulate="true">
+                        <sequence iterations="1"
+                                  Tperiod="4"
+                                  stimulate="false" />
+
+                        <sequence iterations="10"
+                                  Tperiod="1"
+                                  stimulate="true"/>
+                    </sequence>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus count="1"
+                              intensity="80"
+                              name="STIM">
+                        <stimulus>
+                            <sine Frequency="1000" Is="x" Ts="250"/>
+                        </stimulus>
+                    </stimulus>                              
+                </stimuli>
+            </electrophysiology-evoked-potentials>
+            
+        
+            <!-- Instruction to inflate the cuff to a certain level -->
+            <meta-survey ID="CUFFPRESSURE"
+                         name="Cuff Pressure (Lower Limb Caff Muscles)"
+                         control="operator">
+                <content>
+                    <numeric id="VAS05"
+                             title="Cuff Pressure"
+                             instruction="Enter the pressure for evoking a pain response (VAS 5)">
+                        <validation min="0" min-included="true" max="300" max-included="true"/>
+                    </numeric>                             
+                </content>
+            </meta-survey>
+            
+            <!-- Conditioned Pain Modulation -->
+            <meta-survey ID="CPMQSTUL"
+                         name="Conditioned Pressure Pain Thresholds (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <!-- Exercise induced hyperalgesia -->
+            
+            <!-- Instruct the participants to squat for 3min with knees  -->
+            <meta-survey ID="HAQSTUL"
+                         name="Pressure Pain Thresholds with Exercis Induced Hyperalgesia (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <properties>
+                    <instructions default-instructions="HAInstructions"
+                                  override-results="false" />
+                </properties>
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>            
+            
+            
+            <!-- Emotional monipulation [CPM] -->
+            <meta-survey ID="EMQSTUL"
+                         name="Pressure Pain Thresholds with Exercis Induced Hyperalgesia (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <test-events start="func: Script.DisplayImages(tc)"
+                             abort="func: Script.StopImages(tc)"
+                             complete="func: Script.StopImages(tc)">
+                    <instrument name="ImageDisplay"
+                                interface="image-display"
+                                required="true" />
+                </test-events>
+                <properties>
+                    <instructions default-instructions="EMInstructions"
+                                  override-results="false" />
+                </properties>
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+            
+            <!-- Instructions to save the ECG and naming and location to save -->
+        </tests>
+
+        <assets>
+            <file-asset id="TEXT" file="TEXT_EN.py">
+                <language code="DA" file="TEXT_DA.py"/>
+            </file-asset>
+            <file-asset id="CALCULATIONS" file="CALCULATIONS.py" />
+            <file-asset id="Filament" file="Filament.png" />
+            <file-asset id="PinPrick" file="PinPrick.png" />
+        </assets>
+    </protocol>
+    <post-actions>
+        <export-to-csv name="Calculate PCS Scores and export to CSV"
+                       location="C:\LabBenchExport\icePain"
+                       header="true"
+                       seperator=";"
+                       filename="dynamic: '{session}-{time}.csv'.format(session = SESSION_NAME, time = SESSION_TIME)">
+            <item name="Rumination"
+                  value="func: CALCULATIONS.Rumination(tc)"
+                  default="NA"/>
+            <item name="Magnification"
+                  value="func: CALCULATIONS.Magnification(tc)"
+                  default="NA"/>
+            <item name="Helplessness"
+                  value="func: CALCULATIONS.Helplessness(tc)"
+                  default="NA"/>
+            <item name="Total"
+                  value="func: CALCULATIONS.Total(tc)"
+                  default="NA"/>
+        </export-to-csv>
+    </post-actions>    
+    
+</experiment>
