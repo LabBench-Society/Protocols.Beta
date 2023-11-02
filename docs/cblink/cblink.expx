@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
-            name="Blink Reflex Protocol (101)"
-            id="blink101"
-            protocol="blink101@beta.labbench.io">
+            name="Conditioned Blink Reflex Protocol"
+            id="cblink"
+            protocol="cblink@beta.labbench.io">
 <description>      
 </description>
   <subject-validator regex="^S[0-9]{3}$"
@@ -12,6 +12,11 @@
         <description />
         <devices>
             <lio id="dev" />
+            <!--
+            <cpar id="cpar" 
+                  compressor-mode="AUTO"/>
+            -->
+            <cpar-plus id="cpar" />
         </devices>
         <device-mapping>
             <device-assignment test-type="psychophysics-stimulus-presentation"
