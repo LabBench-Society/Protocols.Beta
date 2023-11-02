@@ -12,8 +12,11 @@
         <description />
         <devices>
             <lio id="dev" />
+            <!--
             <cpar id="cpar" 
                   compressor-mode="AUTO"/>
+            -->
+            <cpar-plus id="cpar" />
         </devices>
         <device-mapping>
             <device-assignment test-type="psychophysics-stimulus-presentation"
