@@ -45,8 +45,8 @@
 			  name="PAINLESS: Pain Relief in Cancer (WP1)"
 			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
 
-    <protocol id="blink101"
-			  name="Blink Reflex Protocol"
+    <protocol id="cblink"
+			  name="Conditioned Blink Reflex Protocol"
 			  category="Blink Reflex;LabBench I/O"/>
 
     <protocol id="condnwr"
