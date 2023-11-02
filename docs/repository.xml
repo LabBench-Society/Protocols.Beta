@@ -8,6 +8,16 @@
               labbench-version="4.0.0"
               category="Pain Protocol"/>
 
+    <protocol id="nwrDS5"
+              name="Nociceptive Withdrawal Reflex (NWR) (DS5 Version)"
+              labbench-version="4.0.0"
+              category="LabBench I/O; Reflexes" />
+
+    <protocol id="nwrDS8R"
+              name="Nociceptive Withdrawal Reflex (NWR) (DS8R Version)"
+              labbench-version="4.0.0"
+              category="LabBench I/O; Reflexes" />
+
     <protocol id="painExpectPressure"
               name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
               category="CPAR;Pain Perception Processes"/>
