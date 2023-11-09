@@ -8,7 +8,7 @@ def Stimulate(tc, x):
     chan = algometer.Channels[0]
 
     chan.SetStimulus(1, chan.CreateWaveform()
-                     .Step(x, 1))
+                     .Step(x, 2))
     algometer.ConfigurePressureOutput(0, ChannelID.CH01)
     algometer.StartStimulation(AlgometerStopCriterion.STOP_CRITERION_ON_BUTTON_PRESSED, True)
 
