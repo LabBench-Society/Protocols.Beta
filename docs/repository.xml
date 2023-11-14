@@ -5,7 +5,6 @@
 
     <protocol id="icePain"
               name="Ice Pain Protocol"
-              labbench-version="4.0.0"
               category="Pain Protocol"/>
 
     <protocol id="nwrDS5"
@@ -28,6 +27,7 @@
 
     <protocol id="tpdDN"
               name="Two-Point Discrimination (Diabetic Neuropathy)"
+              labbench-version="4.0.0"
               category="Tactile Testing;Diabetes"/>
 
     <protocol id="domstms"

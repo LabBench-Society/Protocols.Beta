@@ -1,12 +1,104 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd"
             name="Tactile Demonstration"
             id="tactiledemo"
             protocol="tactiledemo@beta.labbench.io">
 <description>This protocol demonstrate how two-point-discrimination discs and von Frey hairs can be used to test tactile sensitivity.       
 </description>
-  <subject-validator regex="^S[0-9]{3}$"
-                     advice="Please enter an ID in the form of SXXX, where X is a digit" />  
+  <subject-validator regex="^S[0-9]{3}$|^TEST[0-9]+$|^S[0-9]{3}P02$|^S[0-9]{3}P05$|^S[0-9]{3}P10|^S[0-9]{3}P20$"
+                     advice="Please enter an ID in the form of SXXXPYY, where X is a digit, and YY is the probe size (02, 05, 10, or 20)" />  
   <experimental-setup />
+    <protocol>
+        <defines>
+        </defines>
+        <tests>
+            <psychophysics-manual-threshold-estimation ID="T01"
+                                                       name="Two Point Discrimination (Up/Down)"
+                                                       stimulus-unit="mm">
+                <properties>
+                    <instructions default-instructions="T01INSTRUCTIONS"
+                                  override-results="true"/>
+                </properties>
+
+                <!--
+              The intensity transformation is used when the probe has to be set to a different 
+              value (y) else than the intensity (x) to test, meaning that:
+              
+                  y = a * x + b
+                  
+              For example, if you use a calibrer where the actual test distance is 5 more than
+              the measure on the calibre, the you would use the intensity transformation below,
+              which add 5 to the test intensity.
+            -->
+                <intensity-transformation a="1" b="-5" />
+
+                <catch-trials order="block-randomized"
+                              interval="4" />
+                <!-- 
+                
+            -->
+                <up-down-algorithm stop-rule="6"
+                                   skip-rule="0"
+                                   terminate-on-limit-reached="true"
+                                   initial-direction="decreasing"
+                                   initial-step-size="4"
+                                   intensities="range(5, 101, 5)"/>
+                <yes-no-task question="Do you feel one or two points?"
+                             positive-answer="Two"
+                             negative-answer="One"
+                             task-illustration-image="TwoProngs" />
+            </psychophysics-manual-threshold-estimation>
+
+
+            <psychophysics-manual-threshold-estimation ID="T02"
+                                                       name="Two Point Discrimination (Psi)"
+                                                       stimulus-unit="mm">
+                <intensity-transformation a="1"
+                                          b="-5" />
+
+                <catch-trials order="block-randomized"
+                              interval="4" />
+
+                <psi-algorithm number-of-trials="30"
+                               intensities="range(5, 101, 5)">
+                    <quick alpha="0.5"
+                           beta="1"
+                           gamma="0.5"
+                           lambda="0.02" />
+                    <beta type="linspace"
+                          base="10"
+                          x0="-1.2041"
+                          x1="1.2041"
+                          n="20"/>
+                    <!-- Change the 2.0 and 25.0 to the min/max from the intensities. Be sure to include a .0 to make it a floating point number. -->
+                    <alpha type="linspace"
+                           x0="2.0/25.0"
+                           x1="1"
+                           n="100" />
+                </psi-algorithm>
+
+                <!--
+                Make it possible to define a catch trial image and a catch trial instruction text.
+            -->
+                <yes-no-task question="Do you feel one or two points?"
+                             positive-answer="Two"
+                             negative-answer="One"
+                             task-illustration-image="TwoProngs" />
+            </psychophysics-manual-threshold-estimation>
+        </tests>
+
+        <assets>
+            <!-- Text Database -->
+            <!-- Use for catch trials -->
+            <file-asset id="OneProng"
+                        file="OneProng.png" />
+
+            <file-asset id="TwoProngs"
+                        file="TwoProngs.png" />
+
+            <file-asset id="T01INSTRUCTIONS"
+                        file="T01INSTRUCTIONS.rtf" />
+        </assets>
+    </protocol>
 </experiment>
