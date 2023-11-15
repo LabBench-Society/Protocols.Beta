@@ -39,6 +39,7 @@
 		-->
 	<protocol id="taVNS"
 			  name="Transcutaneous auricular vagal nerve stimulation"
+              labbench-version="4.0.0"
 			  category="Vagus Nerve Stimulation"/>
 
     <protocol id="painless"
