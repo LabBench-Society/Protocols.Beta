@@ -31,7 +31,7 @@
               category="Tactile Testing;Diabetes"/>
 
     <protocol id="mdtSensoResp"
-              name="Sensory Responsiviness (Mechanical Detaction Thresholds)"
+              name="Sensory Responsiveness (Mechanical Detection Thresholds)"
               labbench-version="4.0.0"
               category="Tactile Testing"/>
 
