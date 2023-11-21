@@ -19,7 +19,7 @@
                                    terminate-on-limit-reached="true"
                                    initial-direction="decreasing"
                                    initial-step-size="4"
-                                   intensities="[0.008, 0.02, 0.04, 0.07, 0.16, 0.4, 0.6, 1, 1.4, 2, 4, 6, 8, 10, 15, 26, 60, 100, 180, 300]"/>
+                                   intensities="[0.0, 0.008, 0.02, 0.04, 0.07, 0.16, 0.4, 0.6, 1, 1.4, 2, 4, 6, 8, 10, 15, 26, 60, 100, 180, 300]"/>
                 <yes-no-task question="Do you feel it?"
                              positive-answer="Yes"
                              negative-answer="No"
