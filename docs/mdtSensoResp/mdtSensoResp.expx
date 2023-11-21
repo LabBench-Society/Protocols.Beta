@@ -10,7 +10,7 @@
         <tests>            
             <psychophysics-manual-threshold-estimation ID="THRUPDOWN"
                                                        name="Tactile Detection Threshold (Up/Down)"
-                                                       stimulus-unit="N">
+                                                       stimulus-unit="g">
                 <intensity-transformation a="1" b="0" />
                 <catch-trials order="block-randomized"
                               interval="5" />
@@ -18,8 +18,8 @@
                                    skip-rule="1"
                                    terminate-on-limit-reached="true"
                                    initial-direction="decreasing"
-                                   initial-step-size="2"
-                                   intensities="[0.00, 1.65, 2.36, 2.44, 2.83, 3.22, 3.61, 3.84, 4.08, 4.17, 4.31, 4.56, 4.74, 4.93, 5.07, 5.18, 5.46, 5.88, 6.10, 6.45, 6.65]"/>
+                                   initial-step-size="4"
+                                   intensities="[0.008, 0.02, 0.04, 0.07, 0.16, 0.4, 0.6, 1, 1.4, 2, 4, 6, 8, 10, 15, 26, 60, 100, 180, 300]"/>
                 <yes-no-task question="Do you feel it?"
                              positive-answer="Yes"
                              negative-answer="No"
@@ -28,7 +28,7 @@
             
             <psychophysics-manual-threshold-estimation ID="THRPSI" 
                                                        name="Tactile Detection Threshold (Psi)"
-                                                       stimulus-unit="N">
+                                                       stimulus-unit="g">
                 <intensity-transformation a="1" b="0" />
                 <catch-trials order="block-randomized"
                               interval="5" />
