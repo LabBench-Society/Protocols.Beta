@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd"
             name="Tactile Demonstration"
             id="tactiledemo"
             protocol="tactiledemo@beta.labbench.io">
