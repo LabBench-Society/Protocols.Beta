@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
+    <description />
+    <subject-validator regex="^S[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <description />
+        <devices>
+			<lio id="dev"
+                 default-analog-output="0">
+				<stimulators>
+					<ds5 id="ds5"
+						 name="DS5"
+						 transconductance="1mA_1V"/>
+				</stimulators>
+				<response-devices>
+					<button id="button" timing-source="internal"/>
+				</response-devices>
+			</lio>
+            <lio id="dev"
+				default-analog-output="0">
+				<stimulators>
+					<!-- could also be a DS8, in which case, can we use the same lio but the other output? -->
+					<ds5 id="ds5"
+						 name="DS5"
+						 transconductance="1mA_1V"/>
+				</stimulators>
+				<response-devices>
+					<button id="button" timing-source="internal"/>
+				</response-devices>
+			</lio>
+        </devices>
+        <device-mapping>
+			<!-- stimulation presentation -->
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Stimulator"
+                               device-id="dev"/>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+				               instrument-name="Trigger"
+				               device-id="dev"/>
+			<device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Response"
+                               device-id="dev.button"/>
+
+			<!-- threshold determination -->
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Button"
+                               device-id="dev.button" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Stimulator"
+                               device-id="dev" />
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+			
+			<!-- masking determination... need to add second lio or second ouutput channel -->
+			<device-assignment test-type="masking-intensity-determination
+                               instrument-name="Button"
+                               device-id="dev.button" />
+			<device-assignment test-type="masking-intensity-determination"
+                               instrument-name="Stimulator"
+                               device-id="dev" />
+			<device-assignment test-type="masking-intensity-determination"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+			
+			<!-- stimulation presentation + 30' on and off-->
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Button"
+                               device-id="dev.button" />            
+			<device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Stimulator"
+                               device-id="dev" />
+			<device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+		</device-mapping>
+    </experimental-setup>
+    <protocol>
+        <defines>
+			
+            <!-- Configuration of the Up/Down Algorithm -->
+            <define name="StepSizeReduction"
+                    value="0.5"/>
+            <define name="MaxStepSizeReduction"
+                    value="0.1"/>
+            <define name="StepSize"
+                    value="0.25"/>
+            <define name="SkipRule"
+                    value="2"/>
+            <define name="StartIntensityPerception"
+                    value="0.2"/>
+            <define name="StartIntensityTolerance"
+                    value="1"/>
+            <define name="StopRule"
+                    value="8"/>
+            <!--Hz -->
+            <define name="StimFreq"
+                    value="25"/>
+            <!-- Total Duration during thresholding in s -->
+            <define name="StimTestDuration"
+                    value="1.0"/>
+			<!-- Total Duration during stim in s; changed from 2x60 to 30 -->
+			<define name="StimDuration"
+                    value="30*60"/>
+            <!-- Pulse width, in ms-->
+            <define name="Ts"
+                    value="0.2"/>
+            <!-- Ratio of charge balancing -->
+            <define name="ChBalRat"
+                    value="4"/>
+        </defines>
+        <tests>
+            <psychophysics-stimulus-presentation ID="T01"
+                                                 name="Stimulus Presentation"
+                                                 stimulus-update-rate="20000">
+                <intensity type="geomspace"
+                           x0="Stimulator.Imax/50"
+                           x1="Stimulator.Imax"
+                           n="50"/>
+
+                <responses response-collection="yes-no" />
+
+                <triggers start-triggger="internal">
+                    <trigger duration="10">
+                        <code output="Digital" value="1" />
+                        <code output="Code" value="1"/>
+                    </trigger>
+                </triggers>
+
+                <stimulation>
+                    <stimulus>
+                        <repeated N="(int) (StimTestDuration*StimFreq)"
+                                  Tperiod="1000/StimFreq">
+                            <combined>
+                                <arbitrary expression="x"
+                                        Ts="Ts"/>
+                                <arbitrary expression="-x/ChBalRat"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+                            </combined>
+                        </repeated>
+                    </stimulus>
+                </stimulation>
+            </psychophysics-stimulus-presentation>
+
+            <psychophysics-threshold-estimation ID="T02"
+                                                name="Perception Threshold Determination"
+                                                stimulus-update-rate="20000">
+                <update-rate-deterministic value="2500" />
+
+                <configuration>
+                    <trigger-generation trigger-source="internal"/>
+                </configuration>
+
+                <yes-no-task />
+
+                <channels>
+                    <channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+                        <up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityPerception"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        initial-direction="increasing"
+                                        step-size-reduction="StepSizeReduction"                                        
+                                        stop-rule="StopRule">
+                            <quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+                        </up-down-method>
+
+                        <triggers>
+                            <trigger duration="10">
+                                <code output="Digital" value="1" />
+                                <code output="Code" value="1"/>
+                            </trigger>
+                        </triggers>
+
+                        <stimulus>
+                            <repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq">
+                                <combined>
+                                    <arbitrary expression="x"
+                                            Ts="Ts"/>
+                                    <arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+                                </combined>
+                            </repeated>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+            <psychophysics-threshold-estimation ID="T03"
+                                                name="Tolerance Threshold Determination"
+                                                stimulus-update-rate="20000">
+                <update-rate-deterministic value="2500" />
+
+                <configuration>
+                    <trigger-generation trigger-source="internal"/>
+                </configuration>
+
+                <yes-no-task />
+
+                <channels>
+                    <channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+                        <up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityTolerance/Stimulator.Imax"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        step-size-reduction="StepSizeReduction"
+                                        initial-direction="increasing"
+                                        stop-rule="StopRule">
+                            <quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+                        </up-down-method>
+
+                        <triggers>
+                            <trigger duration="10">
+                                <code output="Digital" value="1" />
+                                <code output="Code" value="1"/>
+                            </trigger>
+                        </triggers>
+
+                        <stimulus>
+                            <repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq">
+                                <combined>
+                                    <arbitrary expression="x"
+                                            Ts="Ts"/>
+                                    <arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+                                </combined>
+                            </repeated>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+			<psychophysics-threshold-estimation ID="T04"
+									name="Masking Intensity Determination"
+									stimulus-update-rate="20000">
+				<update-rate-deterministic value="2500" />
+
+				<configuration>
+					<trigger-generation trigger-source="internal"/>
+				</configuration>
+
+				<yes-no-task />
+
+				<channels>
+					<!-- earlobe stimulation needs to be changed -->
+					<channel ID="earlobe"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Earlobe Pulse (200us)">
+						<up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityTolerance/Stimulator.Imax"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        step-size-reduction="StepSizeReduction"
+                                        initial-direction="increasing"
+                                        stop-rule="StopRule">
+							<quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+						</up-down-method>
+
+						<triggers>
+							<trigger duration="10">
+								<code output="Digital" value="1" />
+								<code output="Code" value="1"/>
+							</trigger>
+						</triggers>
+
+						<stimulus>
+							<repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq">
+								<combined>
+									<arbitrary expression="x"
+                                            Ts="Ts"/>
+									<arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+								</combined>
+							</repeated>
+						</stimulus>
+					</channel>
+					
+					<!-- add taVNS stuff here; aligned to earlobe but at consistent intensity  -->
+					<channel ID="taVNS"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="taVNS">
+
+						<triggers>
+							<trigger duration="10">
+								<code output="Digital" value="1" />
+								<code output="Code" value="1"/>
+							</trigger>
+						</triggers>
+
+						<stimulus>
+							<repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq"
+									  Intensity="2 * (T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
+								<combined>
+									<arbitrary expression="x"
+                                            Ts="Ts"/>
+									<arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+								</combined>
+							</repeated>
+						</stimulus>
+					</channel>
+					
+				</channels>
+			</psychophysics-threshold-estimation>
+			
+			
+
+			<!-- STIM PROTOCOL; 30min, either both (Active) or just earlobe (sham)-->
+            <electrophysiology-evoked-potentials ID="T05"
+                                                 name="30min Stimulation"
+                                                 stimulus-update-rate="20000"
+                                                 response-collection="none">
+                <dependencies>
+                    <dependency ID="T02"/>
+                    <dependency ID="T03"/>
+					<dependency ID="T04"/>
+                </dependencies>
+
+                <configuration>
+                    <trigger-generation trigger-source="internal"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1"
+                              Tperiod="StimDuration" 
+                              stimulate="true" />
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Stimulus"
+                              count="1"
+                              intensity="2 * (T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
+                        <triggers>
+                            <trigger duration="10">
+                                <code output="Digital" value="1" />
+                                <code output="Code" value="1"/>
+                            </trigger>
+                        </triggers>
+
+                        <stimulus>
+                            <repeated N="StimFreq*StimDuration"
+                                      Tperiod="1000/StimFreq">
+                                <combined>
+                                    <arbitrary expression="x"
+                                            Ts="Ts"/>
+                                    <arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+                                </combined>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                </stimuli>
+            </electrophysiology-evoked-potentials>
+
+        </tests>
+        <assets>
+        </assets>
+    </protocol>
+
+</experiment>

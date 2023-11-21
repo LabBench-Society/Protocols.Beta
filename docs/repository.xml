@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/repository.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/repository.xsd"
             id="beta.labbench.io">
 
     <protocol id="icePain"
@@ -44,6 +44,11 @@
 		-->
 	<protocol id="taVNS"
 			  name="Transcutaneous auricular vagal nerve stimulation"
+              labbench-version="4.0.0"
+			  category="Vagus Nerve Stimulation"/>
+
+        <protocol id="iteroTaVNS"
+			  name="Interoception taVNS"
               labbench-version="4.0.0"
 			  category="Vagus Nerve Stimulation"/>
 
