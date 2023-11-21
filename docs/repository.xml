@@ -30,6 +30,11 @@
               labbench-version="4.0.0"
               category="Tactile Testing;Diabetes"/>
 
+    <protocol id="mdtSensoResp"
+              name="Sensory Responsiviness (Mechanical Detaction Thresholds)"
+              labbench-version="4.0.0"
+              category="Tactile Testing"/>
+
     <protocol id="domstms"
 			  name="DOMS TMS model with EEG"
 			  category="Vagus Nerve Stimulation"/>
