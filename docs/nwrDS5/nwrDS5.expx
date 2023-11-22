@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <devices>
+            <lio id="lio"
+                 default-analog-output="0">
+                
+                <trigger-setup logic-system="positive"
+                               low-byte-voltage-level="unconnected"
+                               high-byte-voltage-level="unconnected"/>
+                
+                <stimulators>
+                    <ds5 id="stimulator"
+                         name="DS5"
+                         transconductance="1mA_1V" />
+                </stimulators>
+                
+                <response-devices>
+                    <button id="button"
+                            timing-source="none">
+                        <map>
+                            <button-assignment code="1" button="button-01" label="1"/>
+                        </map>
+                    </button>
+                </response-devices>
+            </lio>            
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Stimulator"
+                               device-id="lio" />
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Trigger"
+                               device-id="lio" />
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Response"
+                               device-id="lio.button" />
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Stimulator"
+                               device-id="lio" />
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="lio" />
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Response"
+                               device-id="lio.button" />            
+        </device-mapping>
+    </experimental-setup>
+    <protocol>
+        <defines>
+            <define name="StimulationFrequency" value="200"/>
+        </defines>
+        <tests>
+            <psychophysics-stimulus-presentation ID="StimIntensity"
+                                                 name="Stimulation Intensity"
+                                                 trigger-update-rate="20000">               
+                <intensity type="geomspace"
+                           x0="1"
+                           x1="100"
+                           n="50"/>
+
+                <responses response-collection="yes-no" />
+
+                <triggers start-triggger="internal">
+                    <trigger duration="1">
+                        <code output="Stimulus" value="1"/>
+                    </trigger>
+                </triggers>
+
+                <stimulation>
+                    <stimulus>
+                        <repeated N="5"
+                                  Tperiod="1000/StimulationFrequency">
+                            <pulse Is="x"
+                                   Ts="1"/>
+                        </repeated>
+                    </stimulus>
+                </stimulation>
+            </psychophysics-stimulus-presentation>
+        </tests>        
+    </protocol>
+</experiment>

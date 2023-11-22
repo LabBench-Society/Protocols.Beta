@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
-            name="Protocol Template"
-            id="xtemplate"
-            protocol="xtemplate@beta.labbench.io">
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
 <description>      
 </description>
   <subject-validator regex="^S[0-9]{3}$"
@@ -16,4 +13,7 @@
             
         </device-mapping>
     </experimental-setup>    
+    <protocol>
+        
+    </protocol>
 </experiment>

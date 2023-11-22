@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Conditioned Blink Reflex Protocol"
+            id="cblink"
+            protocol="cblink@beta.labbench.io">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <description />
+        <devices>
+            <lio id="dev" />
+            <!--
+            <cpar id="cpar" 
+                  compressor-mode="AUTO"/>
+            -->
+            <cpar-plus id="cpar" />
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+				               instrument-name="Trigger"
+				               device-id="dev"/>
+
+            <device-assignment test-type="algometry-stimulus-response"
+                               instrument-name="Algometer"
+                               device-id="cpar" />
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Algometer"
+                               device-id="cpar" />
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+        </device-mapping>
+    </experimental-setup>   
+</experiment>
