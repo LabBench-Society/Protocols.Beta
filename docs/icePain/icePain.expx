@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
+            xsi:noNamespaceSchemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
 <description>      
 </description>
   <subject-validator regex="^S[0-9]{3}$"
@@ -38,6 +38,13 @@
                     <button-assignment code="32" button="next"/>
                     <button-assignment code="128" button="next"/>
                 </map>
+<<<<<<< HEAD
+=======
+                <map experimental-setup-id="vas">
+                    <button-assignment code="2" button="increase" />
+                    <button-assignment code="8" button="decrease" />
+                </map>
+>>>>>>> main
             </joystick>
                       
                  
@@ -62,9 +69,34 @@
                     <image-display id="image"
                                    background-color="rgb(255,255,255)"
                                    experimental-setup-id="image"/>
+<<<<<<< HEAD
                 </configurations>
                 
             </display>
+=======
+
+                    <visual-analog-scale controller-device="joystick"
+                                         id="vas"
+                                         experimental-setup-id="vas">
+                        <scale length="10"
+                               sample-period="200"
+                               timing-source="none">
+                            <anchors>
+                                <top-anchor text="Maximal Pain">
+                                    <localized-text language="DA" text="Maksimal Smerte"/>
+                                </top-anchor>
+                                <bottom-anchor text="No Pain">
+                                    <localized-text language="DA" text="Ingen smerte"/>
+                                </bottom-anchor>
+                            </anchors>
+                        </scale>
+                    </visual-analog-scale>
+                </configurations>
+                
+            </display>
+
+            <sound id="sound" />
+>>>>>>> main
         </devices>
         <device-mapping>
             <device-assignment test-type="meta-survey"
@@ -224,6 +256,7 @@
 
             <!-- Stoop Task -->
             
+<<<<<<< HEAD
             <!-- von Frey Filaments (Up/Down) -->
             
             <!-- Pin Prick (Up/Down) -->
@@ -244,6 +277,187 @@
             <!-- Exercise induced hyperalgesia -->
             
             <!-- Emotional monipulation [CPM] -->
+=======
+            <!-- Emotional Stoop Task -->
+            
+            <!-- von Frey Filaments (Up/Down) -->
+
+            <psychophysics-manual-threshold-estimation ID="QSTVF"
+                                           name="Tactile Sensitivity (von Frey)">
+                <up-down-algorithm stop-rule="4"
+                                   terminate-on-limit-reached="true"
+                                   initial-direction="increasing"
+                                   intensities="[0.008, 0.02, 0.04, 0,07, 0.16, 0.4, 0.6, 1.0, 1.4, 2]"/>
+                <yes-no-task question="Do fell a touch on the skin?"
+                             positive-answer="Yes"
+                             negative-answer="No"
+                             task-illustration-image="Filament" />
+            </psychophysics-manual-threshold-estimation>
+            
+
+            <!-- Pin Prick (Up/Down) -->
+            <psychophysics-manual-threshold-estimation ID="QSTVF"
+                                           name="Tactile Sensitivity (Pin Prick)">
+                <up-down-algorithm stop-rule="4"
+                                   terminate-on-limit-reached="true"
+                                   initial-direction="increasing"
+                                   intensities="[8.0, 16.0, 32.0, 64.0, 128.0, 256.0, 512.0]"/>
+                <yes-no-task question="Do fell a pain from the pin prick"
+                             positive-answer="Yes"
+                             negative-answer="No"
+                             task-illustration-image="PinPrick" />
+            </psychophysics-manual-threshold-estimation>
+
+            <!-- Temporal summation
+                256g pin prick, with metronome
+                VAS Recording
+                evoked potential tests
+            -->
+
+            <electrophysiology-evoked-potentials ID="TS"
+                                                 name="Temporal Summation (pin prick)"
+                                                 response-collection="ratio-rating"
+                                                 experimental-setup-id="vas"
+                                                 stimulus-update-rate="44100">
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1"
+                              stimulate="true">
+                        <sequence iterations="1"
+                                  Tperiod="4"
+                                  stimulate="false" />
+
+                        <sequence iterations="10"
+                                  Tperiod="1"
+                                  stimulate="true"/>
+                    </sequence>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus count="1"
+                              intensity="80"
+                              name="STIM">
+                        <stimulus>
+                            <sine Frequency="1000" Is="x" Ts="250"/>
+                        </stimulus>
+                    </stimulus>                              
+                </stimuli>
+            </electrophysiology-evoked-potentials>
+            
+        
+            <!-- Instruction to inflate the cuff to a certain level -->
+            <meta-survey ID="CUFFPRESSURE"
+                         name="Cuff Pressure (Lower Limb Caff Muscles)"
+                         control="operator">
+                <content>
+                    <numeric id="VAS05"
+                             title="Cuff Pressure"
+                             instruction="Enter the pressure for evoking a pain response (VAS 5)">
+                        <validation min="0" min-included="true" max="300" max-included="true"/>
+                    </numeric>                             
+                </content>
+            </meta-survey>
+            
+            <!-- Conditioned Pain Modulation -->
+            <meta-survey ID="CPMQSTUL"
+                         name="Conditioned Pressure Pain Thresholds (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+
+            <!-- Exercise induced hyperalgesia -->
+            
+            <!-- Instruct the participants to squat for 3min with knees  -->
+            <meta-survey ID="HAQSTUL"
+                         name="Pressure Pain Thresholds with Exercis Induced Hyperalgesia (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <properties>
+                    <instructions default-instructions="HAInstructions"
+                                  override-results="false" />
+                </properties>
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>            
+            
+            
+            <!-- Emotional monipulation [CPM] -->
+            <meta-survey ID="EMQSTUL"
+                         name="Pressure Pain Thresholds with Exercis Induced Hyperalgesia (Elbow)"
+                         control="operator"
+                         experimental-setup-id="image">
+                <test-events start="func: Script.DisplayImages(tc)"
+                             abort="func: Script.StopImages(tc)"
+                             complete="func: Script.StopImages(tc)">
+                    <instrument name="ImageDisplay"
+                                interface="image-display"
+                                required="true" />
+                </test-events>
+                <properties>
+                    <instructions default-instructions="EMInstructions"
+                                  override-results="false" />
+                </properties>
+                <content>
+                    <numeric id="PPT01UL"
+                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT02UL"
+                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                    <numeric id="PPT03UL"
+                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
+                             instruction="Determine the (PTT) for the right elbow">
+                        <validation min="0" min-included="true"
+                                    max="2000" max-included="true"/>
+                    </numeric>
+                </content>
+            </meta-survey>
+            
+            <!-- Instructions to save the ECG and naming and location to save -->
+>>>>>>> main
         </tests>
 
         <assets>
@@ -251,6 +465,11 @@
                 <language code="DA" file="TEXT_DA.py"/>
             </file-asset>
             <file-asset id="CALCULATIONS" file="CALCULATIONS.py" />
+<<<<<<< HEAD
+=======
+            <file-asset id="Filament" file="Filament.png" />
+            <file-asset id="PinPrick" file="PinPrick.png" />
+>>>>>>> main
         </assets>
     </protocol>
     <post-actions>
