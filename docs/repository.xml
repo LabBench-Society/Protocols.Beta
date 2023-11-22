@@ -5,6 +5,7 @@
 
     <protocol id="icePain"
               name="Ice Pain Protocol"
+              labbench-version="4.0.0"
               category="Pain Protocol"/>
 
     <protocol id="nwrDS5"

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
+            xsi:noNamespaceSchemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
 <description>      
 </description>
   <subject-validator regex="^S[0-9]{3}$"
@@ -38,10 +38,13 @@
                     <button-assignment code="32" button="next"/>
                     <button-assignment code="128" button="next"/>
                 </map>
+<<<<<<< HEAD
+=======
                 <map experimental-setup-id="vas">
                     <button-assignment code="2" button="increase" />
                     <button-assignment code="8" button="decrease" />
                 </map>
+>>>>>>> main
             </joystick>
                       
                  
@@ -66,6 +69,11 @@
                     <image-display id="image"
                                    background-color="rgb(255,255,255)"
                                    experimental-setup-id="image"/>
+<<<<<<< HEAD
+                </configurations>
+                
+            </display>
+=======
 
                     <visual-analog-scale controller-device="joystick"
                                          id="vas"
@@ -88,6 +96,7 @@
             </display>
 
             <sound id="sound" />
+>>>>>>> main
         </devices>
         <device-mapping>
             <device-assignment test-type="meta-survey"
@@ -247,6 +256,28 @@
 
             <!-- Stoop Task -->
             
+<<<<<<< HEAD
+            <!-- von Frey Filaments (Up/Down) -->
+            
+            <!-- Pin Prick (Up/Down) -->
+            
+            <!-- Temporal summation -->
+            <!--
+            256g pin prick, with metronome
+            VAS Recording
+            evoked potential tests
+            -->
+            
+            <!-- Three location on the body,  -->
+        
+            <!-- Instruction to inflate the cuff to a certain level -->
+            
+            <!-- Conditioned Pain Modulation -->
+            
+            <!-- Exercise induced hyperalgesia -->
+            
+            <!-- Emotional monipulation [CPM] -->
+=======
             <!-- Emotional Stoop Task -->
             
             <!-- von Frey Filaments (Up/Down) -->
@@ -426,6 +457,7 @@
             </meta-survey>
             
             <!-- Instructions to save the ECG and naming and location to save -->
+>>>>>>> main
         </tests>
 
         <assets>
@@ -433,8 +465,11 @@
                 <language code="DA" file="TEXT_DA.py"/>
             </file-asset>
             <file-asset id="CALCULATIONS" file="CALCULATIONS.py" />
+<<<<<<< HEAD
+=======
             <file-asset id="Filament" file="Filament.png" />
             <file-asset id="PinPrick" file="PinPrick.png" />
+>>>>>>> main
         </assets>
     </protocol>
     <post-actions>
