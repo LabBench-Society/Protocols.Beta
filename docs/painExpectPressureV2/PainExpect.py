@@ -116,7 +116,7 @@ class TestData:
         
         # Show the plot
         plt.savefig('{id} TestTask.png'.format(id = self._id), dpi=300)    
-        self._trials.to_csv('{id} TestTask.svg'.format(id = self._id), index=False)
+        self._trials.to_csv('{id} TestTask.csv'.format(id = self._id), index=False)
         
         plt.show()
 
