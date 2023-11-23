@@ -5,3 +5,6 @@ def DisplayImages(tc):
 
 def StopImages(tc):
     return True
+
+def DisplayInstructionsQSTLL(tc):
+    return True

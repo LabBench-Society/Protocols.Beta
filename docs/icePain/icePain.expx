@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
-<description>      
-</description>    
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup>
@@ -43,7 +41,7 @@
                  
             <display id="display"
                      screen="primary"
-                     position="fullscreen"
+                     position="upper-right"
                      active-color="rgb(0,0,0)"
                      background-color="rgb(255,255,255)"
                      inactive-color="rgb(64,64,64)"
@@ -183,6 +181,9 @@
                          name="Pressure Pain Thresholds (Leg)"
                          control="operator"
                          experimental-setup-id="image">
+                <test-events start="func: Script.DisplayInstructionsQSTLL(tc)">
+                    <instrument interface="image-display" required="true" name="ImageDisplay"/>
+                </test-events>
                 <content>
                     <numeric id="PPT01LEG"
                              title="Pressure Pain Threshold (PTT) [ 1 of 3]"
