@@ -9,6 +9,7 @@ import PainExpect as pex
 print("Loading test data")
 content = pex.loadData("data_julian.json")
 subject = 0
+print("Data loaded")
 
 learningData = pex.LearningData(content, subject)
 learningData.plotTrials()
