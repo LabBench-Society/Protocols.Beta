@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
 <description>      
-</description>
-
+</description>    
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup>
@@ -30,10 +29,10 @@
             -->
             <joystick id="joystick">
                 <map experimental-setup-id="survey">
-                    <button-assignment code="1" button="up"/>
+                    <button-assignment code="8" button="up"/>
                     <button-assignment code="2" button="increase" />
-                    <button-assignment code="4" button="down" />
-                    <button-assignment code="8" button="decrease" />
+                    <button-assignment code="1" button="down" />
+                    <button-assignment code="4" button="decrease" />
                     <button-assignment code="16" button="previous"/>
                     <button-assignment code="64" button="previous"/>
                     <button-assignment code="32" button="next"/>
@@ -80,8 +79,7 @@
                             </anchors>
                         </scale>
                     </visual-analog-scale>
-                </configurations>
-                
+                </configurations>                
             </display>
 
             <sound id="sound" />
@@ -94,6 +92,19 @@
             <device-assignment test-type="meta-survey"
                                instrument-name="Display"
                                device-id="display.survey" />            
+
+            <device-assignment test-type="meta-survey"
+                               instrument-name="ImageDisplay"
+                               device-id="display.image" />            
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Stimulator"
+                               device-id="sound" />            
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Response"
+                               device-id="display.vas" />            
+
         </device-mapping>
     </experimental-setup>
     <protocol>
@@ -268,7 +279,7 @@
             
 
             <!-- Pin Prick (Up/Down) -->
-            <psychophysics-manual-threshold-estimation ID="QSTVF"
+            <psychophysics-manual-threshold-estimation ID="QSTPP"
                                            name="Tactile Sensitivity (Pin Prick)">
                 <up-down-algorithm stop-rule="4"
                                    terminate-on-limit-reached="true"
@@ -437,6 +448,7 @@
                 <language code="IT" file="TEXT_IT.py"/>
             </file-asset>
             <file-asset id="CALCULATIONS" file="CALCULATIONS.py" />
+            <file-asset id="Script" file="Script.py" />
             <file-asset id="Filament" file="Filament.png" />
             <file-asset id="PinPrick" file="PinPrick.png" />
         </assets>
