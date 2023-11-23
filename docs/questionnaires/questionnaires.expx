@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
+<description>      
+</description>
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup>
+        <devices>
+            <joystick id="joystick">
+                <map experimental-setup-id="survey">
+                    <button-assignment code="8" button="up"/>
+                    <button-assignment code="2" button="increase" />
+                    <button-assignment code="1" button="down" />
+                    <button-assignment code="4" button="decrease" />
+                    <button-assignment code="16" button="previous"/>
+                    <button-assignment code="64" button="previous"/>
+                    <button-assignment code="32" button="next"/>
+                    <button-assignment code="128" button="next"/>
+                </map>
+            </joystick>
+                      
+                 
+            <display id="display"
+                     screen="primary"
+                     position="upper-right"
+                     active-color="rgb(0,0,0)"
+                     background-color="rgb(255,255,255)"
+                     inactive-color="rgb(64,64,64)"
+                     normative-distance="40">
+                
+                <monitor diagonal-size="13"
+                         diagonal-size-unit="inch"
+                         distance="40"
+                         length-unit="cm"/>
+
+                <configurations>
+                    <survey id="survey"
+                            experimental-setup-id="survey"
+                            background-color="rgb(255,255,255)" />
+                </configurations>                
+            </display>            
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="meta-survey"
+                   instrument-name="Response"
+                   device-id="joystick" />
+
+            <device-assignment test-type="meta-survey"
+                               instrument-name="Display"
+                               device-id="display.survey" />                        
+        </device-mapping>
+    </experimental-setup>    
+    <protocol>
+        <languages>
+            <language code="EN"
+                      name="English"/>
+            <language code="DA"
+                      name="Danish"/>
+            <language code="IT"
+                      name="Italian"/>
+        </languages>                
+        <defines>
+            <define name="PCSText" value="func: PCSTEXT.CreateText(tc)"/>
+
+        </defines>
+        <tests>
+            <meta-survey ID="PCS"
+                         control="subject"
+                         experimental-setup-id="survey"
+                         name="Pain Catastrophizing">
+                <templates>
+                    <likert id="PCS"
+                            title="dynamic: PCSText['QUESTION']">
+                        <choice value="0" label="dynamic: PCSText['L0']"/>
+                        <choice value="1" label="dynamic: PCSText['L1']"/>
+                        <choice value="2" label="dynamic: PCSText['L2']"/>
+                        <choice value="3" label="dynamic: PCSText['L3']"/>
+                        <choice value="4" label="dynamic: PCSText['L4']"/>
+                    </likert>
+                </templates>
+                <content>
+                    <likert id="I01"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I01']" />
+                    <likert id="I02"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I02']" />
+                    <likert id="I03"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I03']" />
+                    <likert id="I04"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I04']" />
+                    <likert id="I05"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I05']" />
+                    <likert id="I06"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I06']" />
+                    <likert id="I07"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I07']" />
+                    <likert id="I08"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I08']" />
+                    <likert id="I09"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I09']" />
+                    <likert id="I10"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I10']" />
+                    <likert id="I11"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I11']" />
+                    <likert id="I12"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I12']" />
+                    <likert id="I13"
+                            template="PCS"
+                            instruction="dynamic: PCSText['I13']" />
+                </content>
+            </meta-survey>
+        </tests>
+        <assets>
+            <file-asset id="PCSTEXT" file="PCS_TEXT_EN.py">
+                <language code="DA" file="PCS_TEXT_DA.py"/>
+                <language code="IT" file="PCS_TEXT_IT.py"/>
+            </file-asset>
+
+        </assets>
+    </protocol>
+</experiment>
