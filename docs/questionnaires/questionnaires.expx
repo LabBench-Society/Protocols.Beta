@@ -59,9 +59,13 @@
                       name="Danish"/>
             <language code="IT"
                       name="Italian"/>
-        </languages>                
+            <language code="FR"
+                      name="French"/>
+        </languages>  
+
         <defines>
             <define name="PCSText" value="func: PCSTEXT.CreateText(tc)"/>
+            <define name="STAISText" value="func: STAISTEXT.CreateText(tc)"/>
 
         </defines>
         <tests>
@@ -121,12 +125,81 @@
                             instruction="dynamic: PCSText['I13']" />
                 </content>
             </meta-survey>
+
+            <meta-survey ID="STAIS"
+            control="subject"
+            experimental-setup-id="survey"
+            name="STAI_S">
+   <templates>
+       <likert id="TEMPLATE"
+               title="dynamic: STAISText['QUESTION']">
+           <choice value="1" label="dynamic: STAISText['L1']"/>
+           <choice value="2" label="dynamic: STAISText['L2']"/>
+           <choice value="3" label="dynamic: STAISText['L3']"/>
+           <choice value="4" label="dynamic: STAISText['L4']"/>
+       </likert>
+   </templates>
+   <content>
+       <instruction id="INSTRUCTION"
+                    title="Instructions"
+                    instruction="STAIINSTRUCTION"/>
+       <likert id="Q01"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q01']" />
+       <likert id="Q02"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q02']" />
+       <likert id="Q03"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q03']" />
+       <likert id="Q04"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q04']" />
+       <likert id="Q05"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q05']" />
+       <likert id="Q06"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q06']" />
+       <likert id="Q07"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q07']" />
+       <likert id="Q08"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q08']" />
+       <likert id="Q09"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q09']" />
+       <likert id="Q10"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q10']" />
+       <likert id="Q11"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q11']" />
+       <likert id="Q12"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q12']" />
+       <likert id="Q13"
+               template="TEMPLATE"
+               instruction="dynamic: STAISText['Q13']" />
+   </content>
+</meta-survey>
+
         </tests>
         <assets>
             <file-asset id="PCSTEXT" file="PCS_TEXT_EN.py">
                 <language code="DA" file="PCS_TEXT_DA.py"/>
                 <language code="IT" file="PCS_TEXT_IT.py"/>
+                <language code="FR" file="PCS_TEXT_FR.py"/>
             </file-asset>
+
+            <file-asset id="STAISTEXT" file="STAI_S_TEXT_EN.py">
+                <language code="DA" file="STAI_S_TEXT_DA.py"/>
+                <language code="IT" file="STAI_S_TEXT_IT.py"/>
+                <language code="FR" file="STAI_S_TEXT_FR.py"/>
+            </file-asset>
+            
+            <file-asset id="STAIINSTRUCTION" file="STAIINSTRUCTION_EN.rtf"></file-asset>
 
         </assets>
     </protocol>
