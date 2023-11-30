@@ -63,10 +63,15 @@
                       name="French"/>
         </languages>  
 
+
+
+        
         <defines>
             <define name="PCSText" value="func: PCSTEXT.CreateText(tc)"/>
             <define name="STAISText" value="func: STAISTEXT.CreateText(tc)"/>
-
+            <define name="STAITText" value="func: STAITTEXT.CreateText(tc)"/>
+            <define name="PANASText" value="func: PANASTEXT.CreateText(tc)"/>
+            <define name="SCALESText" value="func: SCALESTEXT.CreateText(tc)"/>
         </defines>
         <tests>
             <meta-survey ID="PCS"
@@ -124,13 +129,15 @@
                             template="PCS"
                             instruction="dynamic: PCSText['I13']" />
                 </content>
-            </meta-survey>
+
+
+        </meta-survey>
 
             <meta-survey ID="STAIS"
             control="subject"
             experimental-setup-id="survey"
             name="STAI_S">
-   <templates>
+        <templates>
        <likert id="TEMPLATE"
                title="dynamic: STAISText['QUESTION']">
            <choice value="1" label="dynamic: STAISText['L1']"/>
@@ -138,52 +145,250 @@
            <choice value="3" label="dynamic: STAISText['L3']"/>
            <choice value="4" label="dynamic: STAISText['L4']"/>
        </likert>
-   </templates>
-   <content>
+        </templates>
+        <content>
        <instruction id="INSTRUCTION"
                     title="Instructions"
-                    instruction="STAIINSTRUCTION"/>
-       <likert id="Q01"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q01']" />
-       <likert id="Q02"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q02']" />
-       <likert id="Q03"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q03']" />
-       <likert id="Q04"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q04']" />
-       <likert id="Q05"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q05']" />
-       <likert id="Q06"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q06']" />
-       <likert id="Q07"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q07']" />
-       <likert id="Q08"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q08']" />
-       <likert id="Q09"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q09']" />
-       <likert id="Q10"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q10']" />
-       <likert id="Q11"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q11']" />
-       <likert id="Q12"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q12']" />
-       <likert id="Q13"
-               template="TEMPLATE"
-               instruction="dynamic: STAISText['Q13']" />
-   </content>
+                    instruction="STAISINSTRUCTION"/>
+        <likert id="Q01"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q01']" />
+        <likert id="Q02"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q02']" />
+        <likert id="Q03"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q03']" />
+        <likert id="Q04"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q04']" />
+        <likert id="Q05"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q05']" />
+        <likert id="Q06"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q06']" />
+        <likert id="Q07"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q07']" />
+        <likert id="Q08"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q08']" />
+        <likert id="Q09"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q09']" />
+        <likert id="Q10"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q10']" />
+        <likert id="Q11"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q11']" />
+        <likert id="Q12"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q12']" />
+        <likert id="Q13"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q13']" />
+                <likert id="Q14"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q14']" />
+        <likert id="Q15"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q15']" />
+        <likert id="Q16"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q16']" />
+        <likert id="Q17"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q17']" />
+        <likert id="Q18"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q18']" />
+        <likert id="Q19"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q19']" />
+                <likert id="Q20"
+                template="TEMPLATE"
+                instruction="dynamic: STAISText['Q20']" />
+        </content>
+        </meta-survey>
+
+
+<meta-survey ID="STAIT"
+                control="subject"
+                experimental-setup-id="survey"
+                name="STAI_T">
+        <templates>
+        <likert id="TEMPLATE"
+                title="dynamic: STAITText['QUESTION']">
+        <choice value="1" label="dynamic: STAITText['L1']"/>
+        <choice value="2" label="dynamic: STAITText['L2']"/>
+        <choice value="3" label="dynamic: STAITText['L3']"/>
+        <choice value="4" label="dynamic: STAITText['L4']"/>
+        </likert>
+        </templates>
+        <content>
+        <instruction id="INSTRUCTION"
+                title="Instructions"
+                instruction="STAITINSTRUCTION"/>
+        <likert id="Q01"
+                 template="TEMPLATE"
+                instruction="dynamic: STAITText['Q01']" />
+        <likert id="Q02"
+                 template="TEMPLATE"
+                 instruction="dynamic: STAITText['Q02']" />
+        <likert id="Q03"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q03']" />
+        <likert id="Q04"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q04']" />
+        <likert id="Q05"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q05']" />
+        <likert id="Q06"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q06']" />
+        <likert id="Q07"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q07']" />
+        <likert id="Q08"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q08']" />
+        <likert id="Q09"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q09']" />
+        <likert id="Q10"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q10']" />
+        <likert id="Q11"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q11']" />
+        <likert id="Q12"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q12']" />
+        <likert id="Q13"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q13']" />
+        <likert id="Q14"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q14']" />
+        <likert id="Q15"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q15']" />
+        <likert id="Q16"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q16']" />
+        <likert id="Q17"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q17']" />
+        <likert id="Q18"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q18']" />
+        <likert id="Q19"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q19']" />
+        <likert id="Q20"
+                template="TEMPLATE"
+                instruction="dynamic: STAITText['Q20']" />
+        </content>
 </meta-survey>
+
+<meta-survey ID="PANAS"
+                control="subject"
+                experimental-setup-id="survey"
+                name="PANAS">
+        <templates>
+        <likert id="TEMPLATE"
+                title="dynamic: PANASText['QUESTION']">
+        <choice value="0" label="dynamic: PANASText['L1']"/>
+        <choice value="1" label="dynamic: PANASText['L2']"/>
+        <choice value="2" label="dynamic: PANASText['L3']"/>
+        <choice value="3" label="dynamic: PANASText['L4']"/>
+        <choice value="4" label="dynamic: PANASText['L5']"/>
+        
+        </likert>
+        </templates>
+        <content>
+        <likert id="Q01"
+                 template="TEMPLATE"
+                instruction="dynamic: PANASText['Q01']" />
+        <likert id="Q02"
+                 template="TEMPLATE"
+                 instruction="dynamic: PANASText['Q02']" />
+        <likert id="Q03"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q03']" />
+        <likert id="Q04"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q04']" />
+        <likert id="Q05"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q05']" />
+        <likert id="Q06"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q06']" />
+        <likert id="Q07"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q07']" />
+        <likert id="Q08"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q08']" />
+        <likert id="Q09"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q09']" />
+        <likert id="Q10"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q10']" />
+        <likert id="Q11"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q11']" />
+        <likert id="Q12"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q12']" />
+        <likert id="Q13"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q13']" />
+        <likert id="Q14"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q14']" />
+        <likert id="Q15"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q15']" />
+        <likert id="Q16"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q16']" />
+        <likert id="Q17"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q17']" />
+        <likert id="Q18"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q18']" />
+        <likert id="Q19"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q19']" />
+        <likert id="Q20"
+                template="TEMPLATE"
+                instruction="dynamic: PANASText['Q20']" />
+        </content>
+</meta-survey>
+
+        <meta-survey ID="SCALES"
+                     name="Scales"
+                     experimental-setup-id="survey"
+                     control="subject">
+                <content>
+                        <visual-analog-scale id="STRESS"
+                        title="dynamic: SCALESText['title']"
+                        length="10"
+                        active-color="rgb(255,0,0)"
+                        inactive-color="rgb(32,32,32)"
+                        instruction="dynamic: SCALESText['instruction']"
+                        bottom-anchor="dynamic: SCALESText['bottom-anchor']"
+                        top-anchor="dynamic: SCALESText['top-anchor']" />
+                </content>
+        </meta-survey>
+        
 
         </tests>
         <assets>
@@ -198,8 +403,22 @@
                 <language code="IT" file="STAI_S_TEXT_IT.py"/>
                 <language code="FR" file="STAI_S_TEXT_FR.py"/>
             </file-asset>
-            
-            <file-asset id="STAIINSTRUCTION" file="STAIINSTRUCTION_EN.rtf"></file-asset>
+
+            <file-asset id="STAITTEXT" file="STAI_T_TEXT_EN.py">
+                <language code="DA" file="STAI_T_TEXT_DA.py"/>
+                <language code="IT" file="STAI_T_TEXT_IT.py"/>
+                <language code="FR" file="STAI_T_TEXT_FR.py"/>
+            </file-asset>
+
+            <file-asset id="PANASTEXT" file="PANAS_TEXT_EN.py">
+                <language code="DA" file="PANAS_TEXT_DA.py"/>
+                <language code="IT" file="PANAS_TEXT_IT.py"/>
+                <language code="FR" file="PANAS_TEXT_FR.py"/>
+            </file-asset>
+
+            <file-asset id="STAISINSTRUCTION" file="STAISINSTRUCTION_EN.rtf"></file-asset>
+            <file-asset id="STAITINSTRUCTION" file="STAITINSTRUCTION_EN.rtf"></file-asset>
+            <file-asset id="SCALESTEXT" file="SCALES_TEXT_EN.py"></file-asset>
 
         </assets>
     </protocol>

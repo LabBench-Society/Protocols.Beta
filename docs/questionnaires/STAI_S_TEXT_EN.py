@@ -1,6 +1,6 @@
 def CreateText(tc):
    	return {
-		"QUESTION": "A number of statements which people have used to describe themselves are given below. Read each statement and then check the appropriate box to the right of the statement to indicate how you feel right now, that is, at this moment. There are no right or wrong answers. Do not spend too much time on anyone statement but give the answer which seems to describe your present feelings best.",
+		"QUESTION": "...",
 		"Q01": "I feel calm",
 		"Q02": "I feel secure",
 		"Q03": "I feel tense",

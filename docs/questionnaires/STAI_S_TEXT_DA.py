@@ -1,6 +1,6 @@
 def CreateText(tc):
    	return {
-		"QUESTION": "Nedenfor er en række udsagn givet, som folk har brugt til at beskrive dem selv med. Læs hvert udsagn og kryds af i det felt, der bedst beskriver, hvordan du har det i netop dette øjeblik. Det er ingen rigtige eller forkerte svar. Brug ikke for meget tid til at tænke over hvert udsagn, men angiv det udsagn der bedst beskriver dine følelser lige nu.",
+		"QUESTION": "...",
 		"Q01": "Jeg føler mig rolig",
 		"Q02": "Jeg føler mig tryg",
 		"Q03": "Jeg føler mig anspændt",

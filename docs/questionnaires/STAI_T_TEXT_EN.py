@@ -1,6 +1,6 @@
 def CreateText(tc):
    	return {
-		"QUESTION": "A number of statements which people have used to describe themselves are given below. Read each statement and then check the appropriate box to the right of the statement to indicate you generally feel.",
+		"QUESTION": "...",
 		"Q01": "I feel pleasant",
 		"Q02": "I feel nervous and restless",
 		"Q03": "I feel satisfied with myself",
