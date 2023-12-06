@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/4.0.0/experiment.xsd">
-    <description>
-	    <!-- SHAM = Exact same protocol for the Earlobe -->
-	</description>
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/experiment.xsd">
+    <description />
     <subject-validator regex="^S[0-9]{3}$"
                        advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup>
@@ -71,26 +69,25 @@
                     value="1"/>
             <define name="StopRule"
                     value="8"/>
-
+			<!-- HZ -->
             <define name="StimFreq"
                     value="25"/>
-            <!-- Hz -->
+            <!-- total stimulation duration in thresholding in seconds -->
             <define name="StimTestDuration"
                     value="1.0"/>
-            <!-- s-->
+            <!-- total stimulation duration in protocol in seconds-->
             <define name="StimDuration"
                     value="2*60"/>
-            <!-- s-->
+            <!-- pulse width in milli seconds SHOULD BE MICRO-->
             <define name="Ts"
                     value="0.2"/>
-            <!-- ms -->
+            <!-- charge balancing -->
             <define name="ChBalRat"
                     value="4"/>
-            <!-- Ratio-->
         </defines>
         <tests>
-            <psychophysics-stimulus-presentation ID="T01"
-                                                 name="Stimulus Presentation"
+            <psychophysics-stimulus-presentation ID="taVNSPres"
+                                                 name="taVNS Presentation"
                                                  stimulus-update-rate="20000">
                 <intensity type="geomspace"
                            x0="Stimulator.Imax/50"
@@ -121,9 +118,44 @@
                     </stimulus>
                 </stimulation>
             </psychophysics-stimulus-presentation>
+			
+			<psychophysics-stimulus-presentation ID="earlobePres"
+                                                 name="Earlobe Presentation"
+												 stimulus-update-rate="20000">
+				<intensity type="geomspace"
+                           x0="Stimulator.Imax/50"
+                           x1="Stimulator.Imax"
+                           n="50"/>
 
-            <psychophysics-threshold-estimation ID="T02"
-                                                name="Perception Threshold Determination"
+				<responses response-collection="yes-no" />
+
+				<triggers start-triggger="internal">
+					<trigger duration="10">
+						<code output="Digital" value="1" />
+						<code output="Code" value="1"/>
+					</trigger>
+				</triggers>
+
+				<stimulation>
+					<stimulus>
+						<repeated N="(int) (StimTestDuration*StimFreq)"
+                                  Tperiod="1000/StimFreq">
+							<combined>
+								<arbitrary expression="x"
+                                        Ts="Ts"/>
+								<arbitrary expression="-x/ChBalRat"
+                                        Tdelay="Ts"
+                                        Ts="ChBalRat*Ts"/>
+							</combined>
+						</repeated>
+					</stimulus>
+				</stimulation>
+			</psychophysics-stimulus-presentation>
+			
+			<!-- STIMULUS DETERMINATION FUNCTION --> 
+			
+            <psychophysics-threshold-estimation ID="TDPerTaVNS"
+                                                name="Perception Threshold Determination - taVNS"
                                                 stimulus-update-rate="20000">
                 <update-rate-deterministic value="2500" />
 
@@ -133,6 +165,13 @@
 
                 <yes-no-task />
 
+				<dependencies>
+					<dependency TDS=""['FirstCondition']="1"/>
+					<!-- condition that this is unlocked is FirstC == 1 or once the percept and pain of earlobe is done) -->
+					<dependency ID="TDPerEarlobe"/>
+					<dependency ID="TDTolEarlobe"/>
+				</dependencies>
+				
                 <channels>
                     <channel ID="PULSE"
                              channel-type="single-sample"
@@ -141,7 +180,7 @@
                         <up-down-method down-rule="1"
                                         up-rule="1"
                                         skip-rule="SkipRule"
-                                        start-intensity="StartIntensityPerception/Stimulator.Imax"
+                                        start-intensity="StartIntensityPerception"
                                         step-size-up="StepSize"
                                         step-size-down="StepSize"
                                         step-size-type="relative"
@@ -178,8 +217,8 @@
                 </channels>
             </psychophysics-threshold-estimation>
 
-            <psychophysics-threshold-estimation ID="T03"
-                                                name="Tolerance Threshold Determination"
+            <psychophysics-threshold-estimation ID="TDTolTaVNS"
+                                                name="Tolerance Threshold Determination - taVNS"
                                                 stimulus-update-rate="20000">
                 <update-rate-deterministic value="2500" />
 
@@ -189,6 +228,14 @@
 
                 <yes-no-task />
 
+				<dependencies>
+					<dependency ID="TDPerTaVNS"/>
+					<dependency ID="TDS['FirstCondition']"/>
+					<!-- condition that this is unlocked is FirstC == 1 or once the percept and pain of earlobe is done) -->
+					<dependency ID="TDPerEarlobe"/>
+					<dependency ID="TDTolEarlobe"/>
+				</dependencies>
+				
                 <channels>
                     <channel ID="PULSE"
                              channel-type="single-sample"
@@ -197,7 +244,7 @@
                         <up-down-method down-rule="1"
                                         up-rule="1"
                                         skip-rule="SkipRule"
-                                        start-intensity="StartIntensityTolerance/Stimulator.Imax"
+                                        start-intensity="StartIntensityTolerance"
                                         step-size-up="StepSize"
                                         step-size-down="StepSize"
                                         step-size-type="relative"
@@ -234,227 +281,10 @@
                     </channel>
                 </channels>
             </psychophysics-threshold-estimation>
-
-            <electrophysiology-evoked-potentials ID="T04"
-                                                 name="VGN Stimulation (Perception Threshold)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-                <dependencies>
-                    <dependency ID="T02"/>
-                    <dependency ID="T03"/>
-                </dependencies>
-
-                <configuration>
-                    <trigger-generation trigger-source="internal"/>
-                </configuration>
-
-                <stimulation-pattern time-base="seconds">
-                    <sequence iterations="1"
-                              Tperiod="StimDuration" 
-                              stimulate="true" />
-                </stimulation-pattern>
-
-                <stimuli order="round-robin">
-                    <stimulus name="Stimulus"
-                              count="1"
-                              intensity="T02['PULSE']">
-                        <triggers>
-                            <trigger duration="10">
-                                <code output="Digital" value="1" />
-                                <code output="Code" value="1"/>
-                            </trigger>
-                        </triggers>
-
-                        <stimulus>
-                            <repeated N="StimFreq*StimDuration"
-                                      Tperiod="1000/StimFreq">
-                                <combined>
-                                    <arbitrary expression="x"
-                                            Ts="Ts"/>
-                                    <arbitrary expression="-x/ChBalRat"
-                                            Tdelay="Ts"
-                                            Ts="ChBalRat*Ts"/>
-                                </combined>
-                            </repeated>
-                        </stimulus>
-                    </stimulus>
-                </stimuli>
-            </electrophysiology-evoked-potentials>
-
-            <electrophysiology-evoked-potentials ID="T05"
-                                                 name="VGN Stimulation (1/3 x Per/Tol Range)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-                <dependencies>
-                    <dependency ID="T02"/>
-                    <dependency ID="T03"/>
-                </dependencies>
-
-                <configuration>
-                    <trigger-generation trigger-source="internal"/>
-                </configuration>
-
-                <stimulation-pattern time-base="seconds">
-                    <sequence iterations="1"
-                              Tperiod="StimDuration" 
-                              stimulate="true" />
-                </stimulation-pattern>
-
-                <stimuli order="round-robin">
-                    <stimulus name="Stimulus"
-                              count="1"
-                              intensity="(T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
-                        <triggers>
-                            <trigger duration="10">
-                                <code output="Digital" value="1" />
-                                <code output="Code" value="1"/>
-                            </trigger>
-                        </triggers>
-
-                        <stimulus>
-                            <repeated N="StimFreq*StimDuration"
-                                      Tperiod="1000/StimFreq">
-                                <combined>
-                                    <arbitrary expression="x"
-                                            Ts="Ts"/>
-                                    <arbitrary expression="-x/ChBalRat"
-                                            Tdelay="Ts"
-                                            Ts="ChBalRat*Ts"/>
-                                </combined>
-                            </repeated>
-                        </stimulus>
-                    </stimulus>
-                </stimuli>
-            </electrophysiology-evoked-potentials>
-
-            <electrophysiology-evoked-potentials ID="T06"
-                                                 name="VGN Stimulation (2/3 x Per/Tol Range)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-                <dependencies>
-                    <dependency ID="T02"/>
-                    <dependency ID="T03"/>
-                </dependencies>
-
-                <configuration>
-                    <trigger-generation trigger-source="internal"/>
-                </configuration>
-
-                <stimulation-pattern time-base="seconds">
-                    <sequence iterations="1"
-                              Tperiod="StimDuration" 
-                              stimulate="true" />
-                </stimulation-pattern>
-
-                <stimuli order="round-robin">
-                    <stimulus name="Stimulus"
-                              count="1"
-                              intensity="2 * (T03['PULSE'] - T02['PULSE'])/3 + T02['PULSE']">
-                        <triggers>
-                            <trigger duration="10">
-                                <code output="Digital" value="1" />
-                                <code output="Code" value="1"/>
-                            </trigger>
-                        </triggers>
-
-                        <stimulus>
-                            <repeated N="StimFreq*StimDuration"
-                                      Tperiod="1000/StimFreq">
-                                <combined>
-                                    <arbitrary expression="x"
-                                            Ts="Ts"/>
-                                    <arbitrary expression="-x/ChBalRat"
-                                            Tdelay="Ts"
-                                            Ts="ChBalRat*Ts"/>
-                                </combined>
-                            </repeated>
-                        </stimulus>
-                    </stimulus>
-                </stimuli>
-            </electrophysiology-evoked-potentials>
-
-            <electrophysiology-evoked-potentials ID="T07"
-                                                 name="VGN Stimulation (Tolerance)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-                <dependencies>
-                    <dependency ID="T02"/>
-                    <dependency ID="T03"/>
-                </dependencies>
-
-                <configuration>
-                    <trigger-generation trigger-source="internal"/>
-                </configuration>
-
-                <stimulation-pattern time-base="seconds">
-                    <sequence iterations="1"
-                              Tperiod="StimDuration" 
-                              stimulate="true" />
-                </stimulation-pattern>
-
-                <stimuli order="round-robin">
-                    <stimulus name="Stimulus"
-                              count="1"
-                              intensity="T03['PULSE']">
-                        <triggers>
-                            <trigger duration="10">
-                                <code output="Digital" value="1" />
-                                <code output="Code" value="1"/>
-                            </trigger>
-                        </triggers>
-
-                        <stimulus>
-                            <repeated N="StimFreq*StimDuration"
-                                      Tperiod="1000/StimFreq">
-                                <combined>
-                                    <arbitrary expression="x"
-                                            Ts="Ts"/>
-                                    <arbitrary expression="-x/ChBalRat"
-                                            Tdelay="Ts"
-                                            Ts="ChBalRat*Ts"/>
-                                </combined>
-                            </repeated>
-                        </stimulus>
-                    </stimulus>
-                </stimuli>
-            </electrophysiology-evoked-potentials>
 			
-			<psychophysics-stimulus-presentation ID="T08"
-												 name="Stimulus Presentation Earlobe"
-												 stimulus-update-rate="20000">
-				<intensity type="geomspace"
-                           x0="Stimulator.Imax/50"
-                           x1="Stimulator.Imax"
-                           n="50"/>
-
-				<responses response-collection="yes-no" />
-
-				<triggers start-triggger="internal">
-					<trigger duration="10">
-						<code output="Digital" value="1" />
-						<code output="Code" value="1"/>
-					</trigger>
-				</triggers>
-
-				<stimulation>
-					<stimulus>
-						<repeated N="(int) (StimTestDuration*StimFreq)"
-                                  Tperiod="1000/StimFreq">
-							<combined>
-								<arbitrary expression="x"
-                                        Ts="Ts"/>
-								<arbitrary expression="-x/ChBalRat"
-                                        Tdelay="Ts"
-                                        Ts="ChBalRat*Ts"/>
-							</combined>
-						</repeated>
-					</stimulus>
-				</stimulation>
-			</psychophysics-stimulus-presentation>
-
-			<psychophysics-threshold-estimation ID="T09"
-                                                name="Perception Threshold Determination Earlobe"
-                                                stimulus-update-rate="20000">
+			<psychophysics-threshold-estimation ID="TDPerEarlobe"
+                                                name="Perception Threshold Determination - Earlobe"
+												stimulus-update-rate="20000">
 				<update-rate-deterministic value="2500" />
 
 				<configuration>
@@ -463,6 +293,13 @@
 
 				<yes-no-task />
 
+				<dependencies>
+					<dependency ID="TDS['FirstCondition']"/>
+					<!-- condition that this is unlocked is FirstC == 1 or once the percept and pain of earlobe is done) -->
+					<dependency ID="TDPerTaVNS"/>
+					<dependency ID="TDTolTaVNS"/>
+				</dependencies>
+				
 				<channels>
 					<channel ID="PULSE"
                              channel-type="single-sample"
@@ -471,7 +308,7 @@
 						<up-down-method down-rule="1"
                                         up-rule="1"
                                         skip-rule="SkipRule"
-                                        start-intensity="StartIntensityPerception/Stimulator.Imax"
+                                        start-intensity="StartIntensityPerception"
                                         step-size-up="StepSize"
                                         step-size-down="StepSize"
                                         step-size-type="relative"
@@ -508,8 +345,126 @@
 				</channels>
 			</psychophysics-threshold-estimation>
 
-			<psychophysics-threshold-estimation ID="T10"
-                                                name="Tolerance Threshold Determination Earlobe"
+			<psychophysics-threshold-estimation ID="TDTolEarlobe"
+                                                name="Tolerance Threshold Determination - Earlobe"
+                                                stimulus-update-rate="20000">
+				<update-rate-deterministic value="2500" />
+
+				<configuration>
+					<trigger-generation trigger-source="internal"/>
+				</configuration>
+
+				<yes-no-task />
+
+				<dependencies>
+					<dependency ID="TDS['FirstCondition']"/>
+					<!-- condition that this is unlocked is FirstC == 1 or once the percept and pain of earlobe is done) -->
+					<dependency ID="TDPerTaVNS"/>
+					<dependency ID="TDTolTaVNS"/>
+					<dependency ID="TDPerEarlobe"/>
+				</dependencies>
+				
+				<channels>
+					<channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+						<up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityTolerance"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        step-size-reduction="StepSizeReduction"
+                                        initial-direction="increasing"
+                                        stop-rule="StopRule">
+							<quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+						</up-down-method>
+
+						<triggers>
+							<trigger duration="10">
+								<code output="Digital" value="1" />
+								<code output="Code" value="1"/>
+							</trigger>
+						</triggers>
+
+						<stimulus>
+
+							<repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq">
+								<combined>
+									<arbitrary expression="x"
+                                            Ts="Ts"/>
+									<arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+								</combined>
+							</repeated>
+						</stimulus>
+					</channel>
+				</channels>
+			</psychophysics-threshold-estimation>
+			
+			<!-- STIMULATION CONDITION SELECTION --> 
+			
+            <electrophysiology-evoked-potentials ID="stimulationOne"
+                                                 name="Stimulation One"
+                                                 stimulus-update-rate="20000"
+                                                 response-collection="none">
+                <dependencies>
+                    <dependency ID="TDPerTaVNS"/>
+                    <dependency ID="TDTolTaVNS"/>
+					<dependency ID="TDPerEarlobe"/>
+					<dependency ID="TDTolEarlobe"/>
+                </dependencies>
+
+                <configuration>
+                    <trigger-generation trigger-source="internal"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1"
+                              Tperiod="StimDuration" 
+                              stimulate="true" />
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Stimulus"
+                              count="1"
+							  intensity ="2 *(TDTolTaVNS['PULSE']-TDPerTaVNS['PULSE'])/3+TDPerTaVNS['PULSE']">
+                        <triggers>
+                            <trigger duration="10">
+                                <code output="Digital" value="1" />
+                                <code output="Code" value="1"/>
+                            </trigger>
+                        </triggers>
+
+                        <stimulus>
+                            <repeated N="StimFreq*StimDuration"
+                                      Tperiod="1000/StimFreq">
+                                <combined>
+                                    <arbitrary expression="x"
+                                            Ts="Ts"/>
+                                    <arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+                                </combined>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                </stimuli>
+            </electrophysiology-evoked-potentials>
+
+			<!-- CHECK UP --> 
+			<!-- THRESHOLD CONDITION SELECTION --> 
+			
+			<psychophysics-threshold-estimation ID="TDPerTaVNS2"
+                                                name="Perception Threshold Determination - taVNS 2"
                                                 stimulus-update-rate="20000">
 				<update-rate-deterministic value="2500" />
 
@@ -527,7 +482,63 @@
 						<up-down-method down-rule="1"
                                         up-rule="1"
                                         skip-rule="SkipRule"
-                                        start-intensity="StartIntensityTolerance/Stimulator.Imax"
+                                        start-intensity="StartIntensityPerception"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        initial-direction="increasing"
+                                        step-size-reduction="StepSizeReduction"
+                                        stop-rule="StopRule">
+							<quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+						</up-down-method>
+
+						<triggers>
+							<trigger duration="10">
+								<code output="Digital" value="1" />
+								<code output="Code" value="1"/>
+							</trigger>
+						</triggers>
+
+						<stimulus>
+							<repeated N="(int) (StimTestDuration*StimFreq)"
+                                      Tperiod="1000/StimFreq">
+								<combined>
+									<arbitrary expression="x"
+                                            Ts="Ts"/>
+									<arbitrary expression="-x/ChBalRat"
+                                            Tdelay="Ts"
+                                            Ts="ChBalRat*Ts"/>
+								</combined>
+							</repeated>
+						</stimulus>
+					</channel>
+				</channels>
+			</psychophysics-threshold-estimation>
+
+			<psychophysics-threshold-estimation ID="TDTolTaVNS2"
+                                                name="Tolerance Threshold Determination - taVNS 2"
+                                                stimulus-update-rate="20000">
+				<update-rate-deterministic value="2500" />
+
+				<configuration>
+					<trigger-generation trigger-source="internal"/>
+				</configuration>
+
+				<yes-no-task />
+
+				<channels>
+					<channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+						<up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityTolerance"
                                         step-size-up="StepSize"
                                         step-size-down="StepSize"
                                         step-size-type="relative"
@@ -565,29 +576,39 @@
 				</channels>
 			</psychophysics-threshold-estimation>
 
-			<electrophysiology-evoked-potentials ID="T11"
-                                                 name="Earlobe Stimulation (Perception Threshold)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-				<dependencies>
-					<dependency ID="T09"/>
-					<dependency ID="T10"/>
-				</dependencies>
+			<psychophysics-threshold-estimation ID="TDPerEarlobe2"
+                                                name="Perception Threshold Determination - Earlobe 2"
+												stimulus-update-rate="20000">
+				<update-rate-deterministic value="2500" />
 
 				<configuration>
 					<trigger-generation trigger-source="internal"/>
 				</configuration>
 
-				<stimulation-pattern time-base="seconds">
-					<sequence iterations="1"
-                              Tperiod="StimDuration"
-                              stimulate="true" />
-				</stimulation-pattern>
+				<yes-no-task />
 
-				<stimuli order="round-robin">
-					<stimulus name="Stimulus"
-                              count="1"
-                              intensity="T09['PULSE']">
+				<channels>
+					<channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+						<up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityPerception"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        initial-direction="increasing"
+                                        step-size-reduction="StepSizeReduction"
+                                        stop-rule="StopRule">
+							<quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+						</up-down-method>
+
 						<triggers>
 							<trigger duration="10">
 								<code output="Digital" value="1" />
@@ -596,7 +617,7 @@
 						</triggers>
 
 						<stimulus>
-							<repeated N="StimFreq*StimDuration"
+							<repeated N="(int) (StimTestDuration*StimFreq)"
                                       Tperiod="1000/StimFreq">
 								<combined>
 									<arbitrary expression="x"
@@ -607,33 +628,43 @@
 								</combined>
 							</repeated>
 						</stimulus>
-					</stimulus>
-				</stimuli>
-			</electrophysiology-evoked-potentials>
+					</channel>
+				</channels>
+			</psychophysics-threshold-estimation>
 
-			<electrophysiology-evoked-potentials ID="T12"
-                                                 name="Earlobe Stimulation (1/3 x Per/Tol Range)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-				<dependencies>
-					<dependency ID="T09"/>
-					<dependency ID="T10"/>
-				</dependencies>
+			<psychophysics-threshold-estimation ID="TDTolEarlobe2"
+                                                name="Tolerance Threshold Determination - Earlobe 2"
+                                                stimulus-update-rate="20000">
+				<update-rate-deterministic value="2500" />
 
 				<configuration>
 					<trigger-generation trigger-source="internal"/>
 				</configuration>
 
-				<stimulation-pattern time-base="seconds">
-					<sequence iterations="1"
-                              Tperiod="StimDuration"
-                              stimulate="true" />
-				</stimulation-pattern>
+				<yes-no-task />
 
-				<stimuli order="round-robin">
-					<stimulus name="Stimulus"
-                              count="1"
-                              intensity="(T10['PULSE'] - T09['PULSE'])/3 + T09['PULSE']">
+				<channels>
+					<channel ID="PULSE"
+                             channel-type="single-sample"
+                             Imax="Stimulator.Imax"
+                             name="Pulse (200us)">
+						<up-down-method down-rule="1"
+                                        up-rule="1"
+                                        skip-rule="SkipRule"
+                                        start-intensity="StartIntensityTolerance"
+                                        step-size-up="StepSize"
+                                        step-size-down="StepSize"
+                                        step-size-type="relative"
+                                        max-step-size-reduction="MaxStepSizeReduction"
+                                        step-size-reduction="StepSizeReduction"
+                                        initial-direction="increasing"
+                                        stop-rule="StopRule">
+							<quick alpha="0.5"
+                                   beta="1"
+                                   lambda="0.02"
+                                   gamma="0.0" />
+						</up-down-method>
+
 						<triggers>
 							<trigger duration="10">
 								<code output="Digital" value="1" />
@@ -642,7 +673,8 @@
 						</triggers>
 
 						<stimulus>
-							<repeated N="StimFreq*StimDuration"
+
+							<repeated N="(int) (StimTestDuration*StimFreq)"
                                       Tperiod="1000/StimFreq">
 								<combined>
 									<arbitrary expression="x"
@@ -653,17 +685,17 @@
 								</combined>
 							</repeated>
 						</stimulus>
-					</stimulus>
-				</stimuli>
-			</electrophysiology-evoked-potentials>
-
-			<electrophysiology-evoked-potentials ID="T13"
-                                                 name="Earlobe Stimulation (2/3 x Per/Tol Range)"
+					</channel>
+				</channels>
+			</psychophysics-threshold-estimation>
+			
+			<electrophysiology-evoked-potentials ID="stimulationTwo"
+                                                 name="Stimulation Two"
                                                  stimulus-update-rate="20000"
                                                  response-collection="none">
 				<dependencies>
-					<dependency ID="T09"/>
-					<dependency ID="T10"/>
+					<dependency ID="TDPerEarlobe2"/>
+					<dependency ID="TDTolEarlobe2"/>
 				</dependencies>
 
 				<configuration>
@@ -679,53 +711,7 @@
 				<stimuli order="round-robin">
 					<stimulus name="Stimulus"
                               count="1"
-                              intensity="2 * (T10['PULSE'] - T09['PULSE'])/3 + T09['PULSE']">
-						<triggers>
-							<trigger duration="10">
-								<code output="Digital" value="1" />
-								<code output="Code" value="1"/>
-							</trigger>
-						</triggers>
-
-						<stimulus>
-							<repeated N="StimFreq*StimDuration"
-                                      Tperiod="1000/StimFreq">
-								<combined>
-									<arbitrary expression="x"
-                                            Ts="Ts"/>
-									<arbitrary expression="-x/ChBalRat"
-                                            Tdelay="Ts"
-                                            Ts="ChBalRat*Ts"/>
-								</combined>
-							</repeated>
-						</stimulus>
-					</stimulus>
-				</stimuli>
-			</electrophysiology-evoked-potentials>
-
-			<electrophysiology-evoked-potentials ID="T14"
-                                                 name="Earlobe Stimulation (Tolerance)"
-                                                 stimulus-update-rate="20000"
-                                                 response-collection="none">
-				<dependencies>
-					<dependency ID="T09"/>
-					<dependency ID="T10"/>
-				</dependencies>
-
-				<configuration>
-					<trigger-generation trigger-source="internal"/>
-				</configuration>
-
-				<stimulation-pattern time-base="seconds">
-					<sequence iterations="1"
-                              Tperiod="StimDuration"
-                              stimulate="true" />
-				</stimulation-pattern>
-
-				<stimuli order="round-robin">
-					<stimulus name="Stimulus"
-                              count="1"
-                              intensity="T10['PULSE']">
+							  intensity = "2 * (TDTolEarlobe['PULSE']-TDPerEarlobe['PULSE'])/3+TDPerTaVNS['PULSE']">
 						<triggers>
 							<trigger duration="10">
 								<code output="Digital" value="1" />
