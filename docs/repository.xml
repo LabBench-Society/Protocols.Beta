@@ -53,11 +53,6 @@
               labbench-version="4.0.0"
 			  category="Vagus Nerve Stimulation"/>
 
-        <protocol id="iteroTaVNS"
-			  name="Interoception taVNS"
-              labbench-version="4.0.0"
-			  category="Vagus Nerve Stimulation"/>
-
     <protocol id="painless"
 			  name="PAINLESS: Pain Relief in Cancer (WP1)"
 			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
