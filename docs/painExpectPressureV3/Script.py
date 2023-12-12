@@ -50,8 +50,8 @@ def CreateImageRepository(tc):
    
 class LearningTrial:
     def __init__(self, tc):
-        self.high = tc.StimulusName[0] == "H"
-        self.variant = tc.StimulusName[1] == "1"
+        self.high = 1 if tc.StimulusName[0] == "H" else 0
+        self.variant = 1 if tc.StimulusName[1] == "1" else 0
         self.cue = random.randint(0, 4)
         self.rating = -1
   
@@ -99,9 +99,9 @@ def RunLearning(tc, x):
 
 class TestTrial:
     def __init__(self, tc):
-        self.high = tc.StimulusName[0] == "H"
-        self.cue = tc.StimulusName[1] == "1"        
-        self.correct = tc.StimulusName[2] == "C"
+        self.high = 1 if tc.StimulusName[0] == "H" else 0
+        self.variant = 1 if tc.StimulusName[1] == "1" else 0        
+        self.congruent = 1 if tc.StimulusName[2] == "C" else 0
         self.ratingExpected
         self.ratingActual = -1;    
 
@@ -116,10 +116,21 @@ def AbortTestBlock(tc):
 
 def TestComplete(tc):
     tc.Current.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("correct", [trial.correct for trial in tc.TestTrials])
+    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.TestTrials])
+    tc.Current.Annotations.Add("congruent", [trial.congruent for trial in tc.TestTrials])
     tc.Current.Annotations.Add("ratingExpected", [trial.ratingExpected for trial in tc.TestTrials])
     tc.Current.Annotations.Add("ratingActual", [trial.ratingActual for trial in tc.TestTrials])
+
+    tc.Current.Annotations.Add("expectedHighCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+    tc.Current.Annotations.Add("actualHighCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+    tc.Current.Annotations.Add("expectedHighIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+    tc.Current.Annotations.Add("actualHighIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+
+    tc.Current.Annotations.Add("expectedLowCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+    tc.Current.Annotations.Add("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+    tc.Current.Annotations.Add("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+    tc.Current.Annotations.Add("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+
     tc.SavedTestTrials = tc.TestTrials.copy()
     return True
 
@@ -131,9 +142,9 @@ def TestRateExpectedPain(tc):
 def getIntensity(tc):
     trial = tc.TestTrials[-1]
     if trial.high == 1:
-        return tc.THR30['PULSE'] if trial.correct == 0 else tc.THR70['PULSE']
+        return tc.THR30['PULSE'] if trial.congruent == 0 else tc.THR70['PULSE']
     elif trial.high == 0:
-        return tc.THR70['PULSE'] if trial.correct == 0 else tc.THR30['PULSE']
+        return tc.THR70['PULSE'] if trial.congruent == 0 else tc.THR30['PULSE']
     else:
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
     
@@ -155,7 +166,7 @@ def RunTest(tc, x):
 
         display.Run(display.Sequence()
                     .Display(tc.Images.Marker, 500)
-                    .Display(tc.cue[trial.high][tc.cue[trial.cue]], 2000)
+                    .Display(tc.cue[trial.high][trial.variant], 2000)
                     .Display(tc.Images.TestRateExpectedPain, 4000)
                     .Run(TestRateExpectedPain)
                     .Display(tc.Images.Marker, 500)
