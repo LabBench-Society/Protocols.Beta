@@ -149,7 +149,7 @@ def getIntensity(tc):
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
     
 def TestStimulate(tc):
-    tc.Devices.Display.Display(tc.Images.Marker)
+    tc.Devices.Display.Display(tc.Images.MarkerWithFiducial)
     Stimulate(tc, getIntensity(tc))
     return 2000
 
