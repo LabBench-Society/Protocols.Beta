@@ -1,30 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.1.0/experiment.xsd">
+<experiment 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.1.0/experiment.xsd">
 <description>      
 </description>
-  <subject-validator regex="^S[0-9]{3}$"
-                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+  <subject-validator 
+    regex="^S[0-9]{3}$"
+    advice="Please enter an ID in the form of SXXX, where X is a digit" />
+
     <experimental-setup>
         <devices>
-            <cpar id="cpar" compressor-mode="MANUAL" />
-            <display id="display"
-                     active-color="rgb(255, 255, 255)"
-                     background-color="rgb(255, 255, 255)"
-                     inactive-color="rgb(0, 0, 0)"
-                     normative-distance="40"
-                     position="upper-right"
-                     screen="primary">
+            <cpar 
+                id="cpar" 
+                compressor-mode="MANUAL" />
+
+            <display 
+                id="display"
+                active-color="rgb(255, 255, 255)"
+                background-color="rgb(255, 255, 255)"
+                inactive-color="rgb(0, 0, 0)"
+                normative-distance="40"
+                position="upper-right"
+                screen="primary">
                 
-                <monitor diagonal-size="13"
-                         diagonal-size-unit="inch"
-                         distance="40"
-                         length-unit="cm"/>
+                <monitor 
+                    diagonal-size="13"
+                    diagonal-size-unit="inch"
+                    distance="40"
+                    length-unit="cm"/>
 
                 <configurations>
-                    <image-display id="image"
-                                   experimental-setup-id="display"
-                                   background-color="rgb(255, 255, 255)"/>
+                    <image-display 
+                        id="image"
+                        experimental-setup-id="display"
+                        background-color="rgb(255, 255, 255)"/>
                 </configurations>
             </display>
         </devices>
@@ -68,75 +77,103 @@
     </experimental-setup>   
     <protocol>
         <languages>
-            <language name="German" code="de"/>
-            <language name="English" code="en"/>
+            <language 
+                name="German" 
+                code="de"/>
+            <language 
+                name="English" 
+                code="en"/>
         </languages>
         <defines>
-            <define name="LearningTaskBlockSize" value="20"/> <!-- correct value: 20 -->
-            <define name="TestTaskBlockSize" value="12"/> <!--correct value: 12 -->
-            <define name="Images" value="func: Script.CreateImageRepository(tc)"/>
+            <define 
+                name="LearningTaskBlockSize" 
+                value="20"/> <!-- correct value: 20 -->
+            <define 
+                name="TestTaskBlockSize" 
+                value="12"/> <!--correct value: 12 -->
+            <define 
+                name="Images" 
+                value="func: Script.CreateImageRepository(tc)"/>
         </defines>
         <tests>
-            <psychophysics-stimulus-presentation ID="PRESENTATION"
-                                                 name="Presentation of pressure stimuli"
-                                                 experimental-setup-id="display"
-                                                 stimulus-update-rate="50">
-                <intensity type="array"
-                           value="range(5, 101, 5)" />
+            <psychophysics-stimulus-presentation 
+                ID="PRESENTATION"
+                name="Presentation of pressure stimuli"
+                experimental-setup-id="display"
+                stimulus-update-rate="50">
+
+                <intensity 
+                    type="array"
+                    value="range(5, 101, 5)" />
     
                 <responses response-collection="ratio-rating"/>
                 
                 <stimulation>
-                    <scripts initialize="True"
-                             stimulate="func: Script.Stimulate(tc,x)"
-                             stimulus-description="Pressure"
-                             stimulus-unit="kPa">
-                        <instrument name="Algometer"
-                                    interface="pressure-algometer"
-                                    required="true"/>                
+                    <scripts 
+                        initialize="True"
+                        stimulate="func: Script.Stimulate(tc,x)"
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
+
+                        <instrument 
+                            name="Algometer"
+                            interface="pressure-algometer"
+                            required="true"/>                
                     </scripts>
                 </stimulation>        
             </psychophysics-stimulus-presentation>
     
-            <psychophysics-threshold-estimation ID="THR30"
-                                                name="Threshold (VAS 3)"
-                                                experimental-setup-id="display"
-                                                stimulus-update-rate="50">
+            <psychophysics-threshold-estimation 
+                ID="THR30"
+                name="Threshold (VAS 3)"
+                experimental-setup-id="display"
+                stimulus-update-rate="50">
+
                 <dependencies>
                     <dependency ID="PRESENTATION"/>
                 </dependencies>
     
-                <update-rate-random min="4000" max="6000"/>
+                <update-rate-random 
+                    min="4000" 
+                    max="6000"/>
     
                 <ratio-rating-task target="3"/>
     
-                <stimulation-scripts initialize="True"
-                             stimulate="func: Script.Stimulate(tc,x)"
-                             stimulus-description="Pressure"
-                             stimulus-unit="kPa">
-                    <instrument name="Algometer"
-                                interface="pressure-algometer"
-                                required="true"/>
+                <stimulation-scripts 
+                    initialize="True"
+                    stimulate="func: Script.Stimulate(tc,x)"
+                    stimulus-description="Pressure"
+                    stimulus-unit="kPa">
+
+                    <instrument 
+                        name="Algometer"
+                        interface="pressure-algometer"
+                        required="true"/>
                 </stimulation-scripts>
     
                 <channels>
-                    <channel ID="PULSE"
-                             name="Pulse (1s)"
-                             Imax="100"
-                             Imin="0"
-                             channel-type="single-sample">
-                        <up-down-method reversal-rule="1"
-                                        step-size="0.1"
-                                        initial-direction="increasing"
-                                        start-intensity="PRESENTATION.Intensity"
-                                        step-size-type="relative"
-                                        max-step-size-reduction="0.1"
-                                        step-size-reduction="0.5"
-                                        skip-rule="0"
-                                        stop-rule="2" />
+                    <channel 
+                        ID="PULSE"
+                        name="Pulse (1s)"
+                        Imax="100"
+                        Imin="0"
+                        channel-type="single-sample">
+
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
     
                         <stimulus>
-                            <pulse Is="x" Ts="1000" Tdelay="0"/>
+                            <pulse 
+                                Is="x" 
+                                Ts="1000" />
                         </stimulus>
                     </channel>
                 </channels>
