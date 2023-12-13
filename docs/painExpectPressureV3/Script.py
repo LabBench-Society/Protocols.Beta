@@ -62,6 +62,7 @@ class LearningTrial:
 def InitializeLearning(tc):
     try:
         tc.Defines.Set("LearningTrials", [])
+        tc.Devices.Display(tc.Images.Blank, 0)
         return True
     
     except Exception as e:
@@ -123,12 +124,13 @@ class TestTrial:
         self.high = 1 if tc.StimulusName[0] == "H" else 0
         self.variant = 1 if tc.StimulusName[1] == "1" else 0        
         self.congruent = 1 if tc.StimulusName[2] == "C" else 0
-        self.ratingExpected
+        self.ratingExpected = -1
         self.ratingActual = -1;    
 
 def InitializeTest(tc):
     try:
         tc.Defines.Set("TestTrials", [])
+        tc.Devices.Display(tc.Images.Blank, 0)
         return True
 
     except Exception as e:
@@ -201,9 +203,9 @@ def RunTest(tc, x):
         trial = TestTrial(tc)
         tc.TestTrials.append(trial)
 
-        display.Run(display.Sequence()
+        display.Run(display.Sequence(tc)
                     .Display(tc.Images.Marker, 500)
-                    .Display(tc.cue[trial.high][trial.variant], 2000)
+                    .Display(tc.Images.Cue[trial.high][trial.variant], 2000)
                     .Display(tc.Images.TestRateExpectedPain, 4000)
                     .Run(TestRateExpectedPain)
                     .Display(tc.Images.Marker, 500)

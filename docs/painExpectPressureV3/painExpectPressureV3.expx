@@ -248,9 +248,7 @@
                 response-collection="none"
                 stimulus-update-rate="50">
 
-                <test-events
-                    complete="func: Script.LearningComplete(tc)" 
-                    abort="func: Script.AbortLearningBlock(tc)"/>
+                <test-events complete="func: Script.LearningComplete(tc)" />
 
                 <dependencies>
                     <dependency ID="THR30"/>
@@ -302,14 +300,12 @@
                 response-collection="none"
                 stimulus-update-rate="50">
 
-                <test-events 
-                    complete="func: Script.TestComplete(tc)"
-                    abort="func: Script.AbortTestBlock(tc)"/>
+                <test-events complete="func: Script.TestComplete(tc)" />
 
                 <dependencies>
                     <dependency ID="THR30"/>
                     <dependency ID="THR70"/>
-                    <dependency ID="LP4"/>
+                    <dependency ID="LP"/>
                 </dependencies>
     
                 <stimulation-scripts 
