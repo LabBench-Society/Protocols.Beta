@@ -41,9 +41,9 @@ class ImageRepository:
         self.Blank = stimuli.GetAsset("Blank.png").Data
         self.Marker = stimuli.GetAsset("Marker.png").Data
         self.MarkerWithFiducial = stimuli.GetAsset("MarkerWithFiducial.png").Data
-        self.LearningRateExpectedPain = stimuli.GetAsset("LearningRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("LearningRateExpectedPainEn.png")
-        self.TestRateExpectedPain = stimuli.GetAsset("TestRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRateExpectedPainEN.png")
-        self.TestRatePain = stimuli.GetAsset("TestRatePainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRatePainEN.png")
+        self.LearningRateExpectedPain = stimuli.GetAsset("LearningRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("LearningRateExpectedPainEn.png").Data
+        self.TestRateExpectedPain = stimuli.GetAsset("TestRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRateExpectedPainEN.png").Data
+        self.TestRatePain = stimuli.GetAsset("TestRatePainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRatePainEN.png").Data
 
 def CreateImageRepository(tc):
     return ImageRepository(tc)
@@ -52,7 +52,7 @@ class LearningTrial:
     def __init__(self, tc):
         self.high = 1 if tc.StimulusName[0] == "H" else 0
         self.variant = 1 if tc.StimulusName[1] == "1" else 0
-        self.cue = random.randint(0, 3)
+        self.cue = random.randint(0, 4)
         self.rating = -1
   
 def InitializeLearning(tc):
