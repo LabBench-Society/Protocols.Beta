@@ -87,10 +87,10 @@
         <defines>
             <define 
                 name="LearningTaskBlockSize" 
-                value="20"/> <!-- correct value: 20 -->
+                value="1"/> <!-- correct value: 20 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="12"/> <!--correct value: 12 -->
+                value="1"/> <!--correct value: 12 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
@@ -269,7 +269,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="LearningTaskBlockSize" 
+                        iterations="LearningTaskBlockSize*NumberOfStimuli" 
                         Tperiod="11" />
                 </stimulation-pattern>
     
@@ -314,7 +314,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="LearningTaskBlockSize" 
+                        iterations="LearningTaskBlockSize*NumberOfStimuli" 
                         Tperiod="11" />
                 </stimulation-pattern>
     
@@ -359,7 +359,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="LearningTaskBlockSize" 
+                        iterations="LearningTaskBlockSize*NumberOfStimuli" 
                         Tperiod="11" />
                 </stimulation-pattern>
     
@@ -404,7 +404,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="LearningTaskBlockSize" 
+                        iterations="LearningTaskBlockSize*NumberOfStimuli" 
                         Tperiod="11" />
                 </stimulation-pattern>
     
@@ -455,7 +455,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="TestTaskBlockSize" 
+                        iterations="TestTaskBlockSize*NumberOfStimuli" 
                         Tperiod="17" />
                 </stimulation-pattern>
                 
@@ -510,7 +510,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="TestTaskBlockSize" 
+                        iterations="TestTaskBlockSize*NumberOfStimuli" 
                         Tperiod="17" />
                 </stimulation-pattern>
                 
@@ -565,7 +565,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="TestTaskBlockSize" 
+                        iterations="TestTaskBlockSize*NumberOfStimuli" 
                         Tperiod="17" />
                 </stimulation-pattern>
                 
@@ -619,7 +619,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="TestTaskBlockSize" 
+                        iterations="TestTaskBlockSize*NumberOfStimuli" 
                         Tperiod="17" />
                 </stimulation-pattern>
                 
@@ -674,7 +674,7 @@
     
                 <stimulation-pattern time-base="seconds">
                     <sequence 
-                        iterations="TestTaskBlockSize" 
+                        iterations="TestTaskBlockSize*NumberOfStimuli" 
                         Tperiod="17" />
                 </stimulation-pattern>
                 

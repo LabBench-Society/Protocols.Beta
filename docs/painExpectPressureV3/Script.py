@@ -28,22 +28,26 @@ class ImageRepository:
                 stimuli.GetAsset("Low32.png").Data,
                 stimuli.GetAsset("Low40.png").Data,
                 stimuli.GetAsset("Low45.png").Data,
-                stimuli.GetAsset("Low51.png").Data,            
-            ],
+                stimuli.GetAsset("Low51.png").Data],
             [
                 stimuli.GetAsset("High73.png").Data,
                 stimuli.GetAsset("High79.png").Data,
                 stimuli.GetAsset("High84.png").Data,
                 stimuli.GetAsset("High88.png").Data,
-                stimuli.GetAsset("High93.png").Data,
-            ]
+                stimuli.GetAsset("High93.png").Data]
         ]
         self.Blank = stimuli.GetAsset("Blank.png").Data
         self.Marker = stimuli.GetAsset("Marker.png").Data
         self.MarkerWithFiducial = stimuli.GetAsset("MarkerWithFiducial.png").Data
-        self.LearningRateExpectedPain = stimuli.GetAsset("LearningRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("LearningRateExpectedPainEn.png").Data
-        self.TestRateExpectedPain = stimuli.GetAsset("TestRateExpectedPainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRateExpectedPainEN.png").Data
-        self.TestRatePain = stimuli.GetAsset("TestRatePainDE.png") if tc.Language == "de" else stimuli.GetAsset("TestRatePainEN.png").Data
+        self.LearningRateExpectedPain = (stimuli.GetAsset("LearningRateExpectedPainDE.png") 
+                                         if tc.Language == "de" 
+                                         else stimuli.GetAsset("LearningRateExpectedPainEn.png").Data)
+        self.TestRateExpectedPain = (stimuli.GetAsset("TestRateExpectedPainDE.png") 
+                                     if tc.Language == "de" 
+                                     else stimuli.GetAsset("TestRateExpectedPainEN.png").Data)
+        self.TestRatePain = (stimuli.GetAsset("TestRatePainDE.png") 
+                             if tc.Language == "de" 
+                             else stimuli.GetAsset("TestRatePainEN.png").Data)
 
 def CreateImageRepository(tc):
     return ImageRepository(tc)
@@ -51,8 +55,8 @@ def CreateImageRepository(tc):
 class LearningTrial:
     def __init__(self, tc):
         self.high = 1 if tc.StimulusName[0] == "H" else 0
-        self.variant = 1 if tc.StimulusName[1] == "1" else 0
-        self.cue = random.randint(0, 4)
+        self.cue = 1 if tc.StimulusName[1] == "1" else 0
+        self.variant = random.randint(0, 4)
         self.rating = -1
   
 def InitializeLearning(tc):
@@ -99,6 +103,16 @@ def RunLearning(tc, x):
         display = tc.Devices.Display
         trial = LearningTrial(tc)
         tc.LearningTrials.append(trial)
+
+        Log.Information("TRIAL [ high: {high}:{cue}, feedback: {variant}]", 
+                        trial.high, 
+                        trial.cue, 
+                        trial.variant)
+        
+        Log.Information("Number of feedbacks {N} x ({M1},{m2})", 
+                        len(tc.Images.Feedback),
+                        len(tc.Images.Feedback[0]), 
+                        len(tc.Images.Feedback[1]))
 
         display.Run(display.Sequence(tc)
                     .Display(tc.Images.Marker, 500)
