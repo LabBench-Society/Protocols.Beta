@@ -52,29 +52,46 @@ class LearningTrial:
     def __init__(self, tc):
         self.high = 1 if tc.StimulusName[0] == "H" else 0
         self.variant = 1 if tc.StimulusName[1] == "1" else 0
-        self.cue = random.randint(0, 4)
+        self.cue = random.randint(0, 3)
         self.rating = -1
   
 def InitializeLearning(tc):
-    tc.Defines.Set("LearningTrials", [])
-    tc.Defines.Set("SavedLearningTrials", [])
-    return True
+    try:
+        tc.Defines.Set("LearningTrials", [])
+        tc.Defines.Set("SavedLearningTrials", [])
+        return True
+    
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+        return False
 
 def AbortLearningBlock(tc):
-    tc.LearningTrials = tc.SavedLearningTrials
+    try:
+        tc.LearningTrials = tc.SavedLearningTrials
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return True
 
 def LearningComplete(tc):
-    tc.Current.Annotations.Add("high", [trial.high for trial in tc.LearningTrials])
-    tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.LearningTrials])
-    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.LearningTrials])
-    tc.Current.Annotations.Add("rating", [trial.rating for trial in tc.LearningTrials])
-    tc.SavedLearningTrials = tc.LearningTrials.copy()
+    try:        
+        tc.Current.Annotations.Add("high", [trial.high for trial in tc.LearningTrials])
+        tc.Current.Annotations.Add("cue", [trial.cue for trial in tc.LearningTrials])
+        tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.LearningTrials])
+        tc.Current.Annotations.Add("rating", [trial.rating for trial in tc.LearningTrials])
+        tc.SavedLearningTrials = tc.LearningTrials.copy()
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return True
 
 def LearningRatingPain(tc):
-    tc.Devices.Display.Display(tc.Images.Marker)
-    tc.LearningTrials[-1].rating = tc.Devices.Response.GetCurrentRating() 
+    try:        
+        tc.Devices.Display.Display(tc.Images.Marker)
+        tc.LearningTrials[-1].rating = tc.Devices.Response.GetCurrentRating() 
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return 500
 
 def RunLearning(tc, x):
@@ -106,37 +123,54 @@ class TestTrial:
         self.ratingActual = -1;    
 
 def InitializeTest(tc):
-    tc.Defines.Set("TestTrials", [])
-    tc.Defines.Set("SavedTestTrials", [])
-    return True
+    try:
+        tc.Defines.Set("TestTrials", [])
+        tc.Defines.Set("SavedTestTrials", [])
+        return True
+
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+        return False
 
 def AbortTestBlock(tc):
-    tc.TestTrials = tc.SavedTestTrials
+    try:
+        tc.TestTrials = tc.SavedTestTrials
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return True
 
 def TestComplete(tc):
-    tc.Current.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("congruent", [trial.congruent for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("ratingExpected", [trial.ratingExpected for trial in tc.TestTrials])
-    tc.Current.Annotations.Add("ratingActual", [trial.ratingActual for trial in tc.TestTrials])
+    try:
+        tc.Current.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
+        tc.Current.Annotations.Add("variant", [trial.variant for trial in tc.TestTrials])
+        tc.Current.Annotations.Add("congruent", [trial.congruent for trial in tc.TestTrials])
+        tc.Current.Annotations.Add("ratingExpected", [trial.ratingExpected for trial in tc.TestTrials])
+        tc.Current.Annotations.Add("ratingActual", [trial.ratingActual for trial in tc.TestTrials])
 
-    tc.Current.Annotations.Add("expectedHighCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
-    tc.Current.Annotations.Add("actualHighCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
-    tc.Current.Annotations.Add("expectedHighIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
-    tc.Current.Annotations.Add("actualHighIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+        tc.Current.Annotations.Add("expectedHighCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+        tc.Current.Annotations.Add("actualHighCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+        tc.Current.Annotations.Add("expectedHighIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+        tc.Current.Annotations.Add("actualHighIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
 
-    tc.Current.Annotations.Add("expectedLowCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
-    tc.Current.Annotations.Add("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
-    tc.Current.Annotations.Add("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
-    tc.Current.Annotations.Add("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+        tc.Current.Annotations.Add("expectedLowCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+        tc.Current.Annotations.Add("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+        tc.Current.Annotations.Add("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+        tc.Current.Annotations.Add("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
 
-    tc.SavedTestTrials = tc.TestTrials.copy()
+        tc.SavedTestTrials = tc.TestTrials.copy()
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return True
 
 def TestRateExpectedPain(tc):
-    tc.Devices.Display.Display(tc.Images.Marker)
-    tc.TestTrials[-1].ratingExpected = tc.Devices.Response.GetCurrentRating() 
+    try:
+        tc.Devices.Display.Display(tc.Images.Marker)
+        tc.TestTrials[-1].ratingExpected = tc.Devices.Response.GetCurrentRating() 
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return 500
 
 def getIntensity(tc):
@@ -149,13 +183,21 @@ def getIntensity(tc):
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
     
 def TestStimulate(tc):
-    tc.Devices.Display.Display(tc.Images.MarkerWithFiducial)
-    Stimulate(tc, getIntensity(tc))
+    try:
+        tc.Devices.Display.Display(tc.Images.MarkerWithFiducial)
+        Stimulate(tc, getIntensity(tc))
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return 2000
 
 def TestRateActualPain(tc):
-    tc.Devices.Display.Display(tc.Images.Blank)
-    tc.TestTrials[-1].ratingActual = tc.Devices.Response.GetCurrentRating() 
+    try:
+        tc.Devices.Display.Display(tc.Images.Blank)
+        tc.TestTrials[-1].ratingActual = tc.Devices.Response.GetCurrentRating() 
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+
     return 10
 
 def RunTest(tc, x):
