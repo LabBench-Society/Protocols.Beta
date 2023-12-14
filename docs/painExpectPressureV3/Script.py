@@ -63,7 +63,7 @@ class LearningTrial:
 def InitializeLearning(tc):
     try:
         tc.Defines.Set("LearningTrials", [])
-        tc.Devices.Default(tc.Images.Blank)
+        tc.Devices.Display.Default(tc.Images.Blank)
         Log.Information("Initialized learning task")
         return True
     
