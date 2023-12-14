@@ -125,7 +125,7 @@ class TestTrial:
 def InitializeTest(tc):
     try:
         tc.Defines.Set("TestTrials", [])
-        tc.Devices.Display(tc.Images.Blank, 0)
+        tc.Devices.Display.Display(tc.Images.Blank, 0)
         return True
 
     except Exception as e:
@@ -134,7 +134,6 @@ def InitializeTest(tc):
 
 def TestComplete(tc):
     try:
-        tc.TP.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
         tc.TP.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
         tc.TP.Annotations.Add("variant", [trial.variant for trial in tc.TestTrials])
         tc.TP.Annotations.Add("congruent", [trial.congruent for trial in tc.TestTrials])

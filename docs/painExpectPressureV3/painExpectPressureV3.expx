@@ -20,8 +20,8 @@
                 background-color="rgb(255, 255, 255)"
                 inactive-color="rgb(0, 0, 0)"
                 normative-distance="40"
-                position="upper-right"
-                screen="primary">
+                position="fullscreen"
+                screen="secondary">
                 
                 <monitor 
                     diagonal-size="13"
@@ -343,7 +343,7 @@
                 </stimulation-pattern>
                 
                 <stimuli order="block-random">
-                    <stimulus name="L0C" />
+                    <stimulus name="L0C"/>
                     <stimulus name="L0I" />
                     <stimulus name="L1C" />
                     <stimulus name="L1I" />
@@ -393,4 +393,18 @@
                 file="VisualStimuli.zip" />
         </assets>        
     </protocol> 
+    <post-actions>
+        <export-pdf name="PDF Export"
+                    location="C:\LabBenchExport\painExpect"
+                    filename="dynamic: '{session}.pdf'.format(session = SESSION_NAME)">
+            <styles>
+
+            </styles>
+            <content>
+                <page>
+                    <text value="Hello, World!"/>
+                </page>
+            </content>
+        </export-pdf>
+    </post-actions>
 </experiment>
