@@ -55,9 +55,10 @@ def CreateImageRepository(tc):
 class LearningTrial:
     def __init__(self, tc):
         self.high = 1 if tc.StimulusName[0] == "H" else 0
-        self.cue = 1 if tc.StimulusName[1] == "1" else 0
-        self.variant = random.randint(0, 4)
+        self.variant = 1 if tc.StimulusName[1] == "1" else 0
+        self.feedback = random.randint(0, 4)
         self.rating = -1
+        Log.Information("LEARNING TRIAL [ high: {high}, variant: {high}, feedback: {feedback}]", self.high, self.variant, self.feedback)
   
 def InitializeLearning(tc):
     try:
@@ -72,9 +73,11 @@ def InitializeLearning(tc):
 def LearningComplete(tc):
     try:        
         tc.LP.Annotations.Add("high", [trial.high for trial in tc.LearningTrials])
-        tc.LP.Annotations.Add("cue", [trial.cue for trial in tc.LearningTrials])
         tc.LP.Annotations.Add("variant", [trial.variant for trial in tc.LearningTrials])
+        tc.LP.Annotations.Add("feedback", [trial.feedback for trial in tc.LearningTrials])
         tc.LP.Annotations.Add("rating", [trial.rating for trial in tc.LearningTrials])
+        tc.LP.Annotations.Add("ratingLow", [trial.rating for trial in tc.LearningTrials if trial.high == 0])
+        tc.LP.Annotations.Add("ratingHigh", [trial.rating for trial in tc.LearningTrials if trial.high == 1])
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
@@ -82,8 +85,10 @@ def LearningComplete(tc):
 
 def LearningRatingPain(tc):
     try:        
+        rating = tc.Devices.Response.GetCurrentRating()
         tc.Devices.Display.Display(tc.Images.Marker)
-        tc.LearningTrials[-1].rating = tc.Devices.Response.GetCurrentRating() 
+        tc.LearningTrials[-1].rating = rating
+        Log.Information("PAIN RATING: {rating}", rating) 
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
@@ -94,23 +99,13 @@ def RunLearning(tc, x):
         display = tc.Devices.Display
         trial = LearningTrial(tc)
         tc.LearningTrials.append(trial)
-
-        Log.Information("TRIAL [ high: {high}:{cue}, feedback: {variant}]", 
-                        trial.high, 
-                        trial.cue, 
-                        trial.variant)
-        
-        Log.Information("Number of feedbacks {N} x ({M1},{m2})", 
-                        len(tc.Images.Feedback),
-                        len(tc.Images.Feedback[0]), 
-                        len(tc.Images.Feedback[1]))
-
+       
         display.Run(display.Sequence(tc)
                     .Display(tc.Images.Marker, 500)
-                    .Display(tc.Images.Cue[trial.high][trial.cue], 2000)
+                    .Display(tc.Images.Cue[trial.high][trial.variant], 2000)
                     .Display(tc.Images.LearningRateExpectedPain, 4000)
                     .Run(LearningRatingPain)
-                    .Display(tc.Images.Feedback[trial.high][trial.variant], 3000)                    
+                    .Display(tc.Images.Feedback[trial.high][trial.feedback], 3000)                    
                     )
         
         return True
@@ -163,8 +158,10 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
+        ratingExpected = tc.Devices.Response.GetCurrentRating() 
         tc.Devices.Display.Display(tc.Images.Marker)
-        tc.TestTrials[-1].ratingExpected = tc.Devices.Response.GetCurrentRating() 
+        tc.TestTrials[-1].ratingExpected = ratingExpected
+        Log.Information("Rating expected pain: {rating}", ratingExpected)
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
@@ -172,12 +169,20 @@ def TestRateExpectedPain(tc):
 
 def getIntensity(tc):
     trial = tc.TestTrials[-1]
+
     if trial.high == 1:
-        return tc.THR30['PULSE'] if trial.congruent == 0 else tc.THR70['PULSE']
+        intensity = tc.THR30['PULSE'] if trial.congruent == 0 else tc.THR70['PULSE']
     elif trial.high == 0:
-        return tc.THR70['PULSE'] if trial.congruent == 0 else tc.THR30['PULSE']
+        intensity = tc.THR70['PULSE'] if trial.congruent == 0 else tc.THR30['PULSE']
     else:
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
+    
+    Log.Information("STIMULATE [ high: {high}, congruent: {congruent} ] with intensity: {intensity}kPa",
+                    trial.high,
+                    trial.congruent,
+                    intensity)
+    
+    return intensity
     
 def TestStimulate(tc):
     try:
@@ -190,8 +195,10 @@ def TestStimulate(tc):
 
 def TestRateActualPain(tc):
     try:
+        ratingActual = tc.Devices.Response.GetCurrentRating() 
         tc.Devices.Display.Display(tc.Images.Blank)
-        tc.TestTrials[-1].ratingActual = tc.Devices.Response.GetCurrentRating() 
+        tc.TestTrials[-1].ratingActual = ratingActual
+        Log.Information("RATING ACTUAL PAIN: {rating}", ratingActual)        
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
