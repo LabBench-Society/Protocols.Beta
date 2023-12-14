@@ -393,18 +393,4 @@
                 file="VisualStimuli.zip" />
         </assets>        
     </protocol> 
-    <post-actions>
-        <export-pdf name="PDF Export"
-                    location="C:\LabBenchExport\painExpect"
-                    filename="dynamic: '{session}.pdf'.format(session = SESSION_NAME)">
-            <styles>
-
-            </styles>
-            <content>
-                <page>
-                    <text value="Hello, World!"/>
-                </page>
-            </content>
-        </export-pdf>
-    </post-actions>
 </experiment>
