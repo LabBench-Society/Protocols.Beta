@@ -19,35 +19,35 @@ class ImageRepository:
         stimuli = tc.Assets.VisualStimuli
     
         self.Cue = [
-            [stimuli.GetAsset("LowCue1.png").Data, stimuli.GetAsset("LowCue2.png").Data],
-            [stimuli.GetAsset("HighCue1.png").Data, stimuli.GetAsset("HighCue2.png").Data]
+            [stimuli.GetImageFromArchive("LowCue1.png"), stimuli.GetImageFromArchive("LowCue2.png")],
+            [stimuli.GetImageFromArchive("HighCue1.png"), stimuli.GetImageFromArchive("HighCue2.png")]
         ]
         self.Feedback = [
             [
-                stimuli.GetAsset("Low27.png").Data,
-                stimuli.GetAsset("Low32.png").Data,
-                stimuli.GetAsset("Low40.png").Data,
-                stimuli.GetAsset("Low45.png").Data,
-                stimuli.GetAsset("Low51.png").Data],
+                stimuli.GetImageFromArchive("Low27.png"),
+                stimuli.GetImageFromArchive("Low32.png"),
+                stimuli.GetImageFromArchive("Low40.png"),
+                stimuli.GetImageFromArchive("Low45.png"),
+                stimuli.GetImageFromArchive("Low51.png")],
             [
-                stimuli.GetAsset("High73.png").Data,
-                stimuli.GetAsset("High79.png").Data,
-                stimuli.GetAsset("High84.png").Data,
-                stimuli.GetAsset("High88.png").Data,
-                stimuli.GetAsset("High93.png").Data]
+                stimuli.GetImageFromArchive("High73.png"),
+                stimuli.GetImageFromArchive("High79.png"),
+                stimuli.GetImageFromArchive("High84.png"),
+                stimuli.GetImageFromArchive("High88.png"),
+                stimuli.GetImageFromArchive("High93.png")]
         ]
-        self.Blank = stimuli.GetAsset("Blank.png").Data
-        self.Marker = stimuli.GetAsset("Marker.png").Data
-        self.MarkerWithFiducial = stimuli.GetAsset("MarkerWithFiducial.png").Data
-        self.LearningRateExpectedPain = (stimuli.GetAsset("LearningRateExpectedPainDE.png") 
+        self.Blank = stimuli.GetImageFromArchive("Blank.png")
+        self.Marker = stimuli.GetImageFromArchive("Marker.png")
+        self.MarkerWithFiducial = stimuli.GetImageFromArchive("MarkerWithFiducial.png")
+        self.LearningRateExpectedPain = (stimuli.GetImageFromArchive("LearningRateExpectedPainDE.png") 
                                          if tc.Language == "de" 
-                                         else stimuli.GetAsset("LearningRateExpectedPainEn.png").Data)
-        self.TestRateExpectedPain = (stimuli.GetAsset("TestRateExpectedPainDE.png") 
+                                         else stimuli.GetImageFromArchive("LearningRateExpectedPainEn.png"))
+        self.TestRateExpectedPain = (stimuli.GetImageFromArchive("TestRateExpectedPainDE.png") 
                                      if tc.Language == "de" 
-                                     else stimuli.GetAsset("TestRateExpectedPainEN.png").Data)
-        self.TestRatePain = (stimuli.GetAsset("TestRatePainDE.png") 
+                                     else stimuli.GetImageFromArchive("TestRateExpectedPainEN.png"))
+        self.TestRatePain = (stimuli.GetAssGetImageFromArchive("TestRatePainDE.png") 
                              if tc.Language == "de" 
-                             else stimuli.GetAsset("TestRatePainEN.png").Data)
+                             else stimuli.GetImageFromArchive("TestRatePainEN.png"))
 
 def CreateImageRepository(tc):
     return ImageRepository(tc)
@@ -63,7 +63,8 @@ class LearningTrial:
 def InitializeLearning(tc):
     try:
         tc.Defines.Set("LearningTrials", [])
-        tc.Devices.Display(tc.Images.Blank, 0)
+        tc.Devices.Default(tc.Images.Blank)
+        Log.Information("Initialized learning task")
         return True
     
     except Exception as e:
@@ -105,7 +106,7 @@ def RunLearning(tc, x):
                     .Display(tc.Images.Cue[trial.high][trial.variant], 2000)
                     .Display(tc.Images.LearningRateExpectedPain, 4000)
                     .Run(LearningRatingPain)
-                    .Display(tc.Images.Feedback[trial.high][trial.feedback], 3000)                    
+                    .Display(tc.Images.Feedback[trial.high][trial.feedback], 3000)        
                     )
         
         return True
@@ -125,7 +126,8 @@ class TestTrial:
 def InitializeTest(tc):
     try:
         tc.Defines.Set("TestTrials", [])
-        tc.Devices.Display.Display(tc.Images.Blank, 0)
+        tc.Devices.Display.Default(tc.Images.Blank)
+        Log.Information("Initialized test task")
         return True
 
     except Exception as e:
