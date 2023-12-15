@@ -79,6 +79,9 @@ def LearningComplete(tc):
         tc.LP.Annotations.Add("rating", [trial.rating for trial in tc.LearningTrials])
         tc.LP.Annotations.Add("ratingLow", [trial.rating for trial in tc.LearningTrials if trial.high == 0])
         tc.LP.Annotations.Add("ratingHigh", [trial.rating for trial in tc.LearningTrials if trial.high == 1])
+
+        Log.Information("Data added as annotations")
+        
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
@@ -151,6 +154,8 @@ def TestComplete(tc):
         tc.TP.Annotations.Add("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
         tc.TP.Annotations.Add("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
         tc.TP.Annotations.Add("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+
+        Log.Information("Data added as annotations")
 
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
