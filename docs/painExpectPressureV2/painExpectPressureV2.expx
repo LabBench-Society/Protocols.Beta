@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/dev/experiment.xsd"
             name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli), Version 2"
             id="painExpectPressureV2"
             protocol="painExpectPressureV2@beta.labbench.io">

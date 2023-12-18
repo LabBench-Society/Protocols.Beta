@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.1.0/experiment.xsd">
+<description>      
+</description>
+  <subject-validator 
+    regex="^S[0-9]{3}$"
+    advice="Please enter an ID in the form of SXXX, where X is a digit" />
+
+    <experimental-setup>
+        <devices>
+            <lio
+                id="lio" 
+                default-analog-output="0">
+                <stimulators>
+                    <ds5
+                        id="DS5" 
+                        name="DS5"
+                        transconductance="5mA_1V" />
+                </stimulators>
+                <response-devices>
+                    <visual-analog-scale 
+                        id="vas"
+                        length="10" 
+                        sample-period="100" 
+                        timing-source="none">
+                        <anchors>
+                            <top-anchor text="Maximal Pain"/>
+                            <bottom-anchor text="No Pain" />                            
+                        </anchors>
+                    </visual-analog-scale>
+                </response-devices>
+            </lio>
+
+            <display 
+                id="display"
+                active-color="rgb(255, 255, 255)"
+                background-color="rgb(255, 255, 255)"
+                inactive-color="rgb(0, 0, 0)"
+                normative-distance="40"
+                position="fullscreen"
+                screen="secondary">
+                
+                <monitor 
+                    diagonal-size="13"
+                    diagonal-size-unit="inch"
+                    distance="40"
+                    length-unit="cm"/>
+
+                <configurations>
+                    <image-display 
+                        id="image"
+                        experimental-setup-id="display"
+                        background-color="rgb(255, 255, 255)"/>
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="lio"
+                               instrument-name="Stimulator"/>
+
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               device-id="lio.vas"
+                               instrument-name="Response"/>
+            
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="lio.vas"
+                               instrument-name="Scale"/>
+
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               device-id="lio"
+                               instrument-name="Stimulator"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="lio"
+                               instrument-name="Stimulator"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="lio.vas"
+                               instrument-name="Response"/>
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               device-id="display.image"
+                               instrument-name="Display"/>
+        </device-mapping>
+    </experimental-setup>   
+    <protocol>
+        <languages>
+            <language 
+                name="German" 
+                code="de"/>
+            <language 
+                name="English" 
+                code="en"/>
+        </languages>
+        <defines>
+            <define 
+                name="NumberOfLearningBlocks"
+                value="4"/> <!-- correct value: 4-->
+            <define 
+                name="LearningTaskBlockSize" 
+                value="20"/> <!-- correct value: 20 -->
+            <define 
+                name="NumberOfTestBlocks"
+                value="5"/> <!--  correct value: 5 -->
+            <define 
+                name="TestTaskBlockSize" 
+                value="12"/> <!--correct value: 12 -->
+            <define 
+                name="Images" 
+                value="func: Script.CreateImageRepository(tc)"/>
+            <define 
+                name="Tperiod"
+                value="1000.0/200.0"/>
+            <define 
+                name="Ts"
+                value="1"/>
+        </defines>
+        <tests>
+            <psychophysics-stimulus-presentation 
+                ID="PRESENTATION"
+                name="Presentation of stimuli"
+                experimental-setup-id="display"
+                stimulus-update-rate="20000">
+
+                <intensity type="geomspace"
+                           x0="Stimulator.Imax/100"
+                           x1="Stimulator.Imax"
+                           n="50"/>
+    
+                <responses response-collection="ratio-rating"/>
+                
+                <stimulation>
+                    <stimulus>
+                        <repeated
+                            N="4"
+                            Tperiod="Tperiod">
+                            <pulse 
+                                Is="x"
+                                Ts="Ts"/>
+                        </repeated>
+                    </stimulus>
+                </stimulation>        
+            </psychophysics-stimulus-presentation>
+    
+            <psychophysics-threshold-estimation 
+                ID="THR30"
+                name="Threshold (VAS 3)"
+                experimental-setup-id="display"
+                stimulus-update-rate="20000">
+
+                <dependencies>
+                    <dependency ID="PRESENTATION"/>
+                </dependencies>
+    
+                <update-rate-random 
+                    min="4000" 
+                    max="6000"/>
+    
+                <ratio-rating-task target="3"/>
+        
+                <channels>
+                    <channel 
+                        ID="PULSE"
+                        name="Pulse (1s)"
+                        Imax="100"
+                        Imin="0"
+                        channel-type="single-sample">
+
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
+    
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x" 
+                                    Ts="Ts" />
+                            </repeated>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+    
+            <psychophysics-threshold-estimation 
+                ID="THR70"
+                name="Threshold (VAS 7)"
+                experimental-setup-id="display"
+                stimulus-update-rate="20000">
+
+                <dependencies>
+                    <dependency ID="PRESENTATION"/>
+                </dependencies>
+    
+                <update-rate-random 
+                    min="4000" 
+                    max="6000"/>
+    
+                <ratio-rating-task target="7"/>
+       
+                <channels>
+                    <channel 
+                        ID="PULSE"
+                        name="Pulse (1s)"
+                        Imax="100"
+                        Imin="0"
+                        channel-type="single-sample">
+
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
+    
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x" 
+                                    Ts="Ts" />
+                            </repeated>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+    
+            <electrophysiology-evoked-potentials 
+                ID="LP"
+                name="Learning Phase"
+                experimental-setup-id="display"
+                response-collection="none"
+                stimulus-update-rate="20000">
+
+                <test-events complete="func: Script.LearningComplete(tc)" />
+
+                <dependencies>
+                    <dependency ID="THR30"/>
+                    <dependency ID="THR70"/>
+                </dependencies>
+    
+                <stimulation-scripts 
+                    stimulate="func: Script.RunLearning(tc,x)"
+                    initialize="func: Script.InitializeLearning(tc)"                                     
+                    stimulus-description="Pressure"
+                    stimulus-unit="kPa">
+
+                    <instrument 
+                        interface="image-display"
+                        name="Display"
+                        required="true"/>
+                    <instrument 
+                        interface="visual-analog-scale" 
+                        name="Response"
+                        required="true" />
+                </stimulation-scripts>
+    
+                <stimulation-pattern time-base="seconds">
+                    <sequence
+                        iterations="NumberOfLearningBlocks">
+                        <sequence 
+                            iterations="LearningTaskBlockSize*NumberOfStimuli" 
+                            Tperiod="11" />
+
+                        <sequence 
+                            pause="true" 
+                            Tperiod="1" />
+
+                    </sequence>
+                </stimulation-pattern>
+    
+                <stimuli order="block-random">
+                    <stimulus name="L0" />
+                    <stimulus name="L1" />
+                    <stimulus name="H0" />
+                    <stimulus name="H1" />
+                </stimuli>            
+            </electrophysiology-evoked-potentials>
+        
+            <electrophysiology-evoked-potentials 
+                ID="TP"
+                name="Test Phase"
+                experimental-setup-id="display"
+                response-collection="none"
+                stimulus-update-rate="20000">
+
+                <test-events complete="func: Script.TestComplete(tc)" />
+
+                <dependencies>
+                    <dependency ID="THR30"/>
+                    <dependency ID="THR70"/>
+                    <dependency ID="LP"/>
+                </dependencies>
+    
+                <stimulation-scripts 
+                    stimulate="func: Script.RunTest(tc,x)"
+                    initialize="func: Script.InitializeTest(tc)"
+                    stimulus-description="Pressure"
+                    stimulus-unit="kPa">
+
+                    <instrument 
+                        interface="image-display"
+                        name="Display"
+                        required="true"/>
+                    <instrument 
+                        name="Stimulator"
+                        interface="analog-generator"
+                        required="true"/>
+                    <instrument 
+                        interface="visual-analog-scale" 
+                        name="Response"
+                        required="true" />
+                </stimulation-scripts>
+    
+                <stimulation-pattern time-base="seconds">
+                    <sequence
+                        iterations="NumberOfTestBlocks">
+
+                        <sequence 
+                            iterations="TestTaskBlockSize*NumberOfStimuli" 
+                            Tperiod="17" />
+
+                        <sequence
+                            pause="true"
+                            Tperiod="1"/>
+                    </sequence>
+                </stimulation-pattern>
+                
+                <stimuli order="block-random">
+                    <stimulus 
+                        name="L0C"                        
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L0I" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L1C" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L1I" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus
+                        name="H0C" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H0I" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H1C" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H1I" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                </stimuli>
+            </electrophysiology-evoked-potentials>        
+        </tests>
+        <assets>
+            <file-asset 
+                id="Script" 
+                file="Script.py"  />
+            <file-asset 
+                id="VisualStimuli" 
+                file="VisualStimuli.zip" />
+        </assets>        
+    </protocol> 
+</experiment>
