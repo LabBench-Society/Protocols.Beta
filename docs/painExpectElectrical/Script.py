@@ -2,11 +2,6 @@
 import traceback
 import random
 
-def Stimulate(tc, x):
-    stimulator = tc.Devices.Stimulator
-    stimulator.Generate(tc.stimulus)
-    return True
-
 class ImageRepository:
     def __init__(self, tc):
         stimuli = tc.Assets.VisualStimuli
@@ -186,7 +181,7 @@ def getIntensity(tc):
 def TestStimulate(tc):
     try:
         tc.Devices.Display.Display(tc.Images.MarkerWithFiducial)
-        Stimulate(tc, getIntensity(tc))
+        tc.Devices.Stimulator.Generate(tc.stimulus)
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
 
