@@ -38,6 +38,11 @@
               labbench-version="4.1.0"
               category="CPAR;Pain Perception Processes"/>
 
+    <protocol id="painExpectElectrical"
+              name="Pain Perception Processes through the Lens of Predictive Coding (Electrical Stimuli), Version 1"
+              labbench-version="4.1.0"
+              category="LabBench I/O;Pain Perception Processes"/>
+
     <protocol id="tpdDN"
               name="Two-Point Discrimination (Diabetic Neuropathy)"
               labbench-version="4.0.0"
