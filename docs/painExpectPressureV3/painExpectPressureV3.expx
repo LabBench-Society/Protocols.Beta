@@ -20,8 +20,8 @@
                 background-color="rgb(255, 255, 255)"
                 inactive-color="rgb(0, 0, 0)"
                 normative-distance="40"
-                position="upper-left"
-                screen="primary">
+                position="fullscreen"
+                screen="secondary">
                 
                 <monitor 
                     diagonal-size="13"
@@ -87,16 +87,16 @@
         <defines>
             <define 
                 name="NumberOfLearningBlocks"
-                value="2"/> <!-- correct value: 4-->
+                value="4"/> <!-- correct value: 4-->
             <define 
                 name="LearningTaskBlockSize" 
-                value="1"/> <!-- correct value: 20 -->
+                value="20"/> <!-- correct value: 20 -->
             <define 
                 name="NumberOfTestBlocks"
-                value="2"/> <!--  correct value: 5 -->
+                value="5"/> <!--  correct value: 5 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="1"/> <!--correct value: 12 -->
+                value="12"/> <!--correct value: 12 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
