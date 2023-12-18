@@ -152,7 +152,7 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
-        ratingExpected = tc.Devices.Response.GetCurrentRating() 
+        ratingExpected = tc.Devices.Response.GetCurrentRating()
         tc.Devices.Display.Display(tc.Images.Marker)
         tc.TestTrials[-1].ratingExpected = ratingExpected
         Log.Information("Rating expected pain: {rating}", ratingExpected)

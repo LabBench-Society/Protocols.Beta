@@ -23,7 +23,7 @@
                     <visual-analog-scale 
                         id="vas"
                         length="10" 
-                        sample-period="5" 
+                        sample-period="100" 
                         timing-source="none">
                         <anchors>
                             <top-anchor text="Maximal Pain"/>
@@ -112,7 +112,7 @@
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
             <define 
-                name="Period"
+                name="Tperiod"
                 value="1000.0/200.0"/>
             <define 
                 name="Ts"
@@ -121,13 +121,13 @@
         <tests>
             <psychophysics-stimulus-presentation 
                 ID="PRESENTATION"
-                name="Presentation of pressure stimuli"
+                name="Presentation of stimuli"
                 experimental-setup-id="display"
                 stimulus-update-rate="20000">
 
                 <intensity type="geomspace"
-                           x0="Stimulator.Min"
-                           x1="Stimulator.Max"
+                           x0="Stimulator.Imax/100"
+                           x1="Stimulator.Imax"
                            n="50"/>
     
                 <responses response-collection="ratio-rating"/>
@@ -197,7 +197,7 @@
                 ID="THR70"
                 name="Threshold (VAS 7)"
                 experimental-setup-id="display"
-                stimulus-update-rate="50">
+                stimulus-update-rate="20000">
 
                 <dependencies>
                     <dependency ID="PRESENTATION"/>
@@ -246,7 +246,7 @@
                 name="Learning Phase"
                 experimental-setup-id="display"
                 response-collection="none"
-                stimulus-update-rate="50">
+                stimulus-update-rate="20000">
 
                 <test-events complete="func: Script.LearningComplete(tc)" />
 
@@ -298,7 +298,7 @@
                 name="Test Phase"
                 experimental-setup-id="display"
                 response-collection="none"
-                stimulus-update-rate="50">
+                stimulus-update-rate="20000">
 
                 <test-events complete="func: Script.TestComplete(tc)" />
 
