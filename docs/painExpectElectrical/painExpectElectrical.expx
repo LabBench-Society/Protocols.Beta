@@ -114,32 +114,34 @@
             <define 
                 name="Period"
                 value="1000.0/200.0"/>
+            <define 
+                name="Ts"
+                value="1"/>
         </defines>
         <tests>
             <psychophysics-stimulus-presentation 
                 ID="PRESENTATION"
                 name="Presentation of pressure stimuli"
                 experimental-setup-id="display"
-                stimulus-update-rate="50">
+                stimulus-update-rate="20000">
 
-                <intensity 
-                    type="array"
-                    value="range(5, 101, 5)" />
+                <intensity type="geomspace"
+                           x0="Stimulator.Min"
+                           x1="Stimulator.Max"
+                           n="50"/>
     
                 <responses response-collection="ratio-rating"/>
                 
                 <stimulation>
-                    <scripts 
-                        initialize="True"
-                        stimulate="func: Script.Stimulate(tc,x)"
-                        stimulus-description="Pressure"
-                        stimulus-unit="kPa">
-
-                        <instrument 
-                            name="Algometer"
-                            interface="pressure-algometer"
-                            required="true"/>                
-                    </scripts>
+                    <stimulus>
+                        <repeated
+                            N="4"
+                            Tperiod="Tperiod">
+                            <pulse 
+                                Is="x"
+                                Ts="Ts"/>
+                        </repeated>
+                    </stimulus>
                 </stimulation>        
             </psychophysics-stimulus-presentation>
     
@@ -147,7 +149,7 @@
                 ID="THR30"
                 name="Threshold (VAS 3)"
                 experimental-setup-id="display"
-                stimulus-update-rate="50">
+                stimulus-update-rate="20000">
 
                 <dependencies>
                     <dependency ID="PRESENTATION"/>
@@ -158,19 +160,7 @@
                     max="6000"/>
     
                 <ratio-rating-task target="3"/>
-    
-                <stimulation-scripts 
-                    initialize="True"
-                    stimulate="func: Script.Stimulate(tc,x)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
-
-                    <instrument 
-                        name="Algometer"
-                        interface="pressure-algometer"
-                        required="true"/>
-                </stimulation-scripts>
-    
+        
                 <channels>
                     <channel 
                         ID="PULSE"
@@ -196,7 +186,7 @@
                                 Tperiod="Tperiod">
                                 <pulse 
                                     Is="x" 
-                                    Ts="1" />
+                                    Ts="Ts" />
                             </repeated>
                         </stimulus>
                     </channel>
@@ -218,19 +208,7 @@
                     max="6000"/>
     
                 <ratio-rating-task target="7"/>
-    
-                <stimulation-scripts 
-                    initialize="True"
-                    stimulate="func: Script.Stimulate(tc,x)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
-
-                    <instrument 
-                        name="Algometer"
-                        interface="pressure-algometer"
-                        required="true"/>
-                </stimulation-scripts>
-    
+       
                 <channels>
                     <channel 
                         ID="PULSE"
@@ -251,9 +229,13 @@
                             stop-rule="2" />
     
                         <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x" 
+                                    Ts="Ts" />
+                            </repeated>
                         </stimulus>
                     </channel>
                 </channels>
@@ -361,14 +343,110 @@
                 </stimulation-pattern>
                 
                 <stimuli order="block-random">
-                    <stimulus name="L0C"/>
-                    <stimulus name="L0I" />
-                    <stimulus name="L1C" />
-                    <stimulus name="L1I" />
-                    <stimulus name="H0C" />
-                    <stimulus name="H0I" />
-                    <stimulus name="H1C" />
-                    <stimulus name="H1I" />
+                    <stimulus 
+                        name="L0C"                        
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L0I" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L1C" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="L1I" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus
+                        name="H0C" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H0I" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H1C" 
+                        intensity="THR70['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
+                    <stimulus 
+                        name="H1I" 
+                        intensity="THR30['PULSE']">
+                        <stimulus>
+                            <repeated
+                                N="4"
+                                Tperiod="Tperiod">
+                                <pulse 
+                                    Is="x"
+                                    Ts="Ts"/>
+                            </repeated>
+                        </stimulus>
+                    </stimulus>
                 </stimuli>
             </electrophysiology-evoked-potentials>        
         </tests>
