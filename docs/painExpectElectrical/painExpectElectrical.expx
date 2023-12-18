@@ -320,7 +320,7 @@
                         required="true"/>
                     <instrument 
                         name="Stimulator"
-                        interface="pressure-algometer"
+                        interface="analog-generator"
                         required="true"/>
                     <instrument 
                         interface="visual-analog-scale" 
