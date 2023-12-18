@@ -77,7 +77,7 @@ def LearningComplete(tc):
 
 def LearningRatingPain(tc):
     try:        
-        rating = tc.Devices.Response.GetCurrentRating()
+        rating = tc.Devices.Response.GetRatioRating()
         tc.Devices.Display.Display(tc.Images.Marker)
         tc.LearningTrials[-1].rating = rating
         Log.Information("PAIN RATING: {rating}", rating) 
@@ -152,7 +152,7 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
-        ratingExpected = tc.Devices.Response.GetCurrentRating()
+        ratingExpected = tc.Devices.Response.GetRatioRating()
         tc.Devices.Display.Display(tc.Images.Marker)
         tc.TestTrials[-1].ratingExpected = ratingExpected
         Log.Information("Rating expected pain: {rating}", ratingExpected)
@@ -189,7 +189,7 @@ def TestStimulate(tc):
 
 def TestRateActualPain(tc):
     try:
-        ratingActual = tc.Devices.Response.GetCurrentRating() 
+        ratingActual = tc.Devices.Response.GetRatioRating() 
         tc.Devices.Display.Display(tc.Images.Blank)
         tc.TestTrials[-1].ratingActual = ratingActual
         Log.Information("RATING ACTUAL PAIN: {rating}", ratingActual)        
