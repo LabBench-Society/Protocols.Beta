@@ -3,7 +3,7 @@
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/repository.xsd"
             id="beta.labbench.io">
 
-            <protocol id="questionnaires"
+    <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"
             category="Questionnaire;Template"/>
@@ -13,6 +13,11 @@
               labbench-version="4.0.0"
               category="Pain Protocol"/>
 
+    <protocol id="traitssst"
+              name="Personality Traits (Stop Signal Task)"
+              labbench-version="4.0.0"
+              category="Personality Traits;LabBench I/O"/>
+  
     <protocol id="nwrDS5"
               name="Nociceptive Withdrawal Reflex (NWR) (DS5 Version)"
               labbench-version="4.0.0"
