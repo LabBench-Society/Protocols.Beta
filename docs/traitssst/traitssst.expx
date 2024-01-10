@@ -16,10 +16,10 @@
                         type="button-4-cross" 
                         timing-source="response-port02">
                         <map experimental-setup-id="survey">
-                            <button-assignment code="8" button="up"/>
-                            <button-assignment code="2" button="increase" />
+                            <button-assignment code="3" button="up"/>
+                            <button-assignment code="4" button="increase" />
                             <button-assignment code="1" button="down" />
-                            <button-assignment code="4" button="decrease" />
+                            <button-assignment code="2" button="decrease" />
                             <button-assignment code="6" button="previous"/>
                             <button-assignment code="5" button="next"/>
                         </map>                      
@@ -64,6 +64,16 @@
             </display>         
         </devices>
         <device-mapping>
+            <device-assignment 
+                test-type="meta-survey"
+                instrument-name="Response"
+                device-id="lio.pad" />
+
+            <device-assignment 
+                test-type="meta-survey"
+                instrument-name="Display"
+                device-id="display.survey" />      
+                        
             <device-assignment 
                 test-type="electrophysiology-evoked-potentials"
                 device-id="lio.pad"
