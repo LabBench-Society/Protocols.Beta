@@ -7,33 +7,12 @@
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup>
         <devices>
-            <lio
-                id="lio" 
-                default-analog-output="0">
-                <response-devices>
-                    <response-pad
-                        id="pad" 
-                        type="button-4-cross" 
-                        timing-source="response-port02">
-                        <map experimental-setup-id="survey">
-                            <button-assignment code="3" button="up"/>
-                            <button-assignment code="4" button="increase" />
-                            <button-assignment code="1" button="down" />
-                            <button-assignment code="2" button="decrease" />
-                            <button-assignment code="6" button="previous"/>
-                            <button-assignment code="5" button="next"/>
-                        </map>                      
-                        <map experimental-setup-id="image">
-                            <button-assignment code="6" button="left" label="left" />
-                            <button-assignment code="5" button="right" label="right" />
-                        </map>
-                    </response-pad>
-                    <visual-trigger 
-                        id="vtrig"
-                        arming-period="200" 
-                        timing-source="response-port02" />
-                </response-devices>
-            </lio>
+            <joystick id="joystick">
+                <map>
+                    <button-assignment code="32" button="left" label="left"/> <!-- number: 5-->
+                    <button-assignment code="128" button="right" label="right"/> <!--  number: 7 -->
+                </map>
+            </joystick>
 
             <display
                 id="display"
@@ -67,7 +46,7 @@
             <device-assignment 
                 test-type="meta-survey"
                 instrument-name="Response"
-                device-id="lio.pad" />
+                device-id="joystick" />
 
             <device-assignment 
                 test-type="meta-survey"
@@ -76,7 +55,7 @@
                         
             <device-assignment 
                 test-type="electrophysiology-evoked-potentials"
-                device-id="lio.pad"
+                device-id="joystick"
                 instrument-name="Response" />
 
             <device-assignment
