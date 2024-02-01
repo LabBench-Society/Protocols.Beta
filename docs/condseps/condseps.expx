@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/dev/experiment.xsd"
             name="Cuff Pressure Conditioned Somatosensory Evoked Potentials (SEPs)"
             id="condseps"
             protocol="condseps@beta.labbench.io">
