@@ -6,7 +6,7 @@
     <description />
     <defines>
         <define name="StimulationFrequency" value="4.0"/>
-        <define name="nOfStimuli" value="500"/>
+        <define name="nOfStimuli" value="1000"/>
         <define name="PreTrigDelay" value="50"/>
 	</defines>
     <tests>
