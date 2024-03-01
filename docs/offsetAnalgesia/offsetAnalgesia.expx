@@ -7,8 +7,8 @@
         <devices>
             <joystick id="joystick">
                 <map>
-                    <button-assignment code="2" button="decrease"/>
-                    <button-assignment code="4" button="increase" />
+                    <button-assignment code="16" button="decrease"/>
+                    <button-assignment code="32" button="increase" />
            
                 </map>
             </joystick>
@@ -20,7 +20,6 @@
                      active-color="rgb(255, 0, 0)"
                      background-color="rgb(255, 255, 255)"
                      normative-distance="40">
-
                 <monitor diagonal-size="23.5"
                          diagonal-size-unit="inch"
                          distance="40"
