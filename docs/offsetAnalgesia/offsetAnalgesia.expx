@@ -152,6 +152,7 @@
                     <dependency ID="ThrTSPT01"/>
                 </dependencies>
                 <update-rate-deterministic value="50"/>
+
                 <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
                                              target="5"
                                              minimum="0"
