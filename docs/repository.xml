@@ -5,7 +5,7 @@
 
     <protocol 
       id="offsetAnalgesia"
-      name="Offset Analgesia (Cutaneous Thermal Stimulatoin)"
+      name="Offset Analgesia (Cutaneous Thermal Stimulation)"
       labbench-version="4.3.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
       
