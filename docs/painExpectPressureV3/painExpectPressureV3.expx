@@ -76,27 +76,19 @@
         </device-mapping>
     </experimental-setup>   
     <protocol>
-        <languages>
-            <language 
-                name="German" 
-                code="de"/>
-            <language 
-                name="English" 
-                code="en"/>
-        </languages>
         <defines>
             <define 
                 name="NumberOfLearningBlocks"
-                value="4"/> <!-- correct value: 4-->
+                value="1"/> <!-- correct value: 4-->
             <define 
                 name="LearningTaskBlockSize" 
-                value="20"/> <!-- correct value: 20 -->
+                value="2"/> <!-- correct value: 20 -->
             <define 
                 name="NumberOfTestBlocks"
-                value="5"/> <!--  correct value: 5 -->
+                value="2"/> <!--  correct value: 5 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="12"/> <!--correct value: 12 -->
+                value="1"/> <!--correct value: 12 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
