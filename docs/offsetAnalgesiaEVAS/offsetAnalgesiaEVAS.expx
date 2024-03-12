@@ -50,7 +50,7 @@
 
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Response"
-                               device-id="evas" />
+                               device-id="vas" />
 
             <device-assignment test-type="thermal-rated-stimulation"
                                instrument-name="Stimulator"
