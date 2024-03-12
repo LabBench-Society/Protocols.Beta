@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.5.0/experiment.xsd">
+  <subject-validator regex="^S[0-9]{3}$|^TEST[0-9]+$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit, or TEST followed by digits" />
+    <experimental-setup>
+        <devices>
+            <evas
+                id="vas"
+                initialize-rating-to-zero="true">
+                <visual-analog-scale>
+                    <anchors>
+                        <modality text="Pain" />
+                        <top-anchor text="Maximal Pain"/>
+                        <bottom-anchor text="No Pain"/>                        
+                    </anchors>
+                    <button-maps>
+                        <map>
+                            <button-assignment 
+                                code="1" 
+                                button="button-01" 
+                                label="1"/>
+                            <button-assignment 
+                                code="3"
+                                button="button-02"
+                                label="2"/>
+                        </map>
+                    </button-maps>
+                </visual-analog-scale>                
+            </evas>
+
+            <tcs id="tcs"
+                 minimal-temperature="0"
+                 neutral-temperature="32"
+                 maximal-temperature="60"
+                 trigger-output="true"/>
+        </devices>
+        <device-mapping>
+            <!-- Stimulus Presentation -->
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+                               instrument-name="Stimulator"
+                               device-id="tcs" />
+            
+            <!-- Threshold Estimation -->
+            <device-assignment test-type="psychophysics-threshold-estimation"
+                               instrument-name="Stimulator"
+                               device-id="tcs" />
+                               
+            <!-- Thermal Rated Stimulation -->
+
+            <device-assignment test-type="thermal-rated-stimulation"
+                               instrument-name="Response"
+                               device-id="evas" />
+
+            <device-assignment test-type="thermal-rated-stimulation"
+                               instrument-name="Stimulator"
+                               device-id="tcs"/>                               
+        </device-mapping>
+    </experimental-setup>    
+    <protocol>
+        <defines />
+        <tests>
+            <psychophysics-stimulus-presentation ID="TEST"
+                                         name="Familiarization (Heat and Cold)"
+                                         experimental-setup-id="blank"
+                                         stimulus-update-rate="100">
+                <intensity type="array"
+                           value="[0, 45]" />
+                
+                <responses response-collection="none" />
+    
+                <stimulation>
+                    <stimulus>
+                        <linear-segments baseline="Stimulator.Neutral">
+                            <segment duration="100" value="x"/>
+                            <segment duration="4800" value="x"/>
+                            <segment duration="100" value="Stimulator.Neutral"/>
+                        </linear-segments>
+                    </stimulus>
+                </stimulation>
+            </psychophysics-stimulus-presentation>    
+
+            <psychophysics-threshold-estimation ID="ThrTSPT01"
+                                                name="A: Pain5 for TSP"
+                                                experimental-setup-id="blank"
+                                                stimulus-update-rate="100">
+                <dependencies>
+                    <dependency ID="TEST"/>
+                </dependencies>
+                <update-rate-deterministic value="50"/>
+                <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale from (0-10?"
+                                             target="5"
+                                             minimum="0"
+                                             maximum="10"/>
+    
+                <channels>
+                    <channel ID="C01"
+                             channel-type="single-sample"
+                             name="Rect (0.5s)"
+                             Imax="Stimulator.Imax"
+                             Imin="Stimulator.Neutral">
+                        <discrete-up-down-method initial-direction="increasing"
+                                                 initial-intensity="45"
+                                                 intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
+                                                 skip-rule="0"
+                                                 stop-rule="2"
+                                                 terminate-on-limit-reached="true" />
+                        <stimulus>
+                            <linear-segments baseline="Stimulator.Neutral">
+                                <segment duration="100" value="x"/>
+                                <segment duration="300" value="x"/>
+                                <segment duration="100" value="Stimulator.Neutral"/>
+                            </linear-segments>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+            <psychophysics-threshold-estimation ID="ThrCPM01"
+                                                name="B: Pain 5 for Offset Analgesia"
+                                                experimental-setup-id="blank"
+                                                stimulus-update-rate="100">
+                <dependencies>
+                    <dependency ID="ThrTSPT01"/>
+                </dependencies>
+                <update-rate-deterministic value="50"/>
+
+                <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
+                                             target="5"
+                                             minimum="0"
+                                             maximum="10"/>
+    
+                <channels>
+                    <channel ID="C01"
+                             channel-type="single-sample"
+                             name="Rect (10s)"
+                             Imax="Stimulator.Max"
+                             Imin="Stimulator.Neutral">
+                        <discrete-up-down-method initial-direction="increasing"
+                                                 initial-intensity="45"
+                                                 intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
+                                                 skip-rule="0"
+                                                 stop-rule="2"
+                                                 terminate-on-limit-reached="true" />
+                        <stimulus>
+                            <linear-segments baseline="32">
+                                <segment duration="100" value="x"/>
+                                <segment duration="9800" value="x"/>
+                                <segment duration="100" value="32"/>
+                            </linear-segments>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+            <psychophysics-threshold-estimation ID="ThrTSPT02"
+                                                name="C: Pain 5 for Temporal Summation"
+                                                experimental-setup-id="blank"
+                                                stimulus-update-rate="100">
+                <dependencies>
+                    <dependency ID="ThrCPM01"/>
+                </dependencies>
+                <update-rate-deterministic value="50"/>
+                <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
+                                             target="5"
+                                             minimum="0"
+                                             maximum="10"/>
+    
+                <channels>
+                    <channel ID="C01"
+                             channel-type="single-sample"
+                             name="Rect (0.5s)"
+                             Imax="Stimulator.Imax"
+                             Imin="Stimulator.Neutral">
+                        <discrete-up-down-method initial-direction="increasing"
+                                                 initial-intensity="45"
+                                                 intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
+                                                 skip-rule="0"
+                                                 stop-rule="2"
+                                                 terminate-on-limit-reached="true" />
+                        <stimulus>
+                            <linear-segments baseline="Stimulator.Neutral">
+                                <segment duration="100" value="x"/>
+                                <segment duration="300" value="x"/>
+                                <segment duration="100" value="Stimulator.Neutral"/>
+                            </linear-segments>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>            
+            
+            <psychophysics-threshold-estimation ID="ThrCPM02"
+                                                name="D: Pain 5 for Offset Analgesia"
+                                                 experimental-setup-id="blank"
+                                                stimulus-update-rate="100">
+                <dependencies>
+                    <dependency ID="ThrTSPT02"/>
+                </dependencies>
+                <update-rate-deterministic value="50"/>
+                <manual-interval-rating-task instruction="What is the intensity of the stimulus on a scale form 0-10?"
+                                             target="5"
+                                             minimum="0"
+                                             maximum="10"/>
+    
+                <channels>
+                    <channel ID="C01"
+                             channel-type="single-sample"
+                             name="Rect (10s)"
+                             Imax="Stimulator.Max"
+                             Imin="Stimulator.Neutral">
+                        <discrete-up-down-method initial-direction="increasing"
+                                                 initial-intensity="45"
+                                                 intensities="range((int)(Stimulator.Neutral), (int)(Stimulator.Max + 1), 1)"
+                                                 skip-rule="0"
+                                                 stop-rule="2"
+                                                 terminate-on-limit-reached="true" />
+                        <stimulus>
+                            <linear-segments baseline="Stimulator.Neutral">
+                                <segment duration="100" value="x"/>
+                                <segment duration="9800" value="x"/>
+                                <segment duration="100" value="Stimulator.Neutral"/>
+                            </linear-segments>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>  
+            
+            <thermal-rated-stimulation ID="TSP01"
+                                       name="Temporal Summation (Single Stimulus)"
+                                       experimental-setup-id="blank"
+                                       response-collection="none"
+                                       intensity="(ThrTSPT01['C01'] + ThrTSPT02['C01'])/2"
+                                       minimal-display-temperature="Stimulator.Neutral"
+                                       maximal-display-temperature="Stimulator.Max">
+                <dependencies>
+                    <dependency ID="ThrTSPT01"/>
+                    <dependency ID="ThrTSPT02"/>
+                </dependencies>
+                <stimulus>
+                    <linear-segments baseline="Stimulator.Neutral">
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+                    </linear-segments>
+                </stimulus>
+            </thermal-rated-stimulation>
+    
+            <meta-survey ID="TSP01Rating"
+                         name="Temporal Summation (Single Stimulus Rating)"
+                         experimental-setup-id="blank"
+                         control="operator">
+                <properties>
+                    <auto-start value="true" />
+                </properties>
+                <dependencies>
+                    <dependency ID="TSP01"/>
+                </dependencies>   
+                <content>
+                    <likert id="Rating"
+                            title="Pain rating"
+                            instruction="Please rate the pain you experienced">
+                        <choice value="0" label="0"/>
+                        <choice value="1" label="1"/>
+                        <choice value="2" label="2"/>
+                        <choice value="3" label="3"/>
+                        <choice value="4" label="4"/>
+                        <choice value="5" label="5"/>
+                        <choice value="6" label="6"/>
+                        <choice value="7" label="7"/>
+                        <choice value="8" label="8"/>
+                        <choice value="9" label="9"/>
+                        <choice value="10" label="10"/>
+                    </likert>     
+                </content>
+            </meta-survey>
+    
+            <thermal-rated-stimulation ID="TSP10"
+                                       name="Temporal Summation (10 Stimuli)"
+                                       experimental-setup-id="blank"
+                                       response-collection="none"
+                                       intensity="(ThrTSPT01['C01'] + ThrTSPT02['C01'])/2"
+                                       minimal-display-temperature="Stimulator.Neutral"
+                                       maximal-display-temperature="Stimulator.Max">
+                <dependencies>
+                    <dependency ID="ThrTSPT01"/>
+                    <dependency ID="ThrTSPT02"/>
+                    <dependency ID="TSP01Rating"/>
+                </dependencies>
+                <stimulus>
+                    <linear-segments baseline="Stimulator.Neutral">
+                        <!-- STIMULUS 1 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 2 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 3 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 4 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 5 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 6 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 7 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 8 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 9 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+    
+                        <!-- STIMULUS 10 -->
+                        <segment duration="100" value="x"/>
+                        <segment duration="300" value="x"/>
+                        <segment duration="100" value="Stimulator.Neutral" />
+    
+                        <segment duration="500" value="Stimulator.Neutral"/>
+                    </linear-segments>
+                </stimulus>
+            </thermal-rated-stimulation>
+    
+            <meta-survey ID="TSP10Rating"
+                         name="Temporal Summation (Ten Stimuli Rating)"
+                         experimental-setup-id="blank"
+                         control="operator">
+                <properties>
+                    <auto-start value="true" />
+                </properties>
+                <dependencies>
+                    <dependency ID="TSP10"/>
+                </dependencies>
+                <content>
+                    <likert id="Rating"
+                            title="Pain rating"
+                            instruction="Please rate the pain you experienced">
+                        <choice value="0" label="0"/>
+                        <choice value="1" label="1"/>
+                        <choice value="2" label="2"/>
+                        <choice value="3" label="3"/>
+                        <choice value="4" label="4"/>
+                        <choice value="5" label="5"/>
+                        <choice value="6" label="6"/>
+                        <choice value="7" label="7"/>
+                        <choice value="8" label="8"/>
+                        <choice value="9" label="9"/>
+                        <choice value="10" label="10"/>
+                    </likert>
+                </content>
+            </meta-survey>
+            
+            <thermal-rated-stimulation ID="OAFam"
+                                       name="Offset Analgesia (Familiarization)"
+                                       experimental-setup-id="scale"
+                                       response-collection="ratio-rating"
+                                       intensity="(ThrCPM01['C01'] + ThrCPM02['C01'])/2"
+                                       minimal-display-temperature="Stimulator.Neutral"
+                                       maximal-display-temperature="Stimulator.Max">
+                <stimulus>
+                    <linear-segments>
+                        <!-- Increase with 1C/s -->
+                        <segment duration="1000" value="x - 2"/>
+                        <segment duration="9900" value="x - 2"/>
+                        <segment duration="100" value="x - 2"/>
+                        <segment duration="1000" value="Stimulator.Neutral" />
+                    </linear-segments>
+                </stimulus>
+            </thermal-rated-stimulation>
+    
+            <thermal-rated-stimulation ID="OA"
+                                       name="Offset Analgesia"
+                                       experimental-setup-id="scale"
+                                       response-collection="ratio-rating"
+                                       intensity="(ThrCPM01['C01'] + ThrCPM02['C01'])/2"
+                                       minimal-display-temperature="Stimulator.Neutral"
+                                       maximal-display-temperature="Stimulator.Max">
+                <stimulus>
+                    <linear-segments>
+                        <!-- Increase with 1C/s -->
+                        <segment duration="1000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="1000" value="x + 1"/>
+                        <segment duration="5000" value="x + 1"/>
+                        <segment duration="1000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="1000" value="Stimulator.Neutral" />
+                    </linear-segments>
+                </stimulus>
+            </thermal-rated-stimulation>
+    
+            <thermal-rated-stimulation ID="OAControl"
+                                       name="Offset Analgesia (Control)"
+                                       experimental-setup-id="scale"
+                                       response-collection="ratio-rating"
+                                       intensity="(ThrCPM01['C01'] + ThrCPM02['C01'])/2"
+                                       minimal-display-temperature="Stimulator.Neutral"
+                                       maximal-display-temperature="Stimulator.Max">
+                <stimulus>
+                    <linear-segments>
+                        <!-- Increase with 1C/s -->
+                        <segment duration="1000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="5000" value="x"/>
+                        <segment duration="1000" value="Stimulator.Neutral" />
+                    </linear-segments>
+                </stimulus>
+            </thermal-rated-stimulation>            
+        </tests>
+    </protocol>
+</experiment>

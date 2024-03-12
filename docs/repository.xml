@@ -8,6 +8,12 @@
       name="Offset Analgesia (Cutaneous Thermal Stimulation)"
       labbench-version="4.3.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
+
+      <protocol 
+      id="offsetAnalgesiaEVAS"
+      name="Offset Analgesia (Cutaneous Thermal Stimulation)"
+      labbench-version="4.3.0"
+      category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab TCSII;QSTLab eVAS"/>
       
     <protocol id="questionnaires"
             name="Questionnaire Templates"
