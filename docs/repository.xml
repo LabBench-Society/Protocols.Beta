@@ -80,25 +80,17 @@
 			  name="PAINLESS: Pain Relief in Cancer (WP1)"
 			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
 
-    <protocol id="cblink"
-			  name="Conditioned Blink Reflex Protocol"
-			  category="Blink Reflex;LabBench I/O"/>
+    <protocol id="spineBlink"
+			  name="Conditioned Blink Reflex Protocol (ID: spineBlink)"
+			  category="Blink Reflex;LabBench CPAR+;LabBench I/O"/>
 
-    <protocol id="condnwr"
-			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (NWR)"
-			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
-
-    <protocol id="spinenwr"
-			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (ID: spinenwr)"
-			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
-
-    <protocol id="condnwrs"
-			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (Single Burst) (NWR)"
-			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+    <protocol id="spineNWR"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (ID: spineNWR)"
+			  category="Conditioned NWR;LabBench CPAR+;LabBench I/O"/>
 
     <protocol id="condseps"
 			  name="Cuff Pressure Conditioned Somatosensory Evoked Potentials (SEPs)"
-			  category="Conditioned SEPs;CPAR+;LabBench I/O"/>
+			  category="Conditioned SEPs;LabBench CPAR+;LabBench I/O"/>
 
     <protocol id="spAutism"
               name="Sensory Processing in Autism"
@@ -108,7 +100,19 @@
               name="Sensory Processing in Autism (Audio Only)"
               category="Tactile Testing;Audiotory Testing;Autism" />
 
-    <!--
+    <protocol id="cblink"
+			  name="Conditioned Blink Reflex Protocol"
+			  category="Blink Reflex;LabBench I/O"/>
+
+    <protocol id="condnwr"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (NWR)"
+			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+
+    <protocol id="condnwrs"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (Single Burst) (NWR)"
+			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+
+        <!--
        These are legacy protocols prior to Rev. 3.4.0
     -->
     <protocols>
