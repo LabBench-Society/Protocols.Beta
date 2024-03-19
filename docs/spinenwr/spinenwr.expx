@@ -5,8 +5,8 @@
             id="condnwrs"
             protocol="condnwrs@beta.labbench.io">
     <description />
-    <subject-validator regex="^S[0-9]{3}$"
-                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <subject-validator regex="^SPINE[0-9]{2}_S[1-2]$|^TEST[0-9]{3}$"
+                       advice="Please enter an ID in the form of SPINEXX_SY, where X is a digit and Y is 1 or 2, or in the form of TESTXXX" />
     <experimental-setup>
         <description />
         <devices>
@@ -22,6 +22,14 @@
                                instrument-name="Algometer" 
                                device-id="cpar" />
 
+            <device-assignment test-type="algometry-temporal-summation" 
+                               instrument-name="Algometer" 
+                               device-id="cpar" />
+
+            <device-assignment test-type="algometry-conditioned-pain-modulation" 
+                               instrument-name="Algometer" 
+                               device-id="cpar" />
+
             <device-assignment test-type="electrophysiology-evoked-potentials"
                                instrument-name="Algometer"
                                device-id="cpar" />
@@ -29,6 +37,7 @@
                                instrument-name="Trigger"
                                device-id="dev" />
 
+                         
 		</device-mapping>
     </experimental-setup>
 </experiment>

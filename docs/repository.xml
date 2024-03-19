@@ -88,6 +88,10 @@
 			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (NWR)"
 			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
 
+    <protocol id="spinenwr"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (ID: spinenwr)"
+			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
+
     <protocol id="condnwrs"
 			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (Single Burst) (NWR)"
 			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
