@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/experiment.xsd"
+            name="Conditioned Blink Reflex Protocol (ID: spineBlink)"
+            id="spineBlink"
+            protocol="spineBlink@beta.labbench.io">
+<description>      
+</description>
+    <subject-validator regex="^SPINE[0-9]{2}_S[1-2]$|^TEST[0-9]{3}$"
+                       advice="Please enter an ID in the form of SPINEXX_SY, where X is a digit and Y is 1 or 2, or in the form of TESTXXX" />
+    <experimental-setup>
+        <description />
+        <devices>
+            <lio id="dev" />
+            <cpar-plus id="cpar" />
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="psychophysics-stimulus-presentation"
+				               instrument-name="Trigger"
+				               device-id="dev"/>
+
+            <device-assignment test-type="algometry-stimulus-response" 
+                               instrument-name="Algometer" 
+                               device-id="cpar" />
+
+            <device-assignment test-type="algometry-temporal-summation" 
+                               instrument-name="Algometer" 
+                               device-id="cpar" />
+
+            <device-assignment test-type="algometry-conditioned-pain-modulation" 
+                               instrument-name="Algometer" 
+                               device-id="cpar" />
+
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Algometer"
+                               device-id="cpar" />
+            <device-assignment test-type="electrophysiology-evoked-potentials"
+                               instrument-name="Trigger"
+                               device-id="dev" />
+
+        </device-mapping>
+    </experimental-setup>   
+</experiment>

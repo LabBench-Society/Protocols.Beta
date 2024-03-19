@@ -3,7 +3,13 @@
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/repository.xsd"
             id="beta.labbench.io">
 
-            <protocol id="questionnaires"
+    <protocol 
+      id="offsetAnalgesia"
+      name="Offset Analgesia (Cutaneous Thermal Stimulation)"
+      labbench-version="4.3.0"
+      category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
+      
+    <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"
             category="Questionnaire;Template"/>
@@ -13,6 +19,11 @@
               labbench-version="4.0.0"
               category="Pain Protocol"/>
 
+    <protocol id="traitssst"
+              name="Personality Traits (Stop Signal Task)"
+              labbench-version="4.0.0"
+              category="Personality Traits;LabBench I/O"/>
+  
     <protocol id="nwrDS5"
               name="Nociceptive Withdrawal Reflex (NWR) (DS5 Version)"
               labbench-version="4.0.0"
@@ -69,6 +80,26 @@
 			  name="PAINLESS: Pain Relief in Cancer (WP1)"
 			  category="Quantitative Sensory Testing;Cancer;QSTLab"/>
 
+    <protocol id="spineBlink"
+			  name="Conditioned Blink Reflex Protocol (ID: spineBlink)"
+			  category="Blink Reflex;LabBench CPAR+;LabBench I/O"/>
+
+    <protocol id="spineNWR"
+			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (ID: spineNWR)"
+			  category="Conditioned NWR;LabBench CPAR+;LabBench I/O"/>
+
+    <protocol id="condseps"
+			  name="Cuff Pressure Conditioned Somatosensory Evoked Potentials (SEPs)"
+			  category="Conditioned SEPs;LabBench CPAR+;LabBench I/O"/>
+
+    <protocol id="spAutism"
+              name="Sensory Processing in Autism"
+              category="Tactile Testing;Audiotory Testing;Autism" />
+
+    <protocol id="spAutismAudio"
+              name="Sensory Processing in Autism (Audio Only)"
+              category="Tactile Testing;Audiotory Testing;Autism" />
+
     <protocol id="cblink"
 			  name="Conditioned Blink Reflex Protocol"
 			  category="Blink Reflex;LabBench I/O"/>
@@ -81,19 +112,7 @@
 			  name="Cuff Pressure Conditioned Nociceptive Withdrawal Reflex (Single Burst) (NWR)"
 			  category="Conditioned NWR;CPAR+;LabBench I/O"/>
 
-    <protocol id="condseps"
-			  name="Cuff Pressure Conditioned Somatosensory Evoked Potentials (SEPs)"
-			  category="Conditioned SEPs;CPAR+;LabBench I/O"/>
-
-    <protocol id="spAutism"
-              name="Sensory Processing in Autism"
-              category="Tactile Testing;Audiotory Testing;Autism" />
-
-    <protocol id="spAutismAudio"
-              name="Sensory Processing in Autism (Audio Only)"
-              category="Tactile Testing;Audiotory Testing;Autism" />
-
-    <!--
+        <!--
        These are legacy protocols prior to Rev. 3.4.0
     -->
     <protocols>

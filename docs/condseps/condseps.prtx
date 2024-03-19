@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://labbench.io https://labbench.io/xsd/dev/protocol.xsd"
+          xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/dev/protocol.xsd"
           name="Cuff Pressure Conditioned Somatosensory Evoked Potentials (SEPs)"
           id="condseps">
     <description />
     <defines>
         <define name="StimulationFrequency" value="4.0"/>
-        <define name="nOfStimuli" value="500"/>
+        <define name="nOfStimuli" value="1000"/>
+        <define name="PreTrigDelay" value="50"/>
 	</defines>
     <tests>
 		<psychophysics-stimulus-presentation ID="StimIntensity"
@@ -25,7 +26,7 @@
                              duration="10">
                         <code output="Digital" value="1"/>
                     </trigger>
-                    <trigger Tdelay="0"
+                    <trigger Tdelay="PreTrigDelay"
                              duration="0.1">
                         <code output="Stimulus" value="1"/>
                     </trigger>
@@ -72,7 +73,7 @@
                                      duration="10">
                                 <code output="Digital" value="1"/>
                             </trigger>
-                            <trigger Tdelay="0"
+                            <trigger Tdelay="PreTrigDelay"
                                      duration="0.1">
                                 <code output="Stimulus" value="1"/>
                             </trigger>
@@ -117,7 +118,7 @@
                                      duration="10">
                                 <code output="Digital" value="1"/>
                             </trigger>
-                            <trigger Tdelay="0"
+                            <trigger Tdelay="PreTrigDelay"
                                      duration="0.1">
                                 <code output="Stimulus" value="1"/>
                             </trigger>
@@ -154,7 +155,7 @@
                                      duration="10">
                                 <code output="Digital" value="1"/>
                             </trigger>
-                            <trigger Tdelay="0"
+                            <trigger Tdelay="PreTrigDelay"
                                      duration="0.1">
                                 <code output="Stimulus" value="1"/>
                             </trigger>
