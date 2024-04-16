@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="..\experiment.xsd">
+    <subject-validator 
+        regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
+        advice="Must be SXXX or TESTXXX, where X is a digit"/>
+    <experimental-setup>        
+        <devices>
+            <joystick id="joystick">
+                <map>
+                    <button-assignment code="16" button="decrease" />
+                    <button-assignment code="32" button="increase" />
+                </map>
+            </joystick>
+
+            <sound id="sound" />
+
+            <cpar-plus id="cpar"/>
+
+            <display
+                id="display"
+                active-color="rgb(255,255,255)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(32,32,32)"
+                normative-distance="40"
+                position="fullscreen"
+                screen="secondary">
+
+                <monitor
+                    diagonal-size="13.3"
+                    diagonal-size-unit="inch"
+                    distance="40"
+                    length-unit="cm"/>
+
+                <configurations>
+                    <image-display
+                        id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)" />
+
+                    <survey 
+                        id="survey"
+                        experimental-setup-id="survey"
+                        background-color="rgb(255, 255, 255)"
+                        controller-device="cpar" />
+                </configurations>                
+            </display>            
+        </devices>
+        <device-mapping>
+            <device-assignment test-type="electrophysiology-evoked-potentials" device-id="cpar" instrument-name="Response" />
+            <device-assignment test-type="electrophysiology-evoked-potentials" device-id="display.image" instrument-name="Display"/>
+            <device-assignment test-type="electrophysiology-evoked-potentials" device-id="sound" instrument-name="Sound"/>
+            <device-assignment test-type="electrophysiology-evoked-potentials" device-id="cpar" instrument-name="Algometer"/>
+
+            <device-assignment test-type="algometry-stimulus-response" instrument-name="Algometer" device-id="cpar" />
+            <device-assignment test-type="algometry-stimulus-response" instrument-name="Display" device-id="display.image" />
+
+            <device-assignment test-type="algometry-temporal-summation" instrument-name="Algometer" device-id="cpar" />
+            <device-assignment test-type="algometry-temporal-summation" instrument-name="Display" device-id="display.image" />
+
+            <device-assignment test-type="algometry-conditioned-pain-modulation" instrument-name="Algometer" device-id="cpar" />     
+            <device-assignment test-type="algometry-conditioned-pain-modulation" instrument-name="Display" device-id="display.image" />
+                
+            <device-assignment test-type="meta-survey" instrument-name="Response" device-id="joystick"/>
+            <device-assignment test-type="meta-survey" instrument-name="Display" device-id="display.survey"/>
+            <device-assignment test-type="meta-survey" instrument-name="Image" device-id="display.image"/>
+        </device-mapping>        
+    </experimental-setup>
+    <protocol>
+        <languages>
+            
+        </languages>
+        <sessions>
+            <session ID="SES01" name="Session 1" />            
+            <session ID="SES02" name="Session 2" />            
+        </sessions>
+        <defines>
+            <define name="Images" value="func: Script.CreateImageRepository(tc)"/>
+            <define name="NumberOfRepetitions" value="4"/>
+            <define name="NumberOfContractions" value="5"/>
+        </defines>
+        <templates>
+            <variables>
+                <strings value="SES01;SES02" name="Sessions" />
+                <strings value="1;2" name="Bouts" />
+            </variables>
+            <content>
+                <meta-survey 
+                    ID="PREPARATION"
+                    experimental-setup-id="image"
+                    control="operator" >
+                    <dependencies>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>           
+                    <content>
+                        <instruction 
+                            id="CUFFS"
+                            title="Place the cuffs on the lefs of the subject"                            
+                            instruction="dynamic: 'LeftHandedCuffs' if SUBJECT['HANDEDNESS'] == 1 else 'RightHandedCuffs'"/>
+                    </content>         
+                </meta-survey>
+
+                <algometry-stimulus-response 
+                    ID="SR"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="var: PrimaryCuff"
+                    second-cuff="false"
+                    stop-mode="STOP_CRITERION_ON_BUTTON_VAS"
+                    vas-pdt="0.1"
+                    experimental-setup-id="image">
+                    <test-events
+                        selected="var: 'func: Script.{Instruction}(tc)'.format(Instruction = Instruction)">
+                        <instrument name="Display" interface="image-display" />
+                    </test-events>
+
+                    <properties>
+                        <instructions 
+                            default-instructions="var: Instruction"
+                            override-results="false"/>
+                    </properties>
+
+                    <dependencies>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+                </algometry-stimulus-response>
+
+                <algometry-temporal-summation 
+                    ID="TS"
+                    no-of-stimuli="10"
+                    pressure-static="5"
+                    pressure-stimulate="var: '1.0 * {s}SR01.PTT'.format(s = session)"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    t-off="1"
+                    t-on="1"
+                    experimental-setup-id="image">
+
+                    <test-events
+                        selected="func: Script.InstructionTS(tc)">
+                        <instrument name="Display" interface="image-display" />
+                    </test-events>
+
+                    <properties>
+                        <instructions 
+                            default-instructions="InstructionTS"
+                            override-results="false"/>
+                    </properties>
+
+                    <dependencies>
+                        <dependency ID="var: '{s}SR01'.format(s = session)"/>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+                </algometry-temporal-summation>
+
+                <algometry-conditioned-pain-modulation 
+                    ID="CPM"
+                    conditional-pressure="var: '0.7 * {s}SR02.PTT'.format(s = session)"
+                    delta-conditional-pressure="10"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    stop-mode="STOP_CRITERION_ON_BUTTON_VAS"
+                    vas-pdt="0.1"
+                    experimental-setup-id="image">
+
+                    <test-events
+                        selected="func: Script.InstructionCPM(tc)">
+                        <instrument name="Display" interface="image-display" />
+                    </test-events>
+
+                    <properties>
+                        <instructions 
+                            default-instructions="InstructionCPM"
+                            override-results="false"/>
+                    </properties>
+
+                    <dependencies>
+                        <dependency ID="var: '{s}SR02'.format(s = session)"/>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+                </algometry-conditioned-pain-modulation> 
+                
+                <meta-survey 
+                    ID="MBF" 
+                    control="subject" 
+                    experimental-setup-id="survey">
+                    <dependencies>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+
+                    <templates>
+                        <visual-analog-scale 
+                            id="vas"
+                            length="10"
+                            active-color="rgb(255,0,0)"
+                            inactive-color="rgb(192,192,192)" />
+                    </templates>
+
+                    <content>
+                        <visual-analog-scale 
+                            id="MOTIVATION" 
+                            template="vas"
+                            title="Motivation" 
+                            instruction="What is your motivation to carry out the task at hand?"
+                            bottom-anchor="No Motivation"
+                            top-anchor="Maximal Motivation"/>
+
+                        <visual-analog-scale 
+                            id="BOREDOM" 
+                            template="vas"
+                            title="Boredom" 
+                            instruction="What is your level of boredom?"
+                            bottom-anchor="Not At All Bored"
+                            top-anchor="Extremely Bored"/>
+
+                        <visual-analog-scale 
+                            id="FATIGUE" 
+                            title="Fatigue" 
+                            template="vas"
+                            instruction="What is your level of fatigue?"
+                            bottom-anchor="No Fatigue At All"
+                            top-anchor="Extremely Fatigued"/>
+                    </content>
+                </meta-survey>
+
+                <meta-survey 
+                    control="operator" 
+                    ID="MVC02"
+                    experimental-setup-id="image">
+                    <test-events
+                        selected="func: Script.InstructionMVC(tc)">
+                        <instrument name="Image" interface="image-display" />
+                    </test-events>
+
+                    <dependencies>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+
+                    <content>
+                        <numeric 
+                            id="M1" 
+                            instruction="Please enter the measurement of the MVC"
+                            title="Measurement 1">
+                        </numeric>
+                        <numeric 
+                            id="M2" 
+                            instruction="Please enter the measurement of the MVC"
+                            title="Measurement 2">
+                        </numeric>
+                        <numeric 
+                            id="M3" 
+                            title="Measurement 3"
+                            instruction="Please enter the measurement of the MVC"
+                            condition="func: Script.IsMVCIncomplete(tc)">
+                        </numeric>
+                    </content>
+                </meta-survey>
+
+                <meta-survey 
+                    control="operator" 
+                    ID="MVC01"
+                    experimental-setup-id="image">
+                    <test-events
+                        selected="func: Script.InstructionPostEffort(tc)">
+                        <instrument name="Image" interface="image-display" />
+                    </test-events>
+
+                    <dependencies>
+                        <dependency ID="SUBJECT" virtual="false" />
+                    </dependencies>
+
+                    <content>
+                        <numeric 
+                            id="M1" 
+                            instruction="Please enter the measurement of the MVC"
+                            title="Measurement 1">
+                        </numeric>
+                    </content>
+                </meta-survey>
+
+                <electrophysiology-evoked-potentials 
+                    ID="EffortInstruction"
+                    experimental-setup-id="image"
+                    stimulus-update-rate="50"
+                    response-collection="none">
+                    <dependencies>
+                        <dependency 
+                            ID="SUBJECT" 
+                            virtual="true" />
+                    </dependencies>
+                    
+                    <stimulation-scripts
+                        initialize="True"
+                        stimulate="func: Script.Instruct(tc,x)"
+                        stimulus-description="Instructions"
+                        stimulus-unit="">
+                        <instrument 
+                            name="Display" 
+                            interface="image-display" />
+                    </stimulation-scripts>
+
+                    <stimulation-pattern>
+                        <sequence iterations="NumberOfStimuli">
+                            <sequence Tperiod="0.5" Toffset="0.1"/>
+                            <sequence Tperiod="0.1" pause="true"/>
+                        </sequence>
+                </stimulation-pattern>
+
+                    <stimuli>
+                        <stimulus name="I1" />
+                        <stimulus name="I2" />
+                        <stimulus name="I3" />
+                        <stimulus name="I4" />
+                        <stimulus name="I5" />
+                    </stimuli>
+
+
+                </electrophysiology-evoked-potentials>
+
+                <electrophysiology-evoked-potentials 
+                    ID="EffortTrial"
+                    experimental-setup-id="image"
+                    stimulus-update-rate="50"
+                    response-collection="none">
+                    <test-events 
+                        complete="func: Script.CompleteEffortTrial(tc)"/>
+
+                    <properties>
+                        <auto-start value="true" />
+                    </properties>
+
+                    <dependencies>
+                        <dependency 
+                            ID="SUBJECT" 
+                            virtual="true" />
+                        <dependency 
+                            ID="var: '{s}SR01'.format(s = session)" 
+                            virtual="false" />
+                    </dependencies>
+
+                    <stimulation-scripts
+                        initialize="func: Script.InitializeEffortTrial(tc)"
+                        stimulate="func: Script.Stimulate(tc,x)"
+                        stimulus-description="Effort"
+                        stimulus-unit="">
+                        <instrument 
+                            name="Algometer" 
+                            interface="pressure-algometer" />
+                        <instrument 
+                            name="Display" 
+                            interface="image-display" />
+                        <instrument 
+                            name="Sound" 
+                            interface="sound-player" />
+                        <instrument 
+                            name="Response" 
+                            interface="visual-analog-scale" />
+                    </stimulation-scripts>
+
+                    <stimulation-pattern>
+                        <sequence>
+                            <sequence 
+                                Tperiod="1" 
+                                stimulate="false" />
+
+                            <sequence
+                                iterations="NumberOfRepetitions"
+                                Tperiod="6*5 + 13"
+                                stimulate="false">                            
+                              
+                                <sequence Tperiod="1" />
+                                <sequence Tperiod="6" iterations="NumberOfContractions"/>
+                                <sequence Tperiod="1" />
+                                <sequence Tperiod="5" iterations="2"/>
+                            </sequence>                            
+                        </sequence>                                            
+                    </stimulation-pattern>
+
+                    <stimuli>
+                        <stimulus name="START" count="1" intensity="var: 'func: Script.Intensity{s}B{b}(tc)'.format(s = session, b = bout)" />
+                        <stimulus name="CONTRACT" count="NumberOfContractions" />
+                        <stimulus name="STOP" count="1" />
+                        <stimulus name="PAINDominant" />
+                        <stimulus name="PAINNonDominant" />
+                    </stimuli>
+                </electrophysiology-evoked-potentials>
+            </content>
+        </templates>
+        <tests>
+            <meta-survey
+                ID="SUBJECT"
+                name="SES01: Subject Information"
+                experimental-setup-id="image"
+                session="SES01"
+                control="operator">
+                <content>
+                    <likert
+                        id="HANDEDNESS"
+                        title="Handedness"
+                        instruction="Which hand do you prefer to use for hand writing?">
+                        <choice value="0" label="Right"/>
+                        <choice value="1" label="Left"/>
+                        <choice value="2" label="Any, I don't care"/>
+                    </likert>                  
+
+                    <likert
+                        id="SETUP"
+                        title="Randomization"
+                        instruction="Randomization of sessions and bouts?">
+                    
+                        <choice value="0" label="L/S|H/S" />
+                        <choice value="1" label="H/S|L/S" />
+                        <choice value="2" label="L/S|S/H" />
+                        <choice value="3" label="H/S|S/L" />
+                        <choice value="4" label="S/L|S/H" />
+                        <choice value="5" label="S/H|S/L" />
+                        <choice value="6" label="S/L|H/S" />
+                        <choice value="7" label="S/H|L/S" />
+                    </likert>                  
+                </content>
+            </meta-survey>
+            
+            <foreach variable="session" in="Sessions">
+                <meta-survey-constructor
+                    ID="var: '{s}PREPARATION'.format(s = session)"                
+                    name="var: '{s}: Preparing for Cuff Pressure Algometry'.format(s = session)"
+                    session="var: session"
+                    template="PREPARATION" /> 
+            
+                <algometry-stimulus-response-constructor 
+                    ID="var: '{s}SR01'.format(s = session)" 
+                    name="var: '{s}: Stimulus-Response (Cuff 1)'.format(s = session)" 
+                    session="var: session"
+                    template="SR">
+                    <variables>
+                        <string value="InstructionSR1" name="Instruction" />
+                        <string value="1" name="PrimaryCuff" />
+                    </variables>
+                </algometry-stimulus-response-constructor>
+                    
+                <algometry-stimulus-response-constructor 
+                    ID="var: '{s}SR02'.format(s = session)" 
+                    name="var: '{s}: Stimulus-Response (Cuff 2)'.format(s = session)" 
+                    session="var: session"
+                    template="SR">
+                    <variables>
+                        <string value="InstructionSR2" name="Instruction" />
+                        <string value="2" name="PrimaryCuff" />
+                    </variables>
+                </algometry-stimulus-response-constructor>
+
+                <algometry-temporal-summation-constructor 
+                    ID="var: '{s}TS'.format(s = session)" 
+                    name="var: '{s}: Temporal Summation (Cuff 1)'.format(s = session)" 
+                    session="var: session"
+                    template="TS" />
+
+                <algometry-conditioned-pain-modulation-constructor 
+                    ID="var: '{s}CPM'.format(s = session)" 
+                    name="var: '{s}: Conditioned Pain Modulation'.format(s = session)" 
+                    session="var: session"
+                    template="CPM"/>
+
+                <foreach variable="bout" in="Bouts">
+                    <meta-survey-constructor 
+                        ID="var: '{s}B{b}VAS'.format(s = session, b = bout)" 
+                        name="var: '{s}: VAS (BOUT {b})'.format(s = session, b = bout)" 
+                        session="var: session"
+                        template="MBF"/>
+
+                    <meta-survey-constructor 
+                        ID="var: '{s}B{b}MVC2'.format(s = session, b = bout)" 
+                        name="var: '{s}: MVC (BOUT {b})'.format(s = session, b = bout)" 
+                        session="var: session"
+                        template="MVC02" />
+
+                    <electrophysiology-evoked-potentials-constructor 
+                        ID="var: '{s}B{b}INSTRUCTION'.format(s = session, b = bout)" 
+                        name="var: '{s}: INSTRUCTION (BOUT {b})'.format(s = session, b = bout)" 
+                        session="var: session"
+                        template="EffortInstruction" />
+
+                    <electrophysiology-evoked-potentials-constructor 
+                        ID="var: '{s}B{b}EFFORT'.format(s = session, b = bout)" 
+                        name="var: '{s}: FIXED PERCEIVED EFFORT (BOUT {b})'.format(s = session, b = bout)" 
+                        session="var: session"
+                        template="EffortTrial" />
+
+                    <meta-survey-constructor 
+                        ID="var: '{s}B{b}MVC1'.format(s = session, b = bout)" 
+                        name="var: '{s}: MVC (BOUT {b})'.format(s = session, b = bout)" 
+                        session="var: session"
+                        template="MVC01" />
+                </foreach>
+
+                <meta-survey-constructor 
+                    ID="var: '{s}POSTVAS'.format(s = session)" 
+                    name="var: '{s}: POST TRIAL VAS'.format(s = session)" 
+                    session="var: session"
+                    template="MBF"/>
+            </foreach>
+        </tests>
+        <assets>
+            <file-asset id="Script" file="Script.py" />
+
+            <file-asset id="Images" file="Images.zip" />
+            <file-asset id="GoSound" file="go.wav" />
+            <file-asset id="StopSound" file="stop.wav" />       
+            
+            <!-- Preparation of Cuff Pressure Algometry -->
+            <file-asset id="RightHandedCuffs" file="RightHandedCuffs.rtf" />
+            <file-asset id="LeftHandedCuffs" file="LeftHandedCuffs.rtf" />
+
+            <!-- Instructions for the operator -->
+            <file-asset id="InstructionCPM" file="InstructionCPM.rtf" />
+            <file-asset id="InstructionSR1" file="InstructionSR1.rtf" />
+            <file-asset id="InstructionSR2" file="InstructionSR2.rtf" />
+            <file-asset id="InstructionTS" file="InstructionTS.rtf" />
+        </assets>
+    </protocol>
+    <post-actions>
+        
+    </post-actions>
+</experiment>
