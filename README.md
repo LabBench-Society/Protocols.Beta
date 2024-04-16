@@ -6,13 +6,13 @@ Currently, the following laboratories and sites participate in the LabBench Beta
 
 | Site  | Principal Investigator  | Area         |
 |-------|----------|:----|
-| [Integrative Neuroscience Research Group, Aalborg University](https://vbn.aau.dk/en/organisations/integrative-neuroscience) | [Carsten D. Mørch](https://vbn.aau.dk/en/persons/100920) | Research into the neuroscience of pain that aims at understanding the basic mechanisms of the pain system. Development of methods to investigate how nociceptors generate and mediate pain signals in healthy humans and pathological situations. <br /> **Beta Program focus: Development of functionality in LabBench for Perception Threshold Tracking.**
 | [Concordia Research Station, European Space Agency (ESA), Antarctica](https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Concordia) | [Enrico De Martino](https://vbn.aau.dk/da/persons/enrico-martino) | Research investigating the effect of isolated, confined, and extreme environments on pain sensitivity: A Longitudinal Study in High Altitude in Antarctica <br /> **Beta Program focus: Development of functionality in LabBench for studying pain perception in isolated, confined, and extreme environments (Project selected by the European Space Agency, ICE Pain Study, AO-2021-Concordia_020)** |
-| [Translational Biomarkers in Pain and Precision Medicine Research Group, Aalborg University](https://vbn.aau.dk/da/organisations/translational-biomarkers-in-pain-and-precision-medicine) | [Laura Petrini](https://vbn.aau.dk/da/persons/112436)| Research in how to assess pain in elderly and vulnerable populations. <br /> **Beta Program focus: Development of functionality in LabBench for studying pain catastrophizing** |
-| [Center for Neuroplasticity and Pain (CNAP), Aalborg Univeristy](https://www.cnap.hst.aau.dk/) | [Carolina Ceruti](https://vbn.aau.dk/da/persons/152562) | Research on reward and motivational pathways in pain perception. <br /> **Beta Program focus: Functionality in LabBench for cuff pressure evoked potentials and its integration into psychophysical research paradigms for studying the mechanisms behind the reward and motivation pathways in pain** |
-| [Neural Engineering and Neurophysiology Research Group, Aalborg University](https://vbn.aau.dk/en/organisations/neural-engineering-and-neurophysiology/persons/) | [Sabata Gervasio](https://vbn.aau.dk/da/persons/122837) <br /> [Daniel Skak Mazhari-Jensen](https://vbn.aau.dk/da/persons/132718) | Research on sensory thresholds and sensory processing in children with autism. <br /> **Beta Program focus: Development of functionality in LabBench for studying sensory processing, such as auditory and tactile psychophysical tests, and functionality for recording auditory and tactile evoked potentials** |
 | [The Clinical Research Facility at the University of Exeter](https://exetercrfnihr.org/) | [Sam Hughes](https://medicine.exeter.ac.uk/people/profile/index.php?web_id=sam_hughes) | Research investigating the spinal mechanisms of endogenous pain modulation using neurophysiological measures. <br /> **Beta Program focus: Develop optimised stimulation protocols for the reliable assessment of spinal nociception.**|
 | [Klinik für Allgemeine Innere Medizin und Psychosomatik, Medizinische Fakultät Heidelberg](https://www.klinikum.uni-heidelberg.de/zentrum-fuer-innere-medizin-medizin-klinik/klinik-fuer-allgemeine-innere-medizin-und-psychosomatik) | [Jonas Tesarz](https://www.klinikum.uni-heidelberg.de/personen/apl-prof-dr-med-jonas-tesarz-2414) | Research unraveling Pain Perception Processes through the Lens of Predictive Coding. <br /> **Beta Program focus: Implementation and testing of novel computational modelling tasks targeting different pain modalities. These modalities may include electrical stimulation or cuff pressure, among others. The program aims to explore and evaluate the effectiveness of these new tasks in simulating and understanding different pain experiences.**|
+| [Translational Biomarkers in Pain and Precision Medicine Research Group, Aalborg University](https://vbn.aau.dk/da/organisations/translational-biomarkers-in-pain-and-precision-medicine) | [Laura Petrini](https://vbn.aau.dk/da/persons/112436)| Research in how to assess pain in elderly and vulnerable populations. <br /> **Beta Program focus: Development of functionality in LabBench for studying pain catastrophizing** |
+| [Integrative Neuroscience Research Group, Aalborg University](https://vbn.aau.dk/en/organisations/integrative-neuroscience) | [Carsten D. Mørch](https://vbn.aau.dk/en/persons/100920) | Research into the neuroscience of pain that aims at understanding the basic mechanisms of the pain system. Development of methods to investigate how nociceptors generate and mediate pain signals in healthy humans and pathological situations. <br /> **Beta Program focus: Development of functionality in LabBench for Perception Threshold Tracking.**
+| [Center for Neuroplasticity and Pain (CNAP), Aalborg Univeristy](https://www.cnap.hst.aau.dk/) | [Carolina Ceruti](https://vbn.aau.dk/da/persons/152562) | Research on reward and motivational pathways in pain perception. <br /> **Beta Program focus: Functionality in LabBench for cuff pressure evoked potentials and its integration into psychophysical research paradigms for studying the mechanisms behind the reward and motivation pathways in pain** |
+| [Neural Engineering and Neurophysiology Research Group, Aalborg University](https://vbn.aau.dk/en/organisations/neural-engineering-and-neurophysiology/persons/) | [Sabata Gervasio](https://vbn.aau.dk/da/persons/122837) <br /> [Daniel Skak Mazhari-Jensen](https://vbn.aau.dk/da/persons/132718) | Research on sensory thresholds and sensory processing in children with autism. <br /> **Beta Program focus: Development of functionality in LabBench for studying sensory processing, such as auditory and tactile psychophysical tests, and functionality for recording auditory and tactile evoked potentials** |
 
 If LabBench does not adequately support your research and you would like to see that change, then write to (help@labbench.io) to become a member of this Beta program. By participating in this program, you will gain access to versions of LabBench before they become generally available, have its development tailored to fit your exact research needs, and have access to extensive support in running your experiments. In return the LabBench developers gain access to your expert knowledge and help in making LabBench better for your area of research.
 
@@ -26,37 +26,7 @@ The Beta version of LabBench is what we call a release candidate (rc) for the ne
 
 Installation and use of LabBench Beta is done in close collaboration with the developers of LabBench. The current version of LabBench Beta can be downloaded from:
 
-* [LabBench Beta, Rev. 4.0.0rc9](https://www.dropbox.com/scl/fi/0cutdcfzw5fax0t8pg5h9/LabBench4.0.0rc9.zip?rlkey=m6feg3ed6xzccse44iysp7j72&dl=0)
-
-However, as it is not officially released there is not an installer for the program. Instead to use LabBench Beta you will go through the following steps the first time you install LabBench Beta on your lab computer.
-
-**FIRST TIME INSTALLATION:**
-
-1. Open the zip file you have been sent with the current version of the LabBench Beta program in the Windows File Manager, and go to the ```win-x64``` directory within that zip file. The contents of this directory should look like this:
-![](win-x64.png)
-2. Mark all the files by pressing Ctrl + A, and then select all for copying by pressing Ctrl + C
-3. In the File Explorer goto This PC, and then goto the C: drive.
-4. Create a folder named ```Tools```
-5. Within this folder create a folder named ```LabBench```
-6. Go into that folder, this should look like this:
-![](ToolLabBenchFolder.png)
-7. Click in the empty white area in the Windows File Explorer, and press Ctrl + V. This should start copying all the files of LabBench Beta into that folder. When it completes the folder should look like this.
-![](FilledToolLabBenchFolder.png)
-8. The next step is to create links on the Desktop that will allow us to open the LabBench Beta version, instead of the LabBench that might be installed on the computer. To do this go back to the root of zip file and the selct the two link files that are in the root of the zip file:
-![](MarkedLinks.png)
-9. Select for copy by pressing Ctrl + C
-10. Go to your Windows Desktop, click on it, and press Ctrl + V, after this your Desktop should look like this with two links to LabBench Beta:
-![](LinksOnDesktop.png)
-11. Now test that the links work  by double clicking them, one should open the LabBench Designer the other the LabBench Runner.
-
-If you experience problems during this install please write to: ```help@labbench.io```.
-
-**UPDATING LABBENCH BETA:**
-
-To update LabBench Beta.
-
-1. Delete all files in ```C:\Tools\LabBench```
-2. Unpack the content of the ```win-x64``` folder in the zip file to ```C:\Tools\LabBench```
+* [LabBench Beta, Rev. 4.5.0rc1](https://www.dropbox.com/scl/fi/15dn4a6ql9hwkh0lnmieu/LabBench-R4.5.0rc1.msi?rlkey=2auoqja1ckccdwy0no6n1chgp&dl=0)
 
 ## LabBench Beta Protocol Repository
 
