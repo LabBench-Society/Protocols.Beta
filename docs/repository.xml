@@ -8,12 +8,18 @@
       name="Offset Analgesia (Cutaneous Thermal Stimulation)"
       labbench-version="4.3.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
-      
+            
     <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"
             category="Questionnaire;Template"/>
 
+    <protocol 
+      id="painEffort"
+      name="painEffort: PAIN EFFORT Protocol"
+      labbench-version="4.5.0"
+      category="QST;CPAR+"/>
+    
     <protocol id="icePain"
               name="Ice Pain Protocol"
               labbench-version="4.0.0"
