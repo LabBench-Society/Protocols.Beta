@@ -30,6 +30,10 @@ Portable version:
 
 * [LabBench Beta, Rev. 4.5.0rc5](https://www.dropbox.com/scl/fi/hqdv5f0bbpf959a50g987/LabBench4.5.0rc5.zip?rlkey=qm2g63kvzec09bbe2flyyapq5&dl=0)
 
+Installer:
+
+* [LabBench Beta, Rev. 4.5.0rc5](https://www.dropbox.com/scl/fi/ybyklkk59jj38ght3tj8z/LabBench-R4.5.0rc5.msi?rlkey=3f1rbcmu2btf1mnqr5vdbssv2&dl=0)
+
 ## LabBench Beta Protocol Repository
 
 To use protocols from the LabBench Beta Protocol Repository, you will need to add this repository to LabBench. There are two methods by which LabBench can access a repository:
