@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.1.0/experiment.xsd">
-<description>      
-</description>
+    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.5.0/experiment.xsd">
   <subject-validator 
     regex="^S[0-9]{3}$"
     advice="Please enter an ID in the form of SXXX, where X is a digit" />
@@ -123,8 +121,7 @@
 
                         <instrument 
                             name="Algometer"
-                            interface="pressure-algometer"
-                            required="true"/>                
+                            interface="pressure-algometer"/>                
                     </scripts>
                 </stimulation>        
             </psychophysics-stimulus-presentation>
@@ -153,8 +150,7 @@
 
                     <instrument 
                         name="Algometer"
-                        interface="pressure-algometer"
-                        required="true"/>
+                        interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
@@ -209,8 +205,7 @@
 
                     <instrument 
                         name="Algometer"
-                        interface="pressure-algometer"
-                        required="true"/>
+                        interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
@@ -263,12 +258,10 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"
-                        required="true"/>
+                        name="Display"/>
                     <instrument 
                         interface="visual-analog-scale" 
-                        name="Response"
-                        required="true" />
+                        name="Response" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -316,16 +309,13 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"
-                        required="true"/>
+                        name="Display"/>
                     <instrument 
                         name="Algometer"
-                        interface="pressure-algometer"
-                        required="true"/>
+                        interface="pressure-algometer"/>
                     <instrument 
                         interface="visual-analog-scale" 
-                        name="Response"
-                        required="true" />
+                        name="Response" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
