@@ -42,7 +42,7 @@
 
     <protocol id="painExpectPressure"
               name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
-              labbench-version="3.4.0"
+              labbench-version="4.1.0"
               category="CPAR;Pain Perception Processes"/>
 
     <protocol id="painExpectPressureV2"
