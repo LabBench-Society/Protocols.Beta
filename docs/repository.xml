@@ -8,7 +8,13 @@
       name="Offset Analgesia (Cutaneous Thermal Stimulation)"
       labbench-version="4.3.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
-            
+       
+    <protocol 
+      id="balancePain"
+      name="Postural ubalance forårsaget af muskelsmerter: Sammenhæng med opmærksomhedsafledende aktiviteter"
+      labbench-version="5.0.0"
+      category="Cuff Pressure Algometry"/>
+
     <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup name="Nocitech CPAR">
+    <devices>
+        <cpar id="dev" compressor-mode="AUTO"/>
+    </devices>
+    <device-mapping>
+        <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+    </device-mapping>
+    </experimental-setup>    
+    <protocol>
+        <templates>
+            <variables>
+                <strings value="STIM01;STIM02;STIM03;STIM04;STIM05" name="Stimulations" />
+            </variables>
+            <content>
+                <algometry-static-temporal-summation id="STIM"
+                    primary-cuff="1"
+                    pressure-stimulate="SR01.GetPressureFromPerception(7.0)"
+                    stimulus-duration="30"
+                    tail-duration="1">
+                    <dependencies>
+                        <dependency id="SR01" />
+                    </dependencies>
+                </algometry-static-temporal-summation>
+            </content>
+        </templates>
+        <tests>
+            <algometry-stimulus-response 
+                    id="SR01"
+                    name="Stimulus-Response (Cuff 1)"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1" />
+
+            <foreach variable="stimulation" in="Stimulations">
+                <algometry-static-temporal-summation-constructor 
+                    id="var: stimulation" 
+                    name="var: stimulation" 
+                    template="STIM" />
+            </foreach>            
+        </tests>
+</protocol>
+</experiment>
