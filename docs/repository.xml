@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/repository.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/repository.xsd"
+            name="LabBench Beta Repository"
             id="beta.labbench.io">
 
     <protocol 
