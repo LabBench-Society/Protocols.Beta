@@ -118,17 +118,17 @@
     <export-to-csv 
         name="Export Data"
         header="true"
-        filename="dynamic: '{s}.csv'.format(s = SubjectName)"
+        filename="dynamic: '{s}.csv'.format(s = Subject)"
         separator=";"
         location="C:\Users\Public\Documents\BalancePain">
-        <item name="ARM1" value="ARM1..GetPressureFromPerception(7.0)"/>
-        <item name="ARM2" value="ARM2..GetPressureFromPerception(7.0)"/>
-        <item name="ARM3" value="ARM3..GetPressureFromPerception(7.0)"/>
-        <item name="ARM" value="func: Script.ArmIntensity(tc)"/>
-        <item name="LEG1" value="LEG1..GetPressureFromPerception(7.0)"/>
-        <item name="LEG2" value="LEG2..GetPressureFromPerception(7.0)"/>
-        <item name="LEG3" value="LEG3..GetPressureFromPerception(7.0)"/>
-        <item name="LEG" value="func: Script.LegIntensity(tc)"/>
+        <item name="ARM1" value="ARM1.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM2" value="ARM2.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM3" value="ARM3.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM" value="func: Script.ArmIntensity(tc)" default="NA"/>
+        <item name="LEG1" value="LEG1.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG2" value="LEG2.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG3" value="LEG3.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG" value="func: Script.LegIntensity(tc)" default="NA"/>
     </export-to-csv>
 </post-actions>
 </experiment>
