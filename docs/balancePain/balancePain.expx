@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup name="Nocitech CPAR">
+    <devices>
+        <cpar id="dev" compressor-mode="AUTO"/>
+    </devices>
+    <device-mapping>
+        <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+    </device-mapping>
+    </experimental-setup>    
+    <protocol>
+        <templates>
+            <variables>
+                <strings value="1;2;3" name="Series" />
+                <strings value="1;2;3" name="Measurements" />
+            </variables>
+            <content>
+                <algometry-stimulus-response id="ARM"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1" />
+
+                <algometry-stimulus-response id="LEG"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="2"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1" />
+
+                <algometry-static-temporal-summation id="ARMSTIM"
+                    primary-cuff="1"
+                    pressure-stimulate="func: Script.ArmIntensity(tc)"
+                    stimulus-duration="30"
+                    tail-duration="1">
+                    <properties>
+                        <instructions default="var: instruction" override-results="true"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="ARM1" />
+                        <dependency id="ARM2" />
+                        <dependency id="ARM3" />
+                    </dependencies>
+                </algometry-static-temporal-summation>
+
+                <algometry-static-temporal-summation id="LEGSTIM"
+                    primary-cuff="2"
+                    pressure-stimulate="func: Script.LegIntensity(tc)"
+                    stimulus-duration="30"
+                    tail-duration="1">
+                    <properties>
+                        <instructions default="var: instruction" override-results="true"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="LEG1" />
+                        <dependency id="LEG2" />
+                        <dependency id="LEG3" />
+                    </dependencies>
+                </algometry-static-temporal-summation>
+            </content>
+        </templates>
+        <tests>
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-response-constructor id="var: 'ARM{m}'.format(m = m)" 
+                    name="Stimulus-Response (Arm: Cuff 1)" 
+                    template="ARM"/>
+            </foreach>
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-response-constructor id="var: 'LEG{m}'.format(m = m)" 
+                    name="Stimulus-Response (Leg: Cuff 2)" 
+                    template="LEG"/>
+            </foreach>
+
+            <foreach variable="s" in="Series">
+                <sequence type="random">
+                    <algometry-static-temporal-summation-constructor 
+                        id="var: 'ARMND{s}'.format(s = s)" 
+                        name="var: 'Arm {s}: No Distraction'.format(s = s)" 
+                        template="ARMSTIM">
+                        <variables><string value="Instructions.ArmND" name="instruction" /></variables>
+                    </algometry-static-temporal-summation-constructor>
+
+                    <algometry-static-temporal-summation-constructor 
+                        id="var: 'ARMD{s}'.format(s = s)" 
+                        name="var: 'Arm {s}: With Distraction'.format(s = s)" 
+                        template="ARMSTIM">
+                        <variables><string value="Instructions.ArmD" name="instruction" /></variables>
+                    </algometry-static-temporal-summation-constructor>
+
+                    <algometry-static-temporal-summation-constructor 
+                        id="var: 'LEGND{s}'.format(s = s)" 
+                        name="var: 'Leg {s}: No Distraction'.format(s = s)" 
+                        template="LEGSTIM">
+                        <variables><string value="Instructions.LegND" name="instruction" /></variables>
+                    </algometry-static-temporal-summation-constructor>
+
+                    <algometry-static-temporal-summation-constructor 
+                        id="var: 'LEGD{s}'.format(s = s)" 
+                        name="var: 'Leg {s}: With Distraction'.format(s = s)" 
+                        template="LEGSTIM">                    
+                        <variables><string value="Instructions.LegD" name="instruction" /></variables>
+                    </algometry-static-temporal-summation-constructor>
+                </sequence>
+            </foreach>
+        </tests>
+        <assets>
+            <file-asset id="Script" file="Script.py" />
+            <file-asset id="Instructions" file="Instructions.zip"></file-asset>
+        </assets>
+</protocol>
+<post-actions>
+    <export-to-csv 
+        name="Export Data"
+        header="true"
+        filename="dynamic: '{s}.csv'.format(s = Subject)"
+        separator=";"
+        location="C:\Users\Public\Documents\BalancePain">
+        <item name="ARM1" value="ARM1.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM2" value="ARM2.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM3" value="ARM3.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="ARM" value="func: Script.ArmIntensity(tc)" default="NA"/>
+        <item name="LEG1" value="LEG1.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG2" value="LEG2.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG3" value="LEG3.GetPressureFromPerception(7.0)" default="NA"/>
+        <item name="LEG" value="func: Script.LegIntensity(tc)" default="NA"/>
+    </export-to-csv>
+</post-actions>
+</experiment>

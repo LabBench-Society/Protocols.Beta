@@ -260,10 +260,10 @@
                 </content>
             </meta-survey>
 
-            <!-- Stoop Task -->
-            
-            <!-- Emotional Stoop Task -->
-            
+            <!-- Reverse Stoop Task -->
+
+            <!-- Stop Signal Task -->
+                      
             <!-- von Frey Filaments (Up/Down) -->
 
             <psychophysics-manual-threshold-estimation ID="QSTVF"
@@ -278,19 +278,6 @@
                              task-illustration-image="Filament" />
             </psychophysics-manual-threshold-estimation>
             
-
-            <!-- Pin Prick (Up/Down) -->
-            <psychophysics-manual-threshold-estimation ID="QSTPP"
-                                           name="Tactile Sensitivity (Pin Prick)">
-                <up-down-algorithm stop-rule="4"
-                                   terminate-on-limit-reached="true"
-                                   initial-direction="increasing"
-                                   intensities="[8.0, 16.0, 32.0, 64.0, 128.0, 256.0, 512.0]"/>
-                <yes-no-task question="Do fell a pain from the pin prick"
-                             positive-answer="Yes"
-                             negative-answer="No"
-                             task-illustration-image="PinPrick" />
-            </psychophysics-manual-threshold-estimation>
 
             <!-- Temporal summation
                 256g pin prick, with metronome
@@ -401,45 +388,7 @@
                 </content>
             </meta-survey>            
             
-            
-            <!-- Emotional monipulation [CPM] -->
-            <meta-survey ID="EMQSTUL"
-                         name="Pressure Pain Thresholds with Exercis Induced Hyperalgesia (Elbow)"
-                         control="operator"
-                         experimental-setup-id="image">
-                <test-events start="func: Script.DisplayImages(tc)"
-                             abort="func: Script.StopImages(tc)"
-                             complete="func: Script.StopImages(tc)">
-                    <instrument name="ImageDisplay"
-                                interface="image-display"
-                                required="true" />
-                </test-events>
-                <properties>
-                    <instructions default-instructions="EMInstructions"
-                                  override-results="false" />
-                </properties>
-                <content>
-                    <numeric id="PPT01UL"
-                             title="Pressure Pain Threshold (PTT) [ 1 of 3]"
-                             instruction="Determine the (PTT) for the right elbow">
-                        <validation min="0" min-included="true"
-                                    max="2000" max-included="true"/>
-                    </numeric>
-                    <numeric id="PPT02UL"
-                             title="Pressure Pain Threshold (PTT) [ 2 of 3]"
-                             instruction="Determine the (PTT) for the right elbow">
-                        <validation min="0" min-included="true"
-                                    max="2000" max-included="true"/>
-                    </numeric>
-                    <numeric id="PPT03UL"
-                             title="Pressure Pain Threshold (PTT) [ 3 of 3]"
-                             instruction="Determine the (PTT) for the right elbow">
-                        <validation min="0" min-included="true"
-                                    max="2000" max-included="true"/>
-                    </numeric>
-                </content>
-            </meta-survey>
-            
+                       
             <!-- Instructions to save the ECG and naming and location to save -->
         </tests>
 

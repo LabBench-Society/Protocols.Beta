@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.0.0/repository.xsd"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/repository.xsd"
+            name="LabBench Beta Repository"
             id="beta.labbench.io">
 
     <protocol 
@@ -8,7 +9,13 @@
       name="Offset Analgesia (Cutaneous Thermal Stimulation)"
       labbench-version="4.3.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
-            
+       
+    <protocol 
+      id="balancePain"
+      name="Postural ubalance forårsaget af muskelsmerter: Sammenhæng med opmærksomhedsafledende aktiviteter"
+      labbench-version="5.0.0"
+      category="Cuff Pressure Algometry"/>
+
     <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"
