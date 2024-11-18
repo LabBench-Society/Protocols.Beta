@@ -56,17 +56,6 @@
             </content>
         </templates>
         <tests>
-            <foreach variable="m" in="Measurements">
-                <algometry-stimulus-response-constructor id="var: 'ARM{m}'.format(m = m)" 
-                    name="Stimulus-Response (Arm: Cuff 1)" 
-                    template="ARM"/>
-            </foreach>
-            <foreach variable="m" in="Measurements">
-                <algometry-stimulus-response-constructor id="var: 'LEG{m}'.format(m = m)" 
-                    name="Stimulus-Response (Leg: Cuff 2)" 
-                    template="LEG"/>
-            </foreach>
-
             <foreach variable="s" in="Series">
                 <sequence type="random">
                     <algometry-static-temporal-summation-constructor 
@@ -101,7 +90,6 @@
         </tests>
         <assets>
             <file-asset id="Instructions" file="Instructions.zip"></file-asset>
-            <file-asset id="Script" file="Script.py"/>
         </assets>
 </protocol>
 <post-actions>
