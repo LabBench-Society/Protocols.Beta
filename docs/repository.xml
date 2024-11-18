@@ -7,12 +7,18 @@
     <protocol 
       id="offsetAnalgesia"
       name="Offset Analgesia (Cutaneous Thermal Stimulation)"
-      labbench-version="4.3.0"
+      labbench-version="5.0"
       category="Cutaneous Thermal Stimulation;Offset Analgesia;Heat Pain Threshold;QSTLab"/>
        
     <protocol 
       id="balancePain"
       name="Postural ubalance forårsaget af muskelsmerter: Sammenhæng med opmærksomhedsafledende aktiviteter"
+      labbench-version="5.0.0"
+      category="Cuff Pressure Algometry"/>
+
+    <protocol 
+      id="balancePainFixed70"
+      name="Postural ubalance forårsaget af muskelsmerter ved fast 70kPa: Sammenhæng med opmærksomhedsafledende aktiviteter"
       labbench-version="5.0.0"
       category="Cuff Pressure Algometry"/>
 
