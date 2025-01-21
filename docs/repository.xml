@@ -22,6 +22,12 @@
       labbench-version="5.0.0"
       category="Cuff Pressure Algometry"/>
 
+    <protocol 
+      id="balancePainRamped70"
+      name="Postural ubalance forårsaget af muskelsmerter ved 70kPa (2s ramp, 13s fixed): Sammenhæng med opmærksomhedsafledende aktiviteter"
+      labbench-version="5.0.0"
+      category="Cuff Pressure Algometry"/>
+
     <protocol id="questionnaires"
             name="Questionnaire Templates"
             labbench-version="4.0.0"
