@@ -25,7 +25,8 @@
                 <psychophysics-response-recording id="STIM"
                     duration="16" 
                     sample-rate="10">
-                    <test-events start="var: 'func: Script.{f}(tc)'.format(f = function)">
+                    <test-events start="var: 'func: Script.{f}(tc)'.format(f = function)"
+                                 abort="func: Script.StopStimulation(tc)">
                         <instrument name="PressureAlgometer" interface="pressure-algometer" />                    
                     </test-events>
                     <properties>
