@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+  <subject-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup name="Nocitech CPAR">
+    <devices>
+        <cpar id="dev" compressor-mode="AUTO"/>
+    </devices>
+    <device-mapping>
+        <device-assignment device-id="dev" instrument-name="PressureAlgometer" />
+        <device-assignment device-id="dev" instrument-name="Scales" />
+    </device-mapping>
+    </experimental-setup>    
+    <protocol>
+        <defines>
+            <define name="Intensity" value="70"/>
+        </defines>
+        <templates>
+            <variables>
+                <strings value="1;2" name="Series" />
+                <strings value="1;2;3" name="Measurements" />
+            </variables>
+            <content>    
+                <psychophysics-response-recording id="STIM"
+                    duration="16" 
+                    sample-rate="10">
+                    <test-events start="var: 'func: Script.{f}(tc)'.format(f = function)">
+                        <instrument name="PressureAlgometer" interface="pressure-algometer" />                    
+                    </test-events>
+                    <properties>
+                        <instructions default="var: instruction" override-results="true"/>
+                    </properties>                    
+                </psychophysics-response-recording>            
+            </content>
+        </templates>
+        <tests>
+            <foreach variable="s" in="Series">
+                <sequence type="random">
+                    <psychophysics-response-recording-constructor 
+                        id="var: 'ARMND{s}'.format(s = s)" 
+                        name="var: 'Arm {s}: No Distraction'.format(s = s)" 
+                        template="STIM">
+                        <variables>
+                            <string value="Instructions.ArmND" name="instruction" />
+                            <string value="StimulateArm" name="function" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+
+                    <psychophysics-response-recording-constructor
+                        id="var: 'ARMD{s}'.format(s = s)" 
+                        name="var: 'Arm {s}: With Distraction'.format(s = s)" 
+                        template="STIM">
+                        <variables>
+                            <string value="Instructions.ArmD" name="instruction" />
+                            <string value="StimulateArm" name="function" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+
+                    <psychophysics-response-recording-constructor
+                        id="var: 'LEGND{s}'.format(s = s)" 
+                        name="var: 'Leg {s}: No Distraction'.format(s = s)" 
+                        template="STIM">
+                        <variables>
+                            <string value="Instructions.LegND" name="instruction" />
+                            <string value="StimulateLeg" name="function" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+
+                    <psychophysics-response-recording-constructor
+                        id="var: 'LEGD{s}'.format(s = s)" 
+                        name="var: 'Leg {s}: With Distraction'.format(s = s)" 
+                        template="STIM">                    
+                        <variables>
+                            <string value="Instructions.LegD" name="instruction" />
+                            <string value="StimulateLeg" name="function" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
+            </foreach>
+        </tests>
+        <assets>
+            <file-asset id="Instructions" file="Instructions.zip"></file-asset>
+            <file-asset id="Script" file="Script.py" />
+        </assets>
+</protocol>
+<post-actions>
+</post-actions>
+</experiment>
