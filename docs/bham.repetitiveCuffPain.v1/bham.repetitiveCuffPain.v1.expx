@@ -137,7 +137,28 @@
             separator=";"
             location="C:\LabBenchData\repetitiveCuffPain"
             filename="dynamic: '{s}.csv'.format(s = Subject)">
-            <item name="Cuff" value="CONFIGURATION.Cuff" default="NA"/>
+            <item name="ID" value="Subject" default="NA"/>
+            <item name="LeftCuff" value="CONFIGURATION.Cuff" default="NA"/>
+            <item name="CH1M1"  value="'{:.1f}'.format(CH1M1.PDT)" default="NA"/>
+            <item name="CH1M2"  value="'{:.1f}'.format(CH1M2.PDT)" default="NA"/>
+            <item name="CH1M3"  value="'{:.1f}'.format(CH1M3.PDT)" default="NA"/>
+            <item name="CH1M4"  value="'{:.1f}'.format(CH1M4.PDT)" default="NA"/>
+            <item name="CH1M5"  value="'{:.1f}'.format(CH1M5.PDT)" default="NA"/>
+            <item name="CH1M6"  value="'{:.1f}'.format(CH1M6.PDT)" default="NA"/>
+            <item name="CH1M7"  value="'{:.1f}'.format(CH1M7.PDT)" default="NA"/>
+            <item name="CH1M8"  value="'{:.1f}'.format(CH1M8.PDT)" default="NA"/>
+            <item name="CH1M9"  value="'{:.1f}'.format(CH1M9.PDT)" default="NA"/>
+            <item name="CH1M10" value="'{:.1f}'.format(CH1M10.PDT)" default="NA"/>
+            <item name="CH2M1"  value="'{:.1f}'.format(CH2M1.PDT)" default="NA"/>
+            <item name="CH2M2"  value="'{:.1f}'.format(CH2M2.PDT)" default="NA"/>
+            <item name="CH2M3"  value="'{:.1f}'.format(CH2M3.PDT)" default="NA"/>
+            <item name="CH2M4"  value="'{:.1f}'.format(CH2M4.PDT)" default="NA"/>
+            <item name="CH2M5"  value="'{:.1f}'.format(CH2M5.PDT)" default="NA"/>
+            <item name="CH2M6"  value="'{:.1f}'.format(CH2M6.PDT)" default="NA"/>
+            <item name="CH2M7"  value="'{:.1f}'.format(CH2M7.PDT)" default="NA"/>
+            <item name="CH2M8"  value="'{:.1f}'.format(CH2M8.PDT)" default="NA"/>
+            <item name="CH2M9"  value="'{:.1f}'.format(CH2M9.PDT)" default="NA"/>
+            <item name="CH2M10" value="'{:.1f}'.format(CH2M10.PDT)" default="NA"/>
         </export-to-csv>       
     </post-actions>
 </experiment>
