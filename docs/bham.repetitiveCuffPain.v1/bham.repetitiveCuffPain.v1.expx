@@ -33,9 +33,31 @@
                     pressure-limit="100"
                     primary-cuff="1"
                     second-cuff="false">   
+                    <properties>
+                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
+                            time-reference="start"
+                            min="10 if 'TEST' in Subject else 130"/>
+                    </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="true" />
                         <dependency id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" virtual="true" />
+                    </dependencies>                                     
+                </algometry-stimulus-rating>
+
+                <algometry-stimulus-rating id="CPPT02INITIAL"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false">                    
+                    <properties>
+                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(Measurements[-1]) - 1)" 
+                            time-reference="end"
+                            min="10 if 'TEST' in Subject else 5*60"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" virtual="true" />
                     </dependencies>                 
                 </algometry-stimulus-rating>
 
@@ -45,6 +67,11 @@
                     pressure-limit="100"
                     primary-cuff="1"
                     second-cuff="false">                    
+                    <properties>
+                        <time-constraint test-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
+                            time-reference="start"
+                            min="10 if 'TEST' in Subject else 130"/>
+                    </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="true" />
                         <dependency id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" virtual="true" />
@@ -75,9 +102,17 @@
             </foreach>
 
             <foreach variable="m" in="Measurements">
-                <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
-                    name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
-                    template="CPPT02" />
+                <if condition="m == '1'">
+                    <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
+                        name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
+                        template="CPPT02INITIAL" />
+                </if>
+                <if condition="m != '1'">
+                    <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
+                        name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
+                        template="CPPT02" />
+                </if>
+
             </foreach>
         </tests>
         <assets>
