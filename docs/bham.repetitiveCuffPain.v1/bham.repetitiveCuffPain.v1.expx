@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+  <subject-validator regex="^[0-9]+$|^PILOT[0-9]{3}$|^TEST[0-9]{3}"
+                     advice="Please enter an ID in the form of a number, or TESTXXX/PILOTXXX in the form of X, where X is a number" />
+  <experimental-setup-variants default="cparplus">
+    <experimental-setup id="cpar" name="Nocitech CPAR">
+        <devices>
+            <cpar id="cpar" compressor-mode="AUTO"/>
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        </device-mapping>
+    </experimental-setup>
+    <experimental-setup id="cparplus" name="LabBench CPAR+">
+        <devices>
+            <cpar-plus id="cpar" />
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        </device-mapping>
+    </experimental-setup>
+  </experimental-setup-variants>  
+    <protocol>
+        <templates>
+            <variables>
+                <strings name="Measurements" value="1;2;3;4;5;6;7;8;9;10" />
+            </variables>
+            <content>
+                <algometry-stimulus-rating id="CPPT01"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false">   
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" virtual="true" />
+                    </dependencies>                 
+                </algometry-stimulus-rating>
+
+                <algometry-stimulus-rating id="CPPT02"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false">                    
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" virtual="true" />
+                    </dependencies>                 
+                </algometry-stimulus-rating>
+            </content>
+        </templates>
+        <tests>
+            <questionnaire id="CONFIGURATION" 
+                name="Configuration">
+                <content>
+                    <boolean id="Cuff"
+                        true-label="Left" 
+                        false-label="Right" 
+                        title="Starting cuff" 
+                        instruction="Enter the initial arm that will be tested" />
+                    <instruction id="Setup" 
+                        title="Cuff connections"
+                        instruction="dynamic: 'Instructions.LeftCuff' if Current.Cuff else 'Instructions.RightCuff'"/>
+                    
+                </content>
+            </questionnaire>
+
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-rating-constructor id="var: 'CH1M{0}'.format(m)" 
+                    name="var: 'Cuff Pressure Pain Threshold (Channel 1, M{0})'.format(m)" 
+                    template="CPPT01" />
+            </foreach>
+
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
+                    name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
+                    template="CPPT02" />
+            </foreach>
+        </tests>
+        <assets>
+            <file-asset id="Instructions" file="Instructions.zip" />
+            <file-asset id="Script" file="Script.py" />
+        </assets>
+    </protocol>    
+    <post-actions>                
+    </post-actions>
+</experiment>
