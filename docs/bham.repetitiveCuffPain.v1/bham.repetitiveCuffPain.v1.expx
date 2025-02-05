@@ -51,13 +51,13 @@
                     primary-cuff="1"
                     second-cuff="false">                    
                     <properties>
-                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(Measurements[-1]) - 1)" 
+                        <time-constraint test-id="CH1M10" 
                             time-reference="end"
-                            min="10 if 'TEST' in Subject else 5*60"/>
+                            min="15 if 'TEST' in Subject else 5*60"/>
                     </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="true" />
-                        <dependency id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" virtual="true" />
+                        <dependency id="CH1M10" virtual="true" />
                     </dependencies>                 
                 </algometry-stimulus-rating>
 
@@ -120,6 +120,25 @@
             <file-asset id="Script" file="Script.py" />
         </assets>
     </protocol>    
-    <post-actions>                
+    <post-actions>    
+        <export-log name="Export Session Log"
+            level="information"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            id="Repetitive Cuff Pain, Version 1"
+            filename="dynamic: '{s} Session Log.pdf'.format(s = Subject)"/>       
+
+        <export-data name="Export Raw Data"
+            format="json"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            filename="dynamic: '{s}.json'.format(s = Subject)"/>
+
+        <export-to-csv name="Export to CSV"
+            culture="en-GB"
+            header="true"
+            separator=";"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            filename="dynamic: '{s}.csv'.format(s = Subject)">
+            <item name="Cuff" value="CONFIGURATION.Cuff" default="NA"/>
+        </export-to-csv>       
     </post-actions>
 </experiment>
