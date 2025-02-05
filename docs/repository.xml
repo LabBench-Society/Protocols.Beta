@@ -3,6 +3,7 @@
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/repository.xsd"
             name="LabBench Beta Repository"
             id="beta.labbench.io">
+    <!-- 
     <category name="Spinecenter of Southern Denmark" id="spinecenter">
       <protocol id="balancePain"
         name="Postural ubalance forårsaget af muskelsmerter: Sammenhæng med opmærksomhedsafledende aktiviteter"
@@ -19,14 +20,17 @@
         labbench-version="5.0.0"
         category="Cuff Pressure Algometry"/>
     </category>
+    -->
 
+    <!-- 
     <category name="Concordia Research Station (ESA)" id="concordia">
       <protocol id="icePain"
                 name="Ice Pain Protocol"
                 labbench-version="4.0.0"
                 category="Pain Protocol"/>    
     </category>
-
+    -->
+    <!-- 
     <category name="The Clinical Research Facility (Exeter)" id="exeter">
       <protocol id="nwrDS5"
                 name="Nociceptive Withdrawal Reflex (NWR) (DS5 Version)"
@@ -75,7 +79,9 @@
           labbench-version="4.0"
           category="Conditioned NWR;CPAR+;LabBench I/O"/>
     </category>
+    -->
 
+    <!-- 
     <category name="Klinik für Allgemeine Innere Medizin und Psychosomatik (Heidelberg)" id="heidelberg">
       <protocol id="painExpectPressure"
                 name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
@@ -97,14 +103,18 @@
                 labbench-version="4.1.0"
                 category="LabBench I/O;Pain Perception Processes"/>
     </category>
+    -->
   
-    <category name="Laboratory of Neuropsychology and Pain (AAU)" id="npp">
+    <!-- 
+    <category name="Laboratory of Neuropsychology and Pain (AAU)" id="npp">      
       <protocol id="traitssst"
                 name="Personality Traits (Stop Signal Task)"
                 labbench-version="4.0.0"
                 category="Personality Traits;LabBench I/O"/>
     </category>
+    -->
        
+        <!-- 
     <category name="Center for Neuroplasticity and Pain (AAU)" id="cnap">
       <protocol id="offsetAnalgesia"
         name="Offset Analgesia (Cutaneous Thermal Stimulation)"
@@ -119,7 +129,9 @@
           labbench-version="4.0"
           category="Quantitative Sensory Testing;Cancer;QSTLab"/>
     </category>
+        -->
 
+    <!-- 
     <category name="Integrative Neuroscience Research Group (AAU)" id="integrative">
       <protocol id="taVNS"
             name="Transcutaneous auricular vagal nerve stimulation"
@@ -135,7 +147,8 @@
                 labbench-version="4.0.0"
                 category="Tactile Testing"/>
     </category>
-
+    -->
+    <!-- 
     <category name="Neural Engineering and Neurophysiology Research (AAU)" id="neuroeng">
       <protocol id="spAutism"
                 name="Sensory Processing in Autism"
@@ -147,6 +160,7 @@
                 labbench-version="4.0"
                 category="Tactile Testing;Audiotory Testing;Autism" />    
     </category>
+    -->
     <category name="School of Sport, Exercise and Rehabilitation Sciences (University of Birmingham" id="bham">
       <category name="Repetitive Measurement of Pain Detection Threshold using Cuff Algometry" id="repetitiveCuffPain">
         <protocol id="bham.repetitiveCuffPain.v1" 
