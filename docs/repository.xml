@@ -166,6 +166,9 @@
         <protocol id="bham.repetitiveCuffPain.v1" 
           name="Repetitive Measurement of Pain Detection Threshold using Cuff Algometry (Version 1)"
           labbench-version="5.0" />
+        <protocol id="bham.repetitiveCuffPain.v2" 
+          name="Repetitive Measurement of Pain Detection Threshold using Cuff Algometry (Version 2)"
+          labbench-version="5.0" />
       </category>
     </category>
 </repository>
