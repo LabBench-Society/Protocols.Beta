@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="..\experiment.xsd">
+    <subject-validator 
+        regex="^M[0-9]{1,2}_CON$|^M[0-9]{1,2}_CLBP$|^M[0-9]{1,2}_TEST$"
+        advice="Must in the format of M[X]_[GROUP], where [X] is a 1-2 digit number, [GROUP] is either CON, CLBP, or TEST."/>
+    <experimental-setup-variants default="CPARPlusDisplay">
+      <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
+        <devices>
+            <cpar-plus id="dev"/>
+    
+            <display
+                id="display"
+                screen="secondary"
+                position="fullscreen"
+                active-color="rgb(255,0,0)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(16,16,16)"
+                normative-distance="40">
+    
+                <monitor
+                    diagonal-size="53.34"
+                    distance="40" />
+
+                <configurations>
+                    <visual-analog-scale id="vas"
+                        experimental-setup-id="vas"
+                        length="10"
+                        controller-device="dev">
+                        <anchors>
+                            <modality text="" />
+                            <top-anchor text="10/Worst imaginable pain" />
+                            <bottom-anchor text="0/No pain" />
+                        </anchors>
+                    </visual-analog-scale>
+
+                    <image-display id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)"/>
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="dev" instrument-name="PressureAlgometer" />
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+        </device-mapping>
+      </experimental-setup>    
+    </experimental-setup-variants>
+    <protocol>
+        <languages>
+            <language code="EN" name="English" />
+            <language code="NL" name="Dutch" />            
+        </languages>
+        <defines>
+            <define name="RTable" value="func: Script.GetRandomizationTableWP1(tc)"/>            
+        </defines>
+        <templates>
+            <content>
+                <questionnaire id="PPT"
+                    experimental-setup-id="image">
+                    <properties>
+                        <instructions default="var: OperatorInstructions" override-results="true"/>
+                    </properties>
+                    <templates>
+                        <numeric id="MEASUREMENT"
+                            title="var: Site"
+                            instruction="Please enter the pressure pain threshold (PTT) [N]">
+                            <validation max="250" max-included="true" min="0" min-included="true" />
+                        </numeric>
+                    </templates>
+                    <content>
+                        <numeric id="M1" template="MEASUREMENT" />
+                        <numeric id="M2" template="MEASUREMENT" />
+                        <numeric id="M3" template="MEASUREMENT" />
+                    </content>
+                </questionnaire>
+
+                <algometry-stimulus-response 
+                    id="SR01"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.SR01" override-results="false"/>
+                        <subject-instructions experimental-setup-id="image"
+                            default="Assets.CPAInstructions.SR01" />
+                    </properties>
+                </algometry-stimulus-response>
+
+                <algometry-temporal-summation 
+                    id="TS"
+                    experimental-setup-id="vas"
+                    no-of-stimuli="10"
+                    pressure-static="5"
+                    pressure-stimulate="1.0 * SR01.PTT"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    t-off="1"
+                    t-on="1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
+                        <subject-instructions experimental-setup-id="image"
+                            default="Assets.CPAInstructions.TS" />
+                    </properties>
+                    <dependencies>
+                        <dependency id="SR01"/>
+                    </dependencies>
+                </algometry-temporal-summation>
+
+                <algometry-stimulus-response 
+                    id="CPM"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    conditioning-time="60"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <time-constraint test-id="TS" min="func: Script.GetPPTWaitTime(tc)" time-reference="end" />
+                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
+                        <subject-instructions experimental-setup-id="image"
+                            default="Assets.CPAInstructions.CPM" />
+                    </properties>
+                </algometry-stimulus-response>
+            </content>
+        </templates>
+        <tests>
+            <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
+                <questionnaire-constructor id="PTTCR" name="Calf Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Calf Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTCR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+
+                <questionnaire-constructor id="PTTLR" name="Lumbar Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Lumber Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTLR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+
+                <questionnaire-constructor id="PTTFR" name="Forearm Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Forearm Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTFR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+
+                <questionnaire-constructor id="PTTCL" name="Calf Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Calf Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTCL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+
+                <questionnaire-constructor id="PTTLL" name="Lumbar Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Lumber Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTLL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+
+                <questionnaire-constructor id="PTTFL" name="Forearm Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Forearm Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTFL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+            </sequence>
+            
+            <algometry-stimulus-response-constructor id="SR01" 
+                name="Stimulus-Response (Cuff 1)"
+                template="SR01"/>
+
+            <algometry-temporal-summation-constructor id="TS" 
+                name="Temporal Summation (Cuff 1)"
+                template="TS"/>
+
+            <algometry-stimulus-response-constructor id="CPM" 
+                name="CPM (Cuff 1)"
+                template="CPM"/>
+        </tests>
+        <assets>
+            <file-asset id="CPAInstructions" file="CPAInstructions_EN.zip">
+                <language code="NL" file="CPAInstructions_NL.zip"/>
+            </file-asset>
+            <file-asset id="PPTOperatorInstructions" file="PPTOperatorInstructions_EN.zip">
+                <language code="NL" file="PPTOperatorInstructions_NL.zip"/>
+            </file-asset>
+            <file-asset id="Script" file="Script.py"/>
+        </assets>
+    </protocol>
+    <post-actions>
+        <export-to-csv name="Exporting session"
+                       location="C:\LabBenchData\synaps\"
+                       header="true"
+                       separator=";"
+                       culture="en"                       
+                       filename="dynamic: '{s}.csv'.format(s = Subject)">
+
+            <item name="ProtocolID"  value="SR01.ProtocolID"        default="NA" />
+            <item name="MachineName" value="SR01.MachineID"         default="NA" />
+            <item name="OS"          value="SR01.OperatingSystem"   default="NA" />
+            <item name="Instrument"  value="SR01.Instruments[0].ID" default="NA" />
+
+            <!-- Stimulus-Response (Cuff 1) -->
+            <item name="SR01PDT" value="SR01.PDT" default="NA"/>
+            <item name="SR02PTT" value="SR01.PTT" default="NA"/>
+
+            <!-- Stimulus-Response (Cuff 2) -->
+            <item name="SR02PDT" value="SR02.PDT" default="NA"/>
+            <item name="SR02PTT" value="SR02.PTT" default="NA"/>
+
+            <!-- Temporal Summation (Cuff 1) -->
+            <item name="TS01" value="TS.Responses[0]" default="NA"/>
+            <item name="TS02" value="TS.Responses[1]" default="NA"/>
+            <item name="TS03" value="TS.Responses[2]" default="NA"/>
+            <item name="TS04" value="TS.Responses[3]" default="NA"/>
+            <item name="TS05" value="TS.Responses[4]" default="NA"/>
+            <item name="TS06" value="TS.Responses[5]" default="NA"/>
+            <item name="TS07" value="TS.Responses[6]" default="NA"/>
+            <item name="TS08" value="TS.Responses[7]" default="NA"/>
+            <item name="TS09" value="TS.Responses[8]" default="NA"/>
+            <item name="TS10" value="TS.Responses[9]" default="NA"/>
+
+            <!-- CPM (Cuff 1) -->
+            <item name="CPMPDT" value="CPM.PDT" default="NA"/>
+            <item name="CPMPTT" value="CPM.PTT" default="NA"/>
+        </export-to-csv>        
+    </post-actions>
+</experiment>
