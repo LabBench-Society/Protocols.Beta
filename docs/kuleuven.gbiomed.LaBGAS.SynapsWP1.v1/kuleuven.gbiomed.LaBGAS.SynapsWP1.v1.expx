@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="..\experiment.xsd">
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
     <subject-validator 
         regex="^M[0-9]{1,2}_CON$|^M[0-9]{1,2}_CLBP$|^M[0-9]{1,2}_TEST$"
         advice="Must in the format of M[X]_[GROUP], where [X] is a 1-2 digit number, [GROUP] is either CON, CLBP, or TEST."/>

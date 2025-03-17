@@ -171,4 +171,14 @@
           labbench-version="5.0" />
       </category>
     </category>
+    <category name="KU Leuven" id="kuleuven">
+        <category name="Translational Research Center in Gastro-intestinal Disorders" id="kuleuven.gbiomed">
+            <category name="The Laboratory for Brain-Gut Axis Studies (LaBGAS)" id="kuleuven.gbiomed.LaBGAS">
+                <protocol id="kuleuven.gbiomed.LaBGAS.SynapsWP1.v1" 
+                    name="Synaps QST Protocol (Work Package 1), Ver. 1"
+                    category="LabBench CPAR+"
+                    labbench-version="5.1"  />
+            </category>
+        </category>
+    </category>
 </repository>
