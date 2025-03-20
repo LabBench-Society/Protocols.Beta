@@ -64,8 +64,8 @@
                     <templates>
                         <numeric id="MEASUREMENT"
                             title="var: Site"
-                            instruction="Please enter the pressure pain threshold (PTT) [N]">
-                            <validation max="250" max-included="true" min="0" min-included="true" />
+                            instruction="Please enter the pressure pain threshold (PTT) [kgf]">
+                            <validation max="25" max-included="true" min="0" min-included="true" />
                         </numeric>
                     </templates>
                     <content>
