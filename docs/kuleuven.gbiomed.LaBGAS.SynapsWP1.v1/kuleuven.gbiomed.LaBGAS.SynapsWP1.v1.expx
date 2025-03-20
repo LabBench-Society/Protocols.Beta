@@ -11,8 +11,8 @@
     
             <display
                 id="display"
-                screen="secondary"
-                position="fullscreen"
+                screen="primary"
+                position="upper-right"
                 active-color="rgb(255,0,0)"
                 background-color="rgb(255,255,255)"
                 inactive-color="rgb(16,16,16)"
