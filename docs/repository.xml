@@ -178,6 +178,10 @@
                     name="Synaps QST Protocol (Work Package 1), Ver. 1"
                     category="LabBench CPAR+"
                     labbench-version="5.1"  />
+                <protocol id="kuleuven.gbiomed.LaBGAS.SynapsWP2.v1" 
+                    name="Synaps QST Protocol (Work Package 2), Ver. 1"
+                    category="LabBench CPAR+"
+                    labbench-version="5.1"  />
             </category>
         </category>
     </category>

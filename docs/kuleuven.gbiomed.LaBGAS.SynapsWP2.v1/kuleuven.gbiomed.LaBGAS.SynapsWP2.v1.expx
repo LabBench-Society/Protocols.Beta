@@ -2,8 +2,8 @@
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
     <subject-validator 
-        regex="^sub-wp1(con|clbp|test)[0-9]{2}$"
-        advice="Must in the format of sub-wp1[GROUP][XX], where [X] is a single digit number, [GROUP] is either con, clbp, or test."/>
+        regex="^sub-wp1(con|clbp|ci|clbpci|test)[0-9]{2}$"
+        advice="Must in the format of sub-wp1[GROUP][XX], where [X] is a single digit number, [GROUP] is either con, clbp, ci, clbpci, or test."/>
     <experimental-setup-variants default="CPARPlusDisplay">
       <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
         <devices>
@@ -52,7 +52,7 @@
             <language code="NL" name="Dutch" />            
         </languages>
         <defines>
-            <define name="RTable" value="func: Script.GetRandomizationTableWP1(tc)"/>            
+            <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>            
         </defines>
         <templates>
             <content>

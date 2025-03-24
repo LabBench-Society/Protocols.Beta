@@ -89,7 +89,7 @@ def RandomizeThresholds(tc):
    if (n < 1):
       raise ValueError("Subject number must be 1 or greater")
 
-   return tc.RTable[(n-1)%20]
+   return tc.RTable[(n-1)%30]
 
 def GetPPTWaitTime(tc):
-   return 30 if 'test' in tc.Subject else 15*60
+   return 30 if 'TEST' in tc.Subject else 15*60
