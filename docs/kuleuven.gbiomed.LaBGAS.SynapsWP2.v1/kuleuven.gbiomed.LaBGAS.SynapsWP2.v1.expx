@@ -174,7 +174,7 @@
                     experimental-setup-id="vas"
                     no-of-stimuli="12"
                     pressure-static="5"
-                    pressure-stimulate="var: '1.0 * {s}SR01.PTT'.format(s = session)"
+                    pressure-stimulate="1.0 * SR01.PTT"
                     primary-cuff="1"
                     second-cuff="false"
                     t-off="1"
@@ -185,7 +185,7 @@
                             default="Assets.CPAInstructions.TS" />
                     </properties>
                     <dependencies>
-                        <dependency id="var: '{s}SR01'.format(s = session)"/>
+                        <dependency id="SR01"/>
                     </dependencies>
                 </algometry-temporal-summation>
 
@@ -200,7 +200,7 @@
                     stop-mode="stop-on-maximal-rating"
                     vas-pdt="0.1">
                     <properties>
-                        <time-constraint test-id="var: '{s}TS'.format(s = session)" 
+                        <time-constraint test-id="TS" 
                             min="func: Script.GetPPTWaitTime(tc)" time-reference="end" />
                         <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
@@ -210,79 +210,67 @@
             </content>
         </templates>
         <tests>
-            <foreach variable="session" in="sessions">
-                <if condition="session == 'MRI'">
-                    <questionnaire-constructor id="var: '{s}BODYMAPPre'.format(s = session)" 
-                        session="var: session"
-                        name="Body Map (Pre-MRI)" template="PAIN" />
-                    <questionnaire-constructor id="var: '{s}BODYMAPPost'.format(s = session)" 
-                        session="var: session"
-                        name="Body Map (Post-MRI)" template="PAIN" />
-                </if>
-                <if condition="session == 'QST'">
-                    <questionnaire-constructor id="var: '{s}BODYMAP'.format(s = session)" session="var: session" name="Body Map" template="PAIN" />
+            <questionnaire-constructor id="BODYMAP" name="Body Map" template="PAIN" />
 
-                    <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
-                        <questionnaire-constructor id="var: '{s}PTTCR'.format(s = session)" session="var: session" name="Calf Right (PPT)" template="PPT">
-                            <variables>
-                                <string value="Calf Right" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTCR" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
+            <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
+                <questionnaire-constructor id="PTTCR" name="Calf Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Calf Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTCR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
 
-                        <questionnaire-constructor id="var: '{s}PTTLR'.format(s = session)" session="var: session" name="Lumbar Right (PPT)" template="PPT">
-                            <variables>
-                                <string value="Lumber Right" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTLR" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
+                <questionnaire-constructor id="PTTLR" name="Lumbar Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Lumber Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTLR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
 
-                        <questionnaire-constructor id="var: '{s}PTTFR'.format(s = session)" session="var: session" name="Forearm Right (PPT)" template="PPT">
-                            <variables>
-                                <string value="Forearm Right" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTFR" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
+                <questionnaire-constructor id="PTTFR" name="Forearm Right (PPT)" template="PPT">
+                    <variables>
+                        <string value="Forearm Right" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTFR" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
 
-                        <questionnaire-constructor id="var: '{s}PTTCL'.format(s = session)" session="var: session" name="Calf Left (PPT)" template="PPT">
-                            <variables>
-                                <string value="Calf Left" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTCL" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
+                <questionnaire-constructor id="PTTCL" name="Calf Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Calf Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTCL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
 
-                        <questionnaire-constructor id="var: '{s}PTTLL'.format(s = session)" session="var: session" name="Lumbar Left (PPT)" template="PPT">
-                            <variables>
-                                <string value="Lumber Left" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTLL" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
+                <questionnaire-constructor id="PTTLL" name="Lumbar Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Lumber Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTLL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
 
-                        <questionnaire-constructor id="var: '{s}PTTFL'.format(s = session)" session="var: session" name="Forearm Left (PPT)" template="PPT">
-                            <variables>
-                                <string value="Forearm Left" name="Site" />
-                                <string value="Assets.PPTOperatorInstructions.PTTFL" name="OperatorInstructions" />
-                            </variables>
-                        </questionnaire-constructor>
-                    </sequence>
-                    
-                    <algometry-stimulus-response-constructor id="var: '{s}SR01'.format(s = session)" session="var: session" 
-                        name="Stimulus-Response (Cuff 1)"
-                        template="SR01"/>
+                <questionnaire-constructor id="PTTFL" name="Forearm Left (PPT)" template="PPT">
+                    <variables>
+                        <string value="Forearm Left" name="Site" />
+                        <string value="Assets.PPTOperatorInstructions.PTTFL" name="OperatorInstructions" />
+                    </variables>
+                </questionnaire-constructor>
+            </sequence>
+            
+            <algometry-stimulus-response-constructor id="SR01" 
+                name="Stimulus-Response (Cuff 1)"
+                template="SR01"/>
 
-                    <algometry-temporal-summation-constructor id="var: '{s}TS'.format(s = session)" session="var: session" 
-                        name="Temporal Summation (Cuff 1)"
-                        template="TS"/>
+            <algometry-temporal-summation-constructor id="TS" 
+                name="Temporal Summation (Cuff 1)"
+                template="TS"/>
 
-                    <algometry-stimulus-response-constructor id="var: '{s}SR02'.format(s = session)" session="var: session" 
-                        name="Stimulus-Response (Cuff 1)"
-                        template="SR01"/>
+            <algometry-stimulus-response-constructor id="SR02"
+                name="Stimulus-Response (Cuff 1)"
+                template="SR01"/>
 
-                    <algometry-stimulus-response-constructor id="var: '{s}CPM'.format(s = session)" session="var: session" 
-                        name="CPM (Cuff 1)"
-                        template="CPM"/>
-                </if>            
-            </foreach>
+            <algometry-stimulus-response-constructor id="CPM" 
+                name="CPM (Cuff 1)"
+                template="CPM"/>
         </tests>
         <assets>
             <file-asset id="BodyAreas" file="BodyAreas.png" />            
