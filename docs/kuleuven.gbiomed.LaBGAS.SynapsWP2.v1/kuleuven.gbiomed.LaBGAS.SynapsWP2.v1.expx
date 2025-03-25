@@ -51,17 +51,10 @@
             <language code="EN" name="English" />
             <language code="NL" name="Dutch" />            
         </languages>
-        <sessions>
-            <session id="MRI" name="MRI Session" />
-            <session id="QST" name="QST Session" />
-        </sessions>
         <defines>
             <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>            
         </defines>
         <templates>
-            <variables>
-                <strings name="sessions" value="MRI;QST" />
-            </variables>
             <content>
                 <questionnaire id="PAIN" 
                     experimental-setup-id="image"
