@@ -2,8 +2,8 @@
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
     <subject-validator 
-        regex="^sub-wp1(con|clbp|ci|clbpci|test)[0-9]{2}$"
-        advice="Must in the format of sub-wp1[GROUP][XX], where [X] is a single digit number, [GROUP] is either con, clbp, ci, clbpci, or test."/>
+        regex="^sub-wp2(con|clbp|ci|clbpci|test)[0-9]{2}$"
+        advice="Must in the format of sub-wp2[GROUP][XX], where [X] is a single digit number, [GROUP] is either con, clbp, ci, clbpci, or test."/>
     <experimental-setup-variants default="CPARPlusDisplay">
       <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
         <devices>
@@ -51,11 +51,89 @@
             <language code="EN" name="English" />
             <language code="NL" name="Dutch" />            
         </languages>
+        <sessions>
+            <session id="MRI" name="MRI Session" />
+            <session id="QST" name="QST Session" />
+        </sessions>
         <defines>
             <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>            
         </defines>
         <templates>
+            <variables>
+                <strings name="sessions" value="MRI;QST" />
+            </variables>
             <content>
+                <questionnaire id="PAIN" 
+                    experimental-setup-id="image"
+                    control="operator">
+                    <properties>
+                        <instructions default="Instructions.Pain" override-results="true"/>
+                    </properties>
+                    <templates>
+                        <map id="BODYMAP"
+                            title="Title"
+                            instruction="Instructions for the subject"
+                            image-map="BodyAreas"
+                            selected-color="#ADFFA6"
+                            active-selected-color="#82BF7C"
+                            deselected-color="#FFFFFF"
+                            active-deselected-color="#E3E3E3"
+                            selection-mode="unspecified"
+                            initial-active-area="A17">
+                            <!-- Head -->
+                            <area id="A17" color="#00010D" down="A18" right="A05" left="A01"/>
+
+                            <!-- Band 1 -->
+                            <area id="A01" color="#B89E00" right="A19" left="A23" up="A17" down="A02" />
+                            <area id="A19" color="#6F0024" right="A18" left="A01" down="A21"/>
+                            <area id="A18" color="#B5FFA4" right="A20" left="A19" up="A17" down="A21"/>
+                            <area id="A20" color="#C9FFF2" right="A05" left="A18" down="A21"/>
+                            <area id="A05" color="#17AC00" right="A22" left="A20" up="A17" down="A06"/>
+                            <area id="A22" color="#C69FFF" right="A24" left="A05" up="A05" down="A25"/>
+                            <area id="A24" color="#FF717C" right="A23" left="A22" up="A17" down="A27"/>
+                            <area id="A23" color="#006016" right="A01" left="A24" up="A01" down="A26"/>
+
+                                <!-- Band 2 -->
+                            <area id="A02" color="#6328D5" right="A06" left="A26" up="A01" down="A03"/>
+                            <area id="A06" color="#FF81E9" right="A25" left="A02" up="A05" down="A07"/>
+                            <area id="A25" color="#00926D" right="A27" left="A06" up="A22" down="A28"/>
+                            <area id="A27" color="#D8D9FF" right="A26" left="A25" up="A24" down="A29"/>
+                            <area id="A26" color="#8F4900" right="A02" left="A27" up="A23" down="A29"/>
+                                
+                            <!-- Band 3 -->
+                            <area id="A03" color="#8CDE00" right="A21" left="A29" up="A02" down="A04"/>
+                            <area id="A21" color="#671500" right="A07" left="A03" up="A18" down="A13"/>
+                            <area id="A07" color="#8AFF76" right="A28" left="A21" up="A06" down="A08"/>
+                            <area id="A28" color="#293700" right="A29" left="A07" up="A25" down="A13"/>
+                            <area id="A29" color="#FFCDF7" right="A03" left="A28" up="A26" down="A09"/>
+
+                            <!-- Band 4 -->
+                            <area id="A04" color="#B10094" right="A09" left="A08" up="A03"/>
+                            <area id="A09" color="#00F397" right="A13" left="A04" up="A29" down="A10"/>
+                            <area id="A13" color="#00D2D8" right="A08" left="A09" up="A28" down="A14"/>
+                            <area id="A08" color="#00053F" right="A04" left="A13" up="A07" />
+
+                            <!-- Band 5 -->
+                            <area id="A10" color="#FF441A" right="A14" left="A14" up="A09" down="A11"/>
+                            <area id="A14" color="#EC8C00" right="A10" left="A10" up="A13" down="A15"/>
+
+                            <!-- Band 6 -->
+                            <area id="A11" color="#00E2C5" right="A15" left="A15" up="A10" down="A12"/>
+                            <area id="A15" color="#0161B1" right="A11" left="A11" up="A14" down="A16"/>
+
+                            <!-- Band 7-->
+                            <area id="A12" color="#9B0011" right="A16" left="A16" up="A11" />
+                            <area id="A16" color="#DFFF90" right="A12" left="A12" up="A15"/>
+                        </map>                          
+                    </templates>
+                    <content>
+                        <map id="Q01"
+                            instruction="Instructions"
+                            selection-mode="multiple"                            
+                            template="BODYMAP" />
+                    </content>
+                </questionnaire>     
+
                 <questionnaire id="PPT"
                     experimental-setup-id="image">
                     <properties>
@@ -94,9 +172,9 @@
                 <algometry-temporal-summation 
                     id="TS"
                     experimental-setup-id="vas"
-                    no-of-stimuli="10"
+                    no-of-stimuli="12"
                     pressure-static="5"
-                    pressure-stimulate="1.0 * SR01.PTT"
+                    pressure-stimulate="var: '1.0 * {s}SR01.PTT'.format(s = session)"
                     primary-cuff="1"
                     second-cuff="false"
                     t-off="1"
@@ -107,7 +185,7 @@
                             default="Assets.CPAInstructions.TS" />
                     </properties>
                     <dependencies>
-                        <dependency id="SR01"/>
+                        <dependency id="var: '{s}SR01'.format(s = session)"/>
                     </dependencies>
                 </algometry-temporal-summation>
 
@@ -122,7 +200,8 @@
                     stop-mode="stop-on-maximal-rating"
                     vas-pdt="0.1">
                     <properties>
-                        <time-constraint test-id="TS" min="func: Script.GetPPTWaitTime(tc)" time-reference="end" />
+                        <time-constraint test-id="var: '{s}TS'.format(s = session)" 
+                            min="func: Script.GetPPTWaitTime(tc)" time-reference="end" />
                         <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
                             default="Assets.CPAInstructions.CPM" />
@@ -131,63 +210,82 @@
             </content>
         </templates>
         <tests>
-            <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
-                <questionnaire-constructor id="PTTCR" name="Calf Right (PPT)" template="PPT">
-                    <variables>
-                        <string value="Calf Right" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTCR" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
+            <foreach variable="session" in="sessions">
+                <if condition="session == 'MRI'">
+                    <questionnaire-constructor id="var: '{s}BODYMAPPre'.format(s = session)" 
+                        session="var: session"
+                        name="Body Map (Pre-MRI)" template="PAIN" />
+                    <questionnaire-constructor id="var: '{s}BODYMAPPost'.format(s = session)" 
+                        session="var: session"
+                        name="Body Map (Post-MRI)" template="PAIN" />
+                </if>
+                <if condition="session == 'QST'">
+                    <questionnaire-constructor id="var: '{s}BODYMAP'.format(s = session)" session="var: session" name="Body Map" template="PAIN" />
 
-                <questionnaire-constructor id="PTTLR" name="Lumbar Right (PPT)" template="PPT">
-                    <variables>
-                        <string value="Lumber Right" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTLR" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
+                    <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
+                        <questionnaire-constructor id="var: '{s}PTTCR'.format(s = session)" session="var: session" name="Calf Right (PPT)" template="PPT">
+                            <variables>
+                                <string value="Calf Right" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTCR" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
 
-                <questionnaire-constructor id="PTTFR" name="Forearm Right (PPT)" template="PPT">
-                    <variables>
-                        <string value="Forearm Right" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTFR" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
+                        <questionnaire-constructor id="var: '{s}PTTLR'.format(s = session)" session="var: session" name="Lumbar Right (PPT)" template="PPT">
+                            <variables>
+                                <string value="Lumber Right" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTLR" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
 
-                <questionnaire-constructor id="PTTCL" name="Calf Left (PPT)" template="PPT">
-                    <variables>
-                        <string value="Calf Left" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTCL" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
+                        <questionnaire-constructor id="var: '{s}PTTFR'.format(s = session)" session="var: session" name="Forearm Right (PPT)" template="PPT">
+                            <variables>
+                                <string value="Forearm Right" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTFR" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
 
-                <questionnaire-constructor id="PTTLL" name="Lumbar Left (PPT)" template="PPT">
-                    <variables>
-                        <string value="Lumber Left" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTLL" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
+                        <questionnaire-constructor id="var: '{s}PTTCL'.format(s = session)" session="var: session" name="Calf Left (PPT)" template="PPT">
+                            <variables>
+                                <string value="Calf Left" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTCL" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
 
-                <questionnaire-constructor id="PTTFL" name="Forearm Left (PPT)" template="PPT">
-                    <variables>
-                        <string value="Forearm Left" name="Site" />
-                        <string value="Assets.PPTOperatorInstructions.PTTFL" name="OperatorInstructions" />
-                    </variables>
-                </questionnaire-constructor>
-            </sequence>
-            
-            <algometry-stimulus-response-constructor id="SR01" 
-                name="Stimulus-Response (Cuff 1)"
-                template="SR01"/>
+                        <questionnaire-constructor id="var: '{s}PTTLL'.format(s = session)" session="var: session" name="Lumbar Left (PPT)" template="PPT">
+                            <variables>
+                                <string value="Lumber Left" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTLL" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
 
-            <algometry-temporal-summation-constructor id="TS" 
-                name="Temporal Summation (Cuff 1)"
-                template="TS"/>
+                        <questionnaire-constructor id="var: '{s}PTTFL'.format(s = session)" session="var: session" name="Forearm Left (PPT)" template="PPT">
+                            <variables>
+                                <string value="Forearm Left" name="Site" />
+                                <string value="Assets.PPTOperatorInstructions.PTTFL" name="OperatorInstructions" />
+                            </variables>
+                        </questionnaire-constructor>
+                    </sequence>
+                    
+                    <algometry-stimulus-response-constructor id="var: '{s}SR01'.format(s = session)" session="var: session" 
+                        name="Stimulus-Response (Cuff 1)"
+                        template="SR01"/>
 
-            <algometry-stimulus-response-constructor id="CPM" 
-                name="CPM (Cuff 1)"
-                template="CPM"/>
+                    <algometry-temporal-summation-constructor id="var: '{s}TS'.format(s = session)" session="var: session" 
+                        name="Temporal Summation (Cuff 1)"
+                        template="TS"/>
+
+                    <algometry-stimulus-response-constructor id="var: '{s}SR02'.format(s = session)" session="var: session" 
+                        name="Stimulus-Response (Cuff 1)"
+                        template="SR01"/>
+
+                    <algometry-stimulus-response-constructor id="var: '{s}CPM'.format(s = session)" session="var: session" 
+                        name="CPM (Cuff 1)"
+                        template="CPM"/>
+                </if>            
+            </foreach>
         </tests>
         <assets>
+            <file-asset id="BodyAreas" file="BodyAreas.png" />            
             <file-asset id="CPAInstructions" file="CPAInstructions_EN.zip">
                 <language code="NL" file="CPAInstructions_NL.zip"/>
             </file-asset>
@@ -229,6 +327,8 @@
             <item name="TS08" value="TS.Responses[7]" default="NA"/>
             <item name="TS09" value="TS.Responses[8]" default="NA"/>
             <item name="TS10" value="TS.Responses[9]" default="NA"/>
+            <item name="TS11" value="TS.Responses[10]" default="NA"/>
+            <item name="TS12" value="TS.Responses[11]" default="NA"/>
 
             <!-- CPM (Cuff 1) -->
             <item name="CPMPDT" value="CPM.PDT" default="NA"/>

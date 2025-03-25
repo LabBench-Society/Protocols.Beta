@@ -183,6 +183,10 @@
                 name="Temporal Summation (Cuff 1)"
                 template="TS"/>
 
+            <algometry-stimulus-response-constructor id="SR02" 
+                name="Stimulus-Response (Cuff 1)"
+                template="SR01"/>
+
             <algometry-stimulus-response-constructor id="CPM" 
                 name="CPM (Cuff 1)"
                 template="CPM"/>
