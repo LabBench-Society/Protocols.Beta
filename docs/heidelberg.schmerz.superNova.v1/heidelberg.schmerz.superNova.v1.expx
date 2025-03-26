@@ -186,7 +186,7 @@
             <psychophysics-response-recording id="COND" 
                 name="Conditioning Stimulation"
                 experimental-setup-id="image"
-                duration="110 - (6 + CPM.PTT) + 6" 
+                duration="110 - (6 + CPM.PTT) + 15" 
                 sample-rate="1">
                 <test-events start="func: Script.Stimulate(tc)">
                     <instrument name="PressureAlgometer" interface="pressure-algometer" />
