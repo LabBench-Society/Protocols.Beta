@@ -2,15 +2,7 @@
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
 <experimental-setup-variants default="CPARPlus">
-    <experimental-setup name="LabBench CPAR+" id="CPARPlus">
-        <devices>
-            <cpar-plus id="dev"/>
-        </devices>
-        <device-mapping>
-          <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
-        </device-mapping>
-      </experimental-setup>        
-      <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
+      <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlus">
         <devices>
             <cpar-plus id="dev"/>
     
@@ -39,22 +31,20 @@
                             <bottom-anchor text="0/No pain" />
                         </anchors>
                     </visual-analog-scale>
+
+                    <image-display id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)" />
                 </configurations>
             </display>
         </devices>
         <device-mapping>
-            <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+            <device-assignment device-id="dev" instrument-name="PressureAlgometer"  />
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="dev" instrument-name="Scales" />
         </device-mapping>
       </experimental-setup>    
-      <experimental-setup name="Nocitech CPAR" id="CPAR">
-        <devices>
-            <cpar id="dev" compressor-mode="AUTO"/>
-        </devices>
-        <device-mapping>
-            <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
-        </device-mapping>
-      </experimental-setup>
-      <experimental-setup name="Nocitech CPAR (Scale on secondary monitor)" id="CPARDisplay">
+      <experimental-setup name="Nocitech CPAR (Scale on secondary monitor)" id="CPAR">
         <devices>
             <cpar id="dev" compressor-mode="AUTO"/>
 
@@ -83,11 +73,17 @@
                             <bottom-anchor text="0/No pain" />
                         </anchors>
                     </visual-analog-scale>
+
+                    <image-display id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)" />
                 </configurations>
             </display>
         </devices>
         <device-mapping>
-          <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+            <device-assignment device-id="dev" instrument-name="PressureAlgometer"  />
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="dev" instrument-name="Scales" />
         </device-mapping>
       </experimental-setup>    
 </experimental-setup-variants>
@@ -187,6 +183,24 @@
                 </dependencies>
             </algometry-conditioned-pain-modulation>
 
+            <psychophysics-response-recording id="COND" 
+                name="Conditioning Stimulation"
+                experimental-setup-id="image"
+                duration="110 - (6 + CPM.PTT) + 6" 
+                sample-rate="1">
+                <test-events start="func: Script.Stimulate(tc)">
+                    <instrument name="PressureAlgometer" interface="pressure-algometer" />
+                    <instrument name="ImageDisplay" interface="image-display" />
+                    <instrument name="Scales" interface="scales" />
+                </test-events>
+                <properties>
+                    <auto-start value="true" />
+                </properties>                
+                <dependencies>
+                    <dependency id="CPM" virtual="false" />
+                </dependencies>                
+            </psychophysics-response-recording>
+
             <algometry-stimulus-response id="TS2"
                 name="Post Conditioned Pain Modulation"
                 experimental-setup-id="vas"
@@ -198,12 +212,12 @@
                 vas-pdt="0.1">
                 <properties>
                     <auto-start value="true" />
-                    <time-constraint test-id="CPM" min="6" time-reference="end" />
                 </properties>
             </algometry-stimulus-response>
         </tests>
         <assets>
-            <file-asset id="CPAInstructions" file="CPAInstructions.zip"></file-asset>
+            <file-asset id="CPAInstructions" file="CPAInstructions.zip" />
+            <file-asset id="Script" file="Script.py"/>
         </assets>
     </protocol>
     <post-actions>
