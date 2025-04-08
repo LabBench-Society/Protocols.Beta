@@ -191,6 +191,10 @@
           name="SUPER-Nova – Pressure Cuff Algometry Protocol, Version. 1"
           labbench-version="5.1" 
           category="Conditioning Pain Modulation"/>
+        <protocol id="heidelberg.schmerz.superNova.v2"
+          name="SUPER-Nova – Pressure Cuff Algometry Protocol, Version. 2"
+          labbench-version="5.1" 
+          category="Conditioning Pain Modulation"/>
       </category>
     </category>
 </repository>
