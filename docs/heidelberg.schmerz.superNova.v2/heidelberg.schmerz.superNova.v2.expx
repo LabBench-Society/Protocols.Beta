@@ -90,6 +90,22 @@
     <protocol>
         <defines />
         <tests>
+            <questionnaire id="INTRO" 
+                name="Introduction"
+                control="operator"
+                experimental-setup-id="image">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.INTRODUCTION" override-results="true"/>
+                </properties>
+                <content>
+                    <boolean id="Confirm"
+                        title="Confirmation"
+                        instruction="Has the subject been introduced to the experiment?"
+                        true-label="Yes" 
+                        false-label="No"  />
+                </content>
+            </questionnaire>
+
             <algometry-stimulus-response id="WUSSP"
                 name="Warm-up: Spatial Summation of Pain (SSP)"
                 experimental-setup-id="vas"

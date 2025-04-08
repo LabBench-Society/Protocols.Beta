@@ -14,4 +14,6 @@ def Stimulate(tc):
     algometer.StartStimulation(algometer.StopCriterions.WhenButtonPressed, True, False)
     tc.Log.Information("STIMULATION STARTED [ Intensity: {intensity}, Time: {time}]", intensity, time)
 
+    display.Display(tc.Assets.CPAInstructions.COND)
+
     return True
