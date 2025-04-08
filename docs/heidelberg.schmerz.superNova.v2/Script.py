@@ -17,3 +17,10 @@ def Stimulate(tc):
     display.Display(tc.Assets.CPAInstructions.COND)
 
     return True
+
+def ConditioningTime(tc):
+    try:
+        return 110 - (6 + tc.CPM.PTT) + 15
+    except Exception as e:
+        return 125
+
