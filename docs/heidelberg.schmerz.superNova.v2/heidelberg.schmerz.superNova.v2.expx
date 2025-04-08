@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
+<experimental-setup-variants default="CPARPlus">
+      <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlus">
+        <devices>
+            <cpar-plus id="dev"/>
+    
+            <display
+                id="display"
+                screen="secondary"
+                position="fullscreen"
+                active-color="rgb(255,0,0)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(16,16,16)"
+                normative-distance="40">
+    
+                <monitor
+                    diagonal-size="53.34"
+                    distance="40" />
+
+                <configurations>
+                    <visual-analog-scale
+                        id="vas"
+                        experimental-setup-id="vas"
+                        length="10"
+                        controller-device="dev">
+                        <anchors>
+                            <modality text="" />
+                            <top-anchor text="10/Worst imaginable pain" />
+                            <bottom-anchor text="0/No pain" />
+                        </anchors>
+                    </visual-analog-scale>
+
+                    <image-display id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)" />
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="dev" instrument-name="PressureAlgometer"  />
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="dev" instrument-name="Scales" />
+        </device-mapping>
+      </experimental-setup>    
+      <experimental-setup name="Nocitech CPAR (Scale on secondary monitor)" id="CPAR">
+        <devices>
+            <cpar id="dev" compressor-mode="AUTO"/>
+
+            <display
+                id="display"
+                screen="secondary"
+                position="fullscreen"
+                active-color="rgb(255,0,0)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(16,16,16)"
+                normative-distance="40">
+    
+                <monitor
+                    diagonal-size="35"
+                    distance="40" />
+
+                <configurations>
+                    <visual-analog-scale
+                        id="vas"
+                        experimental-setup-id="vas"
+                        length="10"
+                        controller-device="dev">
+                        <anchors>
+                            <modality text="" />
+                            <top-anchor text="10/Worst imaginable pain" />
+                            <bottom-anchor text="0/No pain" />
+                        </anchors>
+                    </visual-analog-scale>
+
+                    <image-display id="image"
+                        experimental-setup-id="image"
+                        background-color="rgb(255,255,255)" />
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="dev" instrument-name="PressureAlgometer"  />
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="dev" instrument-name="Scales" />
+        </device-mapping>
+      </experimental-setup>    
+</experimental-setup-variants>
+    <protocol>
+        <defines />
+        <tests>
+            <algometry-stimulus-response id="WUSSP"
+                name="Warm-up: Spatial Summation of Pain (SSP)"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="true"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.WUSSP" override-results="false"/>
+                </properties>
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="DLEG"
+                name="Dominant Leg: Pain Threshold and Tolerance"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.DLEG" override-results="false"/>
+                </properties>
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="NDLEG"
+                name="Non-Dominant Leg: Pain Threshold and Tolerance"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="2"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.NDLEG" override-results="false"/>
+                </properties>
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="SSP"
+                name="Spatial Summation of Pain (SSP)"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="true"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.SSP" override-results="false"/>
+                </properties>
+            </algometry-stimulus-response>
+
+            <algometry-temporal-summation id="TS"
+                name="Temporal Summation of Pain (Dominant Leg)"
+                experimental-setup-id="vas"
+                no-of-stimuli="10"
+                pressure-static="5"
+                pressure-stimulate="1.0 * DLEG.PTT"
+                primary-cuff="1"
+                second-cuff="false"
+                t-off="1"
+                t-on="1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
+                </properties>
+                <dependencies>
+                    <dependency id="DLEG"/>
+                </dependencies>
+            </algometry-temporal-summation>
+
+            <algometry-conditioned-pain-modulation id="CPM"
+                name="Conditioned Pain Modulation"
+                experimental-setup-id="vas"
+                conditional-pressure="0.7 * NDLEG.PTT"
+                delta-conditional-pressure="0"        
+                conditioning-time="6"        
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
+                </properties>
+                <dependencies>
+                    <dependency id="NDLEG"/>
+                </dependencies>
+            </algometry-conditioned-pain-modulation>
+
+            <psychophysics-response-recording id="COND" 
+                name="Conditioning Stimulation"
+                experimental-setup-id="image"
+                duration="110 - (6 + CPM.PTT) + 15" 
+                sample-rate="1">
+                <test-events start="func: Script.Stimulate(tc)">
+                    <instrument name="PressureAlgometer" interface="pressure-algometer" />
+                    <instrument name="ImageDisplay" interface="image-display" />
+                    <instrument name="Scales" interface="scales" />
+                </test-events>
+                <properties>
+                    <auto-start value="true" />
+                </properties>                
+                <dependencies>
+                    <dependency id="CPM" virtual="false" />
+                </dependencies>                
+            </psychophysics-response-recording>
+
+            <algometry-stimulus-response id="TS2"
+                name="Post Conditioned Pain Modulation"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="true"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <auto-start value="true" />
+                </properties>
+            </algometry-stimulus-response>
+        </tests>
+        <assets>
+            <file-asset id="CPAInstructions" file="CPAInstructions.zip" />
+            <file-asset id="Script" file="Script.py"/>
+        </assets>
+    </protocol>
+    <post-actions>
+        <export-to-csv name="Exporting session"
+                       location="C:\LabBenchData\cpa"
+                       header="true"
+                       separator=";"
+                       culture="en"                       
+                       filename="dynamic: '{s}.csv'.format(s = Subject)">
+
+            <item name="ProtocolID"  value="SR01.ProtocolID"        default="NA" />
+            <item name="MachineName" value="SR01.MachineID"         default="NA" />
+            <item name="OS"          value="SR01.OperatingSystem"   default="NA" />
+            <item name="Instrument"  value="SR01.Instruments[0].ID" default="NA" />
+
+            <!-- Stimulus-Response (Cuff 1) -->
+            <item name="SR01PDT" value="SR01.PDT" default="NA"/>
+            <item name="SR02PTT" value="SR01.PTT" default="NA"/>
+
+            <!-- Stimulus-Response (Cuff 2) -->
+            <item name="SR02PDT" value="SR02.PDT" default="NA"/>
+            <item name="SR02PTT" value="SR02.PTT" default="NA"/>
+
+            <!-- Temporal Summation (Cuff 1) -->
+            <item name="TS01" value="TS.Responses[0]" default="NA"/>
+            <item name="TS02" value="TS.Responses[1]" default="NA"/>
+            <item name="TS03" value="TS.Responses[2]" default="NA"/>
+            <item name="TS04" value="TS.Responses[3]" default="NA"/>
+            <item name="TS05" value="TS.Responses[4]" default="NA"/>
+            <item name="TS06" value="TS.Responses[5]" default="NA"/>
+            <item name="TS07" value="TS.Responses[6]" default="NA"/>
+            <item name="TS08" value="TS.Responses[7]" default="NA"/>
+            <item name="TS09" value="TS.Responses[8]" default="NA"/>
+            <item name="TS10" value="TS.Responses[9]" default="NA"/>
+
+            <!-- CPM (Cuff 1) -->
+            <item name="CPMPDT" value="CPM.PDT" default="NA"/>
+            <item name="CPMPTT" value="CPM.PTT" default="NA"/>
+        </export-to-csv>
+    </post-actions>
+</experiment>
