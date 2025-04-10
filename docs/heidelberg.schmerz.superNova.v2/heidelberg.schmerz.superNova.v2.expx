@@ -27,7 +27,7 @@
                         controller-device="dev">
                         <anchors>
                             <modality text="" />
-                            <top-anchor text="10/Worst imaginable pain" />
+                            <top-anchor text="10/Maximaler Schmerz" />
                             <bottom-anchor text="0/Kein Schmerz" />
                         </anchors>
                     </visual-analog-scale>
@@ -69,8 +69,8 @@
                         controller-device="dev">
                         <anchors>
                             <modality text="" />
-                            <top-anchor text="10/Worst imaginable pain" />
-                            <bottom-anchor text="0/No pain" />
+                            <top-anchor text="10/Maximaler Schmerz" />
+                            <bottom-anchor text="0/Kein Schmerz" />
                         </anchors>
                     </visual-analog-scale>
 
