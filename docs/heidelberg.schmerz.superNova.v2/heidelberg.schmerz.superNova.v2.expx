@@ -231,6 +231,9 @@
                 <properties>
                     <auto-start value="true" />
                 </properties>
+                <dependencies>
+                    <dependency id="COND" virtual="false" />
+                </dependencies>
             </algometry-stimulus-response>
         </tests>
         <assets>
