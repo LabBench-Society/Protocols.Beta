@@ -8,8 +8,8 @@
     
             <display
                 id="display"
-                screen="primary"
-                position="upper-right"
+                screen="secondary"
+                position="fullscreen"
                 active-color="rgb(255,0,0)"
                 background-color="rgb(255,255,255)"
                 inactive-color="rgb(16,16,16)"
@@ -50,8 +50,8 @@
 
             <display
                 id="display"
-                screen="primary"
-                position="upper-right"
+                screen="secondary"
+                position="fullscreen"
                 active-color="rgb(255,0,0)"
                 background-color="rgb(255,255,255)"
                 inactive-color="rgb(16,16,16)"
