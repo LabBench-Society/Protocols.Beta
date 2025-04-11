@@ -4,7 +4,7 @@ def Stimulate(tc):
     algometer = tc.Instruments.PressureAlgometer
     display = tc.Instruments.ImageDisplay
     intensity = 0.7 * tc.NDLEG.PTT
-    time = 110 - (6 + tc.CPM.PTT)
+    time = 110 - tc.CPM.RunningTime
     
     chan = algometer.Channels[0]
     chan.SetStimulus(1, chan.CreateWaveform().Step(intensity, time))
@@ -18,9 +18,16 @@ def Stimulate(tc):
 
     return True
 
+def Stop(tc):
+    algometer = tc.Instruments.PressureAlgometer
+    algometer.StopStimulation()
+    return True
+
 def ConditioningTime(tc):
     try:
-        return 110 - (6 + tc.CPM.PTT) + 15
+        time = 110 - tc.CPM.RunningTime + 15
+        tc.Log.Information("TEST DUTATION [ Time: {time}]", time)
+        return time
     except Exception as e:
         return 125
 

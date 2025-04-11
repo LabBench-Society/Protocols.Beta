@@ -8,8 +8,8 @@
     
             <display
                 id="display"
-                screen="secondary"
-                position="fullscreen"
+                screen="primary"
+                position="upper-right"
                 active-color="rgb(255,0,0)"
                 background-color="rgb(255,255,255)"
                 inactive-color="rgb(16,16,16)"
@@ -50,8 +50,8 @@
 
             <display
                 id="display"
-                screen="secondary"
-                position="fullscreen"
+                screen="primary"
+                position="upper-right"
                 active-color="rgb(255,0,0)"
                 background-color="rgb(255,255,255)"
                 inactive-color="rgb(16,16,16)"
@@ -204,7 +204,9 @@
                 experimental-setup-id="image"
                 duration="func: Script.ConditioningTime(tc)" 
                 sample-rate="1">
-                <test-events start="func: Script.Stimulate(tc)">
+                <test-events start="func: Script.Stimulate(tc)"
+                    abort="func: Script.Stop(tc)"
+                    complete="func: Script.Stop(tc)">
                     <instrument name="PressureAlgometer" interface="pressure-algometer" />
                     <instrument name="ImageDisplay" interface="image-display" />
                     <instrument name="Scales" interface="scales" />
