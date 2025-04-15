@@ -34,6 +34,7 @@
         <device-mapping>
             <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>
             <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="cpar" instrument-name="RatioScale" />
         </device-mapping>
     </experimental-setup>   
     <protocol>
@@ -83,7 +84,7 @@
                         stimulus-unit="kPa">
 
                         <instrument 
-                            name="Algometer"
+                            name="PressureAlgometer"
                             interface="pressure-algometer"/>                
                     </scripts>
                 </stimulation>        
@@ -112,7 +113,7 @@
                     stimulus-unit="kPa">
 
                     <instrument 
-                        name="Algometer"
+                        name="PressureAlgometer"
                         interface="pressure-algometer"/>
                 </stimulation-scripts>
     
@@ -145,13 +146,13 @@
             </psychophysics-threshold-estimation>
     
             <psychophysics-threshold-estimation 
-                ID="THR70"
+                id="THR70"
                 name="Threshold (VAS 7)"
                 experimental-setup-id="display"
                 stimulus-update-rate="50">
 
                 <dependencies>
-                    <dependency ID="PRESENTATION"/>
+                    <dependency id="PRESENTATION"/>
                 </dependencies>
     
                 <update-rate-random 
@@ -167,13 +168,13 @@
                     stimulus-unit="kPa">
 
                     <instrument 
-                        name="Algometer"
+                        name="PressureAlgometer"
                         interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
                     <channel 
-                        ID="PULSE"
+                        id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -199,8 +200,8 @@
                 </channels>
             </psychophysics-threshold-estimation>
     
-            <electrophysiology-evoked-potentials 
-                ID="LP"
+            <stimulation-sequence 
+                id ="LP"
                 name="Learning Phase"
                 experimental-setup-id="display"
                 response-collection="none"
@@ -209,8 +210,8 @@
                 <test-events complete="func: Script.LearningComplete(tc)" />
 
                 <dependencies>
-                    <dependency ID="THR30"/>
-                    <dependency ID="THR70"/>
+                    <dependency id="THR30"/>
+                    <dependency id="THR70"/>
                 </dependencies>
     
                 <stimulation-scripts 
@@ -223,7 +224,7 @@
                         interface="image-display"
                         name="Display"/>
                     <instrument 
-                        interface="visual-analog-scale" 
+                        interface="pressure-algometer" 
                         name="Response" />
                 </stimulation-scripts>
     
@@ -247,10 +248,10 @@
                     <stimulus name="H0" />
                     <stimulus name="H1" />
                 </stimuli>            
-            </electrophysiology-evoked-potentials>
+            </stimulation-sequence>
         
-            <electrophysiology-evoked-potentials 
-                ID="TP"
+            <stimulation-sequence 
+                id="TP"
                 name="Test Phase"
                 experimental-setup-id="display"
                 response-collection="none"
@@ -259,9 +260,9 @@
                 <test-events complete="func: Script.TestComplete(tc)" />
 
                 <dependencies>
-                    <dependency ID="THR30"/>
-                    <dependency ID="THR70"/>
-                    <dependency ID="LP"/>
+                    <dependency id="THR30"/>
+                    <dependency id="THR70"/>
+                    <dependency id="LP"/>
                 </dependencies>
     
                 <stimulation-scripts 
@@ -274,10 +275,10 @@
                         interface="image-display"
                         name="Display"/>
                     <instrument 
-                        name="Algometer"
+                        name="PressureAlgometer"
                         interface="pressure-algometer"/>
                     <instrument 
-                        interface="visual-analog-scale" 
+                        interface="pressure-algometer" 
                         name="Response" />
                 </stimulation-scripts>
     
@@ -305,23 +306,23 @@
                     <stimulus name="H1C" />
                     <stimulus name="H1I" />
                 </stimuli>
-            </electrophysiology-evoked-potentials>
+            </stimulation-sequence>
         
             <algometry-stimulus-response 
-                ID="SR01"
+                id="SR01"
                 name="Stimulus-Response (Cuff 1)"
                 delta-pressure="1"
                 pressure-limit="100"
                 primary-cuff="1"
                 second-cuff="false"
-                stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                stop-mode= "stop-when-button-pressed"
                 vas-pdt="0.1">
 
                 <dependencies />
             </algometry-stimulus-response>
     
             <algometry-temporal-summation 
-                ID="TS"
+                id="TS"
                 name="Temporal Summation (Cuff 1)"
                 no-of-stimuli="10"
                 pressure-static="5"
@@ -332,7 +333,7 @@
                 t-on="1">
 
                 <dependencies>
-                    <dependency ID="SR01"/>
+                    <dependency id="SR01"/>
                 </dependencies>
             </algometry-temporal-summation>
     
