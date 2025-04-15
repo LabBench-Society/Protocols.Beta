@@ -29,8 +29,12 @@
                         controller-device="dev">
                         <anchors>
                             <modality text="" />
-                            <top-anchor text="10/Worst imaginable pain" />
-                            <bottom-anchor text="0/No pain" />
+                            <top-anchor text="10/Worst imaginable pain">
+                                <localized-text language="NL" text="10/Worst imaginable pain (DUTCH)"/>
+                            </top-anchor>
+                            <bottom-anchor text="0/No pain">
+                                <localized-text language="NL" text="0/No pain (DUTCH)"/>
+                            </bottom-anchor>
                         </anchors>
                     </visual-analog-scale>
 
@@ -50,7 +54,7 @@
     <protocol>
         <languages>
             <language code="EN" name="English" />
-            <language code="NL" name="Dutch" />            
+            <language code="NL" name="Dutch" />    
         </languages>
         <defines>
             <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>            
@@ -61,7 +65,7 @@
                     experimental-setup-id="image"
                     control="operator">
                     <properties>
-                        <instructions default="Instructions.Pain" override-results="true"/>
+                        <instructions default="Assets.PPTOperatorInstructions.BODY" override-results="true"/>
                     </properties>
                     <templates>
                         <map id="BODYMAP"
@@ -208,9 +212,9 @@
                     sample-rate="1" 
                     experimental-setup-id="vas">
                     <properties>
-                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
+                        <instructions default="Assets.CPAInstructions.HOT" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
-                            default="Assets.CPAInstructions.CPM" />
+                            default="Assets.CPAInstructions.HOT" />
                     </properties>                    
                 </psychophysics-response-recording>
                 
@@ -304,9 +308,7 @@
             <file-asset id="CPAInstructions" file="CPAInstructions_EN.zip">
                 <language code="NL" file="CPAInstructions_NL.zip"/>
             </file-asset>
-            <file-asset id="PPTOperatorInstructions" file="PPTOperatorInstructions_EN.zip">
-                <language code="NL" file="PPTOperatorInstructions_NL.zip"/>
-            </file-asset>
+            <file-asset id="PPTOperatorInstructions" file="PPTOperatorInstructions.zip" />
             <file-asset id="Script" file="Script.py"/>
         </assets>
     </protocol>
