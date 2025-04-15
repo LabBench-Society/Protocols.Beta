@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.5.0/experiment.xsd">
+    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
   <subject-validator 
     regex="^S[0-9]{3}$"
     advice="Please enter an ID in the form of SXXX, where X is a digit" />
 
     <experimental-setup>
         <devices>
-            <cpar 
-                id="cpar" 
-                compressor-mode="MANUAL" />
+            <cpar-plus id="cpar" />
 
             <display 
                 id="display"
@@ -23,9 +21,7 @@
                 
                 <monitor 
                     diagonal-size="13"
-                    diagonal-size-unit="inch"
-                    distance="40"
-                    length-unit="cm"/>
+                    distance="40"/>
 
                 <configurations>
                     <image-display 
@@ -36,41 +32,8 @@
             </display>
         </devices>
         <device-mapping>
-            <device-assignment test-type="psychophysics-stimulus-presentation"
-                               device-id="cpar"
-                               instrument-name="Algometer"/>
-
-            <device-assignment test-type="psychophysics-stimulus-presentation"
-                               device-id="cpar"
-                               instrument-name="Response"/>
-            
-            <device-assignment test-type="psychophysics-threshold-estimation"
-                               device-id="cpar"
-                               instrument-name="Scale"/>
-
-            <device-assignment test-type="psychophysics-threshold-estimation"
-                               device-id="cpar"
-                               instrument-name="Algometer"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="cpar"
-                               instrument-name="Algometer"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="cpar"
-                               instrument-name="Response"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="display.image"
-                               instrument-name="Display"/>
-
-            <device-assignment test-type="algometry-stimulus-response" 
-                               device-id="cpar"
-                               instrument-name="Algometer" />
-            
-            <device-assignment test-type="algometry-temporal-summation"
-                               device-id="cpar"
-                               instrument-name="Algometer" />
+            <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>
+            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
         </device-mapping>
     </experimental-setup>   
     <protocol>
@@ -101,7 +64,7 @@
         </defines>
         <tests>
             <psychophysics-stimulus-presentation 
-                ID="PRESENTATION"
+                id="PRESENTATION"
                 name="Presentation of pressure stimuli"
                 experimental-setup-id="display"
                 stimulus-update-rate="50">
@@ -127,13 +90,13 @@
             </psychophysics-stimulus-presentation>
     
             <psychophysics-threshold-estimation 
-                ID="THR30"
+                id="THR30"
                 name="Threshold (VAS 3)"
                 experimental-setup-id="display"
                 stimulus-update-rate="50">
 
                 <dependencies>
-                    <dependency ID="PRESENTATION"/>
+                    <dependency id="PRESENTATION"/>
                 </dependencies>
     
                 <update-rate-random 
@@ -155,7 +118,7 @@
     
                 <channels>
                     <channel 
-                        ID="PULSE"
+                        id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"

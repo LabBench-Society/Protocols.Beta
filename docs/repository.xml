@@ -197,4 +197,43 @@
           category="Conditioning Pain Modulation"/>
       </category>
     </category>
+    <category name="Johannes Gutenberg University of Mainz" id="mainz">
+      <category name="Department of Psychosomatics" id="mainz.med">
+        <category name="Precode" id="mainz.med.precode">
+          <protocol id="mainz.med.precode.pressure.v1"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+            labbench-version="5.1"
+            category="CPAR;Pain Perception Processes"/>
+
+            <protocol id="mainz.med.precode.electrical.v1"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Electrical Stimuli), Version 1"
+            labbench-version="5.1"
+            category="LabBench I/O;Pain Perception Processes"/>
+
+            <!-- 
+          <protocol id="painExpectPressure"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+            labbench-version="4.1.0"
+            category="CPAR;Pain Perception Processes"/>
+
+            <protocol id="painExpectPressureV3"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli), Version 3"
+            labbench-version="4.1.0"
+            category="CPAR;Pain Perception Processes"/>
+
+            <protocol id="painExpectPressureV2"
+              name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli), Version 2"
+              labbench-version="3.4.0"
+              category="CPAR;Pain Perception Processes"/>
+              
+              
+              <protocol id="painExpectElectrical"
+              name="Pain Perception Processes through the Lens of Predictive Coding (Electrical Stimuli), Version 1"
+              labbench-version="4.1.0"
+              category="LabBench I/O;Pain Perception Processes"/>
+              
+              -->
+        </category>
+      </category>
+    </category>
 </repository>
