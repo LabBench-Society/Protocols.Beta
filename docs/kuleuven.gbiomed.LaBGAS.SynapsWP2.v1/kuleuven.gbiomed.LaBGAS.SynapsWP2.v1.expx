@@ -7,6 +7,17 @@
     <experimental-setup-variants default="CPARPlusDisplay">
       <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
         <devices>
+            <joystick id="joystick">
+                <map>
+                    <button-assignment code="1" button="up" label="Up" />
+                    <button-assignment code="4" button="down" label="Down" />
+                    <button-assignment code="8" button="decrease" label="Unmark" />
+                    <button-assignment code="2" button="increase" label="Mark" />
+                    <button-assignment code="16" button="previous" label="Previous" />
+                    <button-assignment code="32" button="next" label="Next" />
+                </map>
+            </joystick>
+
             <cpar-plus id="dev"/>
     
             <display
@@ -41,13 +52,20 @@
                     <image-display id="image"
                         experimental-setup-id="image"
                         background-color="rgb(255,255,255)"/>
+                    
+                    <questionnaire id="questionnaire"
+                        background-color="rgb(255,255,255)"
+                        controller-device="joystick"
+                        experimental-setup-id="questionnaire"/>
                 </configurations>
             </display>
         </devices>
         <device-mapping>
+            <device-assignment device-id="joystick" instrument-name="Button" />
             <device-assignment device-id="dev" instrument-name="PressureAlgometer" />
             <device-assignment device-id="dev" instrument-name="Scales" />
             <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+            <device-assignment device-id="display.questionnaire" instrument-name="Questionnaire" />
         </device-mapping>
       </experimental-setup>    
     </experimental-setup-variants>
@@ -57,13 +75,14 @@
             <language code="NL" name="Dutch" />    
         </languages>
         <defines>
-            <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>            
+            <define name="RTable" value="func: Script.GetRandomizationTableWP2(tc)"/>         
+            <define name="Text" value="func: Text.Create(tc)"/>   
         </defines>
         <templates>
             <content>
                 <questionnaire id="PAIN" 
-                    experimental-setup-id="image"
-                    control="operator">
+                    experimental-setup-id="questionnaire"
+                    control="subject">
                     <properties>
                         <instructions default="Assets.PPTOperatorInstructions.BODY" override-results="true"/>
                     </properties>
@@ -122,13 +141,32 @@
                             <!-- Band 7-->
                             <area id="A12" color="#9B0011" right="A16" left="A16" up="A11" />
                             <area id="A16" color="#DFFF90" right="A12" left="A12" up="A15"/>
-                        </map>                          
+                        </map>  
+                        
+                        <visual-analog-scale id="VAS" 
+                            length="10" 
+                            active-color="rgb(255,0,0)"
+                            inactive-color="rgb(32,32,32)"
+                            top-anchor="dynamic: Text['Q03TopAnchor']"
+                            bottom-anchor="dynamic: Text['Q03BottomAnchor']"/>
                     </templates>
                     <content>
                         <map id="Q01"
-                            instruction="Instructions"
+                            title="dynamic: Text['Q01Title']"
+                            instruction="dynamic: Text['Q01Instruction']"
                             selection-mode="multiple"                            
                             template="BODYMAP" />
+
+                        <map id="Q02"
+                            title="dynamic: Text['Q02Title']"
+                            instruction="dynamic: Text['Q02Instruction']"
+                            selection-mode="single"                            
+                            template="BODYMAP" />
+
+                        <visual-analog-scale id="Q03" 
+                        title="dynamic: Text['Q03Title']"
+                        instruction="dynamic: Text['Q03Instruction']"
+                        template="VAS" />
                     </content>
                 </questionnaire>     
 
@@ -310,6 +348,9 @@
             </file-asset>
             <file-asset id="PPTOperatorInstructions" file="PPTOperatorInstructions.zip" />
             <file-asset id="Script" file="Script.py"/>
+            <file-asset id="Text" file="Text_EN.py">
+                <language code="NL" file="Text_NL.py"/>
+            </file-asset>
         </assets>
     </protocol>
     <post-actions>
