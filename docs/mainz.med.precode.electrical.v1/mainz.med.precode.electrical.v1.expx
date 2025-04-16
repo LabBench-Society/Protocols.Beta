@@ -55,13 +55,9 @@
             <device-assignment device-id="lio"
                                instrument-name="Stimulator"/>
             <device-assignment device-id="lio.vas"
-                               instrument-name="Response"/>
-            <device-assignment device-id="lio.vas"
                                instrument-name="RatioScale"/>
-            <device-assignment device-id="lio.vas"
-                               instrument-name="Response"/>
             <device-assignment device-id="display.image"
-                               instrument-name="Display"/>
+                               instrument-name="ImageDisplay"/>
         </device-mapping>
     </experimental-setup>   
     <protocol>
@@ -244,7 +240,7 @@
                         name="Display"/>
                     <instrument 
                         interface="ratio-scale" 
-                        name="Response"/> 
+                        name="RatioScale"/> 
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -298,7 +294,7 @@
                         interface="stimulator"/>
                     <instrument 
                         interface="ratio-scale" 
-                        name="Response"/>
+                        name="RatioScale"/>
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
