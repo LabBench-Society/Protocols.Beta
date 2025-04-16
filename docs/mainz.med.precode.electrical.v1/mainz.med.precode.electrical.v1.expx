@@ -1,27 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/4.1.0/experiment.xsd">
-<description>      
-</description>
+    xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
+
   <subject-validator 
     regex="^S[0-9]{3}$"
     advice="Please enter an ID in the form of SXXX, where X is a digit" />
 
     <experimental-setup>
         <devices>
-            <lio
+            <lio 
                 id="lio" 
                 default-analog-output="0">
                 <stimulators>
                     <ds5
-                        id="DS5" 
                         name="DS5"
                         transconductance="5mA_1V" />
                 </stimulators>
                 <response-devices>
-                    <visual-analog-scale 
-                        id="vas"
+                    <visual-analog-scale id="vas"
                         length="10" 
                         sample-period="100" 
                         timing-source="none">
@@ -39,14 +36,12 @@
                 background-color="rgb(255, 255, 255)"
                 inactive-color="rgb(0, 0, 0)"
                 normative-distance="40"
-                position="fullscreen"
-                screen="secondary">
+                position="upper-right"
+                screen="primary"> 
                 
                 <monitor 
                     diagonal-size="13"
-                    diagonal-size-unit="inch"
-                    distance="40"
-                    length-unit="cm"/>
+                    distance="40"/>
 
                 <configurations>
                     <image-display 
@@ -57,32 +52,15 @@
             </display>
         </devices>
         <device-mapping>
-            <device-assignment test-type="psychophysics-stimulus-presentation"
-                               device-id="lio"
+            <device-assignment device-id="lio"
                                instrument-name="Stimulator"/>
-
-            <device-assignment test-type="psychophysics-stimulus-presentation"
-                               device-id="lio.vas"
+            <device-assignment device-id="lio.vas"
                                instrument-name="Response"/>
-            
-            <device-assignment test-type="psychophysics-threshold-estimation"
-                               device-id="lio.vas"
-                               instrument-name="Scale"/>
-
-            <device-assignment test-type="psychophysics-threshold-estimation"
-                               device-id="lio"
-                               instrument-name="Stimulator"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="lio"
-                               instrument-name="Stimulator"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="lio.vas"
+            <device-assignment device-id="lio.vas"
+                               instrument-name="RatioScale"/>
+            <device-assignment device-id="lio.vas"
                                instrument-name="Response"/>
-
-            <device-assignment test-type="electrophysiology-evoked-potentials"
-                               device-id="display.image"
+            <device-assignment device-id="display.image"
                                instrument-name="Display"/>
         </device-mapping>
     </experimental-setup>   
@@ -120,7 +98,7 @@
         </defines>
         <tests>
             <psychophysics-stimulus-presentation 
-                ID="PRESENTATION"
+                id="PRESENTATION"
                 name="Presentation of stimuli"
                 experimental-setup-id="display"
                 stimulus-update-rate="20000">
@@ -146,13 +124,13 @@
             </psychophysics-stimulus-presentation>
     
             <psychophysics-threshold-estimation 
-                ID="THR30"
+                id="THR30"
                 name="Threshold (VAS 3)"
                 experimental-setup-id="display"
                 stimulus-update-rate="20000">
 
                 <dependencies>
-                    <dependency ID="PRESENTATION"/>
+                    <dependency id="PRESENTATION"/>
                 </dependencies>
     
                 <update-rate-random 
@@ -163,7 +141,7 @@
         
                 <channels>
                     <channel 
-                        ID="PULSE"
+                        id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -194,13 +172,13 @@
             </psychophysics-threshold-estimation>
     
             <psychophysics-threshold-estimation 
-                ID="THR70"
+                id="THR70"
                 name="Threshold (VAS 7)"
                 experimental-setup-id="display"
                 stimulus-update-rate="20000">
 
                 <dependencies>
-                    <dependency ID="PRESENTATION"/>
+                    <dependency id="PRESENTATION"/>
                 </dependencies>
     
                 <update-rate-random 
@@ -211,7 +189,7 @@
        
                 <channels>
                     <channel 
-                        ID="PULSE"
+                        id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -241,8 +219,8 @@
                 </channels>
             </psychophysics-threshold-estimation>
     
-            <electrophysiology-evoked-potentials 
-                ID="LP"
+            <stimulation-sequence
+                id="LP"
                 name="Learning Phase"
                 experimental-setup-id="display"
                 response-collection="none"
@@ -251,8 +229,8 @@
                 <test-events complete="func: Script.LearningComplete(tc)" />
 
                 <dependencies>
-                    <dependency ID="THR30"/>
-                    <dependency ID="THR70"/>
+                    <dependency id="THR30"/>
+                    <dependency id="THR70"/>
                 </dependencies>
     
                 <stimulation-scripts 
@@ -263,12 +241,10 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"
-                        required="true"/>
+                        name="Display"/>
                     <instrument 
-                        interface="visual-analog-scale" 
-                        name="Response"
-                        required="true" />
+                        interface="ratio-scale" 
+                        name="Response"/> 
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -291,10 +267,10 @@
                     <stimulus name="H0" />
                     <stimulus name="H1" />
                 </stimuli>            
-            </electrophysiology-evoked-potentials>
+            </stimulation-sequence>
         
-            <electrophysiology-evoked-potentials 
-                ID="TP"
+            <stimulation-sequence
+                id="TP"
                 name="Test Phase"
                 experimental-setup-id="display"
                 response-collection="none"
@@ -303,9 +279,9 @@
                 <test-events complete="func: Script.TestComplete(tc)" />
 
                 <dependencies>
-                    <dependency ID="THR30"/>
-                    <dependency ID="THR70"/>
-                    <dependency ID="LP"/>
+                    <dependency id="THR30"/>
+                    <dependency id="THR70"/>
+                    <dependency id="LP"/>
                 </dependencies>
     
                 <stimulation-scripts 
@@ -316,16 +292,13 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"
-                        required="true"/>
+                        name="Display"/>
                     <instrument 
                         name="Stimulator"
-                        interface="analog-generator"
-                        required="true"/>
+                        interface="stimulator"/>
                     <instrument 
-                        interface="visual-analog-scale" 
-                        name="Response"
-                        required="true" />
+                        interface="ratio-scale" 
+                        name="Response"/>
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -448,7 +421,7 @@
                         </stimulus>
                     </stimulus>
                 </stimuli>
-            </electrophysiology-evoked-potentials>        
+            </stimulation-sequence>        
         </tests>
         <assets>
             <file-asset 
