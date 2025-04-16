@@ -4,7 +4,7 @@ import traceback
 import random
 
 def Stimulate(tc, x):
-    algometer = tc.Devices.Algometer
+    algometer = tc.Instruments.PressureAlgometer
     chan = algometer.Channels[0]
 
     chan.SetStimulus(1, chan.CreateWaveform()
@@ -19,35 +19,35 @@ class ImageRepository:
         stimuli = tc.Assets.VisualStimuli
     
         self.Cue = [
-            [stimuli.GetImageFromArchive("LowCue1.png"), stimuli.GetImageFromArchive("LowCue2.png")],
-            [stimuli.GetImageFromArchive("HighCue1.png"), stimuli.GetImageFromArchive("HighCue2.png")]
+            [stimuli.LowCue1, stimuli.LowCue2],
+            [stimuli.HighCue1, stimuli.HighCue2]
         ]
         self.Feedback = [
             [
-                stimuli.GetImageFromArchive("Low27.png"),
-                stimuli.GetImageFromArchive("Low32.png"),
-                stimuli.GetImageFromArchive("Low40.png"),
-                stimuli.GetImageFromArchive("Low45.png"),
-                stimuli.GetImageFromArchive("Low51.png")],
+                stimuli.Low27,
+                stimuli.Low32,
+                stimuli.Low40,
+                stimuli.Low45,
+                stimuli.Low51],
             [
-                stimuli.GetImageFromArchive("High73.png"),
-                stimuli.GetImageFromArchive("High79.png"),
-                stimuli.GetImageFromArchive("High84.png"),
-                stimuli.GetImageFromArchive("High88.png"),
-                stimuli.GetImageFromArchive("High93.png")]
+                stimuli.High73,
+                stimuli.High79,
+                stimuli.High84,
+                stimuli.High88,
+                stimuli.High93]
         ]
-        self.Blank = stimuli.GetImageFromArchive("Blank.png")
-        self.Marker = stimuli.GetImageFromArchive("Marker.png")
-        self.MarkerWithFiducial = stimuli.GetImageFromArchive("MarkerWithFiducial.png")
-        self.LearningRateExpectedPain = (stimuli.GetImageFromArchive("LearningRateExpectedPainDE.png") 
+        self.Blank = stimuli.Blank
+        self.Marker = stimuli.Marker
+        self.MarkerWithFiducial = stimuli.MarkerWithFiducial
+        self.LearningRateExpectedPain = (stimuli.LearningRateExpectedPainDE 
                                          if tc.Language == "de" 
-                                         else stimuli.GetImageFromArchive("LearningRateExpectedPainEn.png"))
-        self.TestRateExpectedPain = (stimuli.GetImageFromArchive("TestRateExpectedPainDE.png") 
+                                         else stimuli.LearningRateExpectedPainEn)
+        self.TestRateExpectedPain = (stimuli.TestRateExpectedPainDE 
                                      if tc.Language == "de" 
-                                     else stimuli.GetImageFromArchive("TestRateExpectedPainEN.png"))
-        self.TestRatePain = (stimuli.GetAssGetImageFromArchive("TestRatePainDE.png") 
+                                     else stimuli.TestRateExpectedPainEN)
+        self.TestRatePain = (stimuli.TestRatePainDE 
                              if tc.Language == "de" 
-                             else stimuli.GetImageFromArchive("TestRatePainEN.png"))
+                             else stimuli.TestRatePainEN)
 
 def CreateImageRepository(tc):
     return ImageRepository(tc)
@@ -63,7 +63,7 @@ class LearningTrial:
 def InitializeLearning(tc):
     try:
         tc.Defines.Set("LearningTrials", [])
-        tc.Devices.Display.Default(tc.Images.Blank)
+        tc.Instruments.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized learning task")
         return True
     
@@ -89,8 +89,8 @@ def LearningComplete(tc):
 
 def LearningRatingPain(tc):
     try:        
-        rating = tc.Devices.Response.GetCurrentRating()
-        tc.Devices.Display.Display(tc.Images.Marker)
+        rating = tc.Instruments.Response.GetCurrentRating()
+        tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.LearningTrials[-1].rating = rating
         Log.Information("PAIN RATING: {rating}", rating) 
     except Exception as e:
@@ -100,7 +100,7 @@ def LearningRatingPain(tc):
 
 def RunLearning(tc, x):
     try:
-        display = tc.Devices.Display
+        display = tc.Instruments.ImageDisplay
         trial = LearningTrial(tc)
         tc.LearningTrials.append(trial)
        
@@ -129,7 +129,7 @@ class TestTrial:
 def InitializeTest(tc):
     try:
         tc.Defines.Set("TestTrials", [])
-        tc.Devices.Display.Default(tc.Images.Blank)
+        tc.Devices.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized test task")
         return True
 
@@ -164,8 +164,8 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
-        ratingExpected = tc.Devices.Response.GetCurrentRating() 
-        tc.Devices.Display.Display(tc.Images.Marker)
+        ratingExpected = tc.Instruments.Response.GetCurrentRating() 
+        tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.TestTrials[-1].ratingExpected = ratingExpected
         Log.Information("Rating expected pain: {rating}", ratingExpected)
     except Exception as e:
@@ -192,7 +192,7 @@ def getIntensity(tc):
     
 def TestStimulate(tc):
     try:
-        tc.Devices.Display.Display(tc.Images.MarkerWithFiducial)
+        tc.Devices.ImageDisplay.Display(tc.Images.MarkerWithFiducial)
         Stimulate(tc, getIntensity(tc))
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
@@ -201,8 +201,8 @@ def TestStimulate(tc):
 
 def TestRateActualPain(tc):
     try:
-        ratingActual = tc.Devices.Response.GetCurrentRating() 
-        tc.Devices.Display.Display(tc.Images.Blank)
+        ratingActual = tc.Instruments.Response.GetCurrentRating() 
+        tc.Instruments.ImageDisplay.Display(tc.Images.Blank)
         tc.TestTrials[-1].ratingActual = ratingActual
         Log.Information("RATING ACTUAL PAIN: {rating}", ratingActual)        
     except Exception as e:
@@ -212,7 +212,7 @@ def TestRateActualPain(tc):
 
 def RunTest(tc, x):
     try:
-        display = tc.Devices.Display
+        display = tc.Instruments.ImageDisplay
         trial = TestTrial(tc)
         tc.TestTrials.append(trial)
 

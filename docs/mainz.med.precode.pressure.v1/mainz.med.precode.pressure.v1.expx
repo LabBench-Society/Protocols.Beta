@@ -222,7 +222,7 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"/>
+                        name="ImageDisplay"/>
                     <instrument 
                         interface="pressure-algometer" 
                         name="Response" />
@@ -273,7 +273,7 @@
 
                     <instrument 
                         interface="image-display"
-                        name="Display"/>
+                        name="ImageDisplay"/>
                     <instrument 
                         name="PressureAlgometer"
                         interface="pressure-algometer"/>
