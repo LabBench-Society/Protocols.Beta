@@ -6,37 +6,70 @@
     regex="^S[0-9]{3}$"
     advice="Please enter an ID in the form of SXXX, where X is a digit" />
 
-    <experimental-setup>
-        <devices>
-            <cpar-plus id="cpar" />
-
-            <display 
-                id="display"
-                active-color="rgb(255, 255, 255)"
-                background-color="rgb(255, 255, 255)"
-                inactive-color="rgb(0, 0, 0)"
-                normative-distance="40"
-                position="upper-right"
-                screen="primary">
-                
-                <monitor 
-                    diagonal-size="13"
-                    distance="40"/>
-
-                <configurations>
-                    <image-display 
-                        id="image"
-                        experimental-setup-id="display"
-                        background-color="rgb(255, 255, 255)"/>
-                </configurations>
-            </display>
-        </devices>
-        <device-mapping>
-            <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>
-            <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
-            <device-assignment device-id="cpar" instrument-name="RatioScale" />
-        </device-mapping>
-    </experimental-setup>   
+    <experimental-setup-variants default="cparPlus">
+        <experimental-setup name="LabBench CPAR+" id="cparPlus">
+            <devices>
+                <cpar-plus id="cpar" />
+    
+                <display 
+                    id="display"
+                    active-color="rgb(255, 255, 255)"
+                    background-color="rgb(255, 255, 255)"
+                    inactive-color="rgb(0, 0, 0)"
+                    normative-distance="40"
+                    position="upper-right"
+                    screen="primary">
+                    
+                    <monitor 
+                        diagonal-size="13"
+                        distance="40"/>
+    
+                    <configurations>
+                        <image-display 
+                            id="image"
+                            experimental-setup-id="display"
+                            background-color="rgb(255, 255, 255)"/>
+                    </configurations>
+                </display>
+            </devices>
+            <device-mapping>
+                <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>
+                <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+                <device-assignment device-id="cpar" instrument-name="RatioScale" />
+            </device-mapping>
+        </experimental-setup>   
+        <experimental-setup name="Nocitech CPAR" id="cpar">
+            <devices>
+                <cpar id="cpar" compressor-mode="AUTO"/>
+    
+                <display 
+                    id="display"
+                    active-color="rgb(255, 255, 255)"
+                    background-color="rgb(255, 255, 255)"
+                    inactive-color="rgb(0, 0, 0)"
+                    normative-distance="40"
+                    position="upper-right"
+                    screen="primary">
+                    
+                    <monitor 
+                        diagonal-size="13"
+                        distance="40"/>
+    
+                    <configurations>
+                        <image-display 
+                            id="image"
+                            experimental-setup-id="display"
+                            background-color="rgb(255, 255, 255)"/>
+                    </configurations>
+                </display>
+            </devices>
+            <device-mapping>
+                <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>
+                <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+                <device-assignment device-id="cpar" instrument-name="RatioScale" />
+            </device-mapping>
+        </experimental-setup>       
+    </experimental-setup-variants>
     <protocol>
         <languages>
             <language 

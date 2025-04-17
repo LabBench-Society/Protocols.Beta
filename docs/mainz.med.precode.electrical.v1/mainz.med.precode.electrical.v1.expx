@@ -8,10 +8,11 @@
     advice="Please enter an ID in the form of SXXX, where X is a digit" />
 
     <experimental-setup>
-        <devices>
+        <devices>            
             <lio 
                 id="lio" 
                 default-analog-output="0">
+                <trigger-setup logic-system="positive" high-byte-voltage-level="unconnected" low-byte-voltage-level="unconnected"/>
                 <stimulators>
                     <ds5
                         name="DS5"
@@ -286,9 +287,7 @@
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
 
-                    <instrument 
-                        interface="image-display"
-                        name="Display"/>
+                    <instrument interface="image-display" name="Display"/>
                     <instrument 
                         name="Stimulator"
                         interface="stimulator"/>
