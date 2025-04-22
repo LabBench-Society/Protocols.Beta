@@ -201,7 +201,12 @@
       <category name="Department of Psychosomatics" id="mainz.med">
         <category name="Precode" id="mainz.med.precode">
           <protocol id="mainz.med.precode.pressure.v1"
-            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli)"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli), Version 1"
+            labbench-version="5.1"
+            category="CPAR;Pain Perception Processes"/>
+
+          <protocol id="mainz.med.precode.pressure.v2"
+            name="Pain Perception Processes through the Lens of Predictive Coding (Pressure Stimuli), Version 2"
             labbench-version="5.1"
             category="CPAR;Pain Perception Processes"/>
 
