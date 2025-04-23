@@ -147,23 +147,29 @@
                             <area id="A16" color="#DFFF90" right="A12" left="A12" up="A15"/>
                         </map>  
                         
-                        <visual-analog-scale id="VAS" 
+                        <visual-analog-scale id="PainVAS" 
                             length="10" 
                             active-color="rgb(255,0,0)"
                             inactive-color="rgb(32,32,32)"
-                            top-anchor="dynamic: Text['Q03TopAnchor']"
-                            bottom-anchor="dynamic: Text['Q03BottomAnchor']"/>
+                            top-anchor="dynamic: Text['PainTopAnchor']"
+                            bottom-anchor="dynamic: Text['PainBottomAnchor']"/>
+
+                        <visual-analog-scale id="UnpleasentnessVAS" 
+                            length="10" 
+                            active-color="rgb(255,0,0)"
+                            inactive-color="rgb(32,32,32)"
+                            top-anchor="dynamic: Text['UnpleasentnessTopAnchor']"
+                            bottom-anchor="dynamic: Text['UnpleasentnessBottomAnchor']"/>
                     </templates>
                     <content>
                         <boolean id="Q01" 
-                            title="Overall pain"
-                            instruction="Do you have pain right now?"
-                            template="PAIN" />
-
-                        <!-- If Q01 is True then continue with the rest of the questions, if no skip -->
-                        <map id="Q02"
                             title="dynamic: Text['Q01Title']"
                             instruction="dynamic: Text['Q01Instruction']"
+                            template="PAIN" />
+
+                        <map id="Q02"
+                            title="dynamic: Text['Q02Title']"
+                            instruction="dynamic: Text['Q02Instruction']"
                             selection-mode="multiple"    
                             condition="Current.Q01"                        
                             template="BODYMAP" />
@@ -172,38 +178,38 @@
                             title="dynamic: Text['Q03Title']"
                             instruction="dynamic: Text['Q03Instruction']"
                             condition="Current.Q01"                        
-                            template="VAS" />
+                            template="PainVAS" />
 
                         <map id="Q04"
-                            title="dynamic: Text['Q02Title']"
-                            instruction="dynamic: Text['Q02Instruction']"
+                            title="dynamic: Text['Q04Title']"
+                            instruction="dynamic: Text['Q04Instruction']"
                             selection-mode="single"                            
                             condition="Current.Q01"                        
                             template="BODYMAP" />
 
                         <visual-analog-scale id="Q05" 
-                            title="dynamic: Text['Q03Title']"
-                            instruction="dynamic: Text['Q03Instruction']"
+                            title="dynamic: Text['Q05Title']"
+                            instruction="dynamic: Text['Q05Instruction']"
                             condition="Current.Q01"                        
-                            template="VAS" />
+                            template="PainVAS" />
 
                         <boolean id="Q06" 
-                            title="Low back pain"
-                            instruction="Do you have low back pain right now?"
+                            title="dynamic: Text['Q06Title']"
+                            instruction="dynamic: Text['Q06Instruction']"
                             condition="Current.Q01"                        
                             template="PAIN"/>
 
                         <visual-analog-scale id="Q07" 
-                            title="dynamic: Text['Q03Title']"
-                            instruction="dynamic: Text['Q03Instruction']"
+                            title="dynamic: Text['Q07Title']"
+                            instruction="dynamic: Text['Q07Instruction']"
                             condition="Current.Q01 and Current.Q06"                        
-                            template="VAS" />
+                            template="PainVAS" />
                         
                         <visual-analog-scale id="Q08" 
-                            title="dynamic: Text['Q03Title']"
-                            instruction="dynamic: Text['Q03Instruction']"
+                            title="dynamic: Text['Q08Title']"
+                            instruction="dynamic: Text['Q08Instruction']"
                             condition="Current.Q01 and Current.Q06"                        
-                            template="VAS" />                        
+                            template="UnpleasentnessVAS" />                        
                     </content>
                 </questionnaire>     
 
