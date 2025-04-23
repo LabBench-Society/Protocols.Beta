@@ -248,4 +248,17 @@
         </category>
       </category>
     </category>
+    <category name="Aalborg University" id="aau">
+        <category name="Center for Neuroplasticity and Pain (CNAP)" id="aau.cnap">
+          <category name="Laboratory of Neuropsychology and Pain " id="aau.cnap.lnp">
+            <category name="Cognition and Pain" id="aau.cnap.lnp.cogniPain">
+              <protocol id="aau.cnap.lnp.cogniPain.protocol.v1"
+                name="Cognition and Pain, Version 1"
+                labbench-version="5.1"
+                category="LabBench I/O;Pain Perception Processes"/>
+  
+            </category>          
+          </category>  
+        </category>
+    </category>
 </repository>

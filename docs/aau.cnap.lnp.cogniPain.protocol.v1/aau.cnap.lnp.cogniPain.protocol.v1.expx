@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
+    <subject-validator regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+
+    <experimental-setup-variants default="CPAR">
+        <experimental-setup id="CPAR">
+            <devices>
+                <cpar-plus id="cpar"/>
+    
+                <lio id="lio" default-analog-output="0">
+                    <trigger-setup low-byte-voltage-level="unconnected" high-byte-voltage-level="unconnected" logic-system="positive"/>               
+                    <response-devices>
+                       <visual-trigger id="trigger" timing-source="response-port01"/>
+                       <response-pad id="pad" timing-source="response-port01" type="button-4-cross">                    
+                          <map experimental-setup-id="vas">
+                            <button-assignment code="5" button="decrease" label="Decrease" />
+                            <button-assignment code="6" button="increase" label="Increase" />
+                          </map>
+                          <map experimental-setup-id="image">
+                            <button-assignment code="5" button="left" label="Left" />
+                            <button-assignment code="6" button="right" label="Right" />
+                          </map>
+                          <map experimental-setup-id="stroopSetup">
+                             <button-assignment code="1" button="button-01" label="blue" />
+                             <button-assignment code="2" button="button-02" label="yellow" />
+                             <button-assignment code="3" button="button-03" label="red" />
+                             <button-assignment code="4" button="button-04" label="green" />
+                          </map>
+                          <map experimental-setup-id="sstSetup">
+                            <button-assignment code="5" button="left" label="Left" />
+                            <button-assignment code="6" button="right" label="Right" />
+                          </map>
+                          <map experimental-setup-id="questionnaire">
+                            <button-assignment code="5" button="decrease" label="Decrease" />
+                            <button-assignment code="6" button="increase" label="Increase" />
+                          </map>
+                       </response-pad>
+                    </response-devices>
+                 </lio>     
+
+                <display id="display"
+                    active-color="rgb(255, 0, 0)"
+                    background-color="rgb(255, 255, 255)"
+                    inactive-color="rgb(32, 0, 0)"
+                    normative-distance="40"
+                    position="fullscreen"
+                    fiducial-position="lower-left"
+                    screen="secondary">
+                    
+                    <monitor diagonal-size="68.5" distance="143" />
+                    <fiducial x="11" y="17" size="10" />
+         
+                    <configurations>
+                        <image-display 
+                            id="image" 
+                            background-color="rgb(0, 0, 0)"/>
+
+                        <visual-analog-scale id="vas" 
+                            controller-device="cpar"
+                            experimental-setup-id="vas"                                                     
+                            length="10">                            
+                            <anchors>
+                                <modality text=""/>
+                                <top-anchor text="Maximal Pain" />
+                                <bottom-anchor text="No Pain"/>
+                            </anchors>                            
+                        </visual-analog-scale>
+
+                        <questionnaire 
+                            id="questionnaire"
+                            experimental-setup-id="questionnaire"
+                            background-color="rgb(255,255,255)"                            
+                            controller-device="lio.pad" />
+                    </configurations>
+                </display>
+            </devices>
+            <device-mapping>
+                <device-assignment device-id="cpar" instrument-name="PressureAlgometer"/>               
+                <device-assignment device-id="cpar" instrument-name="RatioScale"/>
+                <device-assignment device-id="lio.pad" instrument-name="Button"/>             
+                <device-assignment device-id="display.image" instrument-name="ImageDisplay"/>
+                <device-assignment device-id="lio" instrument-name="TriggerGenerator" />
+                <device-assignment device-id="display.questionnaire" instrument-name="Questionnaire" />
+                <device-assignment test-type="questionnaire" device-id="lio.pad" instrument-name="Button" />
+            </device-mapping>
+        </experimental-setup>   
+    
+    </experimental-setup-variants>
+    <protocol>
+        <languages>
+            <language code="EN" name="English"/>
+            <language code="DA" name="Danish"/>
+        </languages>
+        <defines>
+            <!-- Resting state EEG -->
+            <define name="RecordingTime" value="5*60"/> <!-- Intended value 3min = 60*3-->
+
+            <!-- Stroop Task -->
+            <define name="StroopStimulusRepetitions" value="6"/> <!-- Intended value 6 -->
+            <define name="NeutralStoopTrials" value="28"/> <!-- Must be divisable by 4 -->
+            <define name="StroopDisplayTime" value="1500"/>
+            <define name="StroopColors" value="{'b': '#0000FF','y': '#FFFF00','r': '#FF0000','g': '#00FF00'}"/>
+            <define name="StroopWords" value="func: StroopScript.GetWords(tc)"/>
+   
+            <!-- Stop Signal Game Defines -->
+            <define name="StopSignalTrainingStopSignals" value="5"/> <!-- Intended value 5 -->
+            <define name="StopSignalNumberOfStopSignals" value="50"/> <!-- Intended value: 50 -->
+            <define name="StopSignalLowDelayLimit" value="50"/>
+            <define name="StopSignalHighDelayLimit" value="750"/>
+            <define name="StopSignalFixationDelay"  value="500"/>
+            <define name="StopSignalResponseTimeout"  value="1000"/>
+            <define name="StopSignalFeedbackDelay" value="1000"/>            
+            <define name="StopSignalFeedbackTime" value="1000"/>
+            <define name="StopSignalPause" value="1000"/>
+            <define name="StopSignalPeriod" value="(StopSignalFixationDelay + StopSignalResponseTimeout + StopSignalFeedbackDelay + StopSignalFeedbackTime + StopSignalPause)/1000"/>
+            <define name="StopSignalTrials" value="30"/>
+            <define name="StopSignalAlphaX0" value="0.0"/>
+            <define name="StopSignalAlphaN" value="200"/>
+            <define name="StopSignalBetaX0" value="-2"/> <!--  Old value: -1.2041 -->
+            <define name="StopSignalBetaX1" value="2"/> <!--  Old value: 1.2041 -->
+            <define name="StopSignalBetaN" value="50"/>
+            <define name="StopSignalIntensityX0" value="0.0"/>
+            <define name="StopSignalIntensityN" value="15"/>
+            <define name="StopSignalConfidenceLevel" value="0.95"/>
+        </defines>
+        <templates>
+        <variables>
+            <strings value="1;2;3" name="Measurements" />
+        </variables>
+            <content>
+                <!-- Templates for the Stroop Task-->
+                <stimulation-sequence id="NSTROOPTrial"
+                    experimental-setup-id="stroopSetup"
+                    response-collection="yes-no"
+                    stimulus-update-rate="10000">
+    
+                    <test-events complete="func: StroopScript.StroopEvaluate(tc)" />
+    
+                    <properties>
+                        <instructions default="Instructions.NeutralStroopTrial" override-results="true"/>
+                        <subject-instructions 
+                            experimental-setup-id="stroopSetup" 
+                            default="Assets.StroopInstructions.NeutralStroopJoystick if ExperimentalSetup == 'JOYSTICK' else Assets.StroopInstructions.NeutralStroopPAD"/>
+                    </properties>                                
+                  
+                    <stimulation-scripts 
+                        initialize="True"
+                        stimulate="func: StroopScript.StroopNeutralStimulate(tc,x)"
+                        stimulus-description="Image"
+                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="TriggerGenerator" interface="trigger-generator" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
+                        <sequence iterations="1">
+                            <sequence iterations="1" Tperiod="4" stimulate="false" />    
+                            <uniformly-distributed-sequence minTperiod="3" maxTperiod="5" iterations="3 * NumberOfStimuli" />
+                        </sequence>
+                    </stimulation-pattern>
+        
+                    <stimuli order="block-random">
+                        <stimulus name="rn" />
+                        <stimulus name="gn" />
+                        <stimulus name="bn" />
+                        <stimulus name="yn" />
+                    </stimuli>
+                </stimulation-sequence>
+ 
+                <stimulation-sequence id="NSTROOP"
+                    experimental-setup-id="stroopSetup"
+                    response-collection="yes-no"
+                    stimulus-update-rate="10000">
+    
+                    <test-events complete="func: StroopScript.StroopEvaluate(tc)" />
+                    
+                    <properties>
+                        <instructions default="Instructions.NeutralStroop" override-results="true"/>
+                        <subject-instructions 
+                            experimental-setup-id="stroopSetup" 
+                            default="Assets.StroopInstructions.NeutralStroopPAD"/>
+                    </properties>                                
+    
+                    <dependencies>
+                        <dependency id="NSTROOPTrial"/>
+                    </dependencies>
+    
+                    <stimulation-scripts 
+                        initialize="True"
+                        stimulate="func: StroopScript.StroopNeutralStimulate(tc,x)"
+                        stimulus-description="Image"
+                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="TriggerGenerator" interface="trigger-generator" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
+                        <sequence iterations="1">
+                            <sequence iterations="1" Tperiod="4" stimulate="false" />                        
+                            <uniformly-distributed-sequence minTperiod="3" maxTperiod="5" iterations="NeutralStoopTrials" />
+                        </sequence>
+                    </stimulation-pattern>
+        
+                    <stimuli order="block-random">
+                        <stimulus name="rn" />
+                        <stimulus name="gn" />
+                        <stimulus name="bn" />
+                        <stimulus name="yn" />
+                    </stimuli>
+                </stimulation-sequence>
+    
+                <stimulation-sequence id="STROOPTrial"
+                    experimental-setup-id="stroopSetup"
+                    response-collection="yes-no"
+                    stimulus-update-rate="10000">
+    
+                    <test-events complete="func: StroopScript.StroopEvaluate(tc)" />
+    
+                    <properties>
+                        <instructions default="Instructions.StroopTrial" override-results="true"/>
+                        <subject-instructions 
+                            experimental-setup-id="stroopSetup" 
+                            default="Assets.StroopInstructions.StroopPAD"/>
+                    </properties>                                                    
+
+                    <stimulation-scripts 
+                        initialize="True"
+                        stimulate="func: StroopScript.StroopStimulate(tc,x)"
+                        stimulus-description="Image"
+                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="TriggerGenerator" interface="trigger-generator" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1">
+                        <sequence iterations="1" Tperiod="4" stimulate="false" />    
+                        <uniformly-distributed-sequence minTperiod="3" maxTperiod="5" iterations="2 * NumberOfStimuli" />
+                    </sequence>
+                    </stimulation-pattern>
+        
+                    <stimuli order="block-random">
+                        <stimulus name="rr" />
+                        <stimulus name="gg" />
+                        <stimulus name="bb" />
+                        <stimulus name="yy" />                    
+                        <stimulus name="rg" />
+                        <stimulus name="gb" />
+                        <stimulus name="by" />
+                        <stimulus name="yr" />
+                    </stimuli>
+                </stimulation-sequence>
+    
+                <stimulation-sequence id="STROOP"
+                    experimental-setup-id="stroopSetup"
+                    response-collection="yes-no"
+                    stimulus-update-rate="10000">
+    
+                    <test-events complete="func: StroopScript.StroopEvaluate(tc)" />
+        
+                    <properties>
+                        <instructions default="Instructions.Stroop" override-results="true"/>
+                        <subject-instructions 
+                            experimental-setup-id="stroopSetup" 
+                            default="Assets.StroopInstructions.StroopPAD"/>
+                    </properties>                                                    
+    
+                    <dependencies>
+                        <dependency id="STROOPTrial"/>
+                    </dependencies>
+    
+                    <stimulation-scripts 
+                        initialize="True"
+                        stimulate="func: StroopScript.StroopStimulate(tc,x)"
+                        stimulus-description="Image"
+                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="TriggerGenerator" interface="trigger-generator" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
+                        <sequence iterations="1">
+                            <sequence iterations="1" Tperiod="4" stimulate="false" />
+                            <uniformly-distributed-sequence minTperiod="3" maxTperiod="5" iterations="StroopStimulusRepetitions*NumberOfStimuli" />
+                        </sequence>
+                    </stimulation-pattern>
+        
+                    <stimuli order="block-random">
+                        <stimulus name="rr" count="3" />
+                        <stimulus name="rg" />
+                        <stimulus name="rb" />
+                        <stimulus name="ry" />
+        
+                        <stimulus name="gr" />
+                        <stimulus name="gg" count="3"/>
+                        <stimulus name="gb" />
+                        <stimulus name="gy" />
+        
+                        <stimulus name="br" />
+                        <stimulus name="bg" />
+                        <stimulus name="bb" count="3"/>
+                        <stimulus name="by" />
+        
+                        <stimulus name="yr" />
+                        <stimulus name="yb" />
+                        <stimulus name="yg" />
+                        <stimulus name="yy" count="3"/>
+                    </stimuli>
+                </stimulation-sequence>       
+                
+                <!-- Templates for the Stop-Signal Game -->
+                <stimulation-sequence id="StopSignalTraining"
+                    experimental-setup-id="sstSetup"
+                    response-collection="none"
+                    stimulus-update-rate="44100">
+                    <test-events complete="func: StopSignalGameScript.Complete(tc)" />
+
+                    <properties> 
+                        <instructions default="Instructions.StopSignalTraining" override-results="true"/>
+                        <subject-instructions experimental-setup-id="sstSetup"
+                            default="Assets.StopSignalGameImages.Instructions" 
+                            completed="func: StopSignalGameScript.DisplayScore(tc)"/>                            
+                    </properties>
+
+                    <dependencies>
+                        <dependency id="THRSelection" />
+                    </dependencies>
+
+                    <stimulation-scripts initialize="func: StopSignalGameScript.UpDownGameInitialize(tc)"
+                                        stimulate="func: StopSignalGameScript.Stimulate(tc,x)"
+                                        stimulus-description="Image"
+                                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="Button" interface="button"/>
+                        <instrument name="PressureAlgometer" interface="pressure-algometer"/>
+                    </stimulation-scripts>
+
+                    <stimulation-pattern time-base="seconds">
+                        <sequence Tperiod="StopSignalPeriod" iterations="NumberOfStimuli * StopSignalTrainingStopSignals" />                        
+                    </stimulation-pattern>
+
+                    <stimuli order="block-random">
+                        <stimulus name="GO" count="3" />
+                        <stimulus name="STOP" count="1"/>
+                    </stimuli>
+                </stimulation-sequence>
+
+                <stimulation-sequence id="StopSignalGame"
+                    experimental-setup-id="sstSetup"
+                    response-collection="none"
+                    stimulus-update-rate="44100">
+
+                    <test-events complete="func: StopSignalGameScript.Complete(tc)" />
+
+                    <properties>
+                        <instructions default="Instructions.StopSignal" override-results="true"/>
+                        <subject-instructions experimental-setup-id="sstSetup"
+                            default="Assets.StopSignalGameImages.Instructions" 
+                            completed="func: StopSignalGameScript.DisplayScore(tc)"/>
+                    </properties>
+
+                    <dependencies>
+                        <dependency id="THRSelection" />
+                    </dependencies>
+
+                    <stimulation-scripts initialize="func: StopSignalGameScript.PsiGameInitialize(tc)"
+                                        stimulate="func: StopSignalGameScript.Stimulate(tc,x)"
+                                        stimulus-description="Image"
+                                        stimulus-unit="N/A">
+                        <instrument name="ImageDisplay" interface="image-display"/>
+                        <instrument name="Button" interface="button"/>
+                        <instrument name="PressureAlgometer" interface="pressure-algometer"/>
+                    </stimulation-scripts>
+
+                    <stimulation-pattern time-base="seconds">
+                        <sequence Tperiod="StopSignalPeriod" iterations="NumberOfStimuli * StopSignalNumberOfStopSignals" />
+                    </stimulation-pattern>
+
+                    <stimuli order="block-random">
+                        <stimulus name="GO" count="3" />                        
+                        <stimulus name="STOP" count="1"/>
+                    </stimuli>
+                </stimulation-sequence>    
+
+                <!-- Templates for Cuff Pressure Algometry -->
+                <algometry-stimulus-response id="SR01"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.SR01" override-results="false"/>
+                    </properties>
+                </algometry-stimulus-response>
+
+                <algometry-stimulus-response id="SR02"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="2"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.SR02" override-results="false"/>
+                    </properties>
+                </algometry-stimulus-response>
+
+                <algometry-temporal-summation id="TS"
+                    experimental-setup-id="vas"
+                    no-of-stimuli="10"
+                    pressure-static="5"
+                    pressure-stimulate="1.0 * (SR01M1.PTT + SR01M2.PTT + SR01M3.PTT)/3"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    t-off="1"
+                    t-on="1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="SR01M1"/>
+                        <dependency id="SR01M2"/>
+                        <dependency id="SR01M3"/>
+                    </dependencies>
+                </algometry-temporal-summation>
+
+                <algometry-conditioned-pain-modulation id="CPM"
+                    experimental-setup-id="vas"
+                    conditional-pressure="0.7 * SR02.PTT"
+                    conditioning-time="60"
+                    delta-conditional-pressure="10"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="SR02"/>
+                    </dependencies>
+                </algometry-conditioned-pain-modulation>
+            </content>
+        </templates>
+        <tests>    
+            <questionnaire id="SUBJECT"
+                name="Subject Information"
+                experimental-setup-id="image"
+                control="operator">
+                <content>
+                    <likert
+                        id="HANDEDNESS"
+                        title="Handedness"
+                        instruction="With hand do you prefer to use for hand writing?">
+                        <choice value="0" label="Right"/>
+                        <choice value="1" label="Left"/>
+                        <choice value="2" label="Any, I don't care"/>
+                    </likert>                    
+                </content>
+            </questionnaire>
+
+            <questionnaire id="PREPARATION"
+                name="Preparing for Cuff Pressure Algometry"
+                experimental-setup-id="image"
+                control="operator">   
+                <properties>
+                    <auto-start value="true" />
+                </properties>                   
+                <dependencies>
+                    <dependency id="SUBJECT" virtual="false"/>
+                </dependencies>
+
+                <content>
+                    <instruction 
+                        id="CUFFS"
+                        title="Place the cuffs on the lefs of the subject"                        
+                        instruction="dynamic: func: Script.CuffInstruction(tc)"/>
+                </content>
+            </questionnaire>            
+
+            <!-- 
+                Stroop task
+            -->            
+            <stimulation-sequence-constructor id="NSTROOPTrial" 
+               name="Neutral Stroop Task (Training)"
+               template="NSTROOPTrial"/>        
+            
+            <stimulation-sequence-constructor id="NSTROOP" 
+               name="Neutral Stroop Task"
+               template="NSTROOP"/>
+
+            <stimulation-sequence-constructor id="STROOPTrial" 
+               name="Stroop Task (Training)"
+               template="STROOPTrial"/>
+               
+            <stimulation-sequence-constructor id="STROOP" 
+               name="Stroop Task"
+               template="STROOP"/>
+
+            <!-- Standard Cuff Protocol -->
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-response-constructor id="var: 'SR01M{m}'.format(m = m)" 
+                    name="var: 'Stimulus-Response (Cuff 1) [{m}]'.format(m = m)"                    
+                    template="SR01"/>
+            </foreach>
+
+            <algometry-stimulus-response-constructor id="SR02" 
+                name="Stimulus-Response (Cuff 2)"
+                template="SR02"/>
+
+            <algometry-temporal-summation-constructor id="TS" 
+                name="Temporal Summation (Cuff 1)"
+                template="TS"/>
+
+            <algometry-conditioned-pain-modulation-constructor id="CPM" 
+                name="CPM (Cuff 1)"
+                template="CPM"/>                     
+
+            <!-- Calibration of stimululation intensities for the Stop-Signal Task and the Painful Oddball -->
+            <psychophysics-stimulus-presentation id="PRESENTATION"
+                name="Presentation of pressure stimuli"
+                experimental-setup-id="vas"
+                stimulus-update-rate="50">
+
+                <properties>
+                    <instructions default="Instructions.PresentationOfPressureStimuli" override-results="true"/>
+                </properties>
+
+                <intensity 
+                    type="array"
+                    value="range(5, 101, 5)" />
+    
+                <responses response-collection="ratio-rating"/>
+                
+                <stimulation>
+                    <scripts 
+                        initialize="True"
+                        stimulate="func: Script.Stimulate(tc,x)"
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
+                        <instrument name="PressureAlgometer" interface="pressure-algometer"/>                
+                        <instrument name="TriggerGenerator" interface="trigger-generator" />
+                    </scripts>
+                </stimulation>        
+            </psychophysics-stimulus-presentation>
+
+            <psychophysics-threshold-estimation id="THR70"
+                name="Threshold (VAS 7)"
+                experimental-setup-id="vas"
+                stimulus-update-rate="50">
+
+                <properties>
+                    <instructions default="Instructions.Threshold" override-results="false"/>
+                </properties>
+
+                <dependencies>
+                    <dependency id="PRESENTATION"/>
+                </dependencies>
+    
+                <update-rate-random 
+                    min="4000" 
+                    max="6000"/>
+    
+                <ratio-rating-task target="7"/>
+    
+                <stimulation-scripts 
+                    initialize="True"
+                    stimulate="func: Script.Stimulate(tc,x)"
+                    stimulus-description="Pressure"
+                    stimulus-unit="kPa">
+
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
+                    <instrument name="TriggerGenerator" interface="trigger-generator" />
+                </stimulation-scripts>
+    
+                <channels>
+                    <channel 
+                        id="PULSE"
+                        name="Pulse (1s)"
+                        Imax="100"
+                        Imin="0"
+                        channel-type="single-sample">
+
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
+    
+                        <stimulus>
+                            <pulse 
+                                Is="x" 
+                                Ts="1000" />
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+            <questionnaire id="THRSelection" 
+                name="Intensity Selection"
+                control="operator">
+                <content>
+                    <boolean id="Value"
+                        title="Thresold Selectection"
+                        instruction="Was the threshold for VAS 7 found?"
+                        true-label="Yes" 
+                        false-label="No" />
+                </content>
+            </questionnaire>
+
+            <questionnaire id="IntensityRating" 
+                name="Intensity Rating"
+                experimental-setup-id="questionnaire"
+                control="subject">
+                <test-events start="func: Script.MaximumStimulate(tc)">
+                    <instrument name="PressureAlgometer" interface="pressure-algometer" />
+                </test-events>
+                <dependencies>
+                    <dependency id="THRSelection" />
+                </dependencies>                
+                <condition expression="not THRSelection.Value" help="Is only performed if the threshold is not found" />                
+                <content>
+                    <visual-analog-scale id="Rating"
+                        title="Rating"
+                        instruction="Please rate the pressure stimulus you where just given"                        
+                        length="10"
+                        top-anchor="Maximal Pain" 
+                        bottom-anchor="No Pain" 
+                        active-color="rgb(255, 0, 0)"
+                        inactive-color="rgb(32, 0, 0)" />
+                </content>
+            </questionnaire>
+
+            <!-- 
+                Stop Signal Game (Punishement Reward)
+                - Gamification + adverse event pain  at loss
+            -->
+            <stimulation-sequence-constructor id="StopSignalTraining" 
+                name="Stop Signal Task (Training Task)"
+                template="StopSignalTraining"/>
+
+            <stimulation-sequence-constructor id="StopSignalGame" 
+                name="Stop Signal Game"
+                template="StopSignalGame"/>
+        </tests>
+        <assets>
+            <file-asset id="Script" file="Script.py" />
+            <file-asset id="Roboto" file="Roboto-Regular.ttf"/>
+
+            <file-asset id="Instructions" file="Instructions.zip"></file-asset>
+
+            <!-- Assets for the Stroop Task -->
+            <file-asset id="StroopInstructions" file="StroopInstructions_EN.zip">
+                <language code="DA" file="StroopInstructions_DA.zip"/>
+            </file-asset>
+            <file-asset id="StroopScript" file="StroopScript.py" />
+
+            <!-- Assets for the Stop-Signal Game -->
+            <file-asset id="StopSignalGameImages" file="StopSignalGameImages_EN.zip">
+                <language code="DA" file="StopSignalGameImages_DA.zip"/>
+            </file-asset>
+
+            <file-asset id="StopSignalGameScript" file="StopSignalGameScript.py" />
+
+            <!-- Assets for Cuff Pressure Algometry -->
+            <file-asset id="CPAInstructions" file="CPAInstructions_EN.zip">
+                <language code="DA" file="CPAInstructions_DA.zip"/>
+            </file-asset>
+        </assets>
+    </protocol>
+    <post-actions>
+        <!--  Contents omitted for brevity -->
+    </post-actions>
+</experiment>
