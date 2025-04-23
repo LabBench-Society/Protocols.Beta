@@ -87,6 +87,10 @@
                         <instructions default="Assets.PPTOperatorInstructions.BODY" override-results="true"/>
                     </properties>
                     <templates>
+                        <boolean id="PAIN" 
+                            true-label="Yes"
+                            false-label="No"/>
+
                         <map id="BODYMAP"
                             title="Title"
                             instruction="Instructions for the subject"
@@ -151,22 +155,55 @@
                             bottom-anchor="dynamic: Text['Q03BottomAnchor']"/>
                     </templates>
                     <content>
-                        <map id="Q01"
+                        <boolean id="Q01" 
+                            title="Overall pain"
+                            instruction="Do you have pain right now?"
+                            template="PAIN" />
+
+                        <!-- If Q01 is True then continue with the rest of the questions, if no skip -->
+                        <map id="Q02"
                             title="dynamic: Text['Q01Title']"
                             instruction="dynamic: Text['Q01Instruction']"
-                            selection-mode="multiple"                            
-                            template="BODYMAP" />
-
-                        <map id="Q02"
-                            title="dynamic: Text['Q02Title']"
-                            instruction="dynamic: Text['Q02Instruction']"
-                            selection-mode="single"                            
+                            selection-mode="multiple"    
+                            condition="Current.Q01"                        
                             template="BODYMAP" />
 
                         <visual-analog-scale id="Q03" 
-                        title="dynamic: Text['Q03Title']"
-                        instruction="dynamic: Text['Q03Instruction']"
-                        template="VAS" />
+                            title="dynamic: Text['Q03Title']"
+                            instruction="dynamic: Text['Q03Instruction']"
+                            condition="Current.Q01"                        
+                            template="VAS" />
+
+                        <map id="Q04"
+                            title="dynamic: Text['Q02Title']"
+                            instruction="dynamic: Text['Q02Instruction']"
+                            selection-mode="single"                            
+                            condition="Current.Q01"                        
+                            template="BODYMAP" />
+
+                        <visual-analog-scale id="Q05" 
+                            title="dynamic: Text['Q03Title']"
+                            instruction="dynamic: Text['Q03Instruction']"
+                            condition="Current.Q01"                        
+                            template="VAS" />
+
+                        <boolean id="Q06" 
+                            title="Low back pain"
+                            instruction="Do you have low back pain right now?"
+                            condition="Current.Q01"                        
+                            template="PAIN"/>
+
+                        <visual-analog-scale id="Q07" 
+                            title="dynamic: Text['Q03Title']"
+                            instruction="dynamic: Text['Q03Instruction']"
+                            condition="Current.Q01 and Current.Q06"                        
+                            template="VAS" />
+                        
+                        <visual-analog-scale id="Q08" 
+                            title="dynamic: Text['Q03Title']"
+                            instruction="dynamic: Text['Q03Instruction']"
+                            condition="Current.Q01 and Current.Q06"                        
+                            template="VAS" />                        
                     </content>
                 </questionnaire>     
 
@@ -243,8 +280,6 @@
                     </properties>
                 </algometry-stimulus-response>
 
-
-
                 <psychophysics-response-recording id="HOT"
                     duration="60" 
                     sample-rate="1" 
@@ -277,7 +312,7 @@
             </content>
         </templates>
         <tests>
-            <questionnaire-constructor id="BODYMAP" name="Body Map" template="PAIN" />
+            <questionnaire-constructor id="INFO" name="Questionnaire" template="PAIN" />
 
             <sequence type="generated" generator="func: Script.RandomizeThresholds(tc)">
                 <questionnaire-constructor id="PTTCR" name="Calf Right (PPT)" template="PPT">
