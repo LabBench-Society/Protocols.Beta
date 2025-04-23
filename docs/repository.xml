@@ -210,7 +210,7 @@
             labbench-version="5.1"
             category="CPAR;Pain Perception Processes"/>
 
-            <protocol id="mainz.med.precode.electrical.v1"
+          <protocol id="mainz.med.precode.electrical.v1"
             name="Pain Perception Processes through the Lens of Predictive Coding (Electrical Stimuli), Version 1"
             labbench-version="5.1"
             category="LabBench I/O;Pain Perception Processes"/>
@@ -238,6 +238,13 @@
               category="LabBench I/O;Pain Perception Processes"/>
               
               -->
+        </category>
+        <category name="Emotional Regulation" id="mainz.med.emoreg">
+          <protocol id="mainz.med.emoreg.protocol.v1"
+            name="Exploring the interplay of Pain Perception and Emotional Regulation, Version 1"
+            labbench-version="5.1"
+            category="LabBench I/O;Pain Perception Processes"/>
+
         </category>
       </category>
     </category>
