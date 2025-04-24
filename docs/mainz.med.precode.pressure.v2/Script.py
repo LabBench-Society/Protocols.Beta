@@ -14,6 +14,61 @@ def Stimulate(tc, x):
 
     return True
 
+def CreateLowCue(tc, variant):
+    Xc = tc.ImageWidth/2
+    Yc = tc.ImageHeight/2
+    W = 400
+    H = 400
+
+    with tc.Image.GetCanvas(tc.ImageWidth, tc.ImageHeight, '#ffffff') as canvas:
+        canvas.Color("#0000FF")
+        canvas.Fill(True)
+        canvas.Rectangle(Xc - W/2, Yc- H/2, Xc + W/2, Yc + H/2) # + level, 10 + level   1000, 600, 800, 400 
+        canvas.Color("#ffffff")
+        canvas.Fill(True)
+        if variant == 1:
+            canvas.Rectangle(Xc - W/2, Yc - H/2, Xc, Yc) # + level, 10 + level   1000, 600, 800, 400 
+        else:
+            canvas.Rectangle(Xc, Yc - H/2, Xc + W/2, Yc) # + level, 10 + level   1000, 600, 800, 400 
+
+        return canvas.GetImage()
+
+def CreateHighCue(tc, variant):
+    Xc = tc.ImageWidth/2
+    Yc = tc.ImageHeight/2
+    W = 400
+    H = 400
+
+    with tc.Image.GetCanvas(tc.ImageWidth, tc.ImageHeight, '#ffffff') as canvas:
+        canvas.Color("#0000FF")
+        canvas.Fill(True)
+        canvas.Rectangle(Xc - W/2, Yc- H/2, Xc + W/2, Yc + H/2) # + level, 10 + level   1000, 600, 800, 400  Ws/2
+        canvas.Color("#ffffff")
+        canvas.Fill(True)
+        if variant == 1:
+            canvas.Rectangle(Xc, Yc, Xc + W/2, Yc + H/2) # + level, 10 + level   1000, 600, 800, 400 
+        else:
+            canvas.Rectangle(Xc - W/2, Yc , Xc, Yc + H/2) #Ws, Hs/2, Ws + W/2, Hs   
+        return canvas.GetImage()
+
+def CreateFeedback(tc, level):
+    Ws = 1920
+    Hs = 1080
+
+
+    with tc.Image.GetCanvas(Ws, Hs, '#ffffff') as canvas:
+        canvas.Color("#0000FF")
+        canvas.Fill(True)
+        canvas.Rectangle(1100, 600, 900, 400 ) 
+
+        canvas.Font("Roboto")
+        canvas.TextSize(24)
+        canvas.Color("#000000")
+
+        canvas.Write(10,500, 'Level = {level}'.format(level = level))
+
+        return canvas.GetImage()
+
 class ImageRepository:
     def __init__(self, tc):
         stimuli = tc.Assets.VisualStimuli
@@ -24,17 +79,17 @@ class ImageRepository:
         ]
         self.Feedback = [
             [
-                stimuli.Low27,
-                stimuli.Low32,
-                stimuli.Low40,
-                stimuli.Low45,
-                stimuli.Low51],
+                 stimuli.Low27,
+                 stimuli.Low32,
+                 stimuli.Low40,
+                 stimuli.Low45,
+                 stimuli.Low51],
             [
-                stimuli.High73,
-                stimuli.High79,
-                stimuli.High84,
-                stimuli.High88,
-                stimuli.High93]
+                 stimuli.High73,
+                 stimuli.High79,
+                 stimuli.High84,
+                 stimuli.High88,
+                 stimuli.High93]
         ]
         self.Blank = stimuli.Blank
         self.Marker = stimuli.Marker
@@ -49,9 +104,24 @@ class ImageRepository:
                              if tc.Language == "de" 
                              else stimuli.TestRatePainEN)
 
+    def AlternativeCues(self, tc, alternative):
+        if alternative:
+            self.Cue = [
+                [CreateLowCue(tc, 1), CreateLowCue(tc, 2)],
+                [CreateHighCue(tc, 1), CreateHighCue(tc, 2)]
+            ]
+        else:
+            stimuli = tc.Assets.VisualStimuli
+
+            self.Cue = [
+                [stimuli.LowCue1, stimuli.LowCue2],
+                [stimuli.HighCue1, stimuli.HighCue2]
+            ]
+
+
 def CreateImageRepository(tc):
     return ImageRepository(tc)
-   
+
 class LearningTrial:
     def __init__(self, tc):
         self.high = 1 if tc.StimulusName[0] == "H" else 0
@@ -60,8 +130,21 @@ class LearningTrial:
         self.rating = -1
         Log.Information("LEARNING TRIAL [ high: {high}, variant: {high}, feedback: {feedback}]", self.high, self.variant, self.feedback)
   
+def InitializeExampleLearning(tc):
+    try:
+        tc.Images.AlternativeCues(tc, True)
+        tc.Defines.Set("LearningTrials", [])
+        tc.Instruments.ImageDisplay.Default(tc.Images.Blank)
+        Log.Information("Initialized learning task")
+        return True
+    
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+        return False
+
 def InitializeLearning(tc):
     try:
+        tc.Images.AlternativeCues(tc, False)
         tc.Defines.Set("LearningTrials", [])
         tc.Instruments.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized learning task")
@@ -128,6 +211,7 @@ class TestTrial:
 
 def InitializeTest(tc):
     try:
+        tc.Images.AlternativeCues(tc, False)
         tc.Defines.Set("TestTrials", [])
         tc.Devices.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized test task")
@@ -136,6 +220,18 @@ def InitializeTest(tc):
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
         return False
+
+def InitializeExampleTest(tc):
+    try:
+        tc.Images.AlternativeCues(tc, True)
+        tc.Defines.Set("TestTrials", [])
+        tc.Devices.ImageDisplay.Default(tc.Images.Blank)
+        Log.Information("Initialized test task")
+        return True
+
+    except Exception as e:
+        Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
+        return False        
 
 def TestComplete(tc):
     try:

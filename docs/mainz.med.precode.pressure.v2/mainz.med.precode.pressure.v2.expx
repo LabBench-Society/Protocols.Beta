@@ -80,21 +80,37 @@
                 code="en"/>
         </languages>
         <defines>
+            <!-- Definitions for the image generate -->
+            <define name="ImageWidth" value="1920"/>
+            <define name="ImageHeight" value="1080"/>
+
             <define 
                 name="NumberOfLearningBlocks"
-                value="2"/> <!-- correct value: 4-->
+                value="4"/> <!-- correct value: 4-->
             <define 
                 name="LearningTaskBlockSize" 
-                value="4"/> <!-- correct value: 20 -->
+                value="5"/> <!-- correct value: 20/4 = 5 -->
             <define 
                 name="NumberOfTestBlocks"
-                value="2"/> <!--  correct value: 5 -->
+                value="4"/> <!--  correct value: 4 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="2"/> <!--correct value: 12 -->
+                value="2"/> <!--correct value: 12 make it 16 so it will work: 16/8 = 2 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
+            <define 
+                name="NumberOfLearningBlocksExample"
+                value="1"/> <!-- correct value: 4-->
+            <define 
+                name="LearningTaskExampleBlockSize" 
+                value="1"/> <!-- correct value: 20 -->
+            <define 
+                name="NumberOfExampleTestBlocks"
+                value="1"/> <!--  correct value: 5 -->
+            <define 
+                name="TestTaskExampleBlockSize" 
+                value="1"/> <!--correct value: 12 -->    
         </defines>
         <tests>
             <psychophysics-stimulus-presentation 
@@ -234,6 +250,57 @@
             </psychophysics-threshold-estimation>
     
             <stimulation-sequence 
+            id ="LPE"
+            name="Learning Phase Example"
+            experimental-setup-id="display"
+            response-collection="none"
+            stimulus-update-rate="50">
+
+            <test-events complete="func: Script.LearningComplete(tc)" />
+
+            <dependencies>
+                <dependency id="THR30"/>
+                <dependency id="THR70"/>
+            </dependencies>
+
+            <stimulation-scripts 
+                stimulate="func: Script.RunLearning(tc,x)"
+                initialize="func: Script.InitializeExampleLearning(tc)"                                     
+                stimulus-description="Pressure"
+                stimulus-unit="kPa">
+
+                <instrument 
+                    interface="image-display"
+                    name="ImageDisplay"/>
+                <instrument 
+                    interface="pressure-algometer" 
+                    name="Response" />
+            </stimulation-scripts>
+
+            <stimulation-pattern time-base="seconds">
+                <sequence
+                    iterations="NumberOfLearningBlocksExample">
+                    <sequence 
+                        iterations="LearningTaskExampleBlockSize*NumberOfStimuli" 
+                        Tperiod="11" />
+
+                    <sequence 
+                        pause="true" 
+                        Tperiod="1" />
+
+                </sequence>
+            </stimulation-pattern>
+
+            <stimuli order="block-random">
+                <stimulus name="L0" />
+                <stimulus name="L1" />
+                <stimulus name="H0" />
+                <stimulus name="H1" />
+            </stimuli>            
+        </stimulation-sequence>
+           
+           
+            <stimulation-sequence 
                 id ="LP"
                 name="Learning Phase"
                 experimental-setup-id="display"
@@ -283,6 +350,66 @@
                 </stimuli>            
             </stimulation-sequence>
         
+            <stimulation-sequence 
+                id="TPE"
+                name="Test Phase Example"
+                experimental-setup-id="display"
+                response-collection="none"
+                stimulus-update-rate="50">
+
+                <test-events complete="func: Script.TestComplete(tc)" />
+
+                <dependencies>
+                    <dependency id="THR30"/>
+                    <dependency id="THR70"/>
+                    <dependency id="LP"/>
+                </dependencies>
+    
+                <stimulation-scripts 
+                    stimulate="func: Script.RunTest(tc,x)"
+                    initialize="func: Script.InitializeExampleTest(tc)"
+                    stimulus-description="Pressure"
+                    stimulus-unit="kPa">
+
+                    <instrument 
+                        interface="image-display"
+                        name="ImageDisplay"/>
+                    <instrument 
+                        name="PressureAlgometer"
+                        interface="pressure-algometer"/>
+                    <instrument 
+                        interface="pressure-algometer" 
+                        name="Response" />
+                </stimulation-scripts>
+    
+                <stimulation-pattern time-base="seconds">
+                    <sequence
+                        iterations="NumberOfExampleTestBlocks"> 
+
+                        <sequence 
+                            iterations="TestTaskExampleBlockSize*NumberOfStimuli" 
+                            Tperiod="17" />
+
+                        <sequence
+                            pause="true"
+                            Tperiod="1"/>
+                    </sequence>
+                </stimulation-pattern>
+                
+                <stimuli order="block-random">
+                    <stimulus name="L0C"/>
+                    <stimulus name="L0I" />
+                    <stimulus name="L1C" />
+                    <stimulus name="L1I" />
+                    <stimulus name="H0C" />
+                    <stimulus name="H0I" />
+                    <stimulus name="H1C" />
+                    <stimulus name="H1I" />
+                </stimuli>
+            </stimulation-sequence>
+            
+            
+            
             <stimulation-sequence 
                 id="TP"
                 name="Test Phase"
@@ -378,6 +505,7 @@
             <file-asset 
                 id="VisualStimuli" 
                 file="VisualStimuli.zip" />
+            <file-asset id="Roboto" file="Roboto-Regular.ttf" />
         </assets>        
     </protocol> 
 </experiment>
