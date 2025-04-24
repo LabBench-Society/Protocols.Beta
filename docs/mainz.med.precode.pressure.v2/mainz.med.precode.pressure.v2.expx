@@ -248,7 +248,7 @@
                     </channel>
                 </channels>
             </psychophysics-threshold-estimation>
-    
+        
             <stimulation-sequence 
             id ="LPE"
             name="Learning Phase Example"
@@ -262,6 +262,8 @@
                 <dependency id="THR30"/>
                 <dependency id="THR70"/>
             </dependencies>
+
+            <condition expression="THR30['PULSE'] &lt; THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
 
             <stimulation-scripts 
                 stimulate="func: Script.RunLearning(tc,x)"
@@ -312,6 +314,7 @@
                 <dependencies>
                     <dependency id="THR30"/>
                     <dependency id="THR70"/>
+                    <dependency id="LPE" virtual="true" />
                 </dependencies>
     
                 <stimulation-scripts 
@@ -423,6 +426,7 @@
                     <dependency id="THR30"/>
                     <dependency id="THR70"/>
                     <dependency id="LP"/>
+                    <dependency id="TPE" virtual="true"/>
                 </dependencies>
     
                 <stimulation-scripts 
