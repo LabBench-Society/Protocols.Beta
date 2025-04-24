@@ -3,8 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
   <subject-validator 
-    regex="^S[0-9]{3}$"
-    advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    regex="^S[0-9]{3}LONG$|^S[0-9]{3}SHORT$|^PILOT[0-9]{3}LONG$|^PILOT[0-9]{3}SHORT$"
+    advice="Please enter an ID in the form of [TYPE]XXX[VARIANT, where X is a digit, TYPE is either S or PILOT, and VARIANT is either SHORT or LONG" />
 
     <experimental-setup-variants default="cparPlus">
         <experimental-setup name="LabBench CPAR+" id="cparPlus">
