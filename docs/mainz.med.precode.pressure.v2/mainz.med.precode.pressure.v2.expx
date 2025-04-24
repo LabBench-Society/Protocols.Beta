@@ -470,37 +470,7 @@
                     <stimulus name="H1C" />
                     <stimulus name="H1I" />
                 </stimuli>
-            </stimulation-sequence>
-        
-            <algometry-stimulus-response 
-                id="SR01"
-                name="Stimulus-Response (Cuff 1)"
-                delta-pressure="1"
-                pressure-limit="100"
-                primary-cuff="1"
-                second-cuff="false"
-                stop-mode= "stop-when-button-pressed"
-                vas-pdt="0.1">
-
-                <dependencies />
-            </algometry-stimulus-response>
-    
-            <algometry-temporal-summation 
-                id="TS"
-                name="Temporal Summation (Cuff 1)"
-                no-of-stimuli="10"
-                pressure-static="5"
-                pressure-stimulate="1.0 * SR01.PTT"
-                primary-cuff="1"
-                second-cuff="false"
-                t-off="1"
-                t-on="1">
-
-                <dependencies>
-                    <dependency id="SR01"/>
-                </dependencies>
-            </algometry-temporal-summation>
-    
+            </stimulation-sequence>        
         </tests>
         <assets>
             <file-asset 
