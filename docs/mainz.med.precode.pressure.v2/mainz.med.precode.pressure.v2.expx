@@ -86,31 +86,31 @@
 
             <define 
                 name="NumberOfLearningBlocks"
-                value="4"/> <!-- correct value: 4-->
+                value="4 if 'LONG' in Subject else 2"/> <!-- correct value: 4-->
             <define 
                 name="LearningTaskBlockSize" 
-                value="5"/> <!-- correct value: 20/4 = 5 -->
+                value="5 if 'LONG' in Subject else 2"/> <!-- correct value: 20/4 = 5 -->
             <define 
                 name="NumberOfTestBlocks"
-                value="4"/> <!--  correct value: 4 -->
+                value="4 if 'LONG' in Subject else 1"/> <!--  correct value: 4 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="2"/> <!--correct value: 12 make it 16 so it will work: 16/8 = 2 -->
+                value="12 if 'LONG' in Subject else 2"/> <!--correct value: 12 make it 16 so it will work: 16/8 = 2 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
             <define 
                 name="NumberOfLearningBlocksExample"
-                value="1"/> <!-- correct value: 4-->
+                value="1 if 'LONG' in Subject else 1"/> 
             <define 
                 name="LearningTaskExampleBlockSize" 
-                value="1"/> <!-- correct value: 20 -->
+                value="1 if 'LONG' in Subject else 1"/> 
             <define 
                 name="NumberOfExampleTestBlocks"
-                value="1"/> <!--  correct value: 5 -->
+                value="1 if 'LONG' in Subject else 1"/> 
             <define 
                 name="TestTaskExampleBlockSize" 
-                value="1"/> <!--correct value: 12 -->    
+                value="1 if 'LONG' in Subject else 1"/> 
         </defines>
         <tests>
             <psychophysics-stimulus-presentation 
