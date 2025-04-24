@@ -183,7 +183,7 @@
                         <map id="Q04"
                             title="dynamic: Text['Q04Title']"
                             instruction="dynamic: Text['Q04Instruction']"
-                            selection-mode="single"                            
+                            selection-mode="multiple"                            
                             condition="Current.Q01"                        
                             template="BODYMAP" />
 
