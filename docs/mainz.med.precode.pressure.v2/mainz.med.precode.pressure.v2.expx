@@ -79,6 +79,10 @@
                 name="English" 
                 code="en"/>
         </languages>
+        <sessions>
+            <session id="SES01" name="Session 1" />
+            <session id="SES02" name="Session 2" />
+        </sessions>
         <defines>
             <!-- Definitions for the image generate -->
             <define name="ImageWidth" value="1920"/>
@@ -115,21 +119,50 @@
                 name="TestTaskExampleBlockSize" 
                 value="1 if 'LONG' in Subject else 1"/> 
         </defines>
-        <tests>
-            <psychophysics-stimulus-presentation 
-                id="PRESENTATION"
-                name="Presentation of pressure stimuli"
-                experimental-setup-id="display"
-                stimulus-update-rate="50">
+        <templates>
+            <variables>
+                <strings value="SES01;SES02" name="Sessions" />
+            </variables>
+            <content>
+                <psychophysics-stimulus-presentation id="PRESENTATION"
+                    experimental-setup-id="display"
+                    stimulus-update-rate="50">
 
-                <intensity 
-                    type="array"
-                    value="range(5, 101, 5)" />
-    
-                <responses response-collection="ratio-rating"/>
-                
-                <stimulation>
-                    <scripts 
+                    <intensity 
+                        type="array"
+                        value="range(5, 101, 5)" />
+        
+                    <responses response-collection="ratio-rating"/>
+                    
+                    <stimulation>
+                        <scripts 
+                            initialize="True"
+                            stimulate="func: Script.Stimulate(tc,x)"
+                            stimulus-description="Pressure"
+                            stimulus-unit="kPa">
+
+                            <instrument 
+                                name="PressureAlgometer"
+                                interface="pressure-algometer"/>                
+                        </scripts>
+                    </stimulation>                            
+                </psychophysics-stimulus-presentation>
+        
+                <psychophysics-threshold-estimation id="THR30"
+                    experimental-setup-id="display"
+                    stimulus-update-rate="50">
+
+                    <dependencies>
+                        <dependency id="var: '{s}PRESENTATION'.format(s = session)"/>
+                    </dependencies>
+        
+                    <update-rate-random 
+                        min="4000" 
+                        max="6000"/>
+        
+                    <ratio-rating-task target="3"/>
+        
+                    <stimulation-scripts 
                         initialize="True"
                         stimulate="func: Script.Stimulate(tc,x)"
                         stimulus-description="Pressure"
@@ -137,192 +170,103 @@
 
                         <instrument 
                             name="PressureAlgometer"
-                            interface="pressure-algometer"/>                
-                    </scripts>
-                </stimulation>        
-            </psychophysics-stimulus-presentation>
-    
-            <psychophysics-threshold-estimation 
-                id="THR30"
-                name="Threshold (VAS 3)"
-                experimental-setup-id="display"
-                stimulus-update-rate="50">
-
-                <dependencies>
-                    <dependency id="PRESENTATION"/>
-                </dependencies>
-    
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
-    
-                <ratio-rating-task target="3"/>
-    
-                <stimulation-scripts 
-                    initialize="True"
-                    stimulate="func: Script.Stimulate(tc,x)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                </stimulation-scripts>
-    
-                <channels>
-                    <channel 
-                        id="PULSE"
-                        name="Pulse (1s)"
-                        Imax="100"
-                        Imin="0"
-                        channel-type="single-sample">
-
-                        <up-down-method 
-                            reversal-rule="1"
-                            step-size="0.1"
-                            initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
-                            step-size-type="relative"
-                            max-step-size-reduction="0.1"
-                            step-size-reduction="0.5"
-                            skip-rule="0"
-                            stop-rule="2" />
-    
-                        <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
-                        </stimulus>
-                    </channel>
-                </channels>
-            </psychophysics-threshold-estimation>
-    
-            <psychophysics-threshold-estimation 
-                id="THR70"
-                name="Threshold (VAS 7)"
-                experimental-setup-id="display"
-                stimulus-update-rate="50">
-
-                <dependencies>
-                    <dependency id="PRESENTATION"/>
-                </dependencies>
-    
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
-    
-                <ratio-rating-task target="7"/>
-    
-                <stimulation-scripts 
-                    initialize="True"
-                    stimulate="func: Script.Stimulate(tc,x)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                </stimulation-scripts>
-    
-                <channels>
-                    <channel 
-                        id="PULSE"
-                        name="Pulse (1s)"
-                        Imax="100"
-                        Imin="0"
-                        channel-type="single-sample">
-
-                        <up-down-method 
-                            reversal-rule="1"
-                            step-size="0.1"
-                            initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
-                            step-size-type="relative"
-                            max-step-size-reduction="0.1"
-                            step-size-reduction="0.5"
-                            skip-rule="0"
-                            stop-rule="2" />
-    
-                        <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
-                        </stimulus>
-                    </channel>
-                </channels>
-            </psychophysics-threshold-estimation>
+                            interface="pressure-algometer"/>
+                    </stimulation-scripts>
         
-            <stimulation-sequence 
-            id ="LPE"
-            name="Learning Phase Example"
-            experimental-setup-id="display"
-            response-collection="none"
-            stimulus-update-rate="50">
+                    <stimulus-channel-template 
+                        Imax="100"
+                        Imin="0">
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
+                    </stimulus-channel-template>
 
-            <test-events complete="func: Script.LearningComplete(tc)" />
+                    <channels>
+                        <channel id="PULSE" name="Pulse (1s)" channel-type="single-sample">        
+                            <stimulus>
+                                <pulse 
+                                    Is="x" 
+                                    Ts="1000" />
+                            </stimulus>
+                        </channel>
+                    </channels>
+                </psychophysics-threshold-estimation>
+        
+                <psychophysics-threshold-estimation id="THR70"
+                    experimental-setup-id="display"
+                    stimulus-update-rate="50">
 
-            <dependencies>
-                <dependency id="THR30"/>
-                <dependency id="THR70"/>
-            </dependencies>
+                    <dependencies>
+                        <dependency id="var: '{s}PRESENTATION'.format(s = session)"/>
+                    </dependencies>
+        
+                    <update-rate-random 
+                        min="4000" 
+                        max="6000"/>
+        
+                    <ratio-rating-task target="7"/>
+        
+                    <stimulation-scripts 
+                        initialize="True"
+                        stimulate="func: Script.Stimulate(tc,x)"
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
 
-            <condition expression="THR30['PULSE'] &lt; THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
+                        <instrument 
+                            name="PressureAlgometer"
+                            interface="pressure-algometer"/>
+                    </stimulation-scripts>
 
-            <stimulation-scripts 
-                stimulate="func: Script.RunLearning(tc,x)"
-                initialize="func: Script.InitializeExampleLearning(tc)"                                     
-                stimulus-description="Pressure"
-                stimulus-unit="kPa">
-
-                <instrument 
-                    interface="image-display"
-                    name="ImageDisplay"/>
-                <instrument 
-                    interface="pressure-algometer" 
-                    name="Response" />
-            </stimulation-scripts>
-
-            <stimulation-pattern time-base="seconds">
-                <sequence
-                    iterations="NumberOfLearningBlocksExample">
-                    <sequence 
-                        iterations="LearningTaskExampleBlockSize*NumberOfStimuli" 
-                        Tperiod="11" />
-
-                    <sequence 
-                        pause="true" 
-                        Tperiod="1" />
-
-                </sequence>
-            </stimulation-pattern>
-
-            <stimuli order="block-random">
-                <stimulus name="L0" />
-                <stimulus name="L1" />
-                <stimulus name="H0" />
-                <stimulus name="H1" />
-            </stimuli>            
-        </stimulation-sequence>
-           
-           
-            <stimulation-sequence 
-                id ="LP"
-                name="Learning Phase"
-                experimental-setup-id="display"
-                response-collection="none"
-                stimulus-update-rate="50">
+                    <stimulus-channel-template 
+                        Imax="100"
+                        Imin="0">
+                        <up-down-method 
+                            reversal-rule="1"
+                            step-size="0.1"
+                            initial-direction="increasing"
+                            start-intensity="PRESENTATION.Intensity"
+                            step-size-type="relative"
+                            max-step-size-reduction="0.1"
+                            step-size-reduction="0.5"
+                            skip-rule="0"
+                            stop-rule="2" />
+                    </stimulus-channel-template>
+        
+                    <channels>
+                        <channel id="PULSE" name="Pulse (1s)" channel-type="single-sample">        
+                            <stimulus>
+                                <pulse 
+                                    Is="x" 
+                                    Ts="1000" />
+                            </stimulus>
+                        </channel>
+                    </channels>
+                </psychophysics-threshold-estimation>
+            
+                <stimulation-sequence id ="LPE"
+                    experimental-setup-id="display"
+                    response-collection="none"
+                    stimulus-update-rate="50">
 
                 <test-events complete="func: Script.LearningComplete(tc)" />
 
                 <dependencies>
-                    <dependency id="THR30"/>
-                    <dependency id="THR70"/>
-                    <dependency id="LPE" virtual="true" />
+                    <dependency id="var: '{s}THR30'.format(s = session)"/>
+                    <dependency id="var: '{s}THR70'.format(s = session)"/>
                 </dependencies>
-    
+
+                <condition expression="THR30['PULSE'] &lt; THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
+
                 <stimulation-scripts 
                     stimulate="func: Script.RunLearning(tc,x)"
-                    initialize="func: Script.InitializeLearning(tc)"                                     
+                    initialize="func: Script.InitializeExampleLearning(tc)"                                     
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
 
@@ -333,12 +277,12 @@
                         interface="pressure-algometer" 
                         name="Response" />
                 </stimulation-scripts>
-    
+
                 <stimulation-pattern time-base="seconds">
                     <sequence
-                        iterations="NumberOfLearningBlocks">
+                        iterations="NumberOfLearningBlocksExample">
                         <sequence 
-                            iterations="LearningTaskBlockSize*NumberOfStimuli" 
+                            iterations="LearningTaskExampleBlockSize*NumberOfStimuli" 
                             Tperiod="11" />
 
                         <sequence 
@@ -347,133 +291,222 @@
 
                     </sequence>
                 </stimulation-pattern>
-    
+
                 <stimuli order="block-random">
                     <stimulus name="L0" />
                     <stimulus name="L1" />
                     <stimulus name="H0" />
                     <stimulus name="H1" />
                 </stimuli>            
-            </stimulation-sequence>
+                </stimulation-sequence>
+                        
+                <stimulation-sequence id ="LP"
+                    experimental-setup-id="display"
+                    response-collection="none"
+                    stimulus-update-rate="50">
+
+                    <test-events complete="func: Script.LearningComplete(tc)" />
+
+                    <dependencies>
+                        <dependency id="var: '{s}THR30'.format(s = session)"/>
+                        <dependency id="var: '{s}THR70'.format(s = session)"/>
+                        <dependency id="var: '{s}LPE'.format(s = session)"/>
+                    </dependencies>
         
-            <stimulation-sequence 
-                id="TPE"
-                name="Test Phase Example"
-                experimental-setup-id="display"
-                response-collection="none"
-                stimulus-update-rate="50">
+                    <stimulation-scripts 
+                        stimulate="func: Script.RunLearning(tc,x)"
+                        initialize="func: Script.InitializeLearning(tc)"                                     
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
 
-                <test-events complete="func: Script.TestComplete(tc)" />
-
-                <dependencies>
-                    <dependency id="THR30"/>
-                    <dependency id="THR70"/>
-                    <dependency id="LP"/>
-                </dependencies>
-    
-                <stimulation-scripts 
-                    stimulate="func: Script.RunTest(tc,x)"
-                    initialize="func: Script.InitializeExampleTest(tc)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
-
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
-                </stimulation-scripts>
-    
-                <stimulation-pattern time-base="seconds">
-                    <sequence
-                        iterations="NumberOfExampleTestBlocks"> 
-
-                        <sequence 
-                            iterations="TestTaskExampleBlockSize*NumberOfStimuli" 
-                            Tperiod="17" />
-
+                        <instrument 
+                            interface="image-display"
+                            name="ImageDisplay"/>
+                        <instrument 
+                            interface="pressure-algometer" 
+                            name="Response" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
                         <sequence
-                            pause="true"
-                            Tperiod="1"/>
-                    </sequence>
-                </stimulation-pattern>
-                
-                <stimuli order="block-random">
-                    <stimulus name="L0C"/>
-                    <stimulus name="L0I" />
-                    <stimulus name="L1C" />
-                    <stimulus name="L1I" />
-                    <stimulus name="H0C" />
-                    <stimulus name="H0I" />
-                    <stimulus name="H1C" />
-                    <stimulus name="H1I" />
-                </stimuli>
-            </stimulation-sequence>
+                            iterations="NumberOfLearningBlocks">
+                            <sequence 
+                                iterations="LearningTaskBlockSize*NumberOfStimuli" 
+                                Tperiod="11" />
+
+                            <sequence 
+                                pause="true" 
+                                Tperiod="1" />
+
+                        </sequence>
+                    </stimulation-pattern>
+        
+                    <stimuli order="block-random">
+                        <stimulus name="L0" />
+                        <stimulus name="L1" />
+                        <stimulus name="H0" />
+                        <stimulus name="H1" />
+                    </stimuli>            
+                </stimulation-sequence>
             
-            
-            
-            <stimulation-sequence 
-                id="TP"
-                name="Test Phase"
-                experimental-setup-id="display"
-                response-collection="none"
-                stimulus-update-rate="50">
+                <stimulation-sequence id="TPE"
+                    experimental-setup-id="display"
+                    response-collection="none"
+                    stimulus-update-rate="50">
 
-                <test-events complete="func: Script.TestComplete(tc)" />
+                    <test-events complete="func: Script.TestComplete(tc)" />
 
-                <dependencies>
-                    <dependency id="THR30"/>
-                    <dependency id="THR70"/>
-                    <dependency id="LP"/>
-                    <dependency id="TPE" virtual="true"/>
-                </dependencies>
-    
-                <stimulation-scripts 
-                    stimulate="func: Script.RunTest(tc,x)"
-                    initialize="func: Script.InitializeTest(tc)"
-                    stimulus-description="Pressure"
-                    stimulus-unit="kPa">
+                    <dependencies>
+                        <dependency id="var: '{s}THR30'.format(s = session)"/>
+                        <dependency id="var: '{s}THR70'.format(s = session)"/>
+                        <dependency id="var: '{s}LP'.format(s = session)"/>
+                    </dependencies>
+        
+                    <stimulation-scripts 
+                        stimulate="func: Script.RunTest(tc,x)"
+                        initialize="func: Script.InitializeExampleTest(tc)"
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
 
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
-                </stimulation-scripts>
-    
-                <stimulation-pattern time-base="seconds">
-                    <sequence
-                        iterations="NumberOfTestBlocks">
-
-                        <sequence 
-                            iterations="TestTaskBlockSize*NumberOfStimuli" 
-                            Tperiod="17" />
-
+                        <instrument 
+                            interface="image-display"
+                            name="ImageDisplay"/>
+                        <instrument 
+                            name="PressureAlgometer"
+                            interface="pressure-algometer"/>
+                        <instrument 
+                            interface="pressure-algometer" 
+                            name="Response" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
                         <sequence
-                            pause="true"
-                            Tperiod="1"/>
-                    </sequence>
-                </stimulation-pattern>
-                
-                <stimuli order="block-random">
-                    <stimulus name="L0C"/>
-                    <stimulus name="L0I" />
-                    <stimulus name="L1C" />
-                    <stimulus name="L1I" />
-                    <stimulus name="H0C" />
-                    <stimulus name="H0I" />
-                    <stimulus name="H1C" />
-                    <stimulus name="H1I" />
-                </stimuli>
-            </stimulation-sequence>        
+                            iterations="NumberOfExampleTestBlocks"> 
+
+                            <sequence 
+                                iterations="TestTaskExampleBlockSize*NumberOfStimuli" 
+                                Tperiod="17" />
+
+                            <sequence
+                                pause="true"
+                                Tperiod="1"/>
+                        </sequence>
+                    </stimulation-pattern>
+                    
+                    <stimuli order="block-random">
+                        <stimulus name="L0C"/>
+                        <stimulus name="L0I" />
+                        <stimulus name="L1C" />
+                        <stimulus name="L1I" />
+                        <stimulus name="H0C" />
+                        <stimulus name="H0I" />
+                        <stimulus name="H1C" />
+                        <stimulus name="H1I" />
+                    </stimuli>
+                </stimulation-sequence>
+                                        
+                <stimulation-sequence id="TP"
+                    experimental-setup-id="display"
+                    response-collection="none"
+                    stimulus-update-rate="50">
+
+                    <test-events complete="func: Script.TestComplete(tc)" />
+
+                    <dependencies>
+                        <dependency id="var: '{s}THR30'.format(s = session)"/>
+                        <dependency id="var: '{s}THR70'.format(s = session)"/>
+                        <dependency id="var: '{s}LP'.format(s = session)"/>
+                        <dependency id="var: '{s}TPE'.format(s = session)"/>
+                    </dependencies>
+        
+                    <stimulation-scripts 
+                        stimulate="func: Script.RunTest(tc,x)"
+                        initialize="func: Script.InitializeTest(tc)"
+                        stimulus-description="Pressure"
+                        stimulus-unit="kPa">
+
+                        <instrument 
+                            interface="image-display"
+                            name="ImageDisplay"/>
+                        <instrument 
+                            name="PressureAlgometer"
+                            interface="pressure-algometer"/>
+                        <instrument 
+                            interface="pressure-algometer" 
+                            name="Response" />
+                    </stimulation-scripts>
+        
+                    <stimulation-pattern time-base="seconds">
+                        <sequence
+                            iterations="NumberOfTestBlocks">
+
+                            <sequence 
+                                iterations="TestTaskBlockSize*NumberOfStimuli" 
+                                Tperiod="17" />
+
+                            <sequence
+                                pause="true"
+                                Tperiod="1"/>
+                        </sequence>
+                    </stimulation-pattern>
+                    
+                    <stimuli order="block-random">
+                        <stimulus name="L0C"/>
+                        <stimulus name="L0I" />
+                        <stimulus name="L1C" />
+                        <stimulus name="L1I" />
+                        <stimulus name="H0C" />
+                        <stimulus name="H0I" />
+                        <stimulus name="H1C" />
+                        <stimulus name="H1I" />
+                    </stimuli>
+                </stimulation-sequence>        
+            </content>
+        </templates>
+        <tests>
+            <foreach variable="session" in="Sessions">
+                <psychophysics-stimulus-presentation-constructor 
+                    id="var: '{s}PRESENTATION'.format(s = session)" 
+                    name="var: '{s}: Presentation of pressure stimuli'.format(s = session)" 
+                    session="var: session"
+                    template="PRESENTATION" />    
+
+                <psychophysics-threshold-estimation-constructor 
+                    id="var: '{s}THR30'.format(s = session)" 
+                    name="var: '{s}: Threshold (VAS 3)'.format(s = session)" 
+                    session="var: session"
+                    template="THR30" />
+
+                <psychophysics-threshold-estimation-constructor 
+                    id="var: '{s}THR70'.format(s = session)" 
+                    name="var: '{s}: Threshold (VAS 7)'.format(s = session)" 
+                    session="var: session"
+                    template="THR70" />
+
+                <stimulation-sequence-constructor 
+                    id="var: '{s}LPE'.format(s = session)" 
+                    name="var: '{s}: Learning Phase Example'.format(s = session)" 
+                    session="var: session"
+                    template="LPE" />
+
+                <stimulation-sequence-constructor 
+                    id="var: '{s}LP'.format(s = session)" 
+                    name="var: '{s}: Learning Phase'.format(s = session)" 
+                    session="var: session"
+                    template="LP" />
+
+                <stimulation-sequence-constructor 
+                    id="var: '{s}TPE'.format(s = session)" 
+                    name="var: '{s}: Test Phase Example'.format(s = session)" 
+                    session="var: session"
+                    template="TPE" />
+
+                <stimulation-sequence-constructor 
+                    id="var: '{s}TP'.format(s = session)" 
+                    name="var: '{s}: Test Phase'.format(s = session)" 
+                    session="var: session"
+                    template="TP" />
+            </foreach>                                                                            
         </tests>
         <assets>
             <file-asset 
