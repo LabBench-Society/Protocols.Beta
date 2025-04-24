@@ -271,7 +271,7 @@
                 <dependency id="SES01THR70"/>
             </dependencies>
 
-            <condition expression="THR30['PULSE'] &lt; THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
+            <condition expression="SES01THR30['PULSE'] &lt; SES01THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
 
             <stimulation-scripts 
                 stimulate="func: Script.RunLearning(tc,x)"
