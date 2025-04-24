@@ -83,19 +83,22 @@
             <!-- Definitions for the image generate -->
             <define name="ImageWidth" value="1920"/>
             <define name="ImageHeight" value="1080"/>
-
+                     <!-- The number of trials in each block is the number of cues multiplied by the block size. For the learning phase we have 4 cues (2 low, 2 high). 
+                      For the test phase we have 8 cues (2 low congruent, 2 low incongruent, 2 high congruent, 2 high incongruent). 
+                      So in the original protocol we set LearningBlockSize to 5 and TestBlockSize to 2. This results in a total of 80 stimuli for the 
+                      learning phase (4 blocks x 4 cues x 5) and 64 stimuli for the test phase (4 blocks x 8 cues x 2). -->
             <define 
                 name="NumberOfLearningBlocks"
                 value="4 if 'LONG' in Subject else 2"/> <!-- correct value: 4-->
             <define 
                 name="LearningTaskBlockSize" 
-                value="5 if 'LONG' in Subject else 2"/> <!-- correct value: 20/4 = 5 -->
+                value="5 if 'LONG' in Subject else 5"/> <!-- correct value: 20/4 = 5 // Originally 80 Trials Learning Phase and 60 trials testphase -->
             <define 
                 name="NumberOfTestBlocks"
-                value="4 if 'LONG' in Subject else 1"/> <!--  correct value: 4 -->
+                value="4 if 'LONG' in Subject else 4"/> <!--  correct value: 4 -->
             <define 
                 name="TestTaskBlockSize" 
-                value="12 if 'LONG' in Subject else 2"/> <!--correct value: 12 make it 16 so it will work: 16/8 = 2 -->
+                value="2 if 'LONG' in Subject else 2"/> <!--correct value: 12 make it 16 so it will work: 16/8 = 2 -->
             <define 
                 name="Images" 
                 value="func: Script.CreateImageRepository(tc)"/>
