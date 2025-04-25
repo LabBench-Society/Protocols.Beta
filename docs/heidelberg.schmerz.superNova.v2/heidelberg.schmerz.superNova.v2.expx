@@ -16,8 +16,8 @@
                 normative-distance="40">
     
                 <monitor
-                    diagonal-size="53.34"
-                    distance="40" />
+                    diagonal-size="60.00"
+                    distance="130" />
 
                 <configurations>
                     <visual-analog-scale
@@ -27,7 +27,7 @@
                         controller-device="dev">
                         <anchors>
                             <modality text="" />
-                            <top-anchor text="10/Maximaler Schmerz" />
+                            <top-anchor text="100/Maximaler Schmerz" />
                             <bottom-anchor text="0/Kein Schmerz" />
                         </anchors>
                     </visual-analog-scale>
@@ -58,8 +58,8 @@
                 normative-distance="40">
     
                 <monitor
-                    diagonal-size="35"
-                    distance="40" />
+                    diagonal-size="60.00"
+                    distance="130" />
 
                 <configurations>
                     <visual-analog-scale
@@ -69,7 +69,7 @@
                         controller-device="dev">
                         <anchors>
                             <modality text="" />
-                            <top-anchor text="10/Maximaler Schmerz" />
+                            <top-anchor text="100/Maximaler Schmerz" />
                             <bottom-anchor text="0/Kein Schmerz" />
                         </anchors>
                     </visual-analog-scale>
@@ -225,7 +225,7 @@
                 delta-pressure="1"
                 pressure-limit="100"
                 primary-cuff="1"
-                second-cuff="true"
+                second-cuff="false"
                 stop-mode="stop-on-maximal-rating"
                 vas-pdt="0.1">
                 <properties>
