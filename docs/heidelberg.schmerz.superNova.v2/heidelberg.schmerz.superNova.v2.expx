@@ -88,10 +88,16 @@
       </experimental-setup>    
 </experimental-setup-variants>
     <protocol>
+        <sessions>
+            <session id="SES01" name="Baseline" />
+            <session id="SES02" name="End of Treatment" />
+        </sessions>
         <defines />
         <tests>
-            <questionnaire id="INTRO" 
+           <!-- Session 1 Tests -->
+            <questionnaire id="SES01INTRO" 
                 name="Introduction"
+                session="SES01"
                 control="operator"
                 experimental-setup-id="image">
                 <properties>
@@ -106,8 +112,9 @@
                 </content>
             </questionnaire>
 
-            <algometry-stimulus-response id="WUSSP"
+            <algometry-stimulus-response id="SES01WUSSP"
                 name="Warm-up: Spatial Summation of Pain (SSP)"
+                session="SES01"
                 experimental-setup-id="vas"
                 delta-pressure="1"
                 pressure-limit="100"
@@ -120,8 +127,9 @@
                 </properties>
             </algometry-stimulus-response>
 
-            <algometry-stimulus-response id="DLEG"
+            <algometry-stimulus-response id="SES01DLEG"
                 name="Dominant Leg: Pain Threshold and Tolerance"
+                session="SES01"
                 experimental-setup-id="vas"
                 delta-pressure="1"
                 pressure-limit="100"
@@ -134,8 +142,9 @@
                 </properties>
             </algometry-stimulus-response>
 
-            <algometry-stimulus-response id="NDLEG"
+            <algometry-stimulus-response id="SES01NDLEG"
                 name="Non-Dominant Leg: Pain Threshold and Tolerance"
+                session="SES01"
                 experimental-setup-id="vas"
                 delta-pressure="1"
                 pressure-limit="100"
@@ -148,8 +157,9 @@
                 </properties>
             </algometry-stimulus-response>
 
-            <algometry-stimulus-response id="SSP"
+            <algometry-stimulus-response id="SES01SSP"
                 name="Spatial Summation of Pain (SSP)"
+                session="SES01"
                 experimental-setup-id="vas"
                 delta-pressure="1"
                 pressure-limit="100"
@@ -162,12 +172,13 @@
                 </properties>
             </algometry-stimulus-response>
 
-            <algometry-temporal-summation id="TS"
+            <algometry-temporal-summation id="SES01TS"
                 name="Temporal Summation of Pain (Dominant Leg)"
+                session="SES01"
                 experimental-setup-id="vas"
                 no-of-stimuli="10"
                 pressure-static="5"
-                pressure-stimulate="1.0 * DLEG.PTT"
+                pressure-stimulate="1.0 * SES01DLEG.PTT"
                 primary-cuff="1"
                 second-cuff="false"
                 t-off="1"
@@ -176,14 +187,15 @@
                     <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
                 </properties>
                 <dependencies>
-                    <dependency id="DLEG"/>
+                    <dependency id="SES01DLEG"/>
                 </dependencies>
             </algometry-temporal-summation>
 
-            <algometry-conditioned-pain-modulation id="CPM"
+            <algometry-conditioned-pain-modulation id="SES01CPM"
                 name="Conditioned Pain Modulation"
+                session="SES01"
                 experimental-setup-id="vas"
-                conditional-pressure="0.7 * NDLEG.PTT"
+                conditional-pressure="0.7 * SES01NDLEG.PTT"
                 delta-conditional-pressure="0"        
                 conditioning-time="6"        
                 delta-pressure="1"
@@ -195,16 +207,17 @@
                     <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
                 </properties>
                 <dependencies>
-                    <dependency id="NDLEG"/>
+                    <dependency id="SES01NDLEG"/>
                 </dependencies>
             </algometry-conditioned-pain-modulation>
 
-            <psychophysics-response-recording id="COND" 
+            <psychophysics-response-recording id="SES01COND" 
                 name="Conditioning Stimulation"
+                session="SES01"
                 experimental-setup-id="image"
-                duration="func: Script.ConditioningTime(tc)" 
+                duration="func: Script.ConditioningTimeSES01(tc)" 
                 sample-rate="1">
-                <test-events start="func: Script.Stimulate(tc)"
+                <test-events start="func: Script.StimulateSES01(tc)"
                     abort="func: Script.Stop(tc)"
                     complete="func: Script.Stop(tc)">
                     <instrument name="PressureAlgometer" interface="pressure-algometer" />
@@ -215,12 +228,13 @@
                     <auto-start value="true" />
                 </properties>                
                 <dependencies>
-                    <dependency id="CPM" virtual="false" />
+                    <dependency id="SES01CPM" virtual="false" />
                 </dependencies>                
             </psychophysics-response-recording>
 
-            <algometry-stimulus-response id="TS2"
+            <algometry-stimulus-response id="SES01TS2"
                 name="Post Conditioned Pain Modulation"
+                session="SES01"
                 experimental-setup-id="vas"
                 delta-pressure="1"
                 pressure-limit="100"
@@ -232,9 +246,165 @@
                     <auto-start value="true" />
                 </properties>
                 <dependencies>
-                    <dependency id="COND" virtual="false" />
+                    <dependency id="SES01COND" virtual="false" />
                 </dependencies>
             </algometry-stimulus-response>
+
+         <!-- Session 2 Tests -->
+         <questionnaire id="SES02INTRO" 
+         name="Introduction"
+         session="SES02"
+         control="operator"
+         experimental-setup-id="image">
+         <properties>
+             <instructions default="Assets.CPAInstructions.INTRODUCTION" override-results="true"/>
+         </properties>
+         <content>
+             <boolean id="Confirm"
+                 title="Confirmation"
+                 instruction="Has the subject been introduced to the experiment?"
+                 true-label="Yes" 
+                 false-label="No"  />
+         </content>
+     </questionnaire>
+
+     <algometry-stimulus-response id="SES02WUSSP"
+         name="Warm-up: Spatial Summation of Pain (SSP)"
+         session="SES02"
+         experimental-setup-id="vas"
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="1"
+         second-cuff="true"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.WUSSP" override-results="false"/>
+         </properties>
+     </algometry-stimulus-response>
+
+     <algometry-stimulus-response id="SES02DLEG"
+         name="Dominant Leg: Pain Threshold and Tolerance"
+         session="SES02"
+         experimental-setup-id="vas"
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="1"
+         second-cuff="false"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.DLEG" override-results="false"/>
+         </properties>
+     </algometry-stimulus-response>
+
+     <algometry-stimulus-response id="SES02NDLEG"
+         name="Non-Dominant Leg: Pain Threshold and Tolerance"
+         session="SES02"
+         experimental-setup-id="vas"
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="2"
+         second-cuff="false"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.NDLEG" override-results="false"/>
+         </properties>
+     </algometry-stimulus-response>
+
+     <algometry-stimulus-response id="SES02SSP"
+         name="Spatial Summation of Pain (SSP)"
+         session="SES02"
+         experimental-setup-id="vas"
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="1"
+         second-cuff="true"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.SSP" override-results="false"/>
+         </properties>
+     </algometry-stimulus-response>
+
+     <algometry-temporal-summation id="SES02TS"
+         name="Temporal Summation of Pain (Dominant Leg)"
+         session="SES02"
+         experimental-setup-id="vas"
+         no-of-stimuli="10"
+         pressure-static="5"
+         pressure-stimulate="1.0 * SES02DLEG.PTT"
+         primary-cuff="1"
+         second-cuff="false"
+         t-off="1"
+         t-on="1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
+         </properties>
+         <dependencies>
+             <dependency id="SES02DLEG"/>
+         </dependencies>
+     </algometry-temporal-summation>
+
+     <algometry-conditioned-pain-modulation id="SES02CPM"
+         name="Conditioned Pain Modulation"
+         session="SES02"
+         experimental-setup-id="vas"
+         conditional-pressure="0.7 * SES02NDLEG.PTT"
+         delta-conditional-pressure="0"        
+         conditioning-time="6"        
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="1"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
+         </properties>
+         <dependencies>
+             <dependency id="SES02NDLEG"/>
+         </dependencies>
+     </algometry-conditioned-pain-modulation>
+
+     <psychophysics-response-recording id="SES02COND" 
+         name="Conditioning Stimulation"
+         session="SES02"
+         experimental-setup-id="image"
+         duration="func: Script.ConditioningTimeSES02(tc)" 
+         sample-rate="1">
+         <test-events start="func: Script.StimulateSES02(tc)"
+             abort="func: Script.Stop(tc)"
+             complete="func: Script.Stop(tc)">
+             <instrument name="PressureAlgometer" interface="pressure-algometer" />
+             <instrument name="ImageDisplay" interface="image-display" />
+             <instrument name="Scales" interface="scales" />
+         </test-events>
+         <properties>
+             <auto-start value="true" />
+         </properties>                
+         <dependencies>
+             <dependency id="SES02CPM" virtual="false" />
+         </dependencies>                
+     </psychophysics-response-recording>
+
+     <algometry-stimulus-response id="SES02TS2"
+         name="Post Conditioned Pain Modulation"
+         session="SES02"
+         experimental-setup-id="vas"
+         delta-pressure="1"
+         pressure-limit="100"
+         primary-cuff="1"
+         second-cuff="false"
+         stop-mode="stop-on-maximal-rating"
+         vas-pdt="0.1">
+         <properties>
+             <auto-start value="true" />
+         </properties>
+         <dependencies>
+             <dependency id="SES02COND" virtual="false" />
+         </dependencies>
+     </algometry-stimulus-response>
         </tests>
         <assets>
             <file-asset id="CPAInstructions" file="CPAInstructions.zip" />
