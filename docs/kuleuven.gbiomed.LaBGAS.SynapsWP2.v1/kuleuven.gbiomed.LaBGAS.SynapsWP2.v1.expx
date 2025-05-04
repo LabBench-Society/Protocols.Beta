@@ -217,6 +217,8 @@
                     experimental-setup-id="image">
                     <properties>
                         <instructions default="var: OperatorInstructions" override-results="true"/>
+                        <subject-instructions experimental-setup-id="image"
+                        default="Assets.CPAInstructions.PPT" />
                     </properties>
                     <templates>
                         <numeric id="MEASUREMENT"
