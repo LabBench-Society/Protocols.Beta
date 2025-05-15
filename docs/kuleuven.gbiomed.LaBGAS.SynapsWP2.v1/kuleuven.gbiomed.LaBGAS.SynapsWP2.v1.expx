@@ -166,11 +166,6 @@
                             bottom-anchor="dynamic: Text['UnpleasentnessBottomAnchor']"/>
                     </templates>
                     <content>                        
-                        <boolean id="Q09" 
-                        title="dynamic: Text['Q09Title']"
-                        instruction="dynamic: Text['Q09Instruction']"                       
-                        template="DOMINANTLEG" />
-
                         <boolean id="Q01" 
                             title="dynamic: Text['Q01Title']"
                             instruction="dynamic: Text['Q01Instruction']"
@@ -218,7 +213,12 @@
                             title="dynamic: Text['Q08Title']"
                             instruction="dynamic: Text['Q08Instruction']"
                             condition="Current.Q01 and Current.Q06"                        
-                            template="UnpleasentnessVAS" />                          
+                            template="UnpleasentnessVAS" />      
+                            
+                        <boolean id="Q09" 
+                            title="dynamic: Text['Q09Title']"
+                            instruction="dynamic: Text['Q09Instruction']"                       
+                            template="DOMINANTLEG" />
                     </content>
                 </questionnaire>     
 
