@@ -56,7 +56,9 @@
                     <questionnaire id="questionnaire"
                         background-color="rgb(255,255,255)"
                         controller-device="joystick"
-                        experimental-setup-id="questionnaire"/>
+                        experimental-setup-id="questionnaire"
+                        font-size="36"
+                        text-align="center"/>
                 </configurations>
             </display>
         </devices>
