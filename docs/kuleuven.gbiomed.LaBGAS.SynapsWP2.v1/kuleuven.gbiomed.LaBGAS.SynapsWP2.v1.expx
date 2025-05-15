@@ -91,6 +91,10 @@
                             true-label="Yes"
                             false-label="No"/>
 
+                        <boolean id="DOMINANTLEG" 
+                            true-label="Right"
+                            false-label="Left"/>                            
+
                         <map id="BODYMAP"
                             title="Title"
                             instruction="Instructions for the subject"
@@ -209,7 +213,12 @@
                             title="dynamic: Text['Q08Title']"
                             instruction="dynamic: Text['Q08Instruction']"
                             condition="Current.Q01 and Current.Q06"                        
-                            template="UnpleasentnessVAS" />                        
+                            template="UnpleasentnessVAS" />
+                        
+                        <boolean id="Q09" 
+                        title="dynamic: Text['Q09Title']"
+                        instruction="dynamic: Text['Q09Instruction']"                       
+                        template="DOMINANTLEG"/>                            
                     </content>
                 </questionnaire>     
 
