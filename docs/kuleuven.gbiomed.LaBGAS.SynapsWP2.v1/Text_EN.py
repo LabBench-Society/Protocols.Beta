@@ -16,6 +16,8 @@ def Create(tc):
       "Q07Instruction": "What is the intensity of your low back pain right now?",
       "Q08Title": "Low back pain unpleasantness",
       "Q08Instruction": "How unpleasant is your low back pain right now?",
+      "Q09Title": "Dominant Leg",
+      "Q09Instruction": "What hand do you use to write with?",
 
       "PainBottomAnchor": "No Pain",
       "PainTopAnchor": "Worst pain you can imagine",
