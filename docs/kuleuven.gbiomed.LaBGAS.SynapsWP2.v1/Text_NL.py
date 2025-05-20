@@ -16,6 +16,8 @@ def Create(tc):
       "Q07Instruction": "Wat is de intensiteit van je lage rugpijn op dit moment?",
       "Q08Title": "Lage rugpijnonaangenaamheid",
       "Q08Instruction": "Hoe onaangenaam is je lage rugpijn op dit moment?",
+      "Q09Title": "Dominant Leg [TRANSLATE]",
+      "Q09Instruction": "What hand do you use to write with? [TRANSLATE]",
 
       "PainBottomAnchor": "Geen pijn",
       "PainTopAnchor": "Ergste pijn die u zich kunt voorstellen",
