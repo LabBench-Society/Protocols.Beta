@@ -249,7 +249,7 @@
                 <dependency id="SES01THR70"/>
             </dependencies>
 
-            <condition expression="SES01THR30['PULSE'] &lt; SES01THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
+            <condition expression="Intensity.THR30 &lt; Intensity.THR70" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
 
             <stimulation-scripts 
                 stimulate="func: Script.RunLearning(tc,x)"
@@ -353,9 +353,6 @@
                     <instrument 
                         name="PressureAlgometer"
                         interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -412,9 +409,6 @@
                     <instrument 
                         name="PressureAlgometer"
                         interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -573,7 +567,7 @@
                 <dependency id="SES02THR70"/>
             </dependencies>
 
-            <condition expression="THR30['PULSE'] &lt; THR70['PULSE']" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
+            <condition expression="Intensity.THR30 &lt; Intensity.THR70" help="VAS 3.0 threshold must be lower than the VAS 7.0 threshold" />
 
             <stimulation-scripts 
                 stimulate="func: Script.RunLearning(tc,x)"
@@ -626,7 +620,7 @@
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
                     <instrument interface="image-display" name="ImageDisplay"/>
-                    <instrument interface="pressure-algometer" name="Response" />
+                    <instrument interface="pressure-algometer" name="PressureAlgometer" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
