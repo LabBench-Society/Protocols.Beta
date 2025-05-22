@@ -3,6 +3,22 @@ from LabBench.Interface.Instruments.Algometry import *
 import traceback
 import random
 
+class IntensitySelector:
+    def __init__(self, tc):
+        self.tc = tc
+
+    def PresentationIntensity(self):
+        return 0 if self.tc.Session == "SES01" else 1
+    
+    def VAS30(self):
+        return 0 if self.tc.Session == "SES01" else 1
+
+    def VAS70(self):
+        return 0 if self.tc.Session == "SES01" else 1
+
+def CreateIntensitySelector(tc):
+    return IntensitySelector(tc)
+
 def Stimulate(tc, x):
     algometer = tc.Instruments.PressureAlgometer
     chan = algometer.Channels[0]

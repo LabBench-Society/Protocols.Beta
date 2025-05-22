@@ -72,12 +72,8 @@
     </experimental-setup-variants>
     <protocol>
         <languages>
-            <language 
-                name="German" 
-                code="de"/>
-            <language 
-                name="English" 
-                code="en"/>
+            <language name="German" code="de"/>
+            <language name="English" code="en"/>
         </languages>
         <sessions>
             <session id="SES01" name="Session 01" />
@@ -118,6 +114,9 @@
             <define 
                 name="TestTaskExampleBlockSize" 
                 value="1 if 'LONG' in Subject else 1"/> 
+            <define 
+                name="Intensity"
+                value="func: Script.CreateIntensitySelector(tc)"/>
         </defines>
         <tests>
             <!-- Session 1 Tests -->
@@ -127,9 +126,7 @@
                 experimental-setup-id="display"
                 stimulus-update-rate="50">
 
-                <intensity 
-                    type="array"
-                    value="range(5, 101, 5)" />
+                <intensity type="array" value="range(5, 101, 5)" />
     
                 <responses response-collection="ratio-rating"/>
                 
@@ -139,10 +136,7 @@
                         stimulate="func: Script.Stimulate(tc,x)"
                         stimulus-description="Pressure"
                         stimulus-unit="kPa">
-
-                        <instrument 
-                            name="PressureAlgometer"
-                            interface="pressure-algometer"/>                
+                        <instrument name="PressureAlgometer" interface="pressure-algometer"/>                
                     </scripts>
                 </stimulation>        
             </psychophysics-stimulus-presentation>
@@ -157,9 +151,7 @@
                     <dependency id="SES01PRESENTATION"/>
                 </dependencies>
     
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
+                <update-rate-random min="4000" max="6000"/>
     
                 <ratio-rating-task target="3"/>
     
@@ -168,15 +160,11 @@
                     stimulate="func: Script.Stimulate(tc,x)"
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
-                    <channel 
-                        id="PULSE"
+                    <channel id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -186,7 +174,7 @@
                             reversal-rule="1"
                             step-size="0.1"
                             initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
+                            start-intensity="Intensity.PresentationIntensity()"
                             step-size-type="relative"
                             max-step-size-reduction="0.1"
                             step-size-reduction="0.5"
@@ -194,9 +182,7 @@
                             stop-rule="2" />
     
                         <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
+                            <pulse Is="x" Ts="1000" />
                         </stimulus>
                     </channel>
                 </channels>
@@ -212,9 +198,7 @@
                     <dependency id="SES01PRESENTATION"/>
                 </dependencies>
     
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
+                <update-rate-random min="4000" max="6000"/>
     
                 <ratio-rating-task target="7"/>
     
@@ -223,15 +207,11 @@
                     stimulate="func: Script.Stimulate(tc,x)"
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
-                    <channel 
-                        id="PULSE"
+                    <channel id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -241,7 +221,7 @@
                             reversal-rule="1"
                             step-size="0.1"
                             initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
+                            start-intensity="Intensity.PresentationIntensity()"
                             step-size-type="relative"
                             max-step-size-reduction="0.1"
                             step-size-reduction="0.5"
@@ -249,20 +229,18 @@
                             stop-rule="2" />
     
                         <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
+                            <pulse Is="x" Ts="1000" />
                         </stimulus>
                     </channel>
                 </channels>
             </psychophysics-threshold-estimation>
         
             <stimulation-sequence id ="SES01LPE"
-            name="Session 1: Learning Phase Example"
-            session="SES01"
-            experimental-setup-id="display"
-            response-collection="none"
-            stimulus-update-rate="50">
+                name="Session 1: Learning Phase Example"
+                session="SES01"
+                experimental-setup-id="display"
+                response-collection="none"
+                stimulus-update-rate="50">
 
             <test-events complete="func: Script.LearningComplete(tc)" />
 
@@ -279,12 +257,8 @@
                 stimulus-description="Pressure"
                 stimulus-unit="kPa">
 
-                <instrument 
-                    interface="image-display"
-                    name="ImageDisplay"/>
-                <instrument 
-                    interface="pressure-algometer" 
-                    name="Response" />
+                <instrument interface="image-display" name="ImageDisplay"/>
+                <instrument interface="pressure-algometer" name="PressureAlgometer" />
             </stimulation-scripts>
 
             <stimulation-pattern time-base="seconds">
@@ -329,26 +303,18 @@
                     initialize="func: Script.InitializeLearning(tc)"                                     
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
+                    <instrument interface="image-display" name="ImageDisplay"/>
+                    <instrument interface="pressure-algometer" name="PressureAlgometer" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
-                    <sequence
-                        iterations="NumberOfLearningBlocks">
+                    <sequence iterations="NumberOfLearningBlocks">
                         <sequence 
                             iterations="LearningTaskBlockSize*NumberOfStimuli" 
                             Tperiod="11" />
-
                         <sequence 
                             pause="true" 
                             Tperiod="1" />
-
                     </sequence>
                 </stimulation-pattern>
     
@@ -484,9 +450,7 @@
                 experimental-setup-id="display"
                 stimulus-update-rate="50">
 
-                <intensity 
-                    type="array"
-                    value="range(5, 101, 5)" />
+                <intensity type="array" value="range(5, 101, 5)" />
     
                 <responses response-collection="ratio-rating"/>
                 
@@ -496,10 +460,7 @@
                         stimulate="func: Script.Stimulate(tc,x)"
                         stimulus-description="Pressure"
                         stimulus-unit="kPa">
-
-                        <instrument 
-                            name="PressureAlgometer"
-                            interface="pressure-algometer"/>                
+                        <instrument name="PressureAlgometer" interface="pressure-algometer"/>                
                     </scripts>
                 </stimulation>        
             </psychophysics-stimulus-presentation>
@@ -514,9 +475,7 @@
                     <dependency id="SES02PRESENTATION"/>
                 </dependencies>
     
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
+                <update-rate-random min="4000" max="6000"/>
     
                 <ratio-rating-task target="3"/>
     
@@ -525,15 +484,11 @@
                     stimulate="func: Script.Stimulate(tc,x)"
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
-                    <channel 
-                        id="PULSE"
+                    <channel id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -543,7 +498,7 @@
                             reversal-rule="1"
                             step-size="0.1"
                             initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
+                            start-intensity="Intensity.PresentationIntensity()"
                             step-size-type="relative"
                             max-step-size-reduction="0.1"
                             step-size-reduction="0.5"
@@ -551,9 +506,7 @@
                             stop-rule="2" />
     
                         <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
+                            <pulse Is="x" Ts="1000" />
                         </stimulus>
                     </channel>
                 </channels>
@@ -569,9 +522,7 @@
                     <dependency id="SES02PRESENTATION"/>
                 </dependencies>
     
-                <update-rate-random 
-                    min="4000" 
-                    max="6000"/>
+                <update-rate-random min="4000" max="6000"/>
     
                 <ratio-rating-task target="7"/>
     
@@ -580,15 +531,11 @@
                     stimulate="func: Script.Stimulate(tc,x)"
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <channels>
-                    <channel 
-                        id="PULSE"
+                    <channel id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
                         Imin="0"
@@ -598,7 +545,7 @@
                             reversal-rule="1"
                             step-size="0.1"
                             initial-direction="increasing"
-                            start-intensity="PRESENTATION.Intensity"
+                            start-intensity="Intensity.PresentationIntensity()"
                             step-size-type="relative"
                             max-step-size-reduction="0.1"
                             step-size-reduction="0.5"
@@ -606,9 +553,7 @@
                             stop-rule="2" />
     
                         <stimulus>
-                            <pulse 
-                                Is="x" 
-                                Ts="1000" />
+                            <pulse Is="x" Ts="1000" />
                         </stimulus>
                     </channel>
                 </channels>
@@ -635,18 +580,12 @@
                 initialize="func: Script.InitializeExampleLearning(tc)"                                     
                 stimulus-description="Pressure"
                 stimulus-unit="kPa">
-
-                <instrument 
-                    interface="image-display"
-                    name="ImageDisplay"/>
-                <instrument 
-                    interface="pressure-algometer" 
-                    name="Response" />
+                <instrument interface="image-display" name="ImageDisplay"/>
+                <instrument interface="pressure-algometer" name="PressureAlgometer" />
             </stimulation-scripts>
 
             <stimulation-pattern time-base="seconds">
-                <sequence
-                    iterations="NumberOfLearningBlocksExample">
+                <sequence iterations="NumberOfLearningBlocksExample">
                     <sequence 
                         iterations="LearningTaskExampleBlockSize*NumberOfStimuli" 
                         Tperiod="11" />
@@ -686,13 +625,8 @@
                     initialize="func: Script.InitializeLearning(tc)"                                     
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
-
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
+                    <instrument interface="image-display" name="ImageDisplay"/>
+                    <instrument interface="pressure-algometer" name="Response" />
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -738,15 +672,8 @@
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
 
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
+                    <instrument interface="image-display" name="ImageDisplay"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -797,15 +724,8 @@
                     stimulus-description="Pressure"
                     stimulus-unit="kPa">
 
-                    <instrument 
-                        interface="image-display"
-                        name="ImageDisplay"/>
-                    <instrument 
-                        name="PressureAlgometer"
-                        interface="pressure-algometer"/>
-                    <instrument 
-                        interface="pressure-algometer" 
-                        name="Response" />
+                    <instrument interface="image-display" name="ImageDisplay"/>
+                    <instrument name="PressureAlgometer" interface="pressure-algometer"/>
                 </stimulation-scripts>
     
                 <stimulation-pattern time-base="seconds">
@@ -836,12 +756,8 @@
 
         </tests>
         <assets>
-            <file-asset 
-                id="Script" 
-                file="Script.py"  />
-            <file-asset 
-                id="VisualStimuli" 
-                file="VisualStimuli.zip" />
+            <file-asset id="Script" file="Script.py"  />
+            <file-asset id="VisualStimuli" file="VisualStimuli.zip" />
             <file-asset id="Roboto" file="Roboto-Regular.ttf" />
         </assets>        
     </protocol> 
