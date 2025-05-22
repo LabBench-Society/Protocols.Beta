@@ -5,16 +5,16 @@ import random
 
 class IntensitySelector:
     def __init__(self, tc):
-        self.tc = tc
+        self.tc = tc    
 
     def PresentationIntensity(self):
-        return 0 if self.tc.Session == "SES01" else 1
+        return self.tc.SES01PRESENTATION.Intensity if self.tc.ActiveSession == "SES01" else self.tc.SES02PRESENTATION.Intensity 
     
-    def VAS30(self):
-        return 0 if self.tc.Session == "SES01" else 1
-
-    def VAS70(self):
-        return 0 if self.tc.Session == "SES01" else 1
+    def THR30(self):
+        return self.tc.SES01THR30['PULSE'] if self.tc.ActiveSession == "SES01" else self.tc.SES02THR30['PULSE']
+    
+    def THR70(self):
+        return self.tc.SES01THR70['PULSE'] if self.tc.ActiveSession == "SES01" else self.tc.SES02THR70['PULSE']
 
 def CreateIntensitySelector(tc):
     return IntensitySelector(tc)
@@ -188,7 +188,7 @@ def LearningComplete(tc):
 
 def LearningRatingPain(tc):
     try:        
-        rating = tc.Instruments.Response.GetCurrentRating()
+        rating = tc.Instruments.PressureAlgometer.GetCurrentRating()
         tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.LearningTrials[-1].rating = rating
         Log.Information("PAIN RATING: {rating}", rating) 
@@ -276,7 +276,7 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
-        ratingExpected = tc.Instruments.Response.GetCurrentRating() 
+        ratingExpected = tc.Instruments.PressureAlgometer.GetCurrentRating() 
         tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.TestTrials[-1].ratingExpected = ratingExpected
         Log.Information("Rating expected pain: {rating}", ratingExpected)
@@ -289,9 +289,9 @@ def getIntensity(tc):
     trial = tc.TestTrials[-1]
 
     if trial.high == 1:
-        intensity = tc.THR30['PULSE'] if trial.congruent == 0 else tc.THR70['PULSE']
+        intensity = tc.Intensity.THR30() if trial.congruent == 0 else tc.Intensity.THR70()
     elif trial.high == 0:
-        intensity = tc.THR70['PULSE'] if trial.congruent == 0 else tc.THR30['PULSE']
+        intensity = tc.Intensity.THR70() if trial.congruent == 0 else tc.Intensity.THR30()
     else:
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
     
@@ -313,7 +313,7 @@ def TestStimulate(tc):
 
 def TestRateActualPain(tc):
     try:
-        ratingActual = tc.Instruments.Response.GetCurrentRating() 
+        ratingActual = tc.Instruments.PressureAlgometer.GetCurrentRating() 
         tc.Instruments.ImageDisplay.Display(tc.Images.Blank)
         tc.TestTrials[-1].ratingActual = ratingActual
         Log.Information("RATING ACTUAL PAIN: {rating}", ratingActual)        
