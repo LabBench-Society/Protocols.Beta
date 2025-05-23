@@ -3,6 +3,22 @@ from LabBench.Interface.Instruments.Algometry import *
 import traceback
 import random
 
+class IntensitySelector:
+    def __init__(self, tc):
+        self.tc = tc    
+
+    def PresentationIntensity(self):
+        return self.tc.SES01PRESENTATION.Intensity if self.tc.ActiveSession == "SES01" else self.tc.SES02PRESENTATION.Intensity 
+    
+    def THR30(self):
+        return self.tc.SES01THR30['PULSE'] if self.tc.ActiveSession == "SES01" else self.tc.SES02THR30['PULSE']
+    
+    def THR70(self):
+        return self.tc.SES01THR70['PULSE'] if self.tc.ActiveSession == "SES01" else self.tc.SES02THR70['PULSE']
+
+def CreateIntensitySelector(tc):
+    return IntensitySelector(tc)
+
 def Stimulate(tc, x):
     algometer = tc.Instruments.PressureAlgometer
     chan = algometer.Channels[0]
@@ -156,12 +172,12 @@ def InitializeLearning(tc):
 
 def LearningComplete(tc):
     try:        
-        tc.LP.Annotations.Add("high", [trial.high for trial in tc.LearningTrials])
-        tc.LP.Annotations.Add("variant", [trial.variant for trial in tc.LearningTrials])
-        tc.LP.Annotations.Add("feedback", [trial.feedback for trial in tc.LearningTrials])
-        tc.LP.Annotations.Add("rating", [trial.rating for trial in tc.LearningTrials])
-        tc.LP.Annotations.Add("ratingLow", [trial.rating for trial in tc.LearningTrials if trial.high == 0])
-        tc.LP.Annotations.Add("ratingHigh", [trial.rating for trial in tc.LearningTrials if trial.high == 1])
+        tc.Current.Annotations.SetIntegers("high", [trial.high for trial in tc.LearningTrials])
+        tc.Current.Annotations.SetIntegers("variant", [trial.variant for trial in tc.LearningTrials])
+        tc.Current.Annotations.SetIntegers("feedback", [trial.feedback for trial in tc.LearningTrials])
+        tc.Current.Annotations.SetNumbers("rating", [trial.rating for trial in tc.LearningTrials])
+        tc.Current.Annotations.SetNumbers("ratingLow", [trial.rating for trial in tc.LearningTrials if trial.high == 0])
+        tc.Current.Annotations.SetNumbers("ratingHigh", [trial.rating for trial in tc.LearningTrials if trial.high == 1])
 
         Log.Information("Data added as annotations")
         
@@ -172,7 +188,7 @@ def LearningComplete(tc):
 
 def LearningRatingPain(tc):
     try:        
-        rating = tc.Instruments.Response.GetCurrentRating()
+        rating = tc.Instruments.PressureAlgometer.GetCurrentRating()
         tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.LearningTrials[-1].rating = rating
         Log.Information("PAIN RATING: {rating}", rating) 
@@ -213,7 +229,7 @@ def InitializeTest(tc):
     try:
         tc.Images.AlternativeCues(tc, False)
         tc.Defines.Set("TestTrials", [])
-        tc.Devices.ImageDisplay.Default(tc.Images.Blank)
+        tc.Instruments.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized test task")
         return True
 
@@ -225,7 +241,7 @@ def InitializeExampleTest(tc):
     try:
         tc.Images.AlternativeCues(tc, True)
         tc.Defines.Set("TestTrials", [])
-        tc.Devices.ImageDisplay.Default(tc.Images.Blank)
+        tc.Instruments.ImageDisplay.Default(tc.Images.Blank)
         Log.Information("Initialized test task")
         return True
 
@@ -235,21 +251,21 @@ def InitializeExampleTest(tc):
 
 def TestComplete(tc):
     try:
-        tc.TP.Annotations.Add("high", [trial.high for trial in tc.TestTrials])
-        tc.TP.Annotations.Add("variant", [trial.variant for trial in tc.TestTrials])
-        tc.TP.Annotations.Add("congruent", [trial.congruent for trial in tc.TestTrials])
-        tc.TP.Annotations.Add("ratingExpected", [trial.ratingExpected for trial in tc.TestTrials])
-        tc.TP.Annotations.Add("ratingActual", [trial.ratingActual for trial in tc.TestTrials])
+        tc.Current.Annotations.SetIntegers("high", [trial.high for trial in tc.TestTrials])
+        tc.Current.Annotations.SetIntegers("variant", [trial.variant for trial in tc.TestTrials])
+        tc.Current.Annotations.SetIntegers("congruent", [trial.congruent for trial in tc.TestTrials])
+        tc.Current.Annotations.SetNumbers("ratingExpected", [trial.ratingExpected for trial in tc.TestTrials])
+        tc.Current.Annotations.SetNumbers("ratingActual", [trial.ratingActual for trial in tc.TestTrials])
 
-        tc.TP.Annotations.Add("expectedHighCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
-        tc.TP.Annotations.Add("actualHighCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
-        tc.TP.Annotations.Add("expectedHighIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
-        tc.TP.Annotations.Add("actualHighIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+        tc.Current.Annotations.SetNumbers("expectedHighCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+        tc.Current.Annotations.SetNumbers("actualHighCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 1])
+        tc.Current.Annotations.SetNumbers("expectedHighIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
+        tc.Current.Annotations.SetNumbers("actualHighIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 1 and trial.congruent == 0])
 
-        tc.TP.Annotations.Add("expectedLowCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
-        tc.TP.Annotations.Add("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
-        tc.TP.Annotations.Add("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
-        tc.TP.Annotations.Add("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+        tc.Current.Annotations.SetNumbers("expectedLowCongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+        tc.Current.Annotations.SetNumbers("actualLowCongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 1])
+        tc.Current.Annotations.SetNumbers("expectedLowIncongruent", [trial.ratingExpected for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
+        tc.Current.Annotations.SetNumbers("actualLowIncongruent", [trial.ratingActual for trial in tc.TestTrials if trial.high == 0 and trial.congruent == 0])
 
         Log.Information("Data added as annotations")
 
@@ -260,7 +276,7 @@ def TestComplete(tc):
 
 def TestRateExpectedPain(tc):
     try:
-        ratingExpected = tc.Instruments.Response.GetCurrentRating() 
+        ratingExpected = tc.Instruments.PressureAlgometer.GetCurrentRating() 
         tc.Instruments.ImageDisplay.Display(tc.Images.Marker)
         tc.TestTrials[-1].ratingExpected = ratingExpected
         Log.Information("Rating expected pain: {rating}", ratingExpected)
@@ -273,9 +289,9 @@ def getIntensity(tc):
     trial = tc.TestTrials[-1]
 
     if trial.high == 1:
-        intensity = tc.THR30['PULSE'] if trial.congruent == 0 else tc.THR70['PULSE']
+        intensity = tc.Intensity.THR30() if trial.congruent == 0 else tc.Intensity.THR70()
     elif trial.high == 0:
-        intensity = tc.THR70['PULSE'] if trial.congruent == 0 else tc.THR30['PULSE']
+        intensity = tc.Intensity.THR70() if trial.congruent == 0 else tc.Intensity.THR30()
     else:
         raise ValueError("Invalid high value: {high}".format(high = trial.high))
     
@@ -288,7 +304,7 @@ def getIntensity(tc):
     
 def TestStimulate(tc):
     try:
-        tc.Devices.ImageDisplay.Display(tc.Images.MarkerWithFiducial)
+        tc.Instruments.ImageDisplay.Display(tc.Images.MarkerWithFiducial)
         Stimulate(tc, getIntensity(tc))
     except Exception as e:
         Log.Error("An exception {e}: {trace}".format(e = e, trace = traceback.format_exc()))
@@ -297,7 +313,7 @@ def TestStimulate(tc):
 
 def TestRateActualPain(tc):
     try:
-        ratingActual = tc.Instruments.Response.GetCurrentRating() 
+        ratingActual = tc.Instruments.PressureAlgometer.GetCurrentRating() 
         tc.Instruments.ImageDisplay.Display(tc.Images.Blank)
         tc.TestTrials[-1].ratingActual = ratingActual
         Log.Information("RATING ACTUAL PAIN: {rating}", ratingActual)        
