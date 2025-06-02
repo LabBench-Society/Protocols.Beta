@@ -291,9 +291,9 @@
                     <properties>
                         <time-constraint test-id="TS" 
                             min="func: Script.GetPPTWaitTime(tc)" time-reference="end" />
-                        <instructions default="Assets.CPAInstructions.SR01" override-results="false"/>
+                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
                         <subject-instructions experimental-setup-id="image"
-                            default="Assets.CPAInstructions.SR01" />
+                            default="Assets.CPAInstructions.CPM" />
                     </properties>
                 </algometry-stimulus-response>
 
@@ -318,9 +318,9 @@
                     stop-mode="stop-on-maximal-rating"
                     vas-pdt="0.1">
                     <properties>
-                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
+                        <instructions default="Assets.CPAInstructions.BLANK" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
-                            default="Assets.CPAInstructions.CPM" />
+                            default="Assets.CPAInstructions.BLANK" />
                     </properties>
                     <dependencies>
                         <dependency id="HOT" />
@@ -391,7 +391,7 @@
 
             <algometry-stimulus-response-constructor id="CPM"
                 name="CPM (Cuff 1)"
-                template="CPM"/>
+                template="CMP"/>
         </tests>
         <assets>
             <file-asset id="BodyAreas" file="BodyAreas.png" />            
