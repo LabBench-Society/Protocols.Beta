@@ -302,9 +302,9 @@
                     sample-rate="1" 
                     experimental-setup-id="vas">
                     <properties>
-                        <instructions default="Assets.CPAInstructions.HOT" override-results="false"/> 
+                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
-                            default="Assets.CPAInstructions.HOT" />
+                            default="Assets.CPAInstructions.CPM" />
                     </properties>                    
                 </psychophysics-response-recording>
                 
@@ -318,9 +318,9 @@
                     stop-mode="stop-on-maximal-rating"
                     vas-pdt="0.1">
                     <properties>
-                        <instructions default="Assets.CPAInstructions.BLANK" override-results="false"/> 
+                        <instructions default="Assets.CPAInstructions.HOT" override-results="false"/> 
                         <subject-instructions experimental-setup-id="image"
-                            default="Assets.CPAInstructions.BLANK" />
+                            default="Assets.CPAInstructions.HOT" />
                     </properties>
                     <dependencies>
                         <dependency id="HOT" />
