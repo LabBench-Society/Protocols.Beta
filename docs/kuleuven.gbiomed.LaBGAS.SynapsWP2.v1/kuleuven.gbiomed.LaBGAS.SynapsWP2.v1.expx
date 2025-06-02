@@ -391,7 +391,7 @@
 
             <algometry-stimulus-response-constructor id="CPM"
                 name="CPM (Cuff 1)"
-                template="CMP"/>
+                template="CPM"/>
         </tests>
         <assets>
             <file-asset id="BodyAreas" file="BodyAreas.png" />            
