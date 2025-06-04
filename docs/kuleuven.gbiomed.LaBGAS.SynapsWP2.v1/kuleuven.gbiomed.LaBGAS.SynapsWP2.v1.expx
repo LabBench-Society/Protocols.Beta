@@ -41,7 +41,7 @@
                         <anchors>
                             <modality text="" />
                             <top-anchor text="10/Worst imaginable pain">
-                                <localized-text language="NL" text="10/Ergste pijn die u zich kunt voorstellen"/>
+                                <localized-text language="NL" text="10/Maximale pijn"/>
                             </top-anchor>
                             <bottom-anchor text="0/No pain">
                                 <localized-text language="NL" text="0/Geen pijn"/>
