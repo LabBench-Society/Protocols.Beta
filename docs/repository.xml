@@ -261,4 +261,14 @@
           </category>  
         </category>
     </category>
+    <category name="Centre for Human Drug Research" id="chdr">
+      <category name="Temporal Summation Validation" id="chdr.tsValidation">
+          <protocol id="chdr.tsValidation.v1" 
+            labbench-version="5.1" 
+            name="Temporal Summation Validation (Version 1)" 
+            category="Cuff Pressure Algometry; Pain Detection and Tolerance Thresholds;Temporal Summation"/>
+
+      </category>
+
+    </category>
 </repository>

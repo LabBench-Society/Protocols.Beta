@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+<experimental-setup-variants default="CPARPlus">
+    <experimental-setup name="LabBench CPAR+" id="CPARPlus">
+        <devices>
+            <cpar-plus id="dev"/>
+        </devices>
+        <device-mapping>
+          <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+        </device-mapping>
+      </experimental-setup>        
+      <experimental-setup name="LabBench CPAR+ (Scale on secondary monitor)" id="CPARPlusDisplay">
+        <devices>
+            <cpar-plus id="dev"/>
+    
+            <display
+                id="display"
+                screen="secondary"
+                position="fullscreen"
+                active-color="rgb(255,0,0)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(16,16,16)"
+                normative-distance="40">
+    
+                <monitor
+                    diagonal-size="53.34"
+                    distance="40" />
+
+                <configurations>
+                    <visual-analog-scale
+                        id="vas"
+                        experimental-setup-id="vas"
+                        length="10"
+                        controller-device="dev">
+                        <anchors>
+                            <modality text="" />
+                            <top-anchor text="10/Worst imaginable pain" />
+                            <bottom-anchor text="0/No pain" />
+                        </anchors>
+                    </visual-analog-scale>
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+            <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+        </device-mapping>
+      </experimental-setup>    
+      <experimental-setup name="Nocitech CPAR" id="CPAR">
+        <devices>
+            <cpar id="dev" compressor-mode="AUTO"/>
+        </devices>
+        <device-mapping>
+            <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+        </device-mapping>
+      </experimental-setup>
+      <experimental-setup name="Nocitech CPAR (Scale on secondary monitor)" id="CPARDisplay">
+        <devices>
+            <cpar id="dev" compressor-mode="AUTO"/>
+
+            <display
+                id="display"
+                screen="secondary"
+                position="fullscreen"
+                active-color="rgb(255,0,0)"
+                background-color="rgb(255,255,255)"
+                inactive-color="rgb(16,16,16)"
+                normative-distance="40">
+    
+                <monitor
+                    diagonal-size="35"
+                    distance="40" />
+
+                <configurations>
+                    <visual-analog-scale
+                        id="vas"
+                        experimental-setup-id="vas"
+                        length="10"
+                        controller-device="dev">
+                        <anchors>
+                            <modality text="" />
+                            <top-anchor text="10/Worst imaginable pain" />
+                            <bottom-anchor text="0/No pain" />
+                        </anchors>
+                    </visual-analog-scale>
+                </configurations>
+            </display>
+        </devices>
+        <device-mapping>
+          <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+        </device-mapping>
+      </experimental-setup>    
+</experimental-setup-variants>
+    <protocol>
+        <defines />
+        <templates>
+            <content>
+                <algometry-stimulus-response 
+                    id="SR01"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.SR01" override-results="false"/>
+                    </properties>
+                </algometry-stimulus-response>
+
+                <algometry-stimulus-response 
+                    id="SR02"
+                    experimental-setup-id="vas"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="2"
+                    second-cuff="false"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.SR02" override-results="false"/>
+                    </properties>
+                </algometry-stimulus-response>
+
+                <algometry-temporal-summation 
+                    id="TS"
+                    experimental-setup-id="vas"
+                    no-of-stimuli="10"
+                    pressure-static="5"
+                    pressure-stimulate="1.0 * SR01.PTT"
+                    primary-cuff="1"
+                    second-cuff="false"
+                    t-off="1"
+                    t-on="1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.TS" override-results="false"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="SR01"/>
+                    </dependencies>
+                </algometry-temporal-summation>
+
+                <algometry-conditioned-pain-modulation 
+                    id="CPM"
+                    experimental-setup-id="vas"
+                    conditional-pressure="0.7 * SR02.PTT"
+                    delta-conditional-pressure="10"
+                    delta-pressure="1"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    stop-mode="stop-on-maximal-rating"
+                    vas-pdt="0.1">
+                    <properties>
+                        <instructions default="Assets.CPAInstructions.CPM" override-results="false"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="SR02"/>
+                    </dependencies>
+                </algometry-conditioned-pain-modulation>
+            </content>
+        </templates>
+        <tests>
+            <algometry-stimulus-response-constructor id="SR01" 
+                name="Stimulus-Response (Cuff 1)"
+                template="SR01"/>
+
+            <algometry-temporal-summation-constructor id="TS" 
+                name="Temporal Summation (Cuff 1)"
+                template="TS"/>
+        </tests>
+        <assets>
+            <file-asset id="CPAInstructions" file="CPAInstructions.zip"></file-asset>
+        </assets>
+    </protocol>
+    <post-actions>
+        <export-to-csv name="Exporting session"
+                       location="C:\LabBenchData\cpa"
+                       header="true"
+                       separator=";"
+                       culture="en"                       
+                       filename="dynamic: '{s}.csv'.format(s = Subject)">
+
+            <item name="ProtocolID"  value="SR01.ProtocolID"        default="NA" />
+            <item name="MachineName" value="SR01.MachineID"         default="NA" />
+            <item name="OS"          value="SR01.OperatingSystem"   default="NA" />
+            <item name="Instrument"  value="SR01.Instruments[0].ID" default="NA" />
+
+            <!-- Stimulus-Response (Cuff 1) -->
+            <item name="SR01PDT" value="SR01.PDT" default="NA"/>
+            <item name="SR02PTT" value="SR01.PTT" default="NA"/>
+
+            <!-- Temporal Summation (Cuff 1) -->
+            <item name="TS01" value="TS.Responses[0]" default="NA"/>
+            <item name="TS02" value="TS.Responses[1]" default="NA"/>
+            <item name="TS03" value="TS.Responses[2]" default="NA"/>
+            <item name="TS04" value="TS.Responses[3]" default="NA"/>
+            <item name="TS05" value="TS.Responses[4]" default="NA"/>
+            <item name="TS06" value="TS.Responses[5]" default="NA"/>
+            <item name="TS07" value="TS.Responses[6]" default="NA"/>
+            <item name="TS08" value="TS.Responses[7]" default="NA"/>
+            <item name="TS09" value="TS.Responses[8]" default="NA"/>
+            <item name="TS10" value="TS.Responses[9]" default="NA"/>
+        </export-to-csv>
+    </post-actions>
+</experiment>
