@@ -267,7 +267,10 @@
             labbench-version="5.1" 
             name="Temporal Summation Validation (Version 1)" 
             category="Cuff Pressure Algometry; Pain Detection and Tolerance Thresholds;Temporal Summation"/>
-
+          <protocol id="chdr.tsValidation.v2" 
+            labbench-version="5.1" 
+            name="Temporal Summation Validation (Version 2)" 
+            category="Cuff Pressure Algometry; Pain Detection and Tolerance Thresholds;Temporal Summation"/>
       </category>
 
     </category>
