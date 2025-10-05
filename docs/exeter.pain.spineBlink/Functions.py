@@ -2,7 +2,7 @@
 from LabBench.Interface.Instruments.Algometry import *
 
 def Condition(tc):
-    algometer = tc.Devices.Algometer
+    algometer = tc.Devices.PressureAlgometer
     chan = algometer.Channels[0]
 
     chan.SetStimulus(1, chan.CreateWaveform()
