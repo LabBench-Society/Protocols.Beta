@@ -274,4 +274,10 @@
       </category>
 
     </category>
+    <category name="The Clinical Research Facility (Exeter)" id="exeter">
+      <category name="Exeter Pain Group" id="exeter.pain"></category>
+        <protocol name="Conditioned Blink Reflex Protocol" id="exeter.pain.spineBlink" 
+                  labbench-version="5.4" 
+                  category="Conditioned NWR;LabBench CPAR+;LabBench I/O"/>
+    </category>
 </repository>

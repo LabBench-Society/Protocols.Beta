@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/dev/protocol.xsd"
+          name="Conditioned Blink Reflex Protocol (ID: spineBlink)"
+          id="spineBlink">
+    <description />
+    <defines>
+        <define name="StimulationPeriod" value="4.0"/>
+        <define name="TrainFrequency" value="200.0"/>
+        <define name="NumberOfPulses" value="2"/>
+        <define name="nOfStimuli" value="12"/>
+    </defines>
+    <tests>
+        <psychophysics-stimulus-presentation ID="StimIntensity"
+											 name="Stimulation Intensity"
+											 trigger-update-rate="20000">
+            <intensity type="geomspace"
+					   x0="1"
+					   x1="100"
+					   n="50"/>
+
+            <responses response-collection="none" />
+
+            <triggers start-triggger="none">
+                <combined-triggers>
+                    <trigger Tdelay="0"
+                             duration="10">
+                        <code output="Digital" value="1"/>
+                    </trigger>
+                    <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                      N="int(NumberOfPulses)">
+                        <trigger Tdelay="0"
+                                 duration="0.2">
+                            <code output="Stimulus" value="1"/>
+                        </trigger>
+                    </repeated-trigger>
+                </combined-triggers>
+            </triggers>
+        </psychophysics-stimulus-presentation>
+
+        <algometry-stimulus-response ID="SR"
+                             name="Stimulus-Response (Cuff 1)"
+                             delta-pressure="1"
+                             pressure-limit="100"
+                             primary-cuff="1"
+                             second-cuff="false"
+                             stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                             vas-pdt="0.1">
+            <dependencies />
+        </algometry-stimulus-response>
+
+        <electrophysiology-evoked-potentials ID="BeforeCond"
+                                             name="Before Conditioning"
+                                             trigger-update-rate="20000"
+                                             response-collection="none">
+            <dependencies>
+                <dependency ID="StimIntensity"/>
+            </dependencies>
+
+            <configuration>
+                <trigger-generation trigger-source="none"/>
+            </configuration>
+
+            <stimulation-pattern time-base="seconds">
+                <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                Toffset="5"
+                                                minTperiod="10"
+                                                maxTperiod="15"
+                                                stimulate="true">
+                    <sequence Tperiod="1"
+                              iterations="1" 
+                              stimulate="true"/>
+                </uniformly-distributed-sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="StimIntensity.Intensity">
+                    <triggers>
+                        <combined-triggers>
+                            <trigger Tdelay="0"
+                                     duration="10">
+                                <code output="Digital" value="1"/>
+                            </trigger>
+                            <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                              N="int(NumberOfPulses)">
+                                <trigger Tdelay="0"
+                                         duration="0.2">
+                                    <code output="Stimulus" value="1"/>
+                                </trigger>
+                            </repeated-trigger>
+                        </combined-triggers>
+                    </triggers>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="Cond"
+                                             name="Conditioning"
+                                             trigger-update-rate="20000"
+                                             response-collection="none">
+            <test-events start="func: Functions.Condition(tc)"
+                         abort="func: Functions.Stop(tc)"
+                         complete="func: Functions.Stop(tc)">
+                <instrument interface="pressure-algometer"
+                            name="Algometer"
+                            required="true"/>
+            </test-events>
+            <dependencies>
+                <dependency ID="SR"/>
+            </dependencies>
+
+            <configuration>
+                <trigger-generation trigger-source="none"/>
+            </configuration>
+
+            <stimulation-pattern time-base="seconds">
+                <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                Toffset="5"
+                                                minTperiod="10"
+                                                maxTperiod="15"
+                                                stimulate="true">
+                    <sequence Tperiod="1"
+                              iterations="1"
+                              stimulate="true"/>
+                </uniformly-distributed-sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="StimIntensity.Intensity">
+                    <triggers>
+                        <combined-triggers>
+                            <trigger Tdelay="0"
+                                     duration="10">
+                                <code output="Digital" value="1"/>
+                            </trigger>
+                            <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                              N="int(NumberOfPulses)">
+                                <trigger Tdelay="0"
+                                         duration="0.2">
+                                    <code output="Stimulus" value="1"/>
+                                </trigger>
+                            </repeated-trigger>
+                        </combined-triggers>
+                    </triggers>
+                </stimulus>
+            </stimuli>
+
+        </electrophysiology-evoked-potentials>
+
+        <electrophysiology-evoked-potentials ID="AfterCond"
+                                             name="After Conditioning"
+                                             trigger-update-rate="20000"
+                                             response-collection="none">
+
+            <configuration>
+                <trigger-generation trigger-source="none"/>
+            </configuration>
+
+            <stimulation-pattern time-base="seconds">
+                <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                Toffset="5"
+                                                minTperiod="10"
+                                                maxTperiod="15"
+                                                stimulate="true">
+                    <sequence Tperiod="1"
+                              iterations="1"
+                              stimulate="true"/>
+                </uniformly-distributed-sequence>
+            </stimulation-pattern>
+
+            <stimuli order="round-robin">
+                <stimulus name="Stimulus"
+                          count="1"
+                          intensity="StimIntensity.Intensity">
+                    <triggers>
+                        <combined-triggers>
+                            <trigger Tdelay="0"
+                                     duration="10">
+                                <code output="Digital" value="1"/>
+                            </trigger>
+                            <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                              N="int(NumberOfPulses)">
+                                <trigger Tdelay="0"
+                                         duration="0.2">
+                                    <code output="Stimulus" value="1"/>
+                                </trigger>
+                            </repeated-trigger>
+                        </combined-triggers>
+                    </triggers>
+                </stimulus>
+            </stimuli>
+        </electrophysiology-evoked-potentials>
+
+        <algometry-stimulus-response ID="SR01"
+                                        name="Stimulus-Response (Cuff 1)"
+                                        delta-pressure="1"
+                                        pressure-limit="100"
+                                        primary-cuff="1"
+                                        second-cuff="false"
+                                        stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                                        vas-pdt="0.1">
+            <dependencies />
+        </algometry-stimulus-response>
+
+        <algometry-stimulus-response ID="SR02"
+                                        name="Stimulus-Response (Cuff 2)"
+                                        delta-pressure="1"
+                                        pressure-limit="100"
+                                        primary-cuff="2"
+                                        second-cuff="false"
+                                        stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                                        vas-pdt="0.1">
+            <dependencies />
+        </algometry-stimulus-response>
+
+        <algometry-temporal-summation ID="TS"
+                                        name="Temporal Summation (Cuff 1)"
+                                        no-of-stimuli="10"
+                                        pressure-static="5"
+                                        pressure-stimulate="1.0 * SR01.PTT"
+                                        primary-cuff="1"
+                                        second-cuff="false"
+                                        t-off="1"
+                                        t-on="1">
+            <dependencies>
+                <dependency ID="SR01"/>
+            </dependencies>
+        </algometry-temporal-summation>
+
+        <algometry-conditioned-pain-modulation ID="CPM"
+                                                name="CPM (Cuff 1)"
+                                                conditional-pressure="0.7 * SR02.PTT"
+                                                delta-conditional-pressure="10"
+                                                delta-pressure="1"
+                                                pressure-limit="100"
+                                                primary-cuff="1"
+                                                stop-mode="STOP_CRITERION_ON_BUTTON_PRESSED"
+                                                vas-pdt="0.1">
+            <dependencies>
+                <dependency ID="SR02"/>
+            </dependencies>
+        </algometry-conditioned-pain-modulation>
+    </tests>
+    <assets>
+        <file-asset id="Functions" file="Functions.py" />
+    </assets>
+</protocol>
