@@ -108,12 +108,12 @@
             </stimulation-sequence>
 
             <stimulation-sequence id="Cond"
-                                             name="Conditioning"
-                                             trigger-update-rate="20000"
-                                             response-collection="none">
+                                  name="Conditioning"
+                                  trigger-update-rate="20000"
+                                  response-collection="none">
                 <test-events start="func: Functions.Condition(tc)"
-                            abort="func: Functions.Stop(tc)"
-                            complete="func: Functions.Stop(tc)">
+                             abort="func: Functions.Stop(tc)"
+                             complete="func: Functions.Stop(tc)">
                     <instrument interface="pressure-algometer" />
                 </test-events>
 
