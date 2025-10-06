@@ -15,7 +15,7 @@ def Condition(tc):
     return True
 
 def Stop(tc):
-    algometer = tc.Devices.Algometer
+    algometer = tc.Devices.PressureAlgometer
     algometer.StopStimulation()
 
     return True
