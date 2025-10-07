@@ -4,13 +4,9 @@
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />  
   <experimental-setup-variants default="cpar">
-    <experimental-setup id="cpar" name="LabBench CPAR+ and Joystick">
+    <experimental-setup id="cpar" name="LabBench CPAR+">
       <devices>
-        <joystick id="joystick">
-          <map>
-            
-          </map>
-        </joystick>
+        <cpar-plus id="cpar" />
 
         <display id="display"
           normative-distance="40"
@@ -25,11 +21,28 @@
             <image-display id="image" 
               experimental-setup-id="image" 
               background-color="rgb(0,0,0)" />
+            
+            <visual-analog-scale id="vas" 
+              experimental-setup-id="vas"
+              controller-device="cpar"
+              length="10">
+              <anchors>
+                <top-anchor text="Maximal Pain">
+                  <localized-text language="DE" text="Maximaler Schmerz"/>
+                </top-anchor>
+                <bottom-anchor text="No Pain">
+                  <localized-text language="DE" text="Keine Schmerzen"/>
+                </bottom-anchor>
+              </anchors>
+            </visual-analog-scale>
           </configurations>
         </display>
-        <cpar-plus id="cpar" />
       </devices>
       <device-mapping>
+        <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+        <device-assignment device-id="cpar" instrument-name="Button" />
+        <device-assignment device-id="display.vas" instrument-name="RatioScale" />
       </device-mapping>
     </experimental-setup>
   </experimental-setup-variants>                     
@@ -38,25 +51,80 @@
 
     </properties>
     <languages>
-
+      <language code="EN" name="English" />
+      <language code="DE" name="German" />
     </languages>
     <sessions>
 
     </sessions>
     <defines>
-
+      <define name="Task" value="func: Script.CreateTask(tc)" />
     </defines>
     <randomizations>
 
     </randomizations>
     <templates>
-      <variables></variables>
-      <content></content>
+      <variables>
+
+      </variables>
+      <content>
+        <algometry-stimulus-response id="SR" 
+          stop-mode="stop-on-maximal-rating" 
+          primary-cuff="1"
+          delta-pressure="1"
+          second-cuff="false"
+          experimental-setup-id="image"
+          pressure-limit="100"
+          vas-pdt="0.1">
+        </algometry-stimulus-response>
+
+        <sequential id="PainRatingTask"
+          experimental-setup-id="image">
+          <test-events>
+            <instrument interface="pressure-algometer" />
+            <instrument interface="ratio-scale" />
+            <instrument interface="button" />
+            <instrument interface="image-display" />
+          </test-events>
+          
+          <dependencies>
+            <dependency id="var: IntensityTest" />
+          </dependencies>
+
+          <update-rate-deterministic value="50"/>
+
+          <states update="Task.Update()"
+                  enter="var: 'Task.Enter({test})'.format(test = IntensityTest)"
+                  leave="Task.Leave()">
+            <state id="CROSS" experimental-setup-id="image" name="Fixation Cross"/>
+            <state id="SELECTION" experimental-setup-id="image" name="Selecting a cue" />
+            <state id="DISPLAY" experimental-setup-id="image" name="Display selected cue" />
+            <state id="STIMULATION" experimental-setup-id="image" name="Stimulation" />
+            <state id="RATING" experimental-setup-id="vas" name="Pain Rating" />
+            <state id="PAUSE" experimental-setup-id="image" name="Pause" />
+          </states>
+        </sequential>        
+      </content>
     </templates>
     <tests>
+      <algometry-stimulus-response-constructor id="SR" 
+        name="Stimulus-Response" 
+        template="SR">
+      </algometry-stimulus-response-constructor>
+
+      <sequential-constructor id="PainRatingTask" 
+        name="Pain Rating Task" 
+        template="PainRatingTask">
+        <variables>
+          <string name="IntensityTest" value="SR" />
+        </variables>
+      </sequential-constructor>
 
     </tests>
     <assets>
+      <file-asset id="Script" file="Script.py" />
+      <file-asset id="Cards" file="Cards.zip" />
+      <file-asset id="Images" file="Images.zip" />
 
     </assets>
   </protocol>
