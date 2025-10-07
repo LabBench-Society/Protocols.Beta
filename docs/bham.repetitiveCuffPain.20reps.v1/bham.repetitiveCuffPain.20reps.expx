@@ -1,1 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/experiment.xsd">
+  <subject-validator regex="^[0-9]+$|^PILOT[0-9]{3}$|^TEST[0-9]{3}"
+                     advice="Please enter an ID in the form of a number, or TESTXXX/PILOTXXX in the form of X, where X is a number" />
+  <experimental-setup-variants default="cparplus">
+    <experimental-setup id="cpar" name="Nocitech CPAR">
+        <devices>
+            <cpar id="cpar" compressor-mode="AUTO"/>
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        </device-mapping>
+    </experimental-setup>
+    <experimental-setup id="cparplus" name="LabBench CPAR+">
+        <devices>
+            <cpar-plus id="cpar" />
+        </devices>
+        <device-mapping>
+            <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        </device-mapping>
+    </experimental-setup>
+  </experimental-setup-variants>  
+    <protocol>
+        <templates>
+            <variables>
+                <strings name="Measurements" value="1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20" />
+            </variables>
+            <content>
+                <algometry-stimulus-rating id="CPPT01"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="1"
+                    second-cuff="false">   
+                    <properties>
+                        <!-- Previous version: wait 130s from start of prior repetition -->
+                        <!--
+                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
+                            time-reference="start"
+                            min="10 if 'TEST' in Subject else 130"/>
+                        -->
+                        <!-- New version: wait 30s from end (button press) of prior repetition -->
+                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
+                        time-reference="end"
+                        min="10 if 'TEST' in Subject else 30"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" virtual="true" />
+                    </dependencies>                                     
+                </algometry-stimulus-rating>
 
+                <algometry-stimulus-rating id="CPPT02INITIAL"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="2"
+                    second-cuff="false">                    
+                    <properties>
+                        <time-constraint test-id="CH1M10" 
+                            time-reference="end"
+                            min="15 if 'TEST' in Subject else 5*60"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="CH1M10" virtual="true" />
+                    </dependencies>                 
+                </algometry-stimulus-rating>
+
+                <algometry-stimulus-rating id="CPPT02"
+                    delta-pressure="1"
+                    measurement="PDT"
+                    pressure-limit="100"
+                    primary-cuff="2"
+                    second-cuff="false">                    
+                    <properties>
+                        <!-- Previous version: wait 130s from start of prior repetition -->
+                        <!--
+                        <time-constraint test-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
+                            time-reference="start"
+                            min="10 if 'TEST' in Subject else 130"/>
+                        -->
+                        <!-- New version: wait 30s from end (button press) of prior repetition -->
+                        <time-constraint test-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
+                        time-reference="end"
+                        min="10 if 'TEST' in Subject else 30"/>
+                    </properties>
+                    <dependencies>
+                        <dependency id="CONFIGURATION" virtual="true" />
+                        <dependency id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" virtual="true" />
+                    </dependencies>                 
+                </algometry-stimulus-rating>
+            </content>
+        </templates>
+        <tests>
+            <questionnaire id="CONFIGURATION" 
+                name="Configuration">
+                <content>
+                    <boolean id="Cuff"
+                        true-label="Left" 
+                        false-label="Right" 
+                        title="Starting cuff" 
+                        instruction="Enter the initial arm that will be tested" />
+                    <instruction id="Setup" 
+                        title="Cuff connections"
+                        instruction="dynamic: 'Instructions.LeftCuff' if Current.Cuff else 'Instructions.RightCuff'"/>
+                    
+                </content>
+            </questionnaire>
+
+            <foreach variable="m" in="Measurements">
+                <algometry-stimulus-rating-constructor id="var: 'CH1M{0}'.format(m)" 
+                    name="var: 'Cuff Pressure Pain Threshold (Channel 1, M{0})'.format(m)" 
+                    template="CPPT01" />
+            </foreach>
+
+            <foreach variable="m" in="Measurements">
+                <if condition="m == '1'">
+                    <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
+                        name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
+                        template="CPPT02INITIAL" />
+                </if>
+                <if condition="m != '1'">
+                    <algometry-stimulus-rating-constructor id="var: 'CH2M{0}'.format(m)" 
+                        name="var: 'Cuff Pressure Pain Threshold (Channel 2, M{0})'.format(m)" 
+                        template="CPPT02" />
+                </if>
+
+            </foreach>
+        </tests>
+        <assets>
+            <file-asset id="Instructions" file="Instructions.zip" />
+        </assets>
+    </protocol>    
+    <post-actions>    
+        <export-log name="Export Session Log"
+            level="information"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            id="Repetitive Cuff Pain, Version 1"
+            filename="dynamic: '{s} Session Log.pdf'.format(s = Subject)"/>       
+
+        <export-data name="Export Raw Data"
+            format="json"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            filename="dynamic: '{s}.json'.format(s = Subject)"/>
+
+        <export-to-csv name="Export to CSV"
+            culture="en-GB"
+            header="true"
+            separator=";"
+            location="C:\LabBenchData\repetitiveCuffPain"
+            filename="dynamic: '{s}.csv'.format(s = Subject)">
+            <item name="ID" value="Subject" default="NA"/>
+            <item name="LeftCuff" value="CONFIGURATION.Cuff" default="NA"/>
+            <item name="CH1M1"  value="'{:.1f}'.format(CH1M1.PDT)" default="NA"/>
+            <item name="CH1M2"  value="'{:.1f}'.format(CH1M2.PDT)" default="NA"/>
+            <item name="CH1M3"  value="'{:.1f}'.format(CH1M3.PDT)" default="NA"/>
+            <item name="CH1M4"  value="'{:.1f}'.format(CH1M4.PDT)" default="NA"/>
+            <item name="CH1M5"  value="'{:.1f}'.format(CH1M5.PDT)" default="NA"/>
+            <item name="CH1M6"  value="'{:.1f}'.format(CH1M6.PDT)" default="NA"/>
+            <item name="CH1M7"  value="'{:.1f}'.format(CH1M7.PDT)" default="NA"/>
+            <item name="CH1M8"  value="'{:.1f}'.format(CH1M8.PDT)" default="NA"/>
+            <item name="CH1M9"  value="'{:.1f}'.format(CH1M9.PDT)" default="NA"/>
+            <item name="CH1M10" value="'{:.1f}'.format(CH1M10.PDT)" default="NA"/>
+            <item name="CH1M11" value="'{:.1f}'.format(CH1M11.PDT)" default="NA"/>
+            <item name="CH1M12" value="'{:.1f}'.format(CH1M12.PDT)" default="NA"/>
+            <item name="CH1M13" value="'{:.1f}'.format(CH1M13.PDT)" default="NA"/>
+            <item name="CH1M14" value="'{:.1f}'.format(CH1M14.PDT)" default="NA"/>
+            <item name="CH1M15" value="'{:.1f}'.format(CH1M15.PDT)" default="NA"/>
+            <item name="CH1M16" value="'{:.1f}'.format(CH1M16.PDT)" default="NA"/>
+            <item name="CH1M17" value="'{:.1f}'.format(CH1M17.PDT)" default="NA"/>
+            <item name="CH1M18" value="'{:.1f}'.format(CH1M18.PDT)" default="NA"/>
+            <item name="CH1M19" value="'{:.1f}'.format(CH1M19.PDT)" default="NA"/>
+            <item name="CH1M20" value="'{:.1f}'.format(CH1M20.PDT)" default="NA"/>
+            <item name="CH2M1"  value="'{:.1f}'.format(CH2M1.PDT)" default="NA"/>
+            <item name="CH2M2"  value="'{:.1f}'.format(CH2M2.PDT)" default="NA"/>
+            <item name="CH2M3"  value="'{:.1f}'.format(CH2M3.PDT)" default="NA"/>
+            <item name="CH2M4"  value="'{:.1f}'.format(CH2M4.PDT)" default="NA"/>
+            <item name="CH2M5"  value="'{:.1f}'.format(CH2M5.PDT)" default="NA"/>
+            <item name="CH2M6"  value="'{:.1f}'.format(CH2M6.PDT)" default="NA"/>
+            <item name="CH2M7"  value="'{:.1f}'.format(CH2M7.PDT)" default="NA"/>
+            <item name="CH2M8"  value="'{:.1f}'.format(CH2M8.PDT)" default="NA"/>
+            <item name="CH2M9"  value="'{:.1f}'.format(CH2M9.PDT)" default="NA"/>
+            <item name="CH2M10" value="'{:.1f}'.format(CH2M10.PDT)" default="NA"/>
+            <item name="CH2M11" value="'{:.1f}'.format(CH2M11.PDT)" default="NA"/>
+            <item name="CH2M12" value="'{:.1f}'.format(CH2M12.PDT)" default="NA"/>
+            <item name="CH2M13" value="'{:.1f}'.format(CH2M13.PDT)" default="NA"/>
+            <item name="CH2M14" value="'{:.1f}'.format(CH2M14.PDT)" default="NA"/>
+            <item name="CH2M15" value="'{:.1f}'.format(CH2M15.PDT)" default="NA"/>
+            <item name="CH2M16" value="'{:.1f}'.format(CH2M16.PDT)" default="NA"/>
+            <item name="CH2M17" value="'{:.1f}'.format(CH2M17.PDT)" default="NA"/>
+            <item name="CH2M18" value="'{:.1f}'.format(CH2M18.PDT)" default="NA"/>
+            <item name="CH2M19" value="'{:.1f}'.format(CH2M19.PDT)" default="NA"/>
+            <item name="CH2M20" value="'{:.1f}'.format(CH2M20.PDT)" default="NA"/>
+        </export-to-csv>       
+    </post-actions>
+</experiment>
