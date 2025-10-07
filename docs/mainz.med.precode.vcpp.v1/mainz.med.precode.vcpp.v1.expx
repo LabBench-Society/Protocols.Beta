@@ -3,15 +3,31 @@
             xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />  
-  <experimental-setup-variants default="setup">
-    <experimental-setup id="setup01" name="Setup Variant 1">
+  <experimental-setup-variants default="cpar">
+    <experimental-setup id="cpar" name="LabBench CPAR+ and Joystick">
       <devices>
-      </devices>
-      <device-mapping>
-      </device-mapping>
-    </experimental-setup>
-    <experimental-setup id="setup02" name="Setup Variant 2">
-      <devices>
+        <joystick id="joystick">
+          <map>
+            
+          </map>
+        </joystick>
+
+        <display id="display"
+          normative-distance="40"
+          fiducial-position="upper-right"
+          screen="secondary"
+          position="fullscreen">
+
+          <monitor diagonal-size="35.3" distance="40"/>
+          <fiducial size="10" x="17" y="17"/>
+
+          <configurations>
+            <image-display id="image" 
+              experimental-setup-id="image" 
+              background-color="rgb(0,0,0)" />
+          </configurations>
+        </display>
+        <cpar-plus id="cpar" />
       </devices>
       <device-mapping>
       </device-mapping>
