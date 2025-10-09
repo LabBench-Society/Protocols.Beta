@@ -20,8 +20,8 @@
         
                 <display
                     id="display"
-                    screen="secondary"
-                    position="fullscreen"
+                    screen="primary"
+                    position="upper-right"
                     fiducial-position="upper-right"
                     normative-distance="40">
         
