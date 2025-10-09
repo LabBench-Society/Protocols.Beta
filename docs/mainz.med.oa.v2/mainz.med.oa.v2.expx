@@ -68,7 +68,10 @@
           <define name="PostDuration" value="5" />
         <define name="TailDuration" value="2" />
         <define name="CondRating" value="4.0" />
-        <define name="OAThreshold" value="func: Script.CreateThresholdVersion(tc)" />
+        <define name="OffsetAnalgesia" value="func: Script.CreateOffsetAnalgesia(tc)" />
+        <define name="OffsetHyperAnalgesia" value="func: Script.CreateOffsetHyperAnalgesia(tc)" />
+        <define name="LongOffsetAnalgesia" value="func: Script.CreateLongOffsetAnalgesia(tc)" />
+        <define name="LongOffsetHyperAnalgesia" value="func: Script.CreateLongOffsetHyperAnalgesia(tc)" />
       </defines>
       <templates>
         <variables>
@@ -130,23 +133,75 @@
                 template="SR">
             </algometry-stimulus-response-constructor>  
 
-            <sequence type="random">
+            <sequence type="deterministic">
                 <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}oaThresholdNoGap'.format(t = Trial)" 
+                    <psychophysics-response-recording-constructor id="var: '{t}OA'.format(t = Trial)" 
                         name="var: '{t} Offset Analgesia'.format(t = Trial)" 
                         template="oaThreshold">
                         <variables>
-                            <string name="function" value="OAThreshold" />
+                            <string name="function" value="OffsetAnalgesia" />
                         </variables>
                     </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}oaControlThresholdNoGap'.format(t = Trial)" 
+                    <psychophysics-response-recording-constructor id="var: '{t}OActrl'.format(t = Trial)" 
                         name="var: '{t} Control Offset Analgesia'.format(t = Trial)" 
                         template="oaControl">
                         <variables>
-                            <string name="function" value="OAThreshold" />
+                            <string name="function" value="OffsetAnalgesia" />
                         </variables>
                     </psychophysics-response-recording-constructor>
                 </sequence>
+
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}LOA'.format(t = Trial)" 
+                        name="var: '{t} Long Offset Analgesia'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="function" value="LongOffsetAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}LOActrl'.format(t = Trial)" 
+                        name="var: '{t} Long Control Offset Analgesia'.format(t = Trial)" 
+                        template="oaControl">
+                        <variables>
+                            <string name="function" value="LongOffsetAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
+
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}OHA'.format(t = Trial)" 
+                        name="var: '{t} Offset Hyper Analgesia'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="function" value="OffsetHyperAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}OHActrl'.format(t = Trial)" 
+                        name="var: '{t} Control Offset Hyper Analgesia'.format(t = Trial)" 
+                        template="oaControl">
+                        <variables>
+                            <string name="function" value="OffsetHyperAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
+
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}LOHA'.format(t = Trial)" 
+                        name="var: '{t} Long Offset Hyper Analgesia'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="function" value="LongOffsetHyperAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}LOHActrl'.format(t = Trial)" 
+                        name="var: '{t} Long Control Offset Hyper Analgesia'.format(t = Trial)" 
+                        template="oaControl">
+                        <variables>
+                            <string name="function" value="LongOffsetHyperAnalgesia" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
+
             </sequence>
         </foreach> 
     </tests>
