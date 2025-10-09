@@ -1,9 +1,14 @@
 
 class OffsetAnalgesia:
-   def __init__(self, tc, version, vas):
-      self.version = version
+   def __init__(self, tc, intensity, duration):
       self.tc = tc
-      self.vas = vas
+      self.PreDuration = duration[0]
+      self.StimulusDuration = duration[1]
+      self.PostDuration = duration[2]
+      self.Intensity = intensity
+
+   def Duration(self):
+      return self.PreDuration + self.StimulusDuration + self.PostDuration
 
    def Stimulate(self, sr):
       cpar = self.tc.Instruments.PressureAlgometer
@@ -12,97 +17,39 @@ class OffsetAnalgesia:
       PDT = sr.PDT
       PTT = sr.PTT
 
-      if 'THR' in self.version:
-         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
-      else:
-         CondIntensity = sr.GetPressureFromPerception(self.vas)
+      CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
 
       channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(CondIntensity,self.tc.PreDuration)
-                        .Step(PTT,self.tc.StimulusDuration)
-                        .Step(CondIntensity,self.tc.PostDuration))
+                        .Step(CondIntensity,self.PreDuration)
+                        .Step(self.Intensity * PTT,self.StimulusDuration)
+                        .Step(CondIntensity,self.PostDuration))
       cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
+      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
       cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
 
       return True
 
-   def ControlStimulate(self, sr):
+   def Control(self, sr):
       cpar = self.tc.Instruments.PressureAlgometer
       channel = cpar.Channels[0]
 
       PDT = sr.PDT
       PTT = sr.PTT
 
-      if 'THR' in self.version:
-         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
-      else:
-         CondIntensity = sr.GetPressureFromPerception(self.vas)
+      CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
 
       channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(CondIntensity,self.tc.PreDuration)
-                        .Step(CondIntensity,self.tc.StimulusDuration)
-                        .Step(CondIntensity,self.tc.PostDuration))
+                        .Step(CondIntensity,self.PreDuration)
+                        .Step(CondIntensity,self.StimulusDuration)
+                        .Step(CondIntensity,self.PostDuration))
       cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
+      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
       cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
 
       return True
-
-   def StimulateGap(self, sr):
-      cpar = self.tc.Instruments.PressureAlgometer
-      channel = cpar.Channels[0]
-
-      PDT = sr.PDT
-      PTT = sr.PTT
-
-      if 'THR' in self.version:
-         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
-      else:
-         CondIntensity = sr.GetPressureFromPerception(self.vas)
-
-      channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(CondIntensity,self.tc.PreDuration)
-                        .Step(0, self.tc.StimulationGap)
-                        .Step(PTT,self.tc.StimulusDuration)
-                        .Step(0, self.tc.StimulationGap)
-                        .Step(CondIntensity,self.tc.PostDuration))
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
-
-      return True
-
-   def ControlStimulateGap(self, sr):
-      cpar = self.tc.Instruments.PressureAlgometer
-      channel = cpar.Channels[0]
-
-      PDT = sr.PDT
-      PTT = sr.PTT
-
-      if 'THR' in self.version:
-         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
-      else:
-         CondIntensity = sr.GetPressureFromPerception(self.vas)
-
-      channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(CondIntensity,self.tc.PreDuration)
-                        .Step(0, self.tc.StimulationGap)
-                        .Step(CondIntensity,self.tc.StimulusDuration)
-                        .Step(0, self.tc.StimulationGap)
-                        .Step(CondIntensity,self.tc.PostDuration))
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
-
-      return True
-
    
 def CreateThresholdVersion(tc):
-   return OffsetAnalgesia(tc, 'THR', 0.0)
-
-def CreateRatingVersion(tc):
-   return OffsetAnalgesia(tc, 'VAS', tc.CondRating)
+   return OffsetAnalgesia(tc, 1, [5, 2, 5])
 
 def Stop(tc):
    cpar = tc.Instruments.PressureAlgometer

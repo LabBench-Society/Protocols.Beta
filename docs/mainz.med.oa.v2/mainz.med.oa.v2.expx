@@ -20,19 +20,21 @@
         
                 <display
                     id="display"
-                    screen="primary"
-                    position="upper-right"
-                    fiducial-position="upper-right"
+                    screen="secondary"
+                    position="fullscreen"
+                    fiducial-position="lower-right"
                     normative-distance="40">
         
-                    <monitor diagonal-size="35" distance="40" />
-                    <fiducial size="10" x="17" y="17"/>
+                    <monitor diagonal-size="68" distance="100" />
+                    <fiducial size="10" x="10" y="13"/>
 
                     <typography 
                       active-color="rgb(255,0,0)"
                       background-color="rgb(255,255,255)"
                       inactive-color="rgb(16,16,16)"
                       foreground-color="rgb(255,255,255)">
+                      <top-anchor size="36" color="rgb(0,0,0)" />
+                      <bottom-anchor size="36" color="rgb(0,0,0)" />
 
                     </typography>
         
@@ -60,15 +62,13 @@
     </experimental-setup-variants>
     <protocol>
       <defines>
-        <define name="StimulusDuration" value="2" />
-        <define name="CondPressure" value="0.33" />
-        <define name="PreDuration" value="5" />
-        <define name="PostDuration" value="5" />
+          <define name="CondPressure" value="0.33" />
+          <define name="StimulusDuration" value="2" />
+          <define name="PreDuration" value="5" />
+          <define name="PostDuration" value="5" />
         <define name="TailDuration" value="2" />
-        <define name="StimulationGap" value="0.5" />
         <define name="CondRating" value="4.0" />
         <define name="OAThreshold" value="func: Script.CreateThresholdVersion(tc)" />
-        <define name="OARating" value="func: Script.CreateRatingVersion(tc)" />
       </defines>
       <templates>
         <variables>
@@ -79,13 +79,13 @@
                 delta-pressure="1"
                 pressure-limit="100"
                 primary-cuff="1"
-                second-cuff="true"
+                second-cuff="false"
                 stop-mode="stop-on-maximal-rating"
                 experimental-setup-id="vas"
                 vas-pdt="0.1" />
 
             <psychophysics-response-recording id="oaThreshold" 
-                duration="PreDuration+StimulusDuration+PostDuration+TailDuration+2*StimulationGap" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
                 sample-rate="10"
                 response-weight="1"
                 signal-weight="1"
@@ -93,7 +93,7 @@
                 <dependencies>
                     <dependency id="var: '{t}SR'.format(t = Trial)" />
                 </dependencies>
-                <test-events start="var: 'OAThreshold.{function}({t}SR)'.format(function = function, t = Trial)"
+                <test-events start="var: '{function}.Stimulate({t}SR)'.format(function = function, t = Trial)"
                             abort="func: Script.Stop(tc)"
                             complete="func: Script.Stop(tc)">
                     <instrument interface="pressure-algometer" />
@@ -103,8 +103,8 @@
                 </signals>
             </psychophysics-response-recording>
 
-            <psychophysics-response-recording id="oaRating" 
-                duration="PreDuration+StimulusDuration+PostDuration+TailDuration+2*StimulationGap" 
+            <psychophysics-response-recording id="oaControl" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
                 sample-rate="10"
                 response-weight="1"
                 signal-weight="1"
@@ -112,7 +112,7 @@
                 <dependencies>
                     <dependency id="var: '{t}SR'.format(t = Trial)" />
                 </dependencies>
-                <test-events start="var: 'OARating.{function}({t}SR)'.format(function = function, t = Trial)"
+                <test-events start="var: '{function}.Control({t}SR)'.format(function = function, t = Trial)"
                             abort="func: Script.Stop(tc)"
                             complete="func: Script.Stop(tc)">
                     <instrument interface="pressure-algometer" />
@@ -121,7 +121,6 @@
                     <signal id="PRESSURE" name="Pressure" type="pressure" unit="kPa" />
                 </signals>
             </psychophysics-response-recording>
-
         </content>
       </templates>
       <tests>     
@@ -134,75 +133,17 @@
             <sequence type="random">
                 <sequence type="deterministic">
                     <psychophysics-response-recording-constructor id="var: '{t}oaThresholdNoGap'.format(t = Trial)" 
-                        name="var: '{t} Offset Analgesia (PDT/PTT Version, No Gap)'.format(t = Trial)" 
+                        name="var: '{t} Offset Analgesia'.format(t = Trial)" 
                         template="oaThreshold">
                         <variables>
-                            <string name="function" value="Stimulate" />
+                            <string name="function" value="OAThreshold" />
                         </variables>
                     </psychophysics-response-recording-constructor>
                     <psychophysics-response-recording-constructor id="var: '{t}oaControlThresholdNoGap'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Analgesia (PDT/PTT Version, No Gap)'.format(t = Trial)" 
-                        template="oaThreshold">
+                        name="var: '{t} Control Offset Analgesia'.format(t = Trial)" 
+                        template="oaControl">
                         <variables>
-                            <string name="function" value="ControlStimulate" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}oaThresholdGap'.format(t = Trial)" 
-                        name="var: '{t} Offset Analgesia (PDT/PTT Version, Gap)'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="StimulateGap" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}oaControlThresholdGap'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Analgesia (PDT/PTT Version, Gap)'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="ControlStimulateGap" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}oaRatingNoGap'.format(t = Trial)" 
-                        name="var: '{t} Offset Analgesia (Rating Version, No Gap)'.format(t = Trial)" 
-                        template="oaRating">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="Stimulate" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}oaControlRatingNoGap'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Analgesia (Rating Version, No Gap)'.format(t = Trial)" 
-                        template="oaRating">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="ControlStimulate" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}oaRatingGap'.format(t = Trial)" 
-                        name="var: '{t} Offset Analgesia (Rating Version, Gap)'.format(t = Trial)" 
-                        template="oaRating">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="StimulateGap" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}oaControlRatingGap'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Analgesia (Rating Version, Gap)'.format(t = Trial)" 
-                        template="oaRating">
-                        <variables>
-                            <string name="sr" value="SR" />
-                            <string name="function" value="ControlStimulateGap" />
+                            <string name="function" value="OAThreshold" />
                         </variables>
                     </psychophysics-response-recording-constructor>
                 </sequence>
