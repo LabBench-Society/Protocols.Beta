@@ -132,40 +132,80 @@
             </algometry-stimulus-response-constructor>  
 
             <sequence type="random">
-                <psychophysics-response-recording-constructor id="var: '{t}oaThresholdNoGap'.format(t = Trial)" 
-                    name="var: '{t} Offset Analgesia (PDT/PTT Version, No Gap)'.format(t = Trial)" 
-                    template="oaThreshold">
-                    <variables>
-                        <string name="function" value="Stimulate" />
-                    </variables>
-                </psychophysics-response-recording-constructor>
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}oaThresholdNoGap'.format(t = Trial)" 
+                        name="var: '{t} Offset Analgesia (PDT/PTT Version, No Gap)'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="function" value="Stimulate" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}oaControlThresholdNoGap'.format(t = Trial)" 
+                        name="var: '{t} Control Offset Analgesia (PDT/PTT Version, No Gap)'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="function" value="ControlStimulate" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
 
-                <psychophysics-response-recording-constructor id="var: '{t}oaThresholdGap'.format(t = Trial)" 
-                    name="var: '{t} Offset Analgesia (PDT/PTT Version, Gap)'.format(t = Trial)" 
-                    template="oaThreshold">
-                    <variables>
-                        <string name="sr" value="SR" />
-                        <string name="function" value="StimulateGap" />
-                    </variables>
-                </psychophysics-response-recording-constructor>
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}oaThresholdGap'.format(t = Trial)" 
+                        name="var: '{t} Offset Analgesia (PDT/PTT Version, Gap)'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="StimulateGap" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}oaControlThresholdGap'.format(t = Trial)" 
+                        name="var: '{t} Control Offset Analgesia (PDT/PTT Version, Gap)'.format(t = Trial)" 
+                        template="oaThreshold">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="ControlStimulateGap" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
 
-                <psychophysics-response-recording-constructor id="var: '{t}oaRatingNoGap'.format(t = Trial)" 
-                    name="var: '{t} Offset Analgesia (Rating Version, No Gap)'.format(t = Trial)" 
-                    template="oaRating">
-                    <variables>
-                        <string name="sr" value="SR" />
-                        <string name="function" value="Stimulate" />
-                    </variables>
-                </psychophysics-response-recording-constructor>
 
-                <psychophysics-response-recording-constructor id="var: '{t}oaRatingGap'.format(t = Trial)" 
-                    name="var: '{t} Offset Analgesia (Rating Version, Gap)'.format(t = Trial)" 
-                    template="oaRating">
-                    <variables>
-                        <string name="sr" value="SR" />
-                        <string name="function" value="StimulateGap" />
-                    </variables>
-                </psychophysics-response-recording-constructor>
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}oaRatingNoGap'.format(t = Trial)" 
+                        name="var: '{t} Offset Analgesia (Rating Version, No Gap)'.format(t = Trial)" 
+                        template="oaRating">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="Stimulate" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}oaControlRatingNoGap'.format(t = Trial)" 
+                        name="var: '{t} Control Offset Analgesia (Rating Version, No Gap)'.format(t = Trial)" 
+                        template="oaRating">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="ControlStimulate" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
+
+                <sequence type="deterministic">
+                    <psychophysics-response-recording-constructor id="var: '{t}oaRatingGap'.format(t = Trial)" 
+                        name="var: '{t} Offset Analgesia (Rating Version, Gap)'.format(t = Trial)" 
+                        template="oaRating">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="StimulateGap" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                    <psychophysics-response-recording-constructor id="var: '{t}oaControlRatingGap'.format(t = Trial)" 
+                        name="var: '{t} Control Offset Analgesia (Rating Version, Gap)'.format(t = Trial)" 
+                        template="oaRating">
+                        <variables>
+                            <string name="sr" value="SR" />
+                            <string name="function" value="ControlStimulateGap" />
+                        </variables>
+                    </psychophysics-response-recording-constructor>
+                </sequence>
             </sequence>
         </foreach> 
     </tests>

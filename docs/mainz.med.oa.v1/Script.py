@@ -27,6 +27,28 @@ class OffsetAnalgesia:
 
       return True
 
+   def ControlStimulate(self, sr):
+      cpar = self.tc.Instruments.PressureAlgometer
+      channel = cpar.Channels[0]
+
+      PDT = sr.PDT
+      PTT = sr.PTT
+
+      if 'THR' in self.version:
+         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
+      else:
+         CondIntensity = sr.GetPressureFromPerception(self.vas)
+
+      channel.SetStimulus(1, channel.CreateWaveform()
+                        .Step(CondIntensity,self.tc.PreDuration)
+                        .Step(CondIntensity,self.tc.StimulusDuration)
+                        .Step(CondIntensity,self.tc.PostDuration))
+      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
+      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
+      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+
+      return True
+
    def StimulateGap(self, sr):
       cpar = self.tc.Instruments.PressureAlgometer
       channel = cpar.Channels[0]
@@ -43,6 +65,30 @@ class OffsetAnalgesia:
                         .Step(CondIntensity,self.tc.PreDuration)
                         .Step(0, self.tc.StimulationGap)
                         .Step(PTT,self.tc.StimulusDuration)
+                        .Step(0, self.tc.StimulationGap)
+                        .Step(CondIntensity,self.tc.PostDuration))
+      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
+      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.CH01)
+      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+
+      return True
+
+   def ControlStimulateGap(self, sr):
+      cpar = self.tc.Instruments.PressureAlgometer
+      channel = cpar.Channels[0]
+
+      PDT = sr.PDT
+      PTT = sr.PTT
+
+      if 'THR' in self.version:
+         CondIntensity = self.tc.CondPressure * (PTT - PDT) + PDT
+      else:
+         CondIntensity = sr.GetPressureFromPerception(self.vas)
+
+      channel.SetStimulus(1, channel.CreateWaveform()
+                        .Step(CondIntensity,self.tc.PreDuration)
+                        .Step(0, self.tc.StimulationGap)
+                        .Step(CondIntensity,self.tc.StimulusDuration)
                         .Step(0, self.tc.StimulationGap)
                         .Step(CondIntensity,self.tc.PostDuration))
       cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
