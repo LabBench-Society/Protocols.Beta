@@ -55,10 +55,10 @@ class OffsetAnalgesia:
       return True
    
 def CreateOffsetAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.4, 1, [2, 5, 2, 5])
+   return OffsetAnalgesia(tc, 0.4, 1, [2, 5, 2, 20])
 
 def CreateOffsetHyperAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.8, 0.2, [2, 5, 2, 5])
+   return OffsetAnalgesia(tc, 0.8, 0.2, [2, 5, 2, 20])
 
 def CreateLongOffsetAnalgesia(tc):
    return OffsetAnalgesia(tc, 0.4, 1, [2, 10, 10, 10])
