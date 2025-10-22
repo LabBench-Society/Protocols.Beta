@@ -8,7 +8,7 @@ def Condition(tc):
     chan.SetStimulus(1, chan.CreateWaveform()
                      .Step(tc.SR.PTT*0.70, 9.9 * 60))
     algometer.ConfigurePressureOutput(0, ChannelID.CH01)
-    algometer.ConfigurePressureOutput(0, ChannelID.NONE)
+    algometer.ConfigurePressureOutput(1, ChannelID.NONE)
     algometer.StartStimulation(AlgometerStopCriterion.STOP_CRITERION_ON_BUTTON_PRESSED, True)
 
     Log.Information("Starting conditioning: {intensity}", tc.SR.PTT)
