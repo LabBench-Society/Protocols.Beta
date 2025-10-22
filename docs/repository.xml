@@ -171,6 +171,12 @@
           labbench-version="5.0" />
       </category>
     </category>
+    <category name="Essex University" id="essex">
+      <protocol 
+        id="essex.pptReliability" 
+        name="Pressure Pain Threshold Reliability" 
+        labbench-version="5.4"  />
+    </category>
     <category name="KU Leuven" id="kuleuven">
         <category name="Translational Research Center in Gastro-intestinal Disorders" id="kuleuven.gbiomed">
             <category name="The Laboratory for Brain-Gut Axis Studies (LaBGAS)" id="kuleuven.gbiomed.LaBGAS">
