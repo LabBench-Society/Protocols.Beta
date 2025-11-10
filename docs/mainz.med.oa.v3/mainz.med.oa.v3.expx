@@ -4,19 +4,15 @@
     <subject-validator regex="^S[0-9]{3}$"
                        advice="Please enter an ID in the form of SXXX, where X is a digit" />
     <experimental-setup-variants default="CPARpDISPLAY">
-        <experimental-setup id="CPARp" name="LabBench CPAR+">
-            <devices>
-                <cpar-plus id="dev"/>
-            </devices>
-            <device-mapping>
-              <device-assignment device-id="dev" instrument-name="Button"  />
-              <device-assignment device-id="dev" instrument-name="Scales"  />
-              <device-assignment device-id="dev" instrument-name="PressureAlgometer" />
-            </device-mapping>
-          </experimental-setup>        
           <experimental-setup id="CPARpDISPLAY" name="LabBench CPAR+ (Scale on secondary monitor)">
             <devices>
-                <cpar-plus id="dev"/>
+                <cpar-plus id="cpar"/>
+
+                <lio id="lio" default-analog-output="0">
+                    <stimulators>
+                        <ds5 name="Digimer DS5" transconductance="5mA_1V"/>
+                    </stimulators>
+                </lio>
         
                 <display
                     id="display"
@@ -43,7 +39,7 @@
                             id="vas"
                             experimental-setup-id="vas"
                             length="10"
-                            controller-device="dev">
+                            controller-device="cpar">
                             <anchors>
                                 <modality text="" />
                                 <top-anchor text="10/Worst imaginable itch" />
@@ -54,9 +50,10 @@
                 </display>
             </devices>
             <device-mapping>
-                <device-assignment device-id="dev" instrument-name="Button"  />
-              <device-assignment device-id="dev" instrument-name="Scales"  />
-              <device-assignment device-id="dev" instrument-name="PressureAlgometer" />
+                <device-assignment device-id="cpar" instrument-name="Button"  />
+                <device-assignment device-id="cpar" instrument-name="Scales"  />
+                <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+                <device-assignment device-id="lio" instrument-name="Stimulator"  />
             </device-mapping>
           </experimental-setup>  
     </experimental-setup-variants>
