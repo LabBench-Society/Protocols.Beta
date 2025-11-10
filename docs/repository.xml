@@ -214,6 +214,10 @@
             name="Offset Analgesia (Cuff Pressure Algometry) (Version 2)"
             labbench-version="5.4"
             category="Pain Perception Processes"/>
+          <protocol id="mainz.med.oa.v3" 
+            name="Offset Analgesia (Cuff Pressure Algometry) (Version 3)"
+            labbench-version="5.4"
+            category="Pain Perception Processes"/>
         </category>
         <category name="Veridical Cued Pain Paradigm" id="mainz.med.vcpp">
           <protocol id="mainz.med.vcpp.v1" 
