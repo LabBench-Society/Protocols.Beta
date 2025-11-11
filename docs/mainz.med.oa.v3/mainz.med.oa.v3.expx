@@ -59,20 +59,12 @@
     </experimental-setup-variants>
     <protocol>
       <defines>
-          <define name="CondPressure" value="0.33" />
-          <define name="StimulusDuration" value="2" />
-          <define name="PreDuration" value="5" />
-          <define name="PostDuration" value="5" />
-        <define name="TailDuration" value="2" />
-        <define name="CondRating" value="4.0" />
-        <define name="OffsetAnalgesia" value="func: Script.CreateOffsetAnalgesia(tc)" />
-        <define name="OffsetHyperAnalgesia" value="func: Script.CreateOffsetHyperAnalgesia(tc)" />
-        <define name="LongOffsetAnalgesia" value="func: Script.CreateLongOffsetAnalgesia(tc)" />
-        <define name="LongOffsetHyperAnalgesia" value="func: Script.CreateLongOffsetHyperAnalgesia(tc)" />
+        <define name="PressureIncreasingOffsetModulation" value="func: PressureStimulation.CreatePressureIncreasingOffsetModulation(tc)" />
+        <define name="PressureDecreasingOffsetModulation" value="func: PressureStimulation.CreatePressureDecreasingOffsetModulation(tc)" />
       </defines>
       <templates>
         <variables>
-            <strings name="Trials" value="T01;T02;T03" />
+            <strings name="Trials" value="T01;T02" />
         </variables>
         <content>
             <algometry-stimulus-response id="SR"
@@ -84,7 +76,7 @@
                 experimental-setup-id="vas"
                 vas-pdt="0.1" />
 
-            <psychophysics-response-recording id="oaThreshold" 
+            <psychophysics-response-recording id="pressureModulation" 
                 duration="var: '{function}.Duration()'.format(function = function)" 
                 sample-rate="10"
                 response-weight="1"
@@ -94,16 +86,16 @@
                     <dependency id="var: '{t}SR'.format(t = Trial)" />
                 </dependencies>
                 <test-events start="var: '{function}.Stimulate({t}SR)'.format(function = function, t = Trial)"
-                            abort="func: Script.Stop(tc)"
-                            complete="func: Script.Stop(tc)">
+                            abort="func: PressureStimulation.Stop(tc)"
+                            complete="func: PressureStimulation.Stop(tc)">
                     <instrument interface="pressure-algometer" />
                 </test-events>
-                <signals sample="func: Script.Sample(tc)" min="0" max="100">
+                <signals sample="func: PressureStimulation.Sample(tc)" min="0" max="100">
                     <signal id="PRESSURE" name="Pressure" type="pressure" unit="kPa" />
                 </signals>
             </psychophysics-response-recording>
 
-            <psychophysics-response-recording id="oaControl" 
+            <psychophysics-response-recording id="pressureControl" 
                 duration="var: '{function}.Duration()'.format(function = function)" 
                 sample-rate="10"
                 response-weight="1"
@@ -113,11 +105,11 @@
                     <dependency id="var: '{t}SR'.format(t = Trial)" />
                 </dependencies>
                 <test-events start="var: '{function}.Control({t}SR)'.format(function = function, t = Trial)"
-                            abort="func: Script.Stop(tc)"
-                            complete="func: Script.Stop(tc)">
+                            abort="func: PressureStimulation.Stop(tc)"
+                            complete="func: PressureStimulation.Stop(tc)">
                     <instrument interface="pressure-algometer" />
                 </test-events>
-                <signals sample="func: Script.Sample(tc)" min="0" max="100">
+                <signals sample="func: PressureStimulation.Sample(tc)" min="0" max="100">
                     <signal id="PRESSURE" name="Pressure" type="pressure" unit="kPa" />
                 </signals>
             </psychophysics-response-recording>
@@ -130,80 +122,40 @@
                 template="SR">
             </algometry-stimulus-response-constructor>  
 
-            <sequence type="deterministic">
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}OA'.format(t = Trial)" 
-                        name="var: '{t} Offset Analgesia'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="function" value="OffsetAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}OActrl'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Analgesia'.format(t = Trial)" 
-                        template="oaControl">
-                        <variables>
-                            <string name="function" value="OffsetAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}LOA'.format(t = Trial)" 
-                        name="var: '{t} Long Offset Analgesia'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="function" value="LongOffsetAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}LOActrl'.format(t = Trial)" 
-                        name="var: '{t} Long Control Offset Analgesia'.format(t = Trial)" 
-                        template="oaControl">
-                        <variables>
-                            <string name="function" value="LongOffsetAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}OHA'.format(t = Trial)" 
-                        name="var: '{t} Offset Hyper Analgesia'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="function" value="OffsetHyperAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}OHActrl'.format(t = Trial)" 
-                        name="var: '{t} Control Offset Hyper Analgesia'.format(t = Trial)" 
-                        template="oaControl">
-                        <variables>
-                            <string name="function" value="OffsetHyperAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
-                <sequence type="deterministic">
-                    <psychophysics-response-recording-constructor id="var: '{t}LOHA'.format(t = Trial)" 
-                        name="var: '{t} Long Offset Hyper Analgesia'.format(t = Trial)" 
-                        template="oaThreshold">
-                        <variables>
-                            <string name="function" value="LongOffsetHyperAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}LOHActrl'.format(t = Trial)" 
-                        name="var: '{t} Long Control Offset Hyper Analgesia'.format(t = Trial)" 
-                        template="oaControl">
-                        <variables>
-                            <string name="function" value="LongOffsetHyperAnalgesia" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                </sequence>
-
+            <sequence type="random">
+                <psychophysics-response-recording-constructor id="var: '{t}PIOM'.format(t = Trial)" 
+                    name="var: '{t} Pressure Increasing Offset Modulation'.format(t = Trial)" 
+                    template="pressureModulation">
+                    <variables>
+                        <string name="function" value="PressureIncreasingOffsetModulation" />
+                    </variables>
+                </psychophysics-response-recording-constructor>
+                <psychophysics-response-recording-constructor id="var: '{t}PIOMctrl'.format(t = Trial)" 
+                    name="var: '{t} Pressure Increasing Offset Modulation (Control)'.format(t = Trial)" 
+                    template="pressureControl">
+                    <variables>
+                        <string name="function" value="PressureIncreasingOffsetModulation" />
+                    </variables>
+                </psychophysics-response-recording-constructor>
+                <psychophysics-response-recording-constructor id="var: '{t}PDOM'.format(t = Trial)" 
+                    name="var: '{t} Pressure Decreasing Offset Modulation'.format(t = Trial)" 
+                    template="pressureModulation">
+                    <variables>
+                        <string name="function" value="PressureIncreasingOffsetModulation" />
+                    </variables>
+                </psychophysics-response-recording-constructor>
+                <psychophysics-response-recording-constructor id="var: '{t}PDOMctrl'.format(t = Trial)" 
+                    name="var: '{t} Pressure Decreasing Offset Modulation (Control)'.format(t = Trial)" 
+                    template="pressureControl">
+                    <variables>
+                        <string name="function" value="PressureIncreasingOffsetModulation" />
+                    </variables>
+                </psychophysics-response-recording-constructor>
             </sequence>
         </foreach> 
     </tests>
     <assets>
-      <file-asset id="Script" file="Script.py" />
+      <file-asset id="PressureStimulation" file="PressureStimulation.py" />
     </assets>
   </protocol>
 </experiment>

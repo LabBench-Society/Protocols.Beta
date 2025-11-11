@@ -1,5 +1,5 @@
 
-class OffsetAnalgesia:
+class PressureOffsetAnalgesia:
    def __init__(self, tc, conditioning, intensity, duration):
       self.tc = tc
       self.PreConditioning = duration[0]
@@ -7,7 +7,7 @@ class OffsetAnalgesia:
       self.StimulusDuration = duration[2]
       self.PostDuration = duration[3]
       self.Intensity = intensity
-      self.PrecondIntensity = 0.8
+      self.PrecondIntensity = 0.5
       self.CondPressure = conditioning
 
    def Duration(self):
@@ -54,23 +54,17 @@ class OffsetAnalgesia:
 
       return True
    
-def CreateOffsetAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.4, 1, [2, 5, 2, 20])
+def CreatePressureIncreasingOffsetModulation(tc):
+   return PressureOffsetAnalgesia(tc, 0.4, 1, [2, 10, 10, 10])
 
-def CreateOffsetHyperAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.8, 0.2, [2, 5, 2, 20])
+def CreatePressureDecreasingOffsetModulation(tc):
+   return PressureOffsetAnalgesia(tc, 0.8, 0.2, [2, 10, 10, 10])
 
-def CreateLongOffsetAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.4, 1, [2, 10, 10, 10])
-
-def CreateLongOffsetHyperAnalgesia(tc):
-   return OffsetAnalgesia(tc, 0.8, 0.2, [2, 10, 10, 10])
-
-def Stop(tc):
+def StopPressure(tc):
    cpar = tc.Instruments.PressureAlgometer
    cpar.StopStimulation()
    return True
 
-def Sample(tc):
+def SamplePressure(tc):
    cpar = tc.Instruments.PressureAlgometer
    return [cpar.Pressure[0]]
