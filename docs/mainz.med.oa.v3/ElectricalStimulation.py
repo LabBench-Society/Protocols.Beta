@@ -1,69 +1,50 @@
 
-class ElectricalOffsetAnalgesia:
+class ElectricalOffsetModulation:
    def __init__(self, tc, conditioning, intensity, duration):
       self.tc = tc
-      self.PreConditioning = duration[0]
-      self.PreDuration = duration[1]
-      self.StimulusDuration = duration[2]
-      self.PostDuration = duration[3]
+      self.Duration = duration
       self.Intensity = intensity
-      self.CondPressure = conditioning
+      self.Conditioning = conditioning
+      self.CurrentIntenisity = 0
 
    def Duration(self):
-      return self.PreConditioning + self.PreDuration + self.StimulusDuration + self.PostDuration + 4
+      return self.Duration[0] + self.Duration[1] + self.Duration[3] + self.Duration[4] + 4
 
-   def Stimulate(self, sr):
-      cpar = self.tc.Instruments.PressureAlgometer
-      channel = cpar.Channels[0]
+   def UpdateIntensity(self, duration, intensity):
+      self.CurrentIntenisity = intensity
+      self.tc.Log.Information("Updating intensity to {}".format(intensity) )
 
-      PDT = sr.PDT
-      PTT = sr.PTT
+      return duration
 
-      CondIntensity = self.CondPressure * (PTT - PDT) + PDT
-      Intensity = self.Intensity * (PTT - PDT) + PDT
+   def Stimulate(self, thr):
+      PTT = thr.CH01
 
-      channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(0,self.PreConditioning)
-                        .Step(CondIntensity,self.PreDuration)
-                        .Step(Intensity,self.StimulusDuration)
-                        .Step(CondIntensity,self.PostDuration))
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+      schedule = self.tc.Sheduler.Create()
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[0], 0))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[1], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[2], PTT * self.Intensity))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[3], PTT * self.Conditioning))
+      self.tc.Schedular.Run(schedule)
 
       return True
 
-   def Control(self, sr):
-      cpar = self.tc.Instruments.PressureAlgometer
-      channel = cpar.Channels[0]
+   def Control(self, thr):
+      PTT = thr.CH01
 
-      PDT = sr.PDT
-      PTT = sr.PTT
-
-      CondIntensity = self.CondPressure * (PTT - PDT) + PDT
-
-      channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(self.PrecondIntensity * PDT,self.PreConditioning)
-                        .Step(CondIntensity,self.PreDuration)
-                        .Step(CondIntensity,self.StimulusDuration)
-                        .Step(CondIntensity,self.PostDuration))
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+      schedule = self.tc.Sheduler.Create()
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[0], 0))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[1], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[2], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(self.Duration[3], PTT * self.Conditioning))
+      self.tc.Schedular.Run(schedule)
 
       return True
    
-def CreatePressureIncreasingOffsetModulation(tc):
-   return PressureOffsetAnalgesia(tc, 0.4, 1, [2, 10, 10, 10])
-
-def CreatePressureDecreasingOffsetModulation(tc):
-   return PressureOffsetAnalgesia(tc, 0.8, 0.2, [2, 10, 10, 10])
-
-def StopPressure(tc):
-   cpar = tc.Instruments.PressureAlgometer
-   cpar.StopStimulation()
-   return True
-
-def SamplePressure(tc):
-   cpar = tc.Instruments.PressureAlgometer
-   return [cpar.Pressure[0]]
+   def Sample(self):
+      return [self.CurrentIntenisity]
+   
+   def Stop(self):
+      return True
+   
+def CreateElectricalOffsetModulation(tc):
+   return ElectricalOffsetModulation(tc, 1.5, 1.8, [2, 10, 10, 10])

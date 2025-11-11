@@ -61,6 +61,7 @@
       <defines>
         <define name="PressureIncreasingOffsetModulation" value="func: PressureStimulation.CreatePressureIncreasingOffsetModulation(tc)" />
         <define name="PressureDecreasingOffsetModulation" value="func: PressureStimulation.CreatePressureDecreasingOffsetModulation(tc)" />
+        <define name="ElectricalOffsetModulation" value="func: ElectricalStimulation.CreateElectricalOffsetModulation(tc)" />
       </defines>
       <templates>
         <variables>
@@ -156,6 +157,7 @@
     </tests>
     <assets>
       <file-asset id="PressureStimulation" file="PressureStimulation.py" />
+      <file-asset id="ElectricalStimulation" file="ElectricalStimulation.py" />
     </assets>
   </protocol>
 </experiment>
