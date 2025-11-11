@@ -1,5 +1,5 @@
 
-class PressureOffsetModulation:
+class ElectricalOffsetAnalgesia:
    def __init__(self, tc, conditioning, intensity, duration):
       self.tc = tc
       self.PreConditioning = duration[0]
@@ -7,7 +7,6 @@ class PressureOffsetModulation:
       self.StimulusDuration = duration[2]
       self.PostDuration = duration[3]
       self.Intensity = intensity
-      self.PrecondIntensity = 0.5
       self.CondPressure = conditioning
 
    def Duration(self):
@@ -24,7 +23,7 @@ class PressureOffsetModulation:
       Intensity = self.Intensity * (PTT - PDT) + PDT
 
       channel.SetStimulus(1, channel.CreateWaveform()
-                        .Step(self.PrecondIntensity * PDT,self.PreConditioning)
+                        .Step(0,self.PreConditioning)
                         .Step(CondIntensity,self.PreDuration)
                         .Step(Intensity,self.StimulusDuration)
                         .Step(CondIntensity,self.PostDuration))
@@ -55,10 +54,10 @@ class PressureOffsetModulation:
       return True
    
 def CreatePressureIncreasingOffsetModulation(tc):
-   return PressureOffsetModulation(tc, 0.4, 1, [2, 10, 10, 10])
+   return PressureOffsetAnalgesia(tc, 0.4, 1, [2, 10, 10, 10])
 
 def CreatePressureDecreasingOffsetModulation(tc):
-   return PressureOffsetModulation(tc, 0.8, 0.2, [2, 10, 10, 10])
+   return PressureOffsetAnalgesia(tc, 0.8, 0.2, [2, 10, 10, 10])
 
 def StopPressure(tc):
    cpar = tc.Instruments.PressureAlgometer
