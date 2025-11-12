@@ -19,24 +19,26 @@ class ElectricalOffsetModulation:
    def Stimulate(self, thr):
       PTT = thr.CH01
 
-      schedule = self.tc.Sheduler.Create()
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[0], 0))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[1], PTT * self.Conditioning))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[2], PTT * self.Intensity))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[3], PTT * self.Conditioning))
-      self.tc.Schedular.Run(schedule)
+      schedule = self.tc.Scheduler.Create()
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[0], 0))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[1], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[2], PTT * self.Intensity))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[3], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(5, 0))
+      self.tc.Scheduler.Run(schedule)
 
       return True
 
    def Control(self, thr):
       PTT = thr.CH01
 
-      schedule = self.tc.Sheduler.Create()
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[0], 0))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[1], PTT * self.Conditioning))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[2], PTT * self.Conditioning))
-      schedule.Add(lambda: self.UpdateIntensity(self.Duration[3], PTT * self.Conditioning))
-      self.tc.Schedular.Run(schedule)
+      schedule = self.tc.Scheduler.Create()
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[0], 0))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[1], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[2], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(1000 * self.Duration[3], PTT * self.Conditioning))
+      schedule.Add(lambda: self.UpdateIntensity(5, 0))
+      self.tc.Scheduler.Run(schedule)
 
       return True
    

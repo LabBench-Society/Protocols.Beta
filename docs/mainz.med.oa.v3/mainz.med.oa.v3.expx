@@ -141,53 +141,100 @@
                 </channels>
             </psychophysics-threshold-estimation>
 
-            
+            <psychophysics-response-recording id="electricalModulation" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}PDT'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: 'ElectricalOffsetModulation.Stimulate({t}PDT)'.format(t = Trial)"
+                             abort="ElectricalOffsetModulation.Stop()"
+                             complete="ElectricalOffsetModulation.Stop()">
+                    <instrument interface="stimulator" />
+                </test-events>
+                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                    <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
+                </signals>
+            </psychophysics-response-recording>
+
+            <psychophysics-response-recording id="electricalControl" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}PDT'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: 'ElectricalOffsetModulation.Control({t}PDT)'.format(t = Trial)"
+                             abort="ElectricalOffsetModulation.Stop()"
+                             complete="ElectricalOffsetModulation.Stop()">
+                    <instrument interface="stimulator" />
+                </test-events>
+                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                    <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
+                </signals>
+            </psychophysics-response-recording>            
         </content>
       </templates>
       <tests>     
         <foreach variable="Trial" in="Trials">
+            <sequence type="latin-squares" offset="SubjectNumber">
+                <sequence type="deterministic">
+                    <algometry-stimulus-response-constructor id="var: '{t}SR'.format(t = Trial)" 
+                        name="var: '{t} Stimulus Response'.format(t = Trial)" 
+                        template="SR">
+                    </algometry-stimulus-response-constructor>  
 
-            <sequence type="deterministic">
-                <algometry-stimulus-response-constructor id="var: '{t}SR'.format(t = Trial)" 
-                    name="var: '{t} Stimulus Response'.format(t = Trial)" 
-                    template="SR">
-                </algometry-stimulus-response-constructor>  
-
-                <sequence type="random">
-                    <psychophysics-response-recording-constructor id="var: '{t}PIOM'.format(t = Trial)" 
-                        name="var: '{t} Pressure Increasing Offset Modulation'.format(t = Trial)" 
-                        template="pressureModulation">
-                        <variables>
-                            <string name="function" value="PressureIncreasingOffsetModulation" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}PIOMctrl'.format(t = Trial)" 
-                        name="var: '{t} Pressure Increasing Offset Modulation (Control)'.format(t = Trial)" 
-                        template="pressureControl">
-                        <variables>
-                            <string name="function" value="PressureIncreasingOffsetModulation" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}PDOM'.format(t = Trial)" 
-                        name="var: '{t} Pressure Decreasing Offset Modulation'.format(t = Trial)" 
-                        template="pressureModulation">
-                        <variables>
-                            <string name="function" value="PressureIncreasingOffsetModulation" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
-                    <psychophysics-response-recording-constructor id="var: '{t}PDOMctrl'.format(t = Trial)" 
-                        name="var: '{t} Pressure Decreasing Offset Modulation (Control)'.format(t = Trial)" 
-                        template="pressureControl">
-                        <variables>
-                            <string name="function" value="PressureIncreasingOffsetModulation" />
-                        </variables>
-                    </psychophysics-response-recording-constructor>
+                    <sequence type="random">
+                        <psychophysics-response-recording-constructor id="var: '{t}PIOM'.format(t = Trial)" 
+                            name="var: '{t} Pressure Increasing Offset Modulation'.format(t = Trial)" 
+                            template="pressureModulation">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PIOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Pressure Increasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="pressureControl">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PDOM'.format(t = Trial)" 
+                            name="var: '{t} Pressure Decreasing Offset Modulation'.format(t = Trial)" 
+                            template="pressureModulation">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PDOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Pressure Decreasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="pressureControl">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                    </sequence>               
                 </sequence>
 
                 <sequence type="deterministic">
                     <psychophysics-threshold-estimation-constructor id="var: '{t}PDT'.format(t = Trial)" 
                         name="var: '{t} Pain Detection Threshold'.format(t = Trial)" 
                         template="pdt" />
+
+                    <sequence type="random">
+                        <psychophysics-response-recording-constructor id="var: '{t}EIOM'.format(t = Trial)" 
+                            name="var: '{t} Electrical Offset Modulation'.format(t = Trial)" 
+                            template="electricalModulation"/>
+
+                        <psychophysics-response-recording-constructor id="var: '{t}EIOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Electrical Offset Modulation (Control)'.format(t = Trial)" 
+                            template="electricalControl" />
+                    </sequence>
 
                     <psychophysics-threshold-estimation-constructor id="var: '{t}PDTctrl'.format(t = Trial)" 
                         name="var: '{t} Pain Detection Threshold (Control)'.format(t = Trial)" 
