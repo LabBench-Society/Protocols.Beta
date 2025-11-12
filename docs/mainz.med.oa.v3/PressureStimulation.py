@@ -60,11 +60,11 @@ def CreatePressureIncreasingOffsetModulation(tc):
 def CreatePressureDecreasingOffsetModulation(tc):
    return PressureOffsetModulation(tc, 0.8, 0.2, [2, 10, 10, 10])
 
-def StopPressure(tc):
+def Stop(tc):
    cpar = tc.Instruments.PressureAlgometer
    cpar.StopStimulation()
    return True
 
-def SamplePressure(tc):
+def Sample(tc):
    cpar = tc.Instruments.PressureAlgometer
    return [cpar.Pressure[0]]

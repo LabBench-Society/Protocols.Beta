@@ -208,14 +208,14 @@
                             name="var: '{t} Pressure Decreasing Offset Modulation'.format(t = Trial)" 
                             template="pressureModulation">
                             <variables>
-                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                                <string name="function" value="PressureDecreasingOffsetModulation" />
                             </variables>
                         </psychophysics-response-recording-constructor>
                         <psychophysics-response-recording-constructor id="var: '{t}PDOMctrl'.format(t = Trial)" 
                             name="var: '{t} Pressure Decreasing Offset Modulation (Control)'.format(t = Trial)" 
                             template="pressureControl">
                             <variables>
-                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                                <string name="function" value="PressureDecreasingOffsetModulation" />
                             </variables>
                         </psychophysics-response-recording-constructor>
                     </sequence>               
