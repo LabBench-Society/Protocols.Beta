@@ -42,8 +42,8 @@
                             controller-device="cpar">
                             <anchors>
                                 <modality text="" />
-                                <top-anchor text="10/Worst imaginable itch" />
-                                <bottom-anchor text="0/No itch" />
+                                <top-anchor text="10/Worst imaginable pain" />
+                                <bottom-anchor text="0/No pain" />
                             </anchors>
                         </visual-analog-scale>
                     </configurations>

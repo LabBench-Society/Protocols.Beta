@@ -7,7 +7,7 @@ class PressureOffsetModulation:
       self.StimulusDuration = duration[2]
       self.PostDuration = duration[3]
       self.Intensity = intensity
-      self.PrecondIntensity = 0.5
+      self.PrecondIntensity = 0
       self.CondPressure = conditioning
 
    def Duration(self):
@@ -28,6 +28,7 @@ class PressureOffsetModulation:
                         .Step(CondIntensity,self.PreDuration)
                         .Step(Intensity,self.StimulusDuration)
                         .Step(CondIntensity,self.PostDuration))
+      
       cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
       cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
       cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
