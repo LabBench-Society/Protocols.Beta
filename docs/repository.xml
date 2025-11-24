@@ -303,7 +303,10 @@
     </category>
     <category name="The Clinical Research Facility (Exeter)" id="exeter">
       <category name="Exeter Pain Group" id="exeter.pain"></category>
-        <protocol name="Conditioned Blink Reflex Protocol" id="exeter.pain.spineBlink" 
+        <protocol name="Conditioned Blink Reflex Protocol (Spine)" id="exeter.pain.spineBlink" 
+                  labbench-version="5.4" 
+                  category="Conditioned Blink Reflex;LabBench CPAR+;LabBench I/O"/>
+        <protocol name="Conditioned Blink Reflex Protocol (Rebox)" id="exeter.pain.reboxBlink" 
                   labbench-version="5.4" 
                   category="Conditioned Blink Reflex;LabBench CPAR+;LabBench I/O"/>
         <protocol name="EEG and Pain" id="exeter.pain.eegPain" 
