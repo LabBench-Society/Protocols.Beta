@@ -116,6 +116,7 @@
             </psychophysics-response-recording>
 
             <psychophysics-threshold-estimation id="pdt" 
+                experimental-setup-id="vas"
                 stimulus-update-rate="20000">
 
                 <update-rate-deterministic value="5000" />
