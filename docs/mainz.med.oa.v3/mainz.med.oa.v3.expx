@@ -16,8 +16,8 @@
         
                 <display
                     id="display"
-                    screen="secondary"
-                    position="fullscreen"
+                    screen="primary"
+                    position="upper-left"
                     fiducial-position="lower-right"
                     normative-distance="40">
         
@@ -127,7 +127,7 @@
 
                 <stimulus-channel-template Imax="Stimulator.Imax">
                     <up-down-method 
-                        start-intensity="Stimulator.Imax/10"
+                        start-intensity="Stimulator.Imax/50"
                         skip-rule="1"
                         stop-rule="4"
                         reversal-rule="1"
@@ -137,9 +137,11 @@
                 </stimulus-channel-template>
 
                 <channels>
-                    <channel id="CH01" name="1ms">
+                    <channel id="CH01" name="1ms">                        
                         <stimulus>
-                            <pulse Is="x" Ts="1" />
+                            <repeated Tperiod="10" N="50">
+                                <pulse Is="x" Ts="1" />
+                            </repeated>
                         </stimulus>
                     </channel>
                 </channels>
