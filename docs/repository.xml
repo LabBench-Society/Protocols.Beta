@@ -172,9 +172,11 @@
       </category>
     </category>
     <category name="Essex University" id="essex">
-      <protocol 
-        id="essex.pptReliability" 
+      <protocol id="essex.pptReliability" 
         name="Pressure Pain Threshold Reliability" 
+        labbench-version="5.4"  />
+      <protocol id="essex.pptReliabilityCPMcCPMpPTT" 
+        name="CPM-C, CPM-P, and PPT Reliability" 
         labbench-version="5.4"  />
     </category>
     <category name="KU Leuven" id="kuleuven">
