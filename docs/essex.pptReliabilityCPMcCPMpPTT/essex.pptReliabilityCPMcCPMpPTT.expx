@@ -191,7 +191,7 @@
 
                 <content>
                     <numeric id="HHPPT2_01"
-                        title="Handheld PPT – Block 2 (1/2)"
+                        title="Handheld PPT - Block 2 (1/2)"
                         instruction="Please enter the first handheld PPT value obtained during cuff 2 conditioning (70% of SR02.PTT).">
                     </numeric>
 
@@ -201,7 +201,6 @@
                     </numeric>
                 </content>
             </questionnaire>
-
         </tests>
 
         <!-- =====================================================
