@@ -271,7 +271,7 @@
                     experimental-setup-id="vas"
                     no-of-stimuli="12"
                     pressure-static="5"
-                    pressure-stimulate="1.0 * SR01.PTT"
+                    pressure-stimulate="var: '1.0 * {s}SR01.PTT'.format(s = Session)"
                     primary-cuff="1"
                     second-cuff="false"
                     t-off="1"
