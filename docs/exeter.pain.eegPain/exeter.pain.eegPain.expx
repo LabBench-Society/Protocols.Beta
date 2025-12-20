@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
+   
+    <experimental-setup-variants>
+        <experimental-setup id="LIO" name="LabBench I/O">
+            <devices>
+                <lio id="dev" />
+                <cpar-plus id="cpar" />
+            </devices>
+            <device-mapping>
+                <device-assignment instrument-name="PressureAlgometer" device-id="cpar" />
+                <device-assignment instrument-name="TriggerGenerator" device-id="dev" />
+            </device-mapping>
+        </experimental-setup>   
+    </experimental-setup-variants>
+    <protocol>
+        <defines>
+            <define name="StimulationPeriod" value="4.0"/>
+            <define name="TrainFrequency" value="200.0"/>
+            <define name="NumberOfPulses" value="2"/>
+            <define name="nOfStimuli" value="12"/>
+        </defines>
+        <tests>
+            <psychophysics-stimulus-presentation id="StimIntensity"
+                                                name="Stimulation Intensity"
+                                                stimulus-update-rate="20000"
+                                                trigger-update-rate="20000">
+                                                
+                <intensity type="geomspace" x0="1" x1="100" n="50"/>
+
+                <responses response-collection="none" />
+
+                <triggers start-triggger="none">
+                    <combined-triggers>
+                        <trigger Tdelay="0"
+                                duration="10">
+                            <code output="Digital" value="1"/>
+                        </trigger>
+                        <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                        N="int(NumberOfPulses)">
+                            <trigger Tdelay="0"
+                                    duration="0.2">
+                                <code output="Stimulus" value="1"/>
+                            </trigger>
+                        </repeated-trigger>
+                    </combined-triggers>
+                </triggers>
+            </psychophysics-stimulus-presentation>
+
+            <algometry-stimulus-response id="SR"
+                                name="Stimulus-Response (Cuff 1)"
+                                delta-pressure="1"
+                                pressure-limit="100"
+                                primary-cuff="1"
+                                second-cuff="false"
+                                stop-mode="stop-when-button-pressed"
+                                vas-pdt="0.1">
+                <dependencies />
+            </algometry-stimulus-response>
+
+            <stimulation-sequence id="EEG"
+                                  name="Baseline EEG"
+                                  trigger-update-rate="20000"
+                                  response-collection="none">
+                <test-events start="func: Functions.Condition(tc)"
+                             abort="func: Functions.Stop(tc)"
+                             complete="func: Functions.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+
+                <dependencies>
+                    <dependency id="SR"/>
+                </dependencies>
+
+                <configuration>
+                    <trigger-generation trigger-source="none"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">                        
+                        <sequence iterations="1" Tperiod="5*60"/>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Start"
+                            count="1"
+                            intensity="StimIntensity.Intensity">
+                        <triggers>
+                            <trigger Tdelay="0"
+                                    duration="10">
+                                <code output="Digital" value="1"/>
+                            </trigger>
+                        </triggers>
+                    </stimulus>
+                </stimuli>
+            </stimulation-sequence>
+
+
+            <stimulation-sequence id="BeforeCond"
+                                  name="Before Conditioning"
+                                  trigger-update-rate="20000"
+                                  response-collection="none">
+                <dependencies>
+                    <dependency id="StimIntensity"/>
+                </dependencies>
+
+                <configuration>
+                    <trigger-generation trigger-source="none"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">
+                    <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                    Toffset="5"
+                                                    minTperiod="10"
+                                                    maxTperiod="15"
+                                                    stimulate="true">
+                        <sequence Tperiod="1"
+                                iterations="1" 
+                                stimulate="true"/>
+                    </uniformly-distributed-sequence>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Stimulus"
+                            count="1"
+                            intensity="StimIntensity.Intensity">
+                        <triggers>
+                            <combined-triggers>
+                                <trigger Tdelay="0"
+                                        duration="10">
+                                    <code output="Digital" value="1"/>
+                                </trigger>
+                                <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                                N="int(NumberOfPulses)">
+                                    <trigger Tdelay="0"
+                                            duration="0.2">
+                                        <code output="Stimulus" value="1"/>
+                                    </trigger>
+                                </repeated-trigger>
+                            </combined-triggers>
+                        </triggers>
+                    </stimulus>
+                </stimuli>
+            </stimulation-sequence>
+
+            <stimulation-sequence id="Cond"
+                                  name="Conditioning"
+                                  trigger-update-rate="20000"
+                                  response-collection="none">
+                <test-events start="func: Functions.Condition(tc)"
+                             abort="func: Functions.Stop(tc)"
+                             complete="func: Functions.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+
+                <dependencies>
+                    <dependency id="SR"/>
+                </dependencies>
+
+                <configuration>
+                    <trigger-generation trigger-source="none"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">
+                    <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                    Toffset="5"
+                                                    minTperiod="10"
+                                                    maxTperiod="15"
+                                                    stimulate="true">
+                        <sequence Tperiod="1"
+                                iterations="1"
+                                stimulate="true"/>
+                    </uniformly-distributed-sequence>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Stimulus"
+                            count="1"
+                            intensity="StimIntensity.Intensity">
+                        <triggers>
+                            <combined-triggers>
+                                <trigger Tdelay="0"
+                                        duration="10">
+                                    <code output="Digital" value="1"/>
+                                </trigger>
+                                <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                                N="int(NumberOfPulses)">
+                                    <trigger Tdelay="0"
+                                            duration="0.2">
+                                        <code output="Stimulus" value="1"/>
+                                    </trigger>
+                                </repeated-trigger>
+                            </combined-triggers>
+                        </triggers>
+                    </stimulus>
+                </stimuli>
+            </stimulation-sequence>
+
+            <!-- 
+            <stimulation-sequence id="AfterCond"
+                                  name="After Conditioning"
+                                  trigger-update-rate="20000"
+                                  response-collection="none">
+
+                <configuration>
+                    <trigger-generation trigger-source="none"/>
+                </configuration>
+
+                <stimulation-pattern time-base="seconds">
+                    <uniformly-distributed-sequence iterations="nOfStimuli"
+                                                    Toffset="5"
+                                                    minTperiod="10"
+                                                    maxTperiod="15"
+                                                    stimulate="true">
+                        <sequence Tperiod="1"
+                                iterations="1"
+                                stimulate="true"/>
+                    </uniformly-distributed-sequence>
+                </stimulation-pattern>
+
+                <stimuli order="round-robin">
+                    <stimulus name="Stimulus"
+                            count="1"
+                            intensity="StimIntensity.Intensity">
+                        <triggers>
+                            <combined-triggers>
+                                <trigger Tdelay="0"
+                                        duration="10">
+                                    <code output="Digital" value="1"/>
+                                </trigger>
+                                <repeated-trigger Tperiod="1000.0/TrainFrequency"
+                                                N="int(NumberOfPulses)">
+                                    <trigger Tdelay="0"
+                                            duration="0.2">
+                                        <code output="Stimulus" value="1"/>
+                                    </trigger>
+                                </repeated-trigger>
+                            </combined-triggers>
+                        </triggers>
+                    </stimulus>
+                </stimuli>
+            </stimulation-sequence>
+            -->
+
+            <algometry-stimulus-response id="SR01"
+                                            name="Stimulus-Response (Cuff 1)"
+                                            delta-pressure="1"
+                                            pressure-limit="100"
+                                            primary-cuff="1"
+                                            second-cuff="false"
+                                            stop-mode="stop-when-button-pressed"
+                                            vas-pdt="0.1">
+                <dependencies />
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="SR02"
+                                            name="Stimulus-Response (Cuff 2)"
+                                            delta-pressure="1"
+                                            pressure-limit="100"
+                                            primary-cuff="2"
+                                            second-cuff="false"
+                                            stop-mode="stop-when-button-pressed"
+                                            vas-pdt="0.1">
+                <dependencies />
+            </algometry-stimulus-response>
+
+            <algometry-temporal-summation id="TS"
+                                            name="Temporal Summation (Cuff 1)"
+                                            no-of-stimuli="10"
+                                            pressure-static="5"
+                                            pressure-stimulate="1.0 * SR01.PTT"
+                                            primary-cuff="1"
+                                            second-cuff="false"
+                                            t-off="1"
+                                            t-on="1">
+                <dependencies>
+                    <dependency id="SR01"/>
+                </dependencies>
+            </algometry-temporal-summation>
+
+            <algometry-conditioned-pain-modulation id="CPM"
+                                                    name="CPM (Cuff 1)"
+                                                    conditional-pressure="0.7 * SR02.PTT"
+                                                    delta-conditional-pressure="10"
+                                                    delta-pressure="1"
+                                                    pressure-limit="100"
+                                                    primary-cuff="1"
+                                                    stop-mode="stop-when-button-pressed"
+                                                    vas-pdt="0.1">
+                <dependencies>
+                    <dependency id="SR02"/>
+                </dependencies>
+            </algometry-conditioned-pain-modulation>
+        </tests>
+        <assets>
+            <file-asset id="Functions" file="Functions.py" />
+        </assets>
+    </protocol>
+</experiment>

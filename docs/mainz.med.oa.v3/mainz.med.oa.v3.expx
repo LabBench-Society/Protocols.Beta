@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
+    <subject-validator regex="^S[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup-variants default="CPARpDISPLAY">
+          <experimental-setup id="CPARpDISPLAY" name="LabBench CPAR+ (Scale on secondary monitor)">
+            <devices>
+                <cpar-plus id="cpar"/>
+
+                <lio id="lio" default-analog-output="0">
+                    <stimulators>
+                        <ds5 name="Digimer DS5" transconductance="5mA_1V"/>
+                    </stimulators>
+                </lio>
+        
+                <display
+                    id="display"
+                    screen="primary"
+                    position="upper-left"
+                    fiducial-position="lower-right"
+                    normative-distance="40">
+        
+                    <monitor diagonal-size="68" distance="100" />
+                    <fiducial size="10" x="10" y="13"/>
+
+                    <typography 
+                      active-color="rgb(255,0,0)"
+                      background-color="rgb(255,255,255)"
+                      inactive-color="rgb(16,16,16)"
+                      foreground-color="rgb(255,255,255)">
+                      <top-anchor size="36" color="rgb(0,0,0)" />
+                      <bottom-anchor size="36" color="rgb(0,0,0)" />
+
+                    </typography>
+        
+                    <configurations>
+                        <image-display id="image" 
+                            experimental-setup-id="blank"
+                            background-color="rgb(255,255,255)" />
+                        <visual-analog-scale
+                            id="vas"
+                            experimental-setup-id="vas"
+                            length="10"
+                            controller-device="cpar">
+                            <anchors>
+                                <modality text="" />
+                                <top-anchor text="10/Worst imaginable pain" />
+                                <bottom-anchor text="0/No pain" />
+                            </anchors>
+                        </visual-analog-scale>
+                    </configurations>
+                </display>
+            </devices>
+            <device-mapping>
+                <device-assignment device-id="cpar" instrument-name="Button"  />
+                <device-assignment device-id="cpar" instrument-name="Scales"  />
+                <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+                <device-assignment device-id="lio" instrument-name="Stimulator"  />
+            </device-mapping>
+          </experimental-setup>  
+    </experimental-setup-variants>
+    <protocol>
+      <defines>
+        <define name="PressureIncreasingOffsetModulation" value="func: PressureStimulation.CreatePressureIncreasingOffsetModulation(tc)" />
+        <define name="PressureDecreasingOffsetModulation" value="func: PressureStimulation.CreatePressureDecreasingOffsetModulation(tc)" />
+        <define name="ElectricalOffsetModulation" value="func: ElectricalStimulation.CreateElectricalOffsetModulation(tc)" />
+      </defines>
+      <templates>
+        <variables>
+            <strings name="Trials" value="T01;T02" />
+        </variables>
+        <content>
+            <algometry-stimulus-response id="SR"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                experimental-setup-id="vas"
+                vas-pdt="0.1" />
+
+            <psychophysics-response-recording id="pressureModulation" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}SR'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: '{function}.Stimulate({t}SR)'.format(function = function, t = Trial)"
+                            abort="func: PressureStimulation.Stop(tc)"
+                            complete="func: PressureStimulation.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+                <signals sample="func: PressureStimulation.Sample(tc)" min="0" max="100">
+                    <signal id="PRESSURE" name="Pressure" type="pressure" unit="kPa" />
+                </signals>
+            </psychophysics-response-recording>
+
+            <psychophysics-response-recording id="pressureControl" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}SR'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: '{function}.Control({t}SR)'.format(function = function, t = Trial)"
+                            abort="func: PressureStimulation.Stop(tc)"
+                            complete="func: PressureStimulation.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+                <signals sample="func: PressureStimulation.Sample(tc)" min="0" max="100">
+                    <signal id="PRESSURE" name="Pressure" type="pressure" unit="kPa" />
+                </signals>
+            </psychophysics-response-recording>
+
+            <psychophysics-threshold-estimation id="pdt" 
+                experimental-setup-id="blank"
+                stimulus-update-rate="20000">
+
+                <update-rate-deterministic value="5000" />
+                <yes-no-task />
+
+                <stimulus-channel-template Imax="Stimulator.Imax">
+                    <up-down-method 
+                        start-intensity="Stimulator.Imax/50"
+                        skip-rule="1"
+                        stop-rule="4"
+                        reversal-rule="1"
+                        step-size="0.2"
+                        step-size-reduction="0.5"
+                        max-step-size-reduction="0.25" />
+                </stimulus-channel-template>
+
+                <channels>
+                    <channel id="CH01" name="1ms">                        
+                        <stimulus>
+                            <repeated Tperiod="10" N="50">
+                                <pulse Is="x" Ts="1" />
+                            </repeated>
+                        </stimulus>
+                    </channel>
+                </channels>
+            </psychophysics-threshold-estimation>
+
+            <psychophysics-response-recording id="electricalModulation" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}PDT'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: 'ElectricalOffsetModulation.Stimulate({t}PDT)'.format(t = Trial)"
+                             abort="ElectricalOffsetModulation.Stop()"
+                             complete="ElectricalOffsetModulation.Stop()">
+                    <instrument interface="stimulator" />
+                </test-events>
+                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                    <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
+                </signals>
+            </psychophysics-response-recording>
+
+            <psychophysics-response-recording id="electricalControl" 
+                duration="var: '{function}.Duration()'.format(function = function)" 
+                sample-rate="10"
+                response-weight="1"
+                signal-weight="1"
+                experimental-setup-id="vas">
+                <dependencies>
+                    <dependency id="var: '{t}PDT'.format(t = Trial)" />
+                </dependencies>
+                <test-events start="var: 'ElectricalOffsetModulation.Control({t}PDT)'.format(t = Trial)"
+                             abort="ElectricalOffsetModulation.Stop()"
+                             complete="ElectricalOffsetModulation.Stop()">
+                    <instrument interface="stimulator" />
+                </test-events>
+                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                    <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
+                </signals>
+            </psychophysics-response-recording>            
+        </content>
+      </templates>
+      <tests>     
+        <foreach variable="Trial" in="Trials">
+            <sequence type="latin-squares" offset="SubjectNumber">
+                <sequence type="deterministic">
+                    <algometry-stimulus-response-constructor id="var: '{t}SR'.format(t = Trial)" 
+                        name="var: '{t} Stimulus Response'.format(t = Trial)" 
+                        template="SR">
+                    </algometry-stimulus-response-constructor>  
+
+                    <sequence type="random">
+                        <psychophysics-response-recording-constructor id="var: '{t}PIOM'.format(t = Trial)" 
+                            name="var: '{t} Pressure Increasing Offset Modulation'.format(t = Trial)" 
+                            template="pressureModulation">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PIOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Pressure Increasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="pressureControl">
+                            <variables>
+                                <string name="function" value="PressureIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PDOM'.format(t = Trial)" 
+                            name="var: '{t} Pressure Decreasing Offset Modulation'.format(t = Trial)" 
+                            template="pressureModulation">
+                            <variables>
+                                <string name="function" value="PressureDecreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                        <psychophysics-response-recording-constructor id="var: '{t}PDOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Pressure Decreasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="pressureControl">
+                            <variables>
+                                <string name="function" value="PressureDecreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+                    </sequence>               
+                </sequence>
+
+                <sequence type="deterministic">
+                    <psychophysics-threshold-estimation-constructor id="var: '{t}PDT'.format(t = Trial)" 
+                        name="var: '{t} Pain Detection Threshold'.format(t = Trial)" 
+                        template="pdt" />
+
+                    <sequence type="random">
+                        <psychophysics-response-recording-constructor id="var: '{t}EIOM'.format(t = Trial)" 
+                            name="var: '{t} Electrical Offset Modulation'.format(t = Trial)" 
+                            template="electricalModulation"/>
+
+                        <psychophysics-response-recording-constructor id="var: '{t}EIOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Electrical Offset Modulation (Control)'.format(t = Trial)" 
+                            template="electricalControl" />
+                    </sequence>
+
+                    <psychophysics-threshold-estimation-constructor id="var: '{t}PDTctrl'.format(t = Trial)" 
+                        name="var: '{t} Pain Detection Threshold (Control)'.format(t = Trial)" 
+                        template="pdt" />
+                </sequence>
+            </sequence>
+        </foreach> 
+    </tests>
+    <assets>
+      <file-asset id="PressureStimulation" file="PressureStimulation.py" />
+      <file-asset id="ElectricalStimulation" file="ElectricalStimulation.py" />
+    </assets>
+  </protocol>
+</experiment>

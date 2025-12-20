@@ -171,6 +171,14 @@
           labbench-version="5.0" />
       </category>
     </category>
+    <category name="Essex University" id="essex">
+      <protocol id="essex.pptReliability" 
+        name="Pressure Pain Threshold Reliability" 
+        labbench-version="5.4"  />
+      <protocol id="essex.pptReliabilityCPMcCPMpPTT" 
+        name="CPM-C, CPM-P, and PPT Reliability" 
+        labbench-version="5.4"  />
+    </category>
     <category name="KU Leuven" id="kuleuven">
         <category name="Translational Research Center in Gastro-intestinal Disorders" id="kuleuven.gbiomed">
             <category name="The Laboratory for Brain-Gut Axis Studies (LaBGAS)" id="kuleuven.gbiomed.LaBGAS">
@@ -199,8 +207,22 @@
     </category>
     <category name="Johannes Gutenberg University of Mainz" id="mainz">
       <category name="Department of Psychosomatics" id="mainz.med">
-        <category name="Veridical Cued Pain Paradigm" id="mainz.med.precode.vcpp">
-          <protocol id="mainz.med.precode.vcpp.v1" 
+        <category name="Offset Analgesia (Cuff Pressure Algometry" id="mainz.med.oa">
+          <protocol id="mainz.med.oa.v1" 
+            name="Offset Analgesia (Cuff Pressure Algometry) (Version 1)"
+            labbench-version="5.4"
+            category="Pain Perception Processes"/>
+          <protocol id="mainz.med.oa.v2" 
+            name="Offset Analgesia (Cuff Pressure Algometry) (Version 2)"
+            labbench-version="5.4"
+            category="Pain Perception Processes"/>
+          <protocol id="mainz.med.oa.v3" 
+            name="Offset Modulation (Cuff Pressure Algometry) (Version 3)"
+            labbench-version="5.4"
+            category="Pain Perception Processes"/>
+        </category>
+        <category name="Veridical Cued Pain Paradigm" id="mainz.med.vcpp">
+          <protocol id="mainz.med.vcpp.v1" 
             name="Veridical Cued Pain Paradigm (Version 1)"
             labbench-version="5.4"
             category="Pain Perception Processes"/>
@@ -283,8 +305,14 @@
     </category>
     <category name="The Clinical Research Facility (Exeter)" id="exeter">
       <category name="Exeter Pain Group" id="exeter.pain"></category>
-        <protocol name="Conditioned Blink Reflex Protocol" id="exeter.pain.spineBlink" 
+        <protocol name="Conditioned Blink Reflex Protocol (Spine)" id="exeter.pain.spineBlink" 
                   labbench-version="5.4" 
-                  category="Conditioned NWR;LabBench CPAR+;LabBench I/O"/>
+                  category="Conditioned Blink Reflex;LabBench CPAR+;LabBench I/O"/>
+        <protocol name="Conditioned Blink Reflex Protocol (Rebox)" id="exeter.pain.reboxBlink" 
+                  labbench-version="5.4" 
+                  category="Conditioned Blink Reflex;LabBench CPAR+;LabBench I/O"/>
+        <protocol name="EEG and Pain" id="exeter.pain.eegPain" 
+                  labbench-version="5.4" 
+                  category="Conditioned Blink Reflex;EEG;LabBench CPAR+;LabBench I/O"/>
     </category>
 </repository>

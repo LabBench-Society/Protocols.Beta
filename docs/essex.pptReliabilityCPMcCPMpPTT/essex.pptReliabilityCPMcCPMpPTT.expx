@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
+
+    <!-- =========================================================
+         EXPERIMENTAL SETUP: CPAR+ with VAS
+         ========================================================= -->
+    <experimental-setup-variants default="CPARPlusDisplay">
+        <experimental-setup id="CPARPlusDisplay" name="LabBench CPAR+ (Scale on secondary monitor)">
+            <devices>
+                <cpar-plus id="dev" />
+
+                <display
+                    id="display"
+                    screen="secondary"
+                    position="fullscreen"
+                    active-color="rgb(255,0,0)"
+                    background-color="rgb(255,255,255)"
+                    inactive-color="rgb(16,16,16)"
+                    normative-distance="40">
+
+                    <monitor
+                        diagonal-size="53.34"
+                        distance="40" />
+
+                    <configurations>
+                        <visual-analog-scale
+                            id="vas"
+                            experimental-setup-id="vas"
+                            length="10"
+                            controller-device="dev">
+                            <anchors>
+                                <modality text="" />
+                                <top-anchor text="10/Worst imaginable pain" />
+                                <bottom-anchor text="0/No pain" />
+                            </anchors>
+                        </visual-analog-scale>
+                    </configurations>
+                </display>
+            </devices>
+
+            <device-mapping>
+                <device-assignment instrument-name="PressureAlgometer" device-id="dev" />
+            </device-mapping>
+        </experimental-setup>
+    </experimental-setup-variants>
+
+    <!-- =========================================================
+         PROTOCOL
+         ========================================================= -->
+    <protocol>
+        <defines>
+        </defines>
+
+        <tests>
+
+            <!-- =================================================
+                 1) STIMULUS–RESPONSE: Cuff 1 (SR01)
+                 ================================================= -->
+            <algometry-stimulus-response 
+                id="SR01"
+                name="Stimulus-Response (Cuff 1)"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.SR01" override-results="false" />
+                </properties>
+            </algometry-stimulus-response>
+
+            <!-- =================================================
+                 2) STIMULUS–RESPONSE: Cuff 2 (SR02)
+                 ================================================= -->
+            <algometry-stimulus-response 
+                id="SR02"
+                name="Stimulus-Response (Cuff 2)"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="2"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.SR02" override-results="false" />
+                </properties>
+            </algometry-stimulus-response>
+
+
+            <!-- =================================================
+                 3) CONDITIONED PAIN MODULATION (CPM)
+                    Test: Cuff 1, Conditioning: 70% of SR02.PTT
+                 ================================================= -->
+            <algometry-conditioned-pain-modulation 
+                id="CPM"
+                name="Conditioned Pain Modulation"
+                experimental-setup-id="vas"
+                conditional-pressure="0.7 * SR02.PTT"
+                delta-conditional-pressure="10"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.CPAInstructions.CPM" override-results="false" />
+                </properties>
+                <dependencies>
+                    <!-- CPM requires SR02 for PTT at conditioning site -->
+                    <dependency id="SR02" />
+                    <!-- Optional: enforce TS before CPM if desired -->
+                    <!-- <dependency id="TS" /> -->
+                </dependencies>
+            </algometry-conditioned-pain-modulation>
+
+            <!-- =================================================
+                 4) HANDHELD PPT UNDER CONDITIONING – BLOCK 1
+                    - Both cuffs deflated after CPM
+                    - Cuff 2 inflates to 70% of SR02.PTT and holds
+                    - Cuff 1 remains deflated
+                    - Operator enters 2 PPT values
+                 ================================================= -->
+            <questionnaire id="HHPPT1" 
+                name="Handheld PPT under CPM (Block 1)"
+                control="operator">
+
+                <dependencies>
+                    <!-- Run only after full CPM sequence -->
+                    <dependency id="CPM" virtual="true" />
+                </dependencies>
+
+                <!-- 
+                    Functions.Condition(tc):
+                        - Should deflate all cuffs
+                        - Inflate CUFF 2 to 0.7 * SR02.PTT
+                        - Maintain this pressure until Functions.Stop(tc) is called
+                    Functions.Stop(tc):
+                        - Deflates cuff 2 at abort/complete
+                -->
+                <test-events start="func: Functions.Condition(tc)"
+                             abort="func: Functions.Stop(tc)"
+                             complete="func: Functions.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+
+                <content>
+                    <numeric id="HHPPT1_01"
+                        title="Handheld PPT – Block 1 (1/2)"
+                        instruction="Please enter the first handheld PPT value obtained during cuff 2 conditioning (70% of SR02.PTT).">
+                        <!-- Optional validation example:
+                        <validation min="0" min-included="true" max="1000" max-included="true" />
+                        -->
+                    </numeric>
+
+                    <numeric id="HHPPT1_02"
+                        title="Handheld PPT – Block 1 (2/2)"
+                        instruction="Please enter the second handheld PPT value obtained during cuff 2 conditioning (70% of SR02.PTT).">
+                        <!-- Optional validation example:
+                        <validation min="0" min-included="true" max="1000" max-included="true" />
+                        -->
+                    </numeric>
+                </content>
+            </questionnaire>
+
+            <!-- =================================================
+                 5) HANDHELD PPT UNDER CONDITIONING – BLOCK 2
+                    - Cuff 2 inflates again to 70% of SR02.PTT
+                    - Cuff 1 stays deflated
+                    - Operator enters 2 more PPT values
+                    - Cuff 2 deflates at end
+                 ================================================= -->
+            <questionnaire id="HHPPT2" 
+                name="Handheld PPT under CPM (Block 2)"
+                control="operator">
+
+                <dependencies>
+                    <!-- Second block only after first block -->
+                    <dependency id="HHPPT1" virtual="true" />
+                </dependencies>
+
+                <!-- Same conditioning logic as Block 1 -->
+                <test-events start="func: Functions.Condition(tc)"
+                             abort="func: Functions.Stop(tc)"
+                             complete="func: Functions.Stop(tc)">
+                    <instrument interface="pressure-algometer" />
+                </test-events>
+
+                <content>
+                    <numeric id="HHPPT2_01"
+                        title="Handheld PPT - Block 2 (1/2)"
+                        instruction="Please enter the first handheld PPT value obtained during cuff 2 conditioning (70% of SR02.PTT).">
+                    </numeric>
+
+                    <numeric id="HHPPT2_02"
+                        title="Handheld PPT – Block 2 (2/2)"
+                        instruction="Please enter the second handheld PPT value obtained during cuff 2 conditioning (70% of SR02.PTT).">
+                    </numeric>
+                </content>
+            </questionnaire>
+        </tests>
+
+        <!-- =====================================================
+             ASSETS
+             ===================================================== -->
+        <assets>
+            <!-- Instructions reused from original CPA protocol -->
+            <file-asset id="CPAInstructions" file="CPAInstructions.zip" />
+            <!-- Python functions controlling conditioning / deflation -->
+            <file-asset id="Functions" file="Functions.py" />
+        </assets>
+    </protocol>
+</experiment>
