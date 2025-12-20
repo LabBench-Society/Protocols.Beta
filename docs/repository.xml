@@ -169,6 +169,10 @@
         <protocol id="bham.repetitiveCuffPain.v2" 
           name="Repetitive Measurement of Pain Detection Threshold using Cuff Algometry (Version 2)"
           labbench-version="5.0" />
+      <protocol  name="Repetitive Measurement of Pain Detection Threshold using Cuff Algometry (20 repetitions) (Version 2)" 
+        id="bham.repetitiveCuffPain.20reps.v1"
+        labbench-version="5.0" />
+
       </category>
     </category>
     <category name="Essex University" id="essex">
