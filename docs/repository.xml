@@ -211,6 +211,12 @@
     </category>
     <category name="Johannes Gutenberg University of Mainz" id="mainz">
       <category name="Department of Psychosomatics" id="mainz.med">
+        <category name="Pain Expectance (Bayesian Model of Individual Differences)" id="mainz.med.painExpectancy">
+          <protocol name="Pain Expectance (Bayesian Model of Individual Differences) (Version 1)"
+            id="mainz.med.painExpectancy.v1"
+            labbench-version="5.5"
+            category="Pain Expectance"/>
+        </category>
         <category name="Offset Analgesia (Cuff Pressure Algometry" id="mainz.med.oa">
           <protocol id="mainz.med.oa.v1" 
             name="Offset Analgesia (Cuff Pressure Algometry) (Version 1)"
