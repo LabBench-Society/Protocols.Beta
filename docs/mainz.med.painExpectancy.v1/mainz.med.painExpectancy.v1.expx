@@ -1,25 +1,66 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.5/experiment.xsd">
   <subject-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />  
   <experimental-setup-variants default="setup">
     <experimental-setup id="setup01" name="Setup Variant 1">
       <devices>
+        <joystick id="joystick">
+            <map experimental-setup-id="vas">
+                <button-assignment code="16" button="decrease" label="decrease"/>
+                <button-assignment code="32" button="increase" label="increase"/>
+            </map>
+            <map experimental-setup-id="image">
+                <button-assignment code="16" button="left" label="left"/>
+                <button-assignment code="32" button="right" label="right"/>
+            </map>
+        </joystick>
+
+        <display id="display"
+            screen="secondary"
+            position="fullscreen"
+            normative-distance="40"
+            fiducial-position="upper-right">
+
+            <monitor diagonal-size="35.5" distance="40"/>
+            <fiducial size="10" x="17" y="17"/>
+
+            <typography background-color="rgb(0,0,0)"
+                foreground-color="rgb(255,255,255)"
+                active-color="rgb(255,0,0)"
+                inactive-color="rgb(198,198,198)">                        
+            </typography>
+
+            <configurations>
+                <image-display id="image" experimental-setup-id="image" />
+
+                <visual-analog-scale id="vas" 
+                    experimental-setup-id="vas" 
+                    controller-device="joystick"
+                    length="10">
+                    <anchors>
+                        <modality text="Pain" />
+                        <bottom-anchor text="No Pain" />
+                        <top-anchor text="Maximal Pain" />
+                    </anchors>
+                </visual-analog-scale>
+            </configurations>
+        </display>
+
+        <cpar-plus id="cpar" />
       </devices>
       <device-mapping>
-      </device-mapping>
-    </experimental-setup>
-    <experimental-setup id="setup02" name="Setup Variant 2">
-      <devices>
-      </devices>
-      <device-mapping>
+        <device-assignment device-id="display.image" instrument-name="Display" />
+        <device-assignment device-id="joystick" instrument-name="Joystick" />
+        <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        <device-assignment device-id="display.vas" instrument-name="Scale" />
+        <device-assignment device-id="joystick" instrument-name="Button" />
       </device-mapping>
     </experimental-setup>
   </experimental-setup-variants>                     
   <protocol>
-    <properties>
-
+    <properties>      
     </properties>
     <languages>
 
@@ -28,20 +69,57 @@
 
     </sessions>
     <defines>
-
+      <define name="task" value="func: Script.CreateTask(tc)" />    
     </defines>
     <randomizations>
 
     </randomizations>
     <templates>
       <variables></variables>
-      <content></content>
+      <content>
+        <sequential id="PainExpectancyTask" 
+            experimental-setup-id="image">  
+            
+            <test-events 
+                start="task.Start()"
+                complete="task.Complete()"
+                abort="True"
+                selected="True"
+                selected-blocked="True"
+                selected-completed="True"
+                selected-excluded="True"
+                selected-ready="True">    
+
+                <instrument name="Display" interface="image-display" />
+                <instrument name="Joystick" interface="button" />
+                <instrument name="PressureAlgometer" interface="pressure-algometer" />
+                <instrument name="Scale" interface="ratio-scale" />
+            </test-events>
+
+            <update-rate-deterministic value="50" />
+
+            <states 
+                enter="task.Enter()"
+                leave="task.Leave()"
+                update="task.Update()">
+
+                <state id="Cue" />
+                <state id="Display" /> <!-- 2s duration -->
+                <state id="Stimulate" /> <!-- TBD duration -->
+                <state id="Rate" experimental-setup-id="vas" /> <!-- Rate and wait until button pressed -->
+                <state id="Pause" />
+            </states>
+        </sequential>            
+      </content>
     </templates>
     <tests>
+      <sequential-constructor id="T01" name="Pain Expectancy Task" template="PainExpectancyTask"/>
 
     </tests>
     <assets>
-
+      <file-asset id="Script" file="Script.py" />       
+      <file-asset id="Images" file="Images.zip" />     
+      <file-asset id="Cards" file="Cards.zip"></file-asset>
     </assets>
   </protocol>
   <post-actions>    
