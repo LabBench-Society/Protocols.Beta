@@ -20,12 +20,12 @@ class ResponseTask:
       return True
 
    def PlotRating(self, x, y):
-      with self.tc.Image.GetCanvas(x, y, "#FFFFFF") as image:
-         image.AlignCenter()
-         image.AlignMiddle()
-         image.Color("#000000")
-         image.Write(x /2, y /2, "Rating: {r}".format(r = self.current))
-         return image.GetImage()
+      with self.tc.Image.GetCanvas(x, y, "#FFFFFF") as canvas:
+         canvas.AlignCenter()
+         canvas.AlignMiddle()
+         canvas.Color("#000000")
+         canvas.Write(x /2, y /2, "Rating: {}".format(self.current))
+         return canvas.GetImage()
       
    def Stimulate(self, freq):
       sound = self.tc.Instruments.SoundCard
@@ -34,8 +34,8 @@ class ResponseTask:
    def Enter(self):
       id = self.tc.CurrentState.ID
       display = self.tc.Instruments.Display
-      self.tc.Keyboard.Clear();
-      self.tc.Instruments.Joystick.Reset();
+      self.tc.Keyboard.Clear()
+      self.tc.Instruments.Joystick.Reset()
 
       if id == "CUE":
          display.Display(self.Cue)

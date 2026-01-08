@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.1/experiment.xsd">
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.5/experiment.xsd">
     <subject-validator regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
                        advice="Please enter an ID in the form of SXXX, where X is a digit" />
 
@@ -54,7 +54,8 @@
          
                     <configurations>
                         <image-display 
-                            id="image" 
+                            id="image"
+                            experimental-setup-id="" 
                             background-color="rgb(0, 0, 0)"/>
 
                         <visual-analog-scale id="vas" 
@@ -585,8 +586,7 @@
                         id="PULSE"
                         name="Pulse (1s)"
                         Imax="100"
-                        Imin="0"
-                        channel-type="single-sample">
+                        Imin="0">
 
                         <up-down-method 
                             reversal-rule="1"

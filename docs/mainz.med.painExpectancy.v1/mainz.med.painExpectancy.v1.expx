@@ -103,18 +103,17 @@
                 leave="task.Leave()"
                 update="task.Update()">
 
-                <state id="Cue" />
+                <state id="Cue" /> <!-- Until selection with a time limit of 8s -->
                 <state id="Display" /> <!-- 2s duration -->
                 <state id="Stimulate" /> <!-- TBD duration -->
                 <state id="Rate" experimental-setup-id="vas" /> <!-- Rate and wait until button pressed -->
-                <state id="Pause" />
+                <state id="Pause" /> <!-- TBD duration -->
             </states>
         </sequential>            
       </content>
     </templates>
     <tests>
       <sequential-constructor id="T01" name="Pain Expectancy Task" template="PainExpectancyTask"/>
-
     </tests>
     <assets>
       <file-asset id="Script" file="Script.py" />       
