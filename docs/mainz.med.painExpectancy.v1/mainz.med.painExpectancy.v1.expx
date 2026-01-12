@@ -95,7 +95,7 @@
                 selected-ready="True">    
 
                 <instrument name="Display" interface="image-display" />
-                <instrument name="Joystick" interface="button" />
+                <instrument name="Button" interface="button" />
                 <instrument name="PressureAlgometer" interface="pressure-algometer" />
                 <instrument name="Scale" interface="ratio-scale" />
             </test-events>
