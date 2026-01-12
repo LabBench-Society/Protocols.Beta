@@ -10,6 +10,11 @@
             <map experimental-setup-id="vas">
                 <button-assignment code="16" button="decrease" label="decrease"/>
                 <button-assignment code="32" button="increase" label="increase"/>
+
+                <button-assignment code="1" button="next" />
+                <button-assignment code="2" button="next" />
+                <button-assignment code="4" button="next" />
+                <button-assignment code="8" button="next" />
             </map>
             <map experimental-setup-id="image">
                 <button-assignment code="16" button="left" label="left"/>
@@ -52,7 +57,6 @@
       </devices>
       <device-mapping>
         <device-assignment device-id="display.image" instrument-name="Display" />
-        <device-assignment device-id="joystick" instrument-name="Joystick" />
         <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
         <device-assignment device-id="display.vas" instrument-name="Scale" />
         <device-assignment device-id="joystick" instrument-name="Button" />
@@ -103,6 +107,7 @@
                 leave="task.Leave()"
                 update="task.Update()">
 
+                <state id="Prompt" /> <!-- Display a cross -->
                 <state id="Cue" /> <!-- Until selection with a time limit of 8s -->
                 <state id="Display" /> <!-- 2s duration -->
                 <state id="Stimulate" /> <!-- TBD duration -->

@@ -2,54 +2,83 @@ import random
 
 
 class ResponseTask:
+   class PromptState:
+      def __init__(self, tc, owner):
+         self.owner = owner
+         self.tc = tc
+
+      def Enter(self):
+         self.tc.Instruments.ImageDisplay.Display(self.tc.Images.Cross)
+         return True
+
+      def Leave(self):
+         return True
+
+      def Update(self):
+         return "Cue" if self.tc.CurrentState.RunningTime > self.owner.PromptDisplayTime else "*"
+
    class CueState:
-      """
-      Selection of either a lure and or target cue by the participant. 
-
-      Cues provide visual information about the propability of the painfulness of the upcoming stimulus. 
-      The each stimulation may be result in one of two stimulus intensities that are equally probable; one low and one high.
-      Consequently, the cue results in an average pain expectancy that is the mean of the two possible stimulus intensities.
-
-      The lure has a higher average pain expectancy than the target.
-      """
       def __init__(self, tc, owner):
          self.owner = owner
          self.tc = tc
          pass
 
-      def CreateCueImage(self, cue):
+      def CreateImage(self, target, lure):
          with self.tc.Image.GetCanvas(self.tc.Instruments.ImageDisplay, "#000000") as canvas:
             w = self.tc.Instruments.ImageDisplay.Width
             h = self.tc.Instruments.ImageDisplay.Height
             canvas.AlignCenter()
             canvas.AlignMiddle()
             canvas.Color("#FFFFFF")
-            canvas.Write(w, h, "Cue: {}".format(cue))
+            canvas.Write(w/2, h/2, "Cues: {}/{}".format(target, lure))
             return canvas.GetImage()
 
       def Enter(self):
-         pass
+         self.tc.Instruments.ImageDisplay.Display(self.CreateImage("Target", "Lure"))
+         return True
 
       def Leave(self):
-         pass
+         self.tc.Keyboard.Clear();
+         return True
 
       def Update(self):
-         pass
+         state = self.tc.CurrentState
+         self.tc.CurrentState.Status = "Remaining time: {} ms".format(self.owner.ResponseTimeLimit - state.RunningTime)
+
+         if self.tc.Keyboard.Pressed("LEFT"):
+            return "Display"
+         if self.tc.Keyboard.Pressed("RIGHT"):
+            return "Display"         
+         if state.RunningTime > self.owner.ResponseTimeLimit:
+            return "Display"
+
+         return "*"
 
    class DisplayState:
       def __init__(self, tc, owner):
          self.owner = owner
          self.tc = tc
-         pass
 
+      def CreateImage(self, cue):
+         with self.tc.Image.GetCanvas(self.tc.Instruments.ImageDisplay, "#000000") as canvas:
+            w = self.tc.Instruments.ImageDisplay.Width
+            h = self.tc.Instruments.ImageDisplay.Height
+            canvas.AlignCenter()
+            canvas.AlignMiddle()
+            canvas.Color("#FFFFFF")
+            canvas.Write(w/2, h/2, "Selected Cue: {}".format(cue))
+            return canvas.GetImage()
+         
       def Enter(self):
-         pass
+         self.tc.Instruments.ImageDisplay.Display(self.CreateImage("Selected cue"))
+         return True
 
       def Leave(self):
-         pass
+         self.tc.Keyboard.Clear();
+         return True
 
       def Update(self):
-         pass
+         return "Stimulate" if self.tc.CurrentState.RunningTime > self.owner.CueDisplayTime else "*"
 
    class StimulateState:
       def __init__(self, tc, owner):
@@ -58,19 +87,28 @@ class ResponseTask:
          pass
 
       def Enter(self):
-         pass
+         self.tc.Instruments.ImageDisplay.Display(self.tc.Images.Stimulating)
+         return True
 
       def Leave(self):
-         pass
+         return True
 
       def Update(self):
-         pass
+         return "Rate" if self.tc.CurrentState.RunningTime > self.owner.StimulationTime else "*"
 
    class RateState:
       def __init__(self, tc, owner):
          self.owner = owner
          self.tc = tc
          pass
+
+      def PlotRating(self, x, y):
+         with self.tc.Image.GetCanvas(x, y, "#FFFFFF") as canvas:
+            canvas.AlignCenter()
+            canvas.AlignMiddle()
+            canvas.Color("#000000")
+            canvas.Write(x /2, y /2, "Rating: {}".format(self.owner.current))
+            return canvas.GetImage()
 
       def Enter(self):
          pass
@@ -99,38 +137,28 @@ class ResponseTask:
    def __init__(self, tc):
       self.tc = tc
       self.states = {
+         "Prompt": self.PromptState(tc, self),
          "Cue": self.CueState(tc, self),
          "Display": self.DisplayState(tc, self),
          "Stimulate": self.StimulateState(tc, self),
          "Rate": self.RateState(tc, self),
          "Pause": self.PauseState(tc, self),
       }
+      self.PromptDisplayTime = 250  # milliseconds
+      self.ResponseTimeLimit = 8000  # milliseconds
+      self.CueDisplayTime = 2000  # milliseconds
+      self.StimulationTime = 2000  # milliseconds
+      self.Cues = [(4,5),(3,6),(4,6),(3,7),(5,6),(4,7)]
 
    def Start(self):
-      self.ratings = []      
-      self.current = 0
       return True
    
    def Complete(self):
-      self.tc.Current.SetNumbers("ratings", self.ratings)
       return True
-
-   def PlotRating(self, x, y):
-      with self.tc.Image.GetCanvas(x, y, "#FFFFFF") as canvas:
-         canvas.AlignCenter()
-         canvas.AlignMiddle()
-         canvas.Color("#000000")
-         canvas.Write(x /2, y /2, "Rating: {}".format(self.current))
-         return canvas.GetImage()
-      
-   def Stimulate(self, freq):
-      sound = self.tc.Instruments.SoundCard
-      sound.Play(self.tc.Waveforms.Sin(1, freq, 0, 4000,44100).SetChannel(3))      
-
+     
    def Enter(self):
       return self.states[self.tc.CurrentState.ID].Enter()
- 
-   
+    
    def Leave(self):
       return self.states[self.tc.CurrentState.ID].Leave()
    
