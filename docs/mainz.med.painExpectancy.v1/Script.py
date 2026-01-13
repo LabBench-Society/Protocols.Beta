@@ -8,6 +8,8 @@ class ResponseTask:
       self.CueDisplayTime = 2000  # milliseconds
       self.StimulationTime = 2000  # milliseconds
       self.Cues = [(4,5),(3,6),(4,6),(3,7),(5,6),(4,7)]
+      self.selected = random.choice(["Target", "Lure"])
+
 
    def CreateCueImage(self, target, lure):
       with self.tc.Image.GetCanvas(self.tc.Instruments.ImageDisplay, "#000000") as canvas:

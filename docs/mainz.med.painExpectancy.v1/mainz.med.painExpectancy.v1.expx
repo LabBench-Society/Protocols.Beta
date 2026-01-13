@@ -56,9 +56,9 @@
         <cpar-plus id="cpar" />
       </devices>
       <device-mapping>
-        <device-assignment device-id="display.image" instrument-name="Display" />
+        <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
         <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
-        <device-assignment device-id="display.vas" instrument-name="Scale" />
+        <device-assignment device-id="display.vas" instrument-name="RatioScale" />
         <device-assignment device-id="joystick" instrument-name="Button" />
       </device-mapping>
     </experimental-setup>
@@ -94,10 +94,10 @@
                 selected-excluded="True"
                 selected-ready="True">    
 
-                <instrument name="Display" interface="image-display" />
-                <instrument name="Button" interface="button" />
-                <instrument name="PressureAlgometer" interface="pressure-algometer" />
-                <instrument name="Scale" interface="ratio-scale" />
+                <instrument interface="image-display" />
+                <instrument interface="button" />
+                <instrument interface="pressure-algometer" />
+                <instrument interface="ratio-scale" />
             </test-events>
 
             <update-rate-deterministic value="50" />
