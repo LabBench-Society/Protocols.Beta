@@ -50,7 +50,7 @@ class ResponseTask:
       id = self.tc.CurrentState.ID
 
       if id == "Prompt":
-         self.tc.Instruments.ImageDisplay.Display(self.tc.Images.Cross)
+         self.tc.Instruments.ImageDisplay.Display(self.tc.Assets.Images.Cross)
          return True
       if id == "Cue":
          self.tc.Instruments.ImageDisplay.Display(self.CreateCueImage("Target", "Lure"))
@@ -60,7 +60,7 @@ class ResponseTask:
          self.tc.Instruments.ImageDisplay.Display(self.CreateSelectedImage("Selected cue"))
          return True
       if id == "Stimulate":
-         self.tc.Instruments.ImageDisplay.Display(self.tc.Images.Stimulating)
+         self.tc.Instruments.ImageDisplay.Display(self.tc.Assets.Images.Stimulating)
          return True
       if id == "Rate":
          self.tc.Instruments.Button.Reset()
@@ -99,7 +99,7 @@ class ResponseTask:
          return "Rate" if self.tc.CurrentState.RunningTime > self.StimulationTime else "*"
       
       if id == "Rate":
-         self.current = self.tc.Instruments.Scale.GetCurrentRating()
+         self.current = self.tc.Instruments.RatioScale.GetCurrentRating()
 
          if self.tc.Instruments.Button.IsLatched("next"):
             return "Pause"
