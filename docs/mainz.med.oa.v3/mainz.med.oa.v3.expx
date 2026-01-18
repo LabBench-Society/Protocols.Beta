@@ -139,8 +139,8 @@
                 <channels>
                     <channel id="CH01" name="1ms">                        
                         <stimulus>
-                            <repeated Tperiod="10" N="50">
-                                <pulse Is="x" Ts="1" />
+                            <repeated Tperiod="10" N="200"> <!-- The duration is equal to Tperiod * N. Currently, set to 2s -->
+                                <arbitrary Ts="1" expression="x" />
                             </repeated>
                         </stimulus>
                     </channel>
