@@ -16,8 +16,8 @@
         
                 <display
                     id="display"
-                    screen="primary"
-                    position="upper-left"
+                    screen="secondary"
+                    position="fullscreen"
                     fiducial-position="lower-right"
                     normative-distance="40">
         
