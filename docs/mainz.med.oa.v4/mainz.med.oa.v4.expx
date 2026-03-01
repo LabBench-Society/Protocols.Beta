@@ -152,11 +152,11 @@
                     <dependency id="var: f'{Trial}PDT'" />
                 </dependencies>
                 <procedure-events start="var: f'{function}.Stimulate({Trial}PDT)'"
-                             abort="{function}.Stop()"
-                             complete="{function}.Stop()">
+                             abort="var: f'{function}.Stop()'"
+                             complete="var: f'{function}.Stop()'">
                     <instrument interface="stimulator" />
                 </procedure-events>
-                <signals sample="{function}.Sample()" min="0" max="100">
+                <signals sample="var: f'{function}.Sample()'" min="0" max="Stimulator.Max">
                     <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
                 </signals>
             </psychophysics-response-recording>
@@ -171,11 +171,11 @@
                     <dependency id="var: f'{Trial}PDT'" />
                 </dependencies>
                 <procedure-events start="var: f'{function}.Control({Trial}PDT)'"
-                             abort="{function}.Stop()"
-                             complete="{function}.Stop()">
+                             abort="var: f'{function}.Stop()'"
+                             complete="var: f'{function}.Stop()'">
                     <instrument interface="stimulator" />
                 </procedure-events>
-                <signals sample="{function}.Sample()" min="0" max="100">
+                <signals sample="var: f'{function}.Sample()'" min="0" max="Stimulator.Max">
                     <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
                 </signals>
             </psychophysics-response-recording>            

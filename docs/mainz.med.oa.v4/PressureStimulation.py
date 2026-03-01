@@ -29,9 +29,9 @@ class PressureOffsetModulation:
                         .Step(Intensity,self.StimulusDuration)
                         .Step(CondIntensity,self.PostDuration))
       
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+      cpar.ConfigurePressureOutput("outlet-1", 'channel-1')
+      cpar.ConfigurePressureOutput("outlet-2", 'none')
+      cpar.StartStimulation('stop-when-button-pressed', True)
 
       return True
 
@@ -49,9 +49,9 @@ class PressureOffsetModulation:
                         .Step(CondIntensity,self.PreDuration)
                         .Step(CondIntensity,self.StimulusDuration)
                         .Step(CondIntensity,self.PostDuration))
-      cpar.ConfigurePressureOutput("outlet-1", cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput("outlet-2", cpar.ChannelIDs.NoChannel)
-      cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
+      cpar.ConfigurePressureOutput("outlet-1", 'channel-1')
+      cpar.ConfigurePressureOutput("outlet-2", 'none')
+      cpar.StartStimulation('stop-when-button-pressed', True)
 
       return True
    
