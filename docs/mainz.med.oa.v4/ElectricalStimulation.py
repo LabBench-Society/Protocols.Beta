@@ -60,5 +60,8 @@ class ElectricalOffsetModulation:
       self.tc.Instruments.Stimulator.Cancel()
       return True
    
-def CreateElectricalOffsetModulation(tc):
+def CreateElectricalIncreasingOffsetModulation(tc):
    return ElectricalOffsetModulation(tc, 1.5, 1.8, [2, 10, 10, 10])
+
+def CreateElectricalDecreasingOffsetModulation(tc):
+   return ElectricalOffsetModulation(tc, 1.8, 1.5, [2, 10, 10, 10])

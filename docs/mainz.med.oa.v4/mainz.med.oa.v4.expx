@@ -52,9 +52,14 @@
     </experimental-setup-variants>
     <protocol>
       <variables>
-        <variable name="PressureIncreasingOffsetModulation" value="func: PressureStimulation.CreatePressureIncreasingOffsetModulation(tc)" />
-        <variable name="PressureDecreasingOffsetModulation" value="func: PressureStimulation.CreatePressureDecreasingOffsetModulation(tc)" />
-        <variable name="ElectricalOffsetModulation" value="func: ElectricalStimulation.CreateElectricalOffsetModulation(tc)" />
+        <variable name="PressureIncreasingOffsetModulation" 
+                  value="func: PressureStimulation.CreatePressureIncreasingOffsetModulation(tc)" />
+        <variable name="PressureDecreasingOffsetModulation" 
+                  value="func: PressureStimulation.CreatePressureDecreasingOffsetModulation(tc)" />
+        <variable name="ElectricalIncreasingOffsetModulation" 
+                  value="func: ElectricalStimulation.CreateElectricalIncreasingOffsetModulation(tc)" />
+        <variable name="ElectricalDecreasingOffsetModulation" 
+                  value="func: ElectricalStimulation.CreateElectricalDecreasingOffsetModulation(tc)" />
       </variables>
       <templates>
         <template-variables>
@@ -146,12 +151,12 @@
                 <dependencies>
                     <dependency id="var: f'{Trial}PDT'" />
                 </dependencies>
-                <procedure-events start="var: f'ElectricalOffsetModulation.Stimulate({Trial}PDT)'"
-                             abort="ElectricalOffsetModulation.Stop()"
-                             complete="ElectricalOffsetModulation.Stop()">
+                <procedure-events start="var: f'{function}.Stimulate({Trial}PDT)'"
+                             abort="{function}.Stop()"
+                             complete="{function}.Stop()">
                     <instrument interface="stimulator" />
                 </procedure-events>
-                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                <signals sample="{function}.Sample()" min="0" max="100">
                     <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
                 </signals>
             </psychophysics-response-recording>
@@ -165,12 +170,12 @@
                 <dependencies>
                     <dependency id="var: f'{Trial}PDT'" />
                 </dependencies>
-                <procedure-events start="var: f'ElectricalOffsetModulation.Control({Trial}PDT)'"
-                             abort="ElectricalOffsetModulation.Stop()"
-                             complete="ElectricalOffsetModulation.Stop()">
+                <procedure-events start="var: f'{function}.Control({Trial}PDT)'"
+                             abort="{function}.Stop()"
+                             complete="{function}.Stop()">
                     <instrument interface="stimulator" />
                 </procedure-events>
-                <signals sample="ElectricalOffsetModulation.Sample()" min="0" max="100">
+                <signals sample="{function}.Sample()" min="0" max="100">
                     <signal id="Is" name="Intensity" type="applied-current" unit="mA" />
                 </signals>
             </psychophysics-response-recording>            
@@ -224,12 +229,36 @@
 
                     <sequence type="random">
                         <psychophysics-response-recording-constructor id="var: '{t}EIOM'.format(t = Trial)" 
-                            name="var: '{t} Electrical Offset Modulation'.format(t = Trial)" 
-                            template="electricalModulation"/>
+                            name="var: '{t} Electrical Increasing Offset Modulation'.format(t = Trial)" 
+                            template="electricalModulation">
+                            <variables>
+                                <string name="function" value="ElectricalIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
 
                         <psychophysics-response-recording-constructor id="var: '{t}EIOMctrl'.format(t = Trial)" 
-                            name="var: '{t} Electrical Offset Modulation (Control)'.format(t = Trial)" 
-                            template="electricalControl" />
+                            name="var: '{t} Electrical Increasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="electricalControl">
+                            <variables>
+                                <string name="function" value="ElectricalIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+
+                        <psychophysics-response-recording-constructor id="var: '{t}EDOM'.format(t = Trial)" 
+                            name="var: '{t} Electrical Decreasing Offset Modulation'.format(t = Trial)" 
+                            template="electricalModulation">
+                            <variables>
+                                <string name="function" value="ElectricalIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
+
+                        <psychophysics-response-recording-constructor id="var: '{t}EDOMctrl'.format(t = Trial)" 
+                            name="var: '{t} Electrical Decreasing Offset Modulation (Control)'.format(t = Trial)" 
+                            template="electricalControl">
+                            <variables>
+                                <string name="function" value="ElectricalIncreasingOffsetModulation" />
+                            </variables>
+                        </psychophysics-response-recording-constructor>
                     </sequence>
 
                     <psychophysics-threshold-estimation-constructor id="var: '{t}PDTctrl'.format(t = Trial)" 
