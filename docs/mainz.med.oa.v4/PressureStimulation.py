@@ -49,8 +49,8 @@ class PressureOffsetModulation:
                         .Step(CondIntensity,self.PreDuration)
                         .Step(CondIntensity,self.StimulusDuration)
                         .Step(CondIntensity,self.PostDuration))
-      cpar.ConfigurePressureOutput(0, cpar.ChannelIDs.CH01)
-      cpar.ConfigurePressureOutput(1, cpar.ChannelIDs.NoChannel)
+      cpar.ConfigurePressureOutput("outlet-1", cpar.ChannelIDs.CH01)
+      cpar.ConfigurePressureOutput("outlet-2", cpar.ChannelIDs.NoChannel)
       cpar.StartStimulation(cpar.StopCriterions.WhenButtonPressed, True)
 
       return True
