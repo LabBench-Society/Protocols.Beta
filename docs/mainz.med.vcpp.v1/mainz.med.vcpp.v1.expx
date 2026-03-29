@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/5.4/experiment.xsd">
-  <subject-validator regex="^S[0-9]{3}$"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
+  <participant-validator regex="^S[0-9]{3}$"
                      advice="Please enter an ID in the form of SXXX, where X is a digit" />  
   <experimental-setup-variants default="cpar">
     <experimental-setup id="cpar" name="LabBench CPAR+">
@@ -9,24 +9,28 @@
         <cpar-plus id="cpar" />
 
         <display id="display"
-          normative-distance="40"
-          fiducial-position="upper-right"
-          screen="secondary"
-          position="fullscreen">
+          normative-distance="40">
+          <typography 
+            active-colour="rgb(255,0,0)"
+            foreground-colour="rgb(255,255,255"
+            background-colour="rgb(0,0,0)"
+            inactive-colour="rgb(32,32,32)">
 
-          <monitor diagonal-size="35.3" distance="40"/>
-          <fiducial size="10" x="17" y="17"/>
+          </typography>
 
           <configurations>
             <image-display id="image" 
               experimental-setup-id="image" 
-              background-color="rgb(0,0,0)" />
+              background-colour="rgb(0,0,0)" />
             
-            <visual-analog-scale id="vas" 
+            <visual-analogue-scale id="vas" 
               experimental-setup-id="vas"
               controller-device="cpar"
-              length="10">
+              length="10">              
               <anchors>
+                <modality text="Pain">
+                  <localized-text language="DE" text="Schmerz"/>
+                </modality>
                 <top-anchor text="Maximal Pain">
                   <localized-text language="DE" text="Maximaler Schmerz"/>
                 </top-anchor>
@@ -34,7 +38,7 @@
                   <localized-text language="DE" text="Keine Schmerzen"/>
                 </bottom-anchor>
               </anchors>
-            </visual-analog-scale>
+            </visual-analogue-scale>
           </configurations>
         </display>
       </devices>
@@ -57,17 +61,14 @@
     <sessions>
 
     </sessions>
-    <defines>
-      <define name="Task" value="func: Script.CreateTask(tc)" />
-    </defines>
-    <randomizations>
-
-    </randomizations>
+    <variables>
+      <variable name="Task" value="func: Script.CreateTask(tc)" />
+    </variables>
     <templates>
-      <variables>
+      <template-variables>
 
-      </variables>
-      <content>
+      </template-variables>
+      <procedure-templates>
         <algometry-stimulus-response id="SR" 
           stop-mode="stop-on-maximal-rating" 
           primary-cuff="1"
@@ -80,12 +81,12 @@
 
         <sequential id="PainRatingTask"
           experimental-setup-id="image">
-          <test-events>
+          <procedure-events>
             <instrument interface="pressure-algometer" />
             <instrument interface="ratio-scale" />
             <instrument interface="button" />
             <instrument interface="image-display" />
-          </test-events>
+          </procedure-events>
           
           <dependencies>
             <dependency id="var: IntensityTest" />
@@ -104,9 +105,9 @@
             <state id="PAUSE" experimental-setup-id="image" name="Pause" />
           </states>
         </sequential>        
-      </content>
+      </procedure-templates>
     </templates>
-    <tests>
+    <procedures>
       <algometry-stimulus-response-constructor id="SR" 
         name="Stimulus-Response" 
         template="SR">
@@ -120,12 +121,11 @@
         </variables>
       </sequential-constructor>
 
-    </tests>
+    </procedures>
     <assets>
       <file-asset id="Script" file="Script.py" />
       <file-asset id="Cards" file="Cards.zip" />
       <file-asset id="Images" file="Images.zip" />
-
     </assets>
   </protocol>
   <post-actions>    
