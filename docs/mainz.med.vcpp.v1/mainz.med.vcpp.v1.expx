@@ -95,14 +95,14 @@
           <update-rate-deterministic value="50"/>
 
           <states update="Task.Update()"
-                  enter="var: 'Task.Enter({test})'.format(test = IntensityTest)"
+                  enter="var: f'Task.Enter({IntensityTest})'"
                   leave="Task.Leave()">
-            <state id="CROSS" experimental-setup-id="image" name="Fixation Cross"/>
-            <state id="SELECTION" experimental-setup-id="image" name="Selecting a cue" />
-            <state id="DISPLAY" experimental-setup-id="image" name="Display selected cue" />
+            <state id="CROSS"       experimental-setup-id="image" name="Fixation cross"/>
+            <state id="SELECTION"   experimental-setup-id="image" name="Selecting a cue" />
+            <state id="DISPLAY"     experimental-setup-id="image" name="Display selected cue" />
             <state id="STIMULATION" experimental-setup-id="image" name="Stimulation" />
-            <state id="RATING" experimental-setup-id="vas" name="Pain Rating" />
-            <state id="PAUSE" experimental-setup-id="image" name="Pause" />
+            <state id="RATING"      experimental-setup-id="vas"   name="Pain rating" />
+            <state id="PAUSE"       experimental-setup-id="image" name="Pause" />
           </states>
         </sequential>        
       </procedure-templates>
@@ -120,7 +120,6 @@
           <string name="IntensityTest" value="SR" />
         </variables>
       </sequential-constructor>
-
     </procedures>
     <assets>
       <file-asset id="Script" file="Script.py" />
