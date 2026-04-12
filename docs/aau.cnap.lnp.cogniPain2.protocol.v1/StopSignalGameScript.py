@@ -244,7 +244,8 @@ class GameFeedback:
 
         chan = algometer.Channels[0]
         chan.SetStimulus(1, chan.CreateWaveform().Step(self.intensity, 1.5))
-        algometer.ConfigurePressureOutput(0, algometer.ChannelIDs.CH01)
+        algometer.ConfigurePressureOutput("outlet-1", "channel-1")
+        algometer.ConfigurePressureOutput("outlet-2", "none")
         algometer.StartStimulation(algometer.StopCriterions.WhenButtonPressed, True, False)
 
         return True
@@ -300,16 +301,16 @@ class GameFeedback:
 
 def UpDownGameInitialize(tc):
     feedback = GameFeedback(tc)
-    tc.Defines.Set("Feedback", feedback)
-    tc.Defines.Set("StopTask", StopSignalTask(tc, UpDownAlgorithm(tc, 100, 150), feedback))
-    tc.Defines.Set("GoTask", GoSignalTask(tc, feedback))
+    tc.Variables.Set("Feedback", feedback)
+    tc.Variables.Set("StopTask", StopSignalTask(tc, UpDownAlgorithm(tc, 100, 150), feedback))
+    tc.Variables.Set("GoTask", GoSignalTask(tc, feedback))
     return True
 
 def PsiGameInitialize(tc):
     feedback = GameFeedback(tc)
-    tc.Defines.Set("Feedback", feedback)
-    tc.Defines.Set("StopTask", StopSignalTask(tc, PsiAlgorithm(tc), feedback))
-    tc.Defines.Set("GoTask", GoSignalTask(tc, feedback))
+    tc.Variables.Set("Feedback", feedback)
+    tc.Variables.Set("StopTask", StopSignalTask(tc, PsiAlgorithm(tc), feedback))
+    tc.Variables.Set("GoTask", GoSignalTask(tc, feedback))
     return True
 
 def Complete(tc):
