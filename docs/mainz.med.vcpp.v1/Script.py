@@ -31,11 +31,10 @@ class ResponseTask:
       sound = self.tc.Instruments.SoundCard
       sound.Play(self.tc.Waveforms.Sin(1, freq, 0, 4000,44100).SetChannel(3))      
 
-   def Enter(self):
+   def Enter(self, srTest):
       id = self.tc.CurrentState.ID
-      display = self.tc.Instruments.Display
+      display = self.tc.Instruments.ImageDisplay
       self.tc.Keyboard.Clear();
-      self.tc.Instruments.Joystick.Reset();
 
       if id == "CUE":
          display.Display(self.Cue)
@@ -86,17 +85,17 @@ class ResponseTask:
       id = self.tc.CurrentState.ID
 
       if id == "CUE":
-         Joystick = self.tc.Instruments.Joystick
+         button = self.tc.Instruments.Button
          self.tc.CurrentState.Status = "Remaining time: {time}".format(time = 2000 - self.tc.CurrentState.RunningTime)
 
          if self.tc.CurrentState.RunningTime > 2000: 
             self.tc.Log.Information("No response, selecting one random selection")
             return random.choice(["CUE01", "CUE02"])
          
-         if Joystick.IsLatched("left"):
+         if button.IsLatched("1"):
             return "CUE01"
 
-         if Joystick.IsLatched("right"):
+         if button.IsLatched("2"):
             return "CUE02"
 
          return "*" 
