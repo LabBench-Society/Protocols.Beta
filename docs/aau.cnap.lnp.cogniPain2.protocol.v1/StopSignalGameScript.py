@@ -82,7 +82,6 @@ class StopSignalTask:
     def __init__(self, tc, algorithm, feedback):
         self.Log = tc.Log
         self.feedback = feedback
-        self.Buttons = tc.Response.Buttons
         self.display = tc.Instruments.ImageDisplay
         self.response = tc.Instruments.Button
         self.images = tc.Assets.StopSignalGameImages
@@ -130,7 +129,7 @@ class StopSignalTask:
         return self.responseTimeout - self.algorithm.delay
             
     def Feedback(self):
-        if self.response.LatchedActive != self.Buttons.NoResponse:
+        if not self.response.IsLatched("none"):
             self.answer.append(False)
             self.time.append(int(self.response.ReactionTime))
         else:           
@@ -151,7 +150,6 @@ class StopSignalTask:
 class GoSignalTask:
     def __init__(self, tc, feedback):   
         self.Log = tc.Log    
-        self.Buttons = tc.Response.Buttons
         self.feedback = feedback
         self.tc = tc
         self.display = tc.Instruments.ImageDisplay
@@ -190,26 +188,26 @@ class GoSignalTask:
         return self.responseTimeout
                   
     def Feedback(self):
-        button = self.response.LatchedActive
+        btn = self.response
         self.time.append(self.response.ReactionTime)
         
-        if button == self.Buttons.NoResponse:
+        if btn.IsLatched("none"):
             self.answer.append(False)
         else:         
             if self.signal == 0: # Left
-                if button == self.Buttons.Left: # Correct
+                if btn.IsLatched("left"):
                     self.answer.append(True)
                 else: # wrong
                     self.answer.append(False)
                     
             else: # Right
-                if button == self.Buttons.Right: # Correct
+                if btn.IsLatched("right"): # Correct
                     self.answer.append(True)
                 else: # wrong
                     self.answer.append(False)
                         
         self.Log.Information("GO RESPONSE [ Button: {button}, Signal: {signal}, Correct: {answer}, Time: {time}]", 
-                         button, 
+                         btn, 
                          "left" if self.signal == 0 else "right", 
                          self.answer[-1],
                          self.time[-1])
@@ -246,7 +244,7 @@ class GameFeedback:
         chan.SetStimulus(1, chan.CreateWaveform().Step(self.intensity, 1.5))
         algometer.ConfigurePressureOutput("outlet-1", "channel-1")
         algometer.ConfigurePressureOutput("outlet-2", "none")
-        algometer.StartStimulation(algometer.StopCriterions.WhenButtonPressed, True, False)
+        algometer.StartStimulation("stop-when-button-pressed", True, False)
 
         return True
 
@@ -331,21 +329,25 @@ def DisplayScore(tc):
 
 def Stimulate(tc, x):   
     display = tc.Instruments.ImageDisplay
+    scheduler = tc.Scheduler
     
     if tc.StimulusName == "STOP":
-        display.Run(display.Sequence(tc.StopTask)
-                    .Display(tc.Assets.StopSignalGameImages.FixationCross, tc.StopSignalFixationDelay)
-                    .Run(lambda task: task.Go())
-                    .Run(lambda task: task.Stop())
-                    .Display(tc.Assets.StopSignalGameImages.FixationCross, tc.StopSignalFeedbackDelay)
-                    .Run(lambda task: task.Feedback()))
+        task = tc.StopTask
+        scheduler.Run(scheduler.Create()
+                    .Add(tc.StopSignalFixationDelay, lambda: display.Display(tc.Assets.StopSignalGameImages.FixationCross))
+                    .Add(lambda: task.Go())
+                    .Add(lambda: task.Stop())
+                    .Add(tc.StopSignalFeedbackDelay, lambda: display.Display(tc.Assets.StopSignalGameImages.FixationCross))
+                    .Add(lambda: task.Feedback()))
         
     elif tc.StimulusName == "GO":
-        display.Run(display.Sequence(tc.GoTask)
-                    .Display(tc.Assets.StopSignalGameImages.FixationCross, tc.StopSignalFixationDelay)
-                    .Run(lambda task: task.Go())
-                    .Display(tc.Assets.StopSignalGameImages.FixationCross, tc.StopSignalFeedbackDelay)
-                    .Run(lambda task: task.Feedback()))
+        task = tc.GoTask
+        
+        scheduler.Run(scheduler.Create()
+                    .Add(tc.StopSignalFixationDelay, lambda: display.Display(tc.Assets.StopSignalGameImages.FixationCross))
+                    .Add(lambda: task.Go())
+                    .Add(tc.StopSignalFeedbackDelay, lambda: display.Display(tc.Assets.StopSignalGameImages.FixationCross))
+                    .Add(lambda: task.Feedback()))
     else:
         tc.Log.Error("Unknown stimulus: {name}".format(name = tc.StimulusName))
 
