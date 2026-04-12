@@ -12,13 +12,14 @@ def StroopNeutralStimulate(tc, x):
     triggerGenerator = tc.Instruments.TriggerGenerator
 
     with tc.Image.GetCanvas(display) as canvas:
+        tlk = tc.Triggers
+
         canvas.Fill(True)
         canvas.Color(tc.StroopColors[name[0]])
         canvas.Circle(display.Width/2, display.Height/2, display.Height/8)
 
-        triggerGenerator.GenerateTriggerSequence(tc.Triggers.StartTrigger.Response01, 
-                                                 tc.Triggers.Sequence()
-                                                   .Add(tc.Triggers.Trigger(10).Stimulus().Code(1)))
+        trigger = tlk.CreateTrigger(10).TriggerOut().Interface(1)
+        triggerGenerator.GenerateTriggerSequence("port1", tlk.Sequence().Add(trigger))
         display.Display(canvas, tc.StroopDisplayTime, True)
         
     return True
@@ -37,10 +38,10 @@ def StroopStimulate(tc, x):
         canvas.Color(tc.StroopColors[name[0]])
         canvas.Write(display.Width/2, display.Height/2, tc.StroopWords[name[1]])
 
+        tlk = tc.Triggers
         triggerCode = 1 if name[0] == name[1] else 2
-        triggerGenerator.GenerateTriggerSequence(tc.Triggers.StartTrigger.Response01, 
-                                                 tc.Triggers.Sequence()
-                                                   .Add(tc.Triggers.Trigger(10).Stimulus().Code(triggerCode)))
+        trigger = tlk.CreateTrigger(10).TriggerOut().Interface(triggerCode)
+        triggerGenerator.GenerateTriggerSequence("port1", tlk.Sequence().Add(trigger))
         display.Display(canvas, tc.StroopDisplayTime, True)
         
     return True
