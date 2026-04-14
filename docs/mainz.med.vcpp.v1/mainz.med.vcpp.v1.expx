@@ -133,7 +133,8 @@
           <alias replace="Slide3" with="Break" />
           <alias replace="Slide4" with="Blank" />
         </aliases>
-      </file-asset>        
+      </file-asset>       
+      <file-asset id="Roboto" file="Roboto-Regular.ttf" /> 
     </assets>
   </protocol>
   <post-actions>    

@@ -66,6 +66,7 @@ class Condition:
       image.AlignCenter()
       image.AlignMiddle()
       image.Color("#FFFFFF")
+      image.TextSize(72)
       
       y = image.Height / 2
       xLeft = int(image.Width / 4)
@@ -74,7 +75,7 @@ class Condition:
       lure = self.parse(self.Lure)
 
       image.Write(xLeft, y, self.Target if self.TargetLeft else self.Lure)
-      image.Write(xLeft, y, self.Lure if self.TargetLeft else self.Target)
+      image.Write(xRight, y, self.Lure if self.TargetLeft else self.Target)
 
 
 
@@ -162,9 +163,9 @@ class ResponseTask:
       if id == "CROSS":
          display.Display(self.tc.Assets.Images.Cross, 1500)
       if id == "SELECTION":
-         self.PlotChoices(condition)
+         display.Display(self.PlotChoices(condition))
       if id == "DISPLAY":
-         self.PlotSelected(condition, self.targetSelected[-1])
+         display.Display(self.PlotSelected(condition, self.targetSelected[-1]))
       if id == "STIMULATION":
          display.Display(self.tc.Assets.Images.Stimulating)
          self.Stimulate(condition, self.targetSelected[-1])
