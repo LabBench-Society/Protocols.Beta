@@ -166,11 +166,11 @@ class ResponseTask:
          display.Display(self.tc.Assets.Images.Stimulation)
          self.Stimulate(condition, self.targetSelected[-1])
       if id == "RATING":
-         pass
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
       if id == "PAUSE":
-         pass
+         display.Display(self.tc.Assets.Images.Blank)
       if id == "REST":
-         pass
+         display.Display(self.tc.Assets.Images.Break)
 
       return True
      
