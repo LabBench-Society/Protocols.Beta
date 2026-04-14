@@ -66,12 +66,15 @@ class Condition:
       image.AlignCenter()
       image.AlignMiddle()
       image.Color("#FFFFFF")
+      
       y = image.Height / 2
       xLeft = int(image.Width / 4)
       xRight = int(3 * image.Width / 4)
       target = self.parse(self.Target)
       lure = self.parse(self.Lure)
 
+      image.Write(xLeft, y, self.Target if self.TargetLeft else self.Lure)
+      image.Write(xLeft, y, self.Lure if self.TargetLeft else self.Target)
 
 
 
