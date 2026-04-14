@@ -81,7 +81,8 @@
 
         <sequential id="PainRatingTask"
           experimental-setup-id="image">
-          <procedure-events>
+          <procedure-events start="Task.Start()"
+            complete="Task.Complete()">
             <instrument interface="pressure-algometer" />
             <instrument interface="ratio-scale" />
             <instrument interface="button" />
