@@ -96,13 +96,14 @@
 
           <states update="Task.Update()"
                   enter="var: f'Task.Enter({IntensityTest})'"
-                  leave="Task.Leave()">
+                  leave="True">
             <state id="CROSS"       experimental-setup-id="image" name="Fixation cross"/>
             <state id="SELECTION"   experimental-setup-id="image" name="Selecting a cue" />
             <state id="DISPLAY"     experimental-setup-id="image" name="Display selected cue" />
             <state id="STIMULATION" experimental-setup-id="image" name="Stimulation" />
             <state id="RATING"      experimental-setup-id="vas"   name="Pain rating" />
             <state id="PAUSE"       experimental-setup-id="image" name="Pause" />
+            <state id="REST"        experimental-setup-id="image" name="Rest for the participant after 20 trials" />
           </states>
         </sequential>        
       </procedure-templates>
@@ -122,9 +123,9 @@
       </sequential-constructor>
     </procedures>
     <assets>
-      <file-asset id="Script" file="Script.py" />
-      <file-asset id="Cards" file="Cards.zip" />
-      <file-asset id="Images" file="Images.zip" />
+      <file-asset file="Script.py" />
+      <file-asset file="Cards.zip" />
+      <file-asset file="Images.zip" />
     </assets>
   </protocol>
   <post-actions>    
