@@ -163,7 +163,7 @@ class ResponseTask:
       if id == "DISPLAY":
          self.PlotSelected(condition, self.targetSelected[-1])
       if id == "STIMULATION":
-         display.Display(self.tc.Assets.Images.Stimulation)
+         display.Display(self.tc.Assets.Images.Stimulating)
          self.Stimulate(condition, self.targetSelected[-1])
       if id == "RATING":
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
@@ -182,7 +182,7 @@ class ResponseTask:
       condition = self.trials[self.index]
 
       if id == "CROSS":
-         return "*" if self.tc.CurrentState < 2000 else "SELECTION"
+         return "*" if self.tc.CurrentState.RunningTime < 2000 else "SELECTION"
       
       if id == "SELECTION":
          if button.IsLatched("1"):
@@ -195,23 +195,23 @@ class ResponseTask:
             return "DISPLAY"
          
       if id == "DISPLAY":
-         return "*" if self.tc.CurrentState < 2000 else "STIMULATION"
+         return "*" if self.tc.CurrentState.RunningTime < 2000 else "STIMULATION"
       
       if id == "STIMULATION":
-         return "*" if self.tc.CurrentState < 500 else "RATING"
+         return "*" if self.tc.CurrentState.RunningTime < 500 else "RATING"
       
       if id == "RATING":
-         self.currentRating = scale.GetRating()
+         self.currentRating = scale.GetRatioRating()
 
          if button.IsLatched("1") or button.IsLatched("2"):
             self.ratings.append(self.currentRating)
             return "PAUSE"         
          
       if id == "PAUSE":
-         return "*" if self.tc.CurrentState < 2000 else "CROSS"
+         return "*" if self.tc.CurrentState.RunningTime < 2000 else "CROSS"
       
       if id == "REST":
-         return "*" if self.tc.CurrentState < 2000 else "CROSS"
+         return "*" if self.tc.CurrentState.RunningTime < 2000 else "CROSS"
          
       return "*"
 
