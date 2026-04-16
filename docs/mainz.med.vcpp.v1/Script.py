@@ -23,10 +23,11 @@ class Condition:
 
    _lure_pools = defaultdict(list)
 
-   def __init__(self, condition: int):
+   def __init__(self, condition: int, cards):
       if condition not in self._data:
          raise ValueError(f"Invalid condition: {condition}")
 
+      self.Cards = cards
       self.Condition = condition
       self.Stimulation, self.Target, lures = self._data[condition]
 
@@ -52,7 +53,7 @@ class Condition:
 
       return pool.pop()
    
-   def is_target_selected(self, leftPressed):      
+   def is_target_selected(self, leftPressed):            
       return self.TargetLeft if leftPressed else not self.TargetLeft
 
    def parse(self, cue: str):
@@ -62,6 +63,12 @@ class Condition:
    def get_intensity(self, cue: str) -> int:
       return random.choice(self.parse(cue))
    
+   def plotCue(self, image, x, cue):
+      y = image.Height / 2
+      cue0loc = image.SpriteScaledToWidth(x-250/2 - 20, y, self.Cards[f'Spades0{cue[0]}'], 250)
+      cue1loc = image.SpriteScaledToWidth(x+250/2 + 20, y, self.Cards[f'Spades0{cue[1]}'], 250)
+      image.Rectangle(cue0loc.Left - 20, cue0loc.Top - 20, cue1loc.Right + 20, cue1loc.Bottom + 20, 20)
+
    def plot(self, image):
       image.AlignCenter()
       image.AlignMiddle()
@@ -74,15 +81,19 @@ class Condition:
       target = self.parse(self.Target)
       lure = self.parse(self.Lure)
 
-      image.Write(xLeft, y, self.Target if self.TargetLeft else self.Lure)
-      image.Write(xRight, y, self.Lure if self.TargetLeft else self.Target)
-
-
+      self.plotCue(image, xLeft, target if self.TargetLeft else lure)
+      self.plotCue(image, xRight, lure if self.TargetLeft else target)   
 
    def plot_selected(self, image, targetSelected):
       image.AlignCenter()
       image.AlignMiddle()
       image.Color("#FFFFFF")
+
+      y = image.Height / 2
+      x = int(image.Width / 2)
+      cue = self.parse(self.Target if targetSelected else self.Lure)
+
+      self.plotCue(image, x, cue)
 
    def __repr__(self):
       return (
@@ -98,7 +109,7 @@ class ResponseTask:
       self.currentRating = 0
 
    def Start(self, numberOfTrials = 9999):
-      self.trials = [Condition(c) for c in range(1, 17) for _ in range(5)]
+      self.trials = [Condition(c, self.tc.Assets.Cards) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
 
       if numberOfTrials < len(self.trials):
@@ -191,11 +202,11 @@ class ResponseTask:
       if id == "SELECTION":
          if button.IsLatched("1"):
             self.targetSelected.append(condition.is_target_selected(True))
-            self.tc.Log.Information("Target selected: {selected}", self.targetSelected[-1])
+            self.tc.Log.Information("BTN 1: Target selected: {selected}", self.targetSelected[-1])
             return "DISPLAY"
          if button.IsLatched("2"):
             self.targetSelected.append(condition.is_target_selected(False))
-            self.tc.Log.Information("Target selected: {selected}", self.targetSelected[-1])
+            self.tc.Log.Information("BTN 2: Target selected: {selected}", self.targetSelected[-1])
             return "DISPLAY"
          
       if id == "DISPLAY":
@@ -212,7 +223,18 @@ class ResponseTask:
             return "PAUSE"         
          
       if id == "PAUSE":
-         return "*" if self.tc.CurrentState.RunningTime < 2000 else "CROSS"
+         if self.tc.CurrentState.RunningTime < 2000:
+            return "*"
+         
+         self.index = self.index + 1
+
+         if self.index == len(self.trials):
+            return "complete"
+         
+         if self.index % 20 == 0:
+            return "REST"
+         
+         return "CROSS"
       
       if id == "REST":
          return "*" if self.tc.CurrentState.RunningTime < 2000 else "CROSS"
