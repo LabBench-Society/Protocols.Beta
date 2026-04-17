@@ -169,11 +169,25 @@ class ResponseTask:
          condition.plot_selected(image, targetSelected)
          return image.GetImage()
 
-   def Stimulate(self, condition: Condition, targetSelected: bool):
+   def Stimulate(self, condition: Condition, targetSelected: bool, srTest):
       if targetSelected:
+         intensity = condition.TargetIntensity
          self.tc.Log.Information("Target intensity: {intensity}", condition.TargetIntensity)
       else:
+         intensity = condition.LureIntensity
          self.tc.Log.Information("Lure intensity: {intensity}", condition.LureIntensity)      
+
+      pressure = srTest.GetPressureFromPerception(intensity)
+      self.tc.Log.Information(f"Stimulation pressure: {pressure:.1f}kPa")
+
+      algometer = self.tc.Instruments.PressureAlgometer
+      chan = algometer.Channels[0]
+
+      chan.SetStimulus(1, chan.CreateWaveform().Step(pressure, 2))
+      algometer.ConfigurePressureOutput("outlet-1", "channel-1")
+      algometer.ConfigurePressureOutput("outlet-2", "none")
+      algometer.StartStimulation('stop-when-button-pressed', True)
+
 
    def Enter(self, srTest):
       self.tc.Keyboard.Clear();
@@ -192,7 +206,7 @@ class ResponseTask:
          display.Display(self.PlotSelected(condition, self.targetSelected[-1]))
       if id == "STIMULATION":
          display.Display(self.tc.Assets.Images.Stimulating)
-         self.Stimulate(condition, self.targetSelected[-1])
+         self.Stimulate(condition, self.targetSelected[-1], srTest)
       if id == "RATING":
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
       if id == "RESETRATING":
@@ -234,7 +248,7 @@ class ResponseTask:
          return "*" if self.tc.CurrentState.RunningTime < 2000 else "STIMULATION"
       
       if id == "STIMULATION":
-         return "*" if self.tc.CurrentState.RunningTime < 500 else "RATING"
+         return "*" if self.tc.CurrentState.RunningTime < 2500 else "RATING"
       
       if id == "RATING":
          self.currentRating = scale.GetRatioRating()
@@ -245,7 +259,6 @@ class ResponseTask:
          
       if id == "RESETRATING":
          self.currentRating = algometer.GetRatioRating()
-         self.tc.Log.Debug(f"Rating: {self.currentRating}")
 
          if self.currentRating < 0.1:
             return "PAUSE"
