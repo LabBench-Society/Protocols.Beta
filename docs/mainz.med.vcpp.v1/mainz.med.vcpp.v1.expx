@@ -131,8 +131,9 @@
         <aliases>
           <alias replace="Slide1" with="Cross" />
           <alias replace="Slide2" with="Stimulating" />
-          <alias replace="Slide3" with="Break" />
-          <alias replace="Slide4" with="Blank" />
+          <alias replace="Slide3" with="ResetRating" />
+          <alias replace="Slide4" with="Break" />
+          <alias replace="Slide5" with="Blank" />
         </aliases>
       </file-asset>       
       <file-asset id="Roboto" file="Roboto-Regular.ttf" /> 

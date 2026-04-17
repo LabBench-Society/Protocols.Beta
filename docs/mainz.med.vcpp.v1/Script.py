@@ -151,7 +151,8 @@ class ResponseTask:
          image.AlignCenter()
          image.AlignMiddle()
          image.Color("#000000")
-         image.Write(x /2, y /2, "Rating: {r}".format(r = self.currentRating))
+         image.TextSize(96)
+         image.Write(x /2, y /2, f"Rating: {self.currentRating:.1f}")
          return image.GetImage()
                 
    def PlotChoices(self, condition: Condition):
@@ -194,6 +195,9 @@ class ResponseTask:
          self.Stimulate(condition, self.targetSelected[-1])
       if id == "RATING":
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
+      if id == "RESETRATING":
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
+         display.Display(self.tc.Assets.Images.ResetRating)
       if id == "PAUSE":
          display.Display(self.tc.Assets.Images.Blank)
       if id == "REST":
@@ -204,6 +208,7 @@ class ResponseTask:
    def Update(self):
       button = self.tc.Instruments.Button
       scale = self.tc.Instruments.RatioScale
+      algometer = self.tc.Instruments.PressureAlgometer
 
       id = self.tc.CurrentState.ID
       condition = self.trials[self.index]
@@ -236,8 +241,15 @@ class ResponseTask:
 
          if button.IsLatched("1") or button.IsLatched("2"):
             self.ratings.append(self.currentRating)
-            return "PAUSE"         
+            return "RESETRATING"         
          
+      if id == "RESETRATING":
+         self.currentRating = algometer.GetRatioRating()
+         self.tc.Log.Debug(f"Rating: {self.currentRating}")
+
+         if self.currentRating < 0.1:
+            return "PAUSE"
+
       if id == "PAUSE":
          if self.tc.CurrentState.RunningTime < 2000:
             return "*"
