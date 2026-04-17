@@ -69,8 +69,8 @@ class Condition:
    
    def plotCue(self, image, x, cue, position):
       y = image.Height / 2
-      cue0loc = image.SpriteScaledToWidth(x-250/2 - 20, y, self.Cards[f'Spades0{cue[position[0]]}'], 250)
-      cue1loc = image.SpriteScaledToWidth(x+250/2 + 20, y, self.Cards[f'Spades0{cue[position[1]]}'], 250)
+      cue0loc = image.Sprite(x-250/2 - 20, y, self.Cards[f'Spades0{cue[position[0]]}'], 250, -1)
+      cue1loc = image.Sprite(x+250/2 + 20, y, self.Cards[f'Spades0{cue[position[1]]}'], 250, -1)
       image.Rectangle(cue0loc.Left - 20, cue0loc.Top - 20, cue1loc.Right + 20, cue1loc.Bottom + 20, 20)
 
    def plot(self, image):
