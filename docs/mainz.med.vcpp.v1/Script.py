@@ -67,10 +67,10 @@ class Condition:
    def get_intensity(self, cue: str) -> int:
       return random.choice(self.parse(cue))
    
-   def plotCue(self, image, x, cue):
+   def plotCue(self, image, x, cue, position):
       y = image.Height / 2
-      cue0loc = image.SpriteScaledToWidth(x-250/2 - 20, y, self.Cards[f'Spades0{cue[0]}'], 250)
-      cue1loc = image.SpriteScaledToWidth(x+250/2 + 20, y, self.Cards[f'Spades0{cue[1]}'], 250)
+      cue0loc = image.SpriteScaledToWidth(x-250/2 - 20, y, self.Cards[f'Spades0{cue[position[0]]}'], 250)
+      cue1loc = image.SpriteScaledToWidth(x+250/2 + 20, y, self.Cards[f'Spades0{cue[position[1]]}'], 250)
       image.Rectangle(cue0loc.Left - 20, cue0loc.Top - 20, cue1loc.Right + 20, cue1loc.Bottom + 20, 20)
 
    def plot(self, image):
@@ -84,9 +84,11 @@ class Condition:
       xRight = int(3 * image.Width / 4)
       target = self.parse(self.Target)
       lure = self.parse(self.Lure)
+      targetPos = self.TargetPositions
+      lurePos = self.LurePositions
 
-      self.plotCue(image, xLeft, target if self.TargetLeft else lure)
-      self.plotCue(image, xRight, lure if self.TargetLeft else target)   
+      self.plotCue(image, xLeft, target if self.TargetLeft else lure, targetPos if self.TargetLeft else lurePos)
+      self.plotCue(image, xRight, lure if self.TargetLeft else target, lurePos if self.TargetLeft else targetPos)   
 
    def plot_selected(self, image, targetSelected):
       image.AlignCenter()
@@ -96,8 +98,9 @@ class Condition:
       y = image.Height / 2
       x = int(image.Width / 2)
       cue = self.parse(self.Target if targetSelected else self.Lure)
+      pos = self.TargetPositions if targetSelected else self.LurePositions
 
-      self.plotCue(image, x, cue)
+      self.plotCue(image, x, cue, pos)
 
    def __repr__(self):
       return (
@@ -116,6 +119,9 @@ class ResponseTask:
    def Start(self, numberOfTrials = 9999):
       self.trials = [Condition(c, self.tc) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
+
+      for trial in self.trials:
+         self.tc.Log.Information(f"Trial: {trial}")
 
       if numberOfTrials < len(self.trials):
          self.trials = self.trials[:numberOfTrials]
@@ -206,10 +212,14 @@ class ResponseTask:
          return "*" if self.tc.CurrentState.RunningTime < 2000 else "SELECTION"
       
       if id == "SELECTION":
+         if not button.IsLatched("none"):
+            self.tc.Log.Information(f"Latched button: {button.GetLatched()}")
+
          if button.IsLatched("1"):
             self.targetSelected.append(condition.is_target_selected(True))
             self.tc.Log.Information("BTN 1: Target selected: {selected}", self.targetSelected[-1])
             return "DISPLAY"
+         
          if button.IsLatched("2"):
             self.targetSelected.append(condition.is_target_selected(False))
             self.tc.Log.Information("BTN 2: Target selected: {selected}", self.targetSelected[-1])
