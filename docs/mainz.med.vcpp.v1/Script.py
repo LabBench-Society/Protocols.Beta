@@ -23,11 +23,12 @@ class Condition:
 
    _lure_pools = defaultdict(list)
 
-   def __init__(self, condition: int, cards):
+   def __init__(self, condition: int, tc):
       if condition not in self._data:
          raise ValueError(f"Invalid condition: {condition}")
 
-      self.Cards = cards
+      self.tc = tc
+      self.Cards = tc.Assets.Cards
       self.Condition = condition
       self.Stimulation, self.Target, lures = self._data[condition]
 
@@ -53,8 +54,11 @@ class Condition:
 
       return pool.pop()
    
-   def is_target_selected(self, leftPressed):            
-      return self.TargetLeft if leftPressed else not self.TargetLeft
+   def is_target_selected(self, leftPressed):
+      if self.TargetLeft:
+         return leftPressed
+      else:            
+         return not leftPressed
 
    def parse(self, cue: str):
       a, b = map(int, cue.split("-"))
@@ -99,8 +103,9 @@ class Condition:
       return (
          f"Condition({self.Condition}) -> "
          f"Stim={self.Stimulation}, "
-         f"Target={self.Target} ({self.TargetIntensity}), "
-         f"Lure={self.Lure} ({self.LureIntensity})"
+         f"Target={self.Target} (I: {self.TargetIntensity}, P: {self.TargetPositions}), "
+         f"Lure={self.Lure} (I: {self.LureIntensity}, P: {self.LurePositions}), "
+         f"TargetLeft={self.TargetLeft}"
       )
    
 class ResponseTask:
@@ -109,7 +114,7 @@ class ResponseTask:
       self.currentRating = 0
 
    def Start(self, numberOfTrials = 9999):
-      self.trials = [Condition(c, self.tc.Assets.Cards) for c in range(1, 17) for _ in range(5)]
+      self.trials = [Condition(c, self.tc) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
 
       if numberOfTrials < len(self.trials):
@@ -170,6 +175,7 @@ class ResponseTask:
       id = self.tc.CurrentState.ID
       display = self.tc.Instruments.ImageDisplay
       condition = self.trials[self.index]
+      self.tc.Log.Information(f"Index: {self.index}, Condition: {condition}")
 
       if id == "CROSS":
          display.Display(self.tc.Assets.Images.Cross, 1500)
