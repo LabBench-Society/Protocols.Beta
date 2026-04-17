@@ -103,6 +103,7 @@
             <state id="DISPLAY"     experimental-setup-id="image" name="Display selected cue" />
             <state id="STIMULATION" experimental-setup-id="image" name="Stimulation" />
             <state id="RATING"      experimental-setup-id="vas"   name="Pain rating" />
+            <state id="RESETRATING" experimental-setup-id="image" name="Reset rating"/>
             <state id="PAUSE"       experimental-setup-id="image" name="Pause" />
             <state id="REST"        experimental-setup-id="image" name="Rest for the participant after 20 trials" />
           </states>
