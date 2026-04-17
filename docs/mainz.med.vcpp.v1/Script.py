@@ -305,7 +305,8 @@ class ResponseTask:
          return "CROSS"
       
       if id == "REST":
-         return "*" if self.tc.CurrentState.RunningTime < 2000 else "CROSS"
+         if button.IsLatched("1") or button.IsLatched("2"):
+            return "CROSS"         
          
       return "*"
 
