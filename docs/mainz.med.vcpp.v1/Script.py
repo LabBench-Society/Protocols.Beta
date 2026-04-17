@@ -30,13 +30,12 @@ class Condition:
       self.tc = tc
       self.Cards = tc.Assets.Cards
       self.Condition = condition
-      self.Stimulation, self.Target, lures = self._data[condition]
+      self.TargetIntensity, self.Target, lures = self._data[condition]
 
       self.Lure = self._next_lure(condition, lures)
 
       self.TargetLeft = random.choice([True, False]) 
 
-      self.TargetIntensity = self.get_intensity(self.Target)
       self.TargetPositions = [0, 1]
       random.shuffle(self.TargetPositions)
 
@@ -107,7 +106,6 @@ class Condition:
    def __repr__(self):
       return (
          f"Condition({self.Condition}) -> "
-         f"Stim={self.Stimulation}, "
          f"Target={self.Target} (I: {self.TargetIntensity}, P: {self.TargetPositions}), "
          f"Lure={self.Lure} (I: {self.LureIntensity}, P: {self.LurePositions}), "
          f"TargetLeft={self.TargetLeft}"
