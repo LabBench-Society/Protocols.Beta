@@ -81,7 +81,7 @@
 
         <sequential id="PainRatingTask"
           experimental-setup-id="image">
-          <procedure-events start="Task.Start()"
+          <procedure-events start="var: f'Task.Start({NumberOfTrials})'"
             complete="Task.Complete()">
             <instrument interface="pressure-algometer" />
             <instrument interface="ratio-scale" />
@@ -116,11 +116,21 @@
         template="SR">
       </algometry-stimulus-response-constructor>
 
+      <sequential-constructor id="TrainingPainRatingTask" 
+        name="Pain Rating Task (Training)" 
+        template="PainRatingTask">
+        <variables>
+          <string name="IntensityTest" value="SR" />
+          <string name="NumberOfTrials" value="6" />
+        </variables>
+      </sequential-constructor>
+
       <sequential-constructor id="PainRatingTask" 
         name="Pain Rating Task" 
         template="PainRatingTask">
         <variables>
           <string name="IntensityTest" value="SR" />
+          <string name="NumberOfTrials" value="9999" />
         </variables>
       </sequential-constructor>
     </procedures>

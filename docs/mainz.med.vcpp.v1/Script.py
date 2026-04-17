@@ -120,12 +120,12 @@ class ResponseTask:
       self.trials = [Condition(c, self.tc) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
 
-      for trial in self.trials:
-         self.tc.Log.Information(f"Trial: {trial}")
-
       if numberOfTrials < len(self.trials):
          self.trials = self.trials[:numberOfTrials]
-      
+
+      for trial in self.trials:
+         self.tc.Log.Information(f"Trial: {trial}")
+     
       self.index = 0
       self.ratings = []     
       self.currentRating = 0
