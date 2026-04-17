@@ -44,6 +44,8 @@ class Condition:
       self.LurePositions = [0, 1]
       random.shuffle(self.LurePositions)
 
+      self.InterTrialInterval = random.choice([1000, 1500, 2000, 2500, 3000])
+
    @classmethod
    def _next_lure(cls, condition, lures):
       pool = cls._lure_pools[condition]
@@ -146,11 +148,20 @@ class ResponseTask:
       
       return True
 
-   def PlotRating(self, x, y):
-      with self.tc.Image.GetCanvas(x, y, "#FFFFFF") as image:
+   def PlotInstruction(self, x,y, message):
+      with self.tc.Image.GetCanvas(x, y, "#000000") as image:
          image.AlignCenter()
          image.AlignMiddle()
-         image.Color("#000000")
+         image.Color("#FFFFFF")
+         image.TextSize(96)
+         image.Write(x /2, y /2, message)
+         return image.GetImage()
+
+   def PlotRating(self, x, y):
+      with self.tc.Image.GetCanvas(x, y, "#000000") as image:
+         image.AlignCenter()
+         image.AlignMiddle()
+         image.Color("#FFFFFF")
          image.TextSize(96)
          image.Write(x /2, y /2, f"Rating: {self.currentRating:.1f}")
          return image.GetImage()
@@ -161,11 +172,21 @@ class ResponseTask:
       with self.tc.Image.GetCanvas(display, "#000000") as image:
          condition.plot(image)
          return image.GetImage()
-      
+
+   def PlotOperatorChoices(self, x, y, condition: Condition):
+      with self.tc.Image.GetCanvas(x, y, "#000000") as image:
+         condition.plot(image)
+         return image.GetImage()
+
    def PlotSelected(self, condition: Condition, targetSelected: bool):
       display = self.tc.Instruments.ImageDisplay
 
       with self.tc.Image.GetCanvas(display, "#000000") as image:
+         condition.plot_selected(image, targetSelected)
+         return image.GetImage()
+
+   def PlotOperatorSelected(self, x, y, condition: Condition, targetSelected: bool):
+      with self.tc.Image.GetCanvas(x, y, "#000000") as image:
          condition.plot_selected(image, targetSelected)
          return image.GetImage()
 
@@ -188,6 +209,8 @@ class ResponseTask:
       algometer.ConfigurePressureOutput("outlet-2", "none")
       algometer.StartStimulation('stop-when-button-pressed', True)
 
+      return pressure
+
 
    def Enter(self, srTest):
       self.tc.Keyboard.Clear();
@@ -199,14 +222,18 @@ class ResponseTask:
       self.tc.Log.Information(f"Index: {self.index}, Condition: {condition}")
 
       if id == "CROSS":
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, "CROSS"))
          display.Display(self.tc.Assets.Images.Cross, 1500)
       if id == "SELECTION":
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotOperatorChoices(x, y, condition))
          display.Display(self.PlotChoices(condition))
       if id == "DISPLAY":
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotOperatorSelected(x, y, condition, self.targetSelected[-1]))
          display.Display(self.PlotSelected(condition, self.targetSelected[-1]))
       if id == "STIMULATION":
          display.Display(self.tc.Assets.Images.Stimulating)
-         self.Stimulate(condition, self.targetSelected[-1], srTest)
+         pressure = self.Stimulate(condition, self.targetSelected[-1], srTest)
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, f"Stimulating: {pressure:.1f}kPa"))
       if id == "RATING":
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
       if id == "RESETRATING":
@@ -214,8 +241,10 @@ class ResponseTask:
          display.Display(self.tc.Assets.Images.ResetRating)
       if id == "PAUSE":
          display.Display(self.tc.Assets.Images.Blank)
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, f"Pause: {condition.InterTrialInterval:.0f}ms"))
       if id == "REST":
          display.Display(self.tc.Assets.Images.Break)
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, "Break"))
 
       return True
      
@@ -264,7 +293,7 @@ class ResponseTask:
             return "PAUSE"
 
       if id == "PAUSE":
-         if self.tc.CurrentState.RunningTime < 2000:
+         if self.tc.CurrentState.RunningTime < condition.InterTrialInterval:
             return "*"
          
          self.index = self.index + 1
