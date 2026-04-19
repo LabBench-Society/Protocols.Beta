@@ -26,6 +26,9 @@ class Condition:
    def __init__(self, condition: int, tc):
       if condition not in self._data:
          raise ValueError(f"Invalid condition: {condition}")
+      
+      self.CardWidth = 0.7/4
+      self.CardMargin = 0.05/4
 
       self.tc = tc
       self.Cards = tc.Assets.Cards
@@ -70,9 +73,12 @@ class Condition:
    
    def plotCue(self, image, x, cue, position):
       y = image.Height / 2
-      cue0loc = image.Sprite(x-250/2 - 20, y, self.Cards[f'Spades0{cue[position[0]]}'], 250, -1)
-      cue1loc = image.Sprite(x+250/2 + 20, y, self.Cards[f'Spades0{cue[position[1]]}'], 250, -1)
-      image.Rectangle(cue0loc.Left - 20, cue0loc.Top - 20, cue1loc.Right + 20, cue1loc.Bottom + 20, 20)
+      cardWidth = self.CardWidth * image.Width
+      cardMargin = self.CardMargin * image.Width
+
+      cue0loc = image.Sprite(x-cardWidth/2 - cardMargin/2, y, self.Cards[f'Spades0{cue[position[0]]}'], cardWidth, -1)
+      cue1loc = image.Sprite(x+cardWidth/2 + cardMargin/2, y, self.Cards[f'Spades0{cue[position[1]]}'], cardWidth, -1)
+      image.Rectangle(cue0loc.Left - cardMargin, cue0loc.Top - cardMargin, cue1loc.Right + cardMargin, cue1loc.Bottom + cardMargin, cardMargin)
 
    def plot(self, image):
       image.AlignCenter()
@@ -151,7 +157,7 @@ class ResponseTask:
          image.AlignCenter()
          image.AlignMiddle()
          image.Color("#FFFFFF")
-         image.TextSize(96)
+         image.TextSize(48)
          image.Write(x /2, y /2, message)
          return image.GetImage()
 
@@ -160,7 +166,7 @@ class ResponseTask:
          image.AlignCenter()
          image.AlignMiddle()
          image.Color("#FFFFFF")
-         image.TextSize(96)
+         image.TextSize(48)
          image.Write(x /2, y /2, f"Rating: {self.currentRating:.1f}")
          return image.GetImage()
                 
