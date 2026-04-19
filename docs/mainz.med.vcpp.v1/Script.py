@@ -247,8 +247,9 @@ class ResponseTask:
          display.Display(self.tc.Assets.Images.Blank)
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, f"Pause: {condition.InterTrialInterval:.0f}ms"))
       if id == "REST":
+         self.tc.Keyboard.Clear()
          display.Display(self.tc.Assets.Images.Break)
-         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, "Break"))
+         self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, "Press INSERT to continue."))
 
       return True
      
@@ -311,7 +312,7 @@ class ResponseTask:
          return "CROSS"
       
       if id == "REST":
-         if button.IsLatched("1") or button.IsLatched("2"):
+         if self.tc.Keyboard.Pressed("INSERT"):
             return "CROSS"         
          
       return "*"
