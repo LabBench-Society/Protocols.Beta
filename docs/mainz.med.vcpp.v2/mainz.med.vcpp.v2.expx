@@ -66,9 +66,89 @@
     </variables>
     <templates>
       <template-variables>
-
+          <strings name="Thresholds" value="3;4;5;6;7" />
       </template-variables>
       <procedure-templates>
+        <psychophysics-threshold-estimation id="INITTHRESHOLD"
+            experimental-setup-id="vas"
+            stimulus-update-rate="50">
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="var: threshold"/>
+
+            <stimulation-scripts 
+                initialize="True"
+                stimulate="func: Script.Stimulate(tc,x)"
+                stimulus-description="Pressure"
+                stimulus-unit="kPa">
+                <instrument interface="pressure-algometer"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel id="PULSE" name="Pulse (1s)" Imax="100" Imin="0">
+                    <up-down-method 
+                        reversal-rule="1"
+                        step-size="0.1"
+                        initial-direction="increasing"
+                        start-intensity="5"
+                        step-size-type="relative"
+                        max-step-size-reduction="0.1"
+                        step-size-reduction="0.5"
+                        skip-rule="1"
+                        stop-rule="5" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="2000" />
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation id="THRESHOLD"
+            experimental-setup-id="vas"
+            stimulus-update-rate="50">
+
+            <properties>
+              <auto-start value="true" />
+            </properties>
+
+            <dependencies>
+                <dependency id="var: dependency" />
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="var: threshold"/>
+
+            <stimulation-scripts 
+                initialize="True"
+                stimulate="func: Script.Stimulate(tc,x)"
+                stimulus-description="Pressure"
+                stimulus-unit="kPa">
+                <instrument interface="pressure-algometer"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel id="PULSE" name="Pulse (1s)" Imax="100" Imin="0">
+                    <up-down-method 
+                        reversal-rule="1"
+                        step-size="0.1"
+                        initial-direction="increasing"
+                        start-intensity="var: f'{dependency}.PULSE'"
+                        step-size-type="relative"
+                        max-step-size-reduction="0.1"
+                        step-size-reduction="0.5"
+                        skip-rule="1"
+                        stop-rule="5" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" />
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
         <algometry-stimulus-response id="SR" 
           stop-mode="stop-on-maximal-rating" 
           primary-cuff="1"
@@ -81,7 +161,7 @@
 
         <sequential id="PainRatingTask"
           experimental-setup-id="image">
-          <procedure-events start="var: f'Task.Start({NumberOfTrials})'"
+          <procedure-events start="var: f'Task.Start([THR3.PULSE, THR4.PULSE, THR5.PULSE, THR6.PULSE, THR7.PULSE])'"
             complete="Task.Complete()">
             <instrument interface="pressure-algometer" />
             <instrument interface="ratio-scale" />
@@ -90,13 +170,17 @@
           </procedure-events>
           
           <dependencies>
-            <dependency id="var: IntensityTest" />
+            <dependency id="THR3" />
+            <dependency id="THR4" />
+            <dependency id="THR5" />
+            <dependency id="THR6" />
+            <dependency id="THR7" />
           </dependencies>
 
           <update-rate-deterministic value="50"/>
 
           <states update="Task.Update()"
-                  enter="var: f'Task.Enter({IntensityTest})'"
+                  enter="var: f'Task.Enter()'"
                   leave="True">
             <state id="CROSS"       experimental-setup-id="image" name="Fixation cross"/>
             <state id="SELECTION"   experimental-setup-id="image" name="Selecting a cue" />
@@ -111,10 +195,49 @@
       </procedure-templates>
     </templates>
     <procedures>
-      <algometry-stimulus-response-constructor id="SR" 
-        name="Stimulus-Response" 
-        template="SR">
-      </algometry-stimulus-response-constructor>
+      <psychophysics-threshold-estimation-constructor id="THR3" 
+        name="Pressure Threshold (VAS 3)" 
+        template="INITTHRESHOLD">
+        <variables>
+          <string name="threshold" value="3" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR4" 
+        name="Pressure Threshold (VAS 4)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR3" />
+          <string name="threshold" value="4" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR5" 
+        name="Pressure Threshold (VAS 5)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR4" />
+          <string name="threshold" value="5" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR6" 
+        name="Pressure Threshold (VAS 6)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR5" />
+          <string name="threshold" value="6" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR7" 
+        name="Pressure Threshold (VAS 7)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR6" />
+          <string name="threshold" value="7" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
 
       <sequential-constructor id="TrainingPainRatingTask" 
         name="Pain Rating Task (Training)" 

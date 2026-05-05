@@ -1,6 +1,17 @@
 import random
 from collections import defaultdict
 
+def Stimulate(tc, x):
+    algometer = tc.Instruments.PressureAlgometer
+    chan = algometer.Channels[0]
+
+    chan.SetStimulus(1, chan.CreateWaveform().Step(x, 2))
+    algometer.ConfigurePressureOutput("outlet-1", "channel-1")
+    algometer.ConfigurePressureOutput("outlet-2", "none")
+    algometer.StartStimulation("stop-when-button-pressed", True)
+
+    return True
+
 class Condition:
    _data = {
       1:  (3, "3-3", ["4-4", "5-5", "6-6", "7-7"]),
@@ -122,7 +133,19 @@ class ResponseTask:
       self.tc = tc
       self.currentRating = 0
 
-   def Start(self, numberOfTrials = 9999):
+   def Start(self, intensities, numberOfTrials = 9999):
+      if len(intensities) != 5:
+         self.tc.Log.Error("intensities must have a length of 5")
+         return False
+      
+      self.intensities = {
+         3: intensities[0],
+         4: intensities[1],
+         5: intensities[2],
+         6: intensities[3],
+         7: intensities[4]
+      }
+
       self.trials = [Condition(c, self.tc) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
 
@@ -194,7 +217,7 @@ class ResponseTask:
          condition.plot_selected(image, targetSelected)
          return image.GetImage()
 
-   def Stimulate(self, condition: Condition, targetSelected: bool, srTest):
+   def Stimulate(self, condition: Condition, targetSelected: bool, intensities):
       if targetSelected:
          intensity = condition.TargetIntensity
          self.tc.Log.Information("Target intensity: {intensity}", condition.TargetIntensity)
@@ -202,7 +225,7 @@ class ResponseTask:
          intensity = condition.LureIntensity
          self.tc.Log.Information("Lure intensity: {intensity}", condition.LureIntensity)      
 
-      pressure = srTest.GetPressureFromPerception(intensity)
+      pressure = intensities[intensity]
       self.tc.Log.Information(f"Stimulation pressure: {pressure:.1f}kPa")
 
       algometer = self.tc.Instruments.PressureAlgometer
@@ -216,7 +239,7 @@ class ResponseTask:
       return pressure
 
 
-   def Enter(self, srTest):
+   def Enter(self):
       self.tc.Keyboard.Clear();
       self.tc.Instruments.Button.Reset()
 
@@ -236,7 +259,7 @@ class ResponseTask:
          display.Display(self.PlotSelected(condition, self.targetSelected[-1]))
       if id == "STIMULATION":
          display.Display(self.tc.Assets.Images.Stimulating)
-         pressure = self.Stimulate(condition, self.targetSelected[-1], srTest)
+         pressure = self.Stimulate(condition, self.targetSelected[-1], self.intensities)
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, f"Stimulating: {pressure:.1f}kPa"))
       if id == "RATING":
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotRating(x, y))
