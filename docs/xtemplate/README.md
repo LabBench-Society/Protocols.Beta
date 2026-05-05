@@ -1,3 +1,1 @@
-﻿# Protocol Template (```xtemplate```)
-
-
+# Template protocol
