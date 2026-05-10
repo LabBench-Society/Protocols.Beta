@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
+  <participant-validator regex="^S[0-9]{3}$"
+                     advice="Please enter an ID in the form of SXXX, where X is a digit" />  
+  <experimental-setup-variants default="cpar">
+    <experimental-setup id="cpar" name="LabBench CPAR+">
+      <devices>
+        <cpar-plus id="cpar" />
+
+        <display id="display"
+          normative-distance="40">
+          <typography 
+            active-colour="rgb(255,0,0)"
+            foreground-colour="rgb(255,255,255"
+            background-colour="rgb(0,0,0)"
+            inactive-colour="rgb(32,32,32)">
+
+          </typography>
+
+          <configurations>
+            <image-display id="image" 
+              experimental-setup-id="image" 
+              background-colour="rgb(0,0,0)" />
+            
+            <visual-analogue-scale id="vas" 
+              experimental-setup-id="vas"
+              controller-device="cpar"
+              length="10">              
+              <anchors>
+                <modality text="Pain">
+                  <localized-text language="DE" text="Schmerz"/>
+                </modality>
+                <top-anchor text="Maximal Pain">
+                  <localized-text language="DE" text="Maximaler Schmerz"/>
+                </top-anchor>
+                <bottom-anchor text="No Pain">
+                  <localized-text language="DE" text="Keine Schmerzen"/>
+                </bottom-anchor>
+              </anchors>
+            </visual-analogue-scale>
+          </configurations>
+        </display>
+      </devices>
+      <device-mapping>
+        <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
+        <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
+        <device-assignment device-id="cpar" instrument-name="Button" />
+        <device-assignment device-id="display.vas" instrument-name="RatioScale" />
+      </device-mapping>
+    </experimental-setup>
+  </experimental-setup-variants>                     
+  <protocol>
+    <properties>
+
+    </properties>
+    <languages>
+      <language code="EN" name="English" />
+      <language code="DE" name="German" />
+    </languages>
+    <sessions>
+
+    </sessions>
+    <variables>
+      <variable name="Task" value="func: Script.CreateTask(tc)" />
+    </variables>
+    <templates>
+      <template-variables>
+          <strings name="Thresholds" value="3;4;5;6;7" />
+      </template-variables>
+      <procedure-templates>
+        <psychophysics-threshold-estimation id="INITTHRESHOLD"
+            experimental-setup-id="vas"
+            stimulus-update-rate="50">
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="var: threshold"/>
+
+            <stimulation-scripts 
+                initialize="True"
+                stimulate="func: Script.Stimulate(tc,x)"
+                stimulus-description="Pressure"
+                stimulus-unit="kPa">
+                <instrument interface="pressure-algometer"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel id="PULSE" name="Pulse (1s)" Imax="100" Imin="0">
+                    <up-down-method 
+                        reversal-rule="1"
+                        step-size="0.1"
+                        initial-direction="increasing"
+                        start-intensity="5"
+                        step-size-type="relative"
+                        max-step-size-reduction="0.1"
+                        step-size-reduction="0.5"
+                        skip-rule="1"
+                        stop-rule="5" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="2000" />
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <psychophysics-threshold-estimation id="THRESHOLD"
+            experimental-setup-id="vas"
+            stimulus-update-rate="50">
+
+            <properties>
+              <auto-start value="true" />
+            </properties>
+
+            <dependencies>
+                <dependency id="var: dependency" />
+            </dependencies>
+
+            <update-rate-random min="4000" max="6000"/>
+
+            <ratio-rating-task target="var: threshold"/>
+
+            <stimulation-scripts 
+                initialize="True"
+                stimulate="func: Script.Stimulate(tc,x)"
+                stimulus-description="Pressure"
+                stimulus-unit="kPa">
+                <instrument interface="pressure-algometer"/>
+            </stimulation-scripts>
+
+            <channels>
+                <channel id="PULSE" name="Pulse (1s)" Imax="100" Imin="0">
+                    <up-down-method 
+                        reversal-rule="1"
+                        step-size="0.1"
+                        initial-direction="increasing"
+                        start-intensity="var: f'{dependency}.PULSE'"
+                        step-size-type="relative"
+                        max-step-size-reduction="0.1"
+                        step-size-reduction="0.5"
+                        skip-rule="1"
+                        stop-rule="5" />
+
+                    <stimulus>
+                        <pulse Is="x" Ts="1000" />
+                    </stimulus>
+                </channel>
+            </channels>
+        </psychophysics-threshold-estimation>
+
+        <algometry-stimulus-response id="SR" 
+          stop-mode="stop-on-maximal-rating" 
+          primary-cuff="1"
+          delta-pressure="1"
+          second-cuff="false"
+          experimental-setup-id="image"
+          pressure-limit="100"
+          vas-pdt="0.1">
+        </algometry-stimulus-response>
+
+        <sequential id="PainRatingTask"
+          experimental-setup-id="image">
+          <procedure-events start="var: f'Task.Start([THR3.PULSE, THR4.PULSE, THR5.PULSE, THR6.PULSE, THR7.PULSE])'"
+            complete="Task.Complete()">
+            <instrument interface="pressure-algometer" />
+            <instrument interface="ratio-scale" />
+            <instrument interface="button" />
+            <instrument interface="image-display" />
+          </procedure-events>
+          
+          <dependencies>
+            <dependency id="THR3" />
+            <dependency id="THR4" />
+            <dependency id="THR5" />
+            <dependency id="THR6" />
+            <dependency id="THR7" />
+          </dependencies>
+
+          <update-rate-deterministic value="50"/>
+
+          <states update="Task.Update()"
+                  enter="var: f'Task.Enter()'"
+                  leave="True">
+            <state id="CROSS"       experimental-setup-id="image" name="Fixation cross"/>
+            <state id="SELECTION"   experimental-setup-id="image" name="Selecting a cue" />
+            <state id="DISPLAY"     experimental-setup-id="image" name="Display selected cue" />
+            <state id="STIMULATION" experimental-setup-id="image" name="Stimulation" />
+            <state id="RATING"      experimental-setup-id="vas"   name="Pain rating" />
+            <state id="RESETRATING" experimental-setup-id="image" name="Reset rating"/>
+            <state id="PAUSE"       experimental-setup-id="image" name="Pause" />
+            <state id="REST"        experimental-setup-id="image" name="Rest for the participant after 20 trials" />
+          </states>
+        </sequential>        
+      </procedure-templates>
+    </templates>
+    <procedures>
+      <psychophysics-threshold-estimation-constructor id="THR3" 
+        name="Pressure Threshold (VAS 3)" 
+        template="INITTHRESHOLD">
+        <variables>
+          <string name="threshold" value="3" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR4" 
+        name="Pressure Threshold (VAS 4)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR3" />
+          <string name="threshold" value="4" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR5" 
+        name="Pressure Threshold (VAS 5)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR4" />
+          <string name="threshold" value="5" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR6" 
+        name="Pressure Threshold (VAS 6)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR5" />
+          <string name="threshold" value="6" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <psychophysics-threshold-estimation-constructor id="THR7" 
+        name="Pressure Threshold (VAS 7)" 
+        template="THRESHOLD">
+        <variables>
+          <string name="dependency" value="THR6" />
+          <string name="threshold" value="7" />
+        </variables>
+      </psychophysics-threshold-estimation-constructor>
+
+      <sequential-constructor id="TrainingPainRatingTask" 
+        name="Pain Rating Task (Training)" 
+        template="PainRatingTask">
+        <variables>
+          <string name="IntensityTest" value="SR" />
+          <string name="NumberOfTrials" value="6" />
+        </variables>
+      </sequential-constructor>
+
+      <sequential-constructor id="PainRatingTask" 
+        name="Pain Rating Task" 
+        template="PainRatingTask">
+        <variables>
+          <string name="IntensityTest" value="SR" />
+          <string name="NumberOfTrials" value="9999" />
+        </variables>
+      </sequential-constructor>
+    </procedures>
+    <assets>
+      <file-asset file="Script.py" />
+      <file-asset file="Cards.zip" />
+      <file-asset file="Images.zip">
+        <aliases>
+          <alias replace="Slide1" with="Cross" />
+          <alias replace="Slide2" with="Stimulating" />
+          <alias replace="Slide3" with="ResetRating" />
+          <alias replace="Slide4" with="Break" />
+          <alias replace="Slide5" with="Blank" />
+        </aliases>
+      </file-asset>       
+      <file-asset id="Roboto" file="Roboto-Regular.ttf" /> 
+    </assets>
+  </protocol>
+  <post-actions>    
+  </post-actions>
+</experiment>
