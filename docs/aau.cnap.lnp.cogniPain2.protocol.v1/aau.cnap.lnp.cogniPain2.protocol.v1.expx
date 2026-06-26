@@ -80,6 +80,7 @@
     <protocol>
         <languages>
             <language code="EN" name="English"/>
+            <language code="DE" name="German" />
             <language code="DA" name="Danish"/>
         </languages>
         <variables>
@@ -655,6 +656,7 @@
             <file-asset id="StroopInstructions" file="StroopInstructions_EN.zip">
                 <localisation>
                     <language code="DA" file="StroopInstructions_DA.zip"/>
+                    <language code="DE" file="StroopInstructions_DE.zip"/>
                 </localisation>
             </file-asset>
             <file-asset id="StroopScript" file="StroopScript.py" />
@@ -663,6 +665,7 @@
             <file-asset id="StopSignalGameImages" file="StopSignalGameImages_EN.zip">
                 <localisation>
                     <language code="DA" file="StopSignalGameImages_DA.zip"/>
+                    <language code="DE" file="StopSignalGameImages_DE.zip"/>
                 </localisation>
             </file-asset>
 
@@ -672,6 +675,7 @@
             <file-asset id="CPAInstructions" file="CPAInstructions_EN.zip">
                 <localisation>
                     <language code="DA" file="CPAInstructions_DA.zip"/>
+                    <language code="DE" file="CPAInstructions_DE.zip"/>
                 </localisation>
             </file-asset>
         </assets>
