@@ -4,6 +4,9 @@ def GetWords(tc):
     if tc.Language == 'DA':
         return {'b': 'BLÅ','y': 'GUL','r': 'RØD','g': 'GRØN'}
     
+    if tc.Language == 'DE':
+        return {'b': 'BLAU', 'y': 'GELB', 'r': 'ROT', 'g': 'GRÜN'}
+    
     return {'b': 'BLUE','y': 'YELLOW','r': 'RED','g': 'GREEN'}
 
 def StroopNeutralStimulate(tc, x):
