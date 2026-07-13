@@ -90,6 +90,10 @@
             name="Veridical Cued Pain Paradigm (Version 3)"
             labbench-version="6.0"
             category="Pain Perception Processes"/>
+          <protocol id="mainz.med.vcpp.v4" 
+            name="Veridical Cued Pain Paradigm (Version 4)"
+            labbench-version="6.0"
+            category="Pain Perception Processes"/>
         </category>
         <category name="Precode" id="mainz.med.precode">
           <protocol id="mainz.med.precode.pressure.v1"
