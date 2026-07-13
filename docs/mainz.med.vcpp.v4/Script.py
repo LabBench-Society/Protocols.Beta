@@ -192,7 +192,20 @@ class ResponseTask:
          image.TextSize(48)
          image.Write(x /2, y /2, f"Rating: {self.currentRating:.1f}")
          return image.GetImage()
-                
+
+   def PlotScale(self, rating):
+      with self.tc.Image.GetCanvas(self.tc.Instruments.ImageDisplay, "#000000") as canvas:
+         nRating = int (10 *rating)
+         canvas.AlignCenter()
+         canvas.AlignMiddle()
+         canvas.Font("Roboto")
+         canvas.TextSize(200)
+         canvas.Color("#FFFFFF")
+
+         canvas.Write(canvas.Width/2, canvas.Height/2, f'{nRating}')
+
+         self.tc.Instruments.ImageDisplay.Display(canvas.GetImage())
+
    def PlotChoices(self, condition: Condition):
       display = self.tc.Instruments.ImageDisplay
 
@@ -274,8 +287,8 @@ class ResponseTask:
          display.Display(self.tc.Assets.Images.Break)
          self.tc.CurrentState.SetPlotter(lambda x,y : self.PlotInstruction(x, y, "Press INSERT to continue."))
 
-      return True
-     
+      return True      
+   
    def Update(self):
       button = self.tc.Instruments.Button
       scale = self.tc.Instruments.RatioScale
@@ -309,6 +322,7 @@ class ResponseTask:
       
       if id == "RATING":
          self.currentRating = scale.GetRatioRating()
+         self.PlotScale(self.currentRating)
 
          if button.IsLatched("1") or button.IsLatched("2"):
             self.ratings.append(self.currentRating)

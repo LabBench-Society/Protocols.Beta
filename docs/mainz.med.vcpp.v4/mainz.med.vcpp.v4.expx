@@ -53,7 +53,7 @@
       </template-variables>
       <procedure-templates>
         <psychophysics-stimulus-presentation id="THRESHOLD" 
-            experimental-setup-id="vas"
+            experimental-setup-id="image"
             stimulus-update-rate="50">
             <dependencies>
               <dependency id="var: THRDependency" virtual="true"/>
@@ -66,7 +66,7 @@
 
             <responses response-collection="none"/>
 
-            <intensity type="linspace" x0="StartingIntensity" x1="100" n="int(100 - StartingIntensity)"/>
+            <intensity type="linspace" x0="var: StartingIntensity" x1="100" n="var: f'int(100 - {StartingIntensity})'"/>
 
             <stimulation>              
               <scripts 
@@ -132,7 +132,7 @@
         name="var: f'Pressure Threshold (VAS 4)'" 
         template="THRESHOLD">
         <variables>
-          <string name="StartingIntensity" value="THR3" />
+          <string name="StartingIntensity" value="THR3.Intensity" />
           <string name="THRDependency" value="THR3" />
         </variables>
       </psychophysics-stimulus-presentation-constructor>
@@ -141,7 +141,7 @@
         name="var: f'Pressure Threshold (VAS 5)'" 
         template="THRESHOLD">
         <variables>
-          <string name="StartingIntensity" value="THR4" />
+          <string name="StartingIntensity" value="THR4.Intensity" />
           <string name="THRDependency" value="THR4" />
         </variables>
       </psychophysics-stimulus-presentation-constructor>
@@ -150,7 +150,7 @@
         name="var: f'Pressure Threshold (VAS 6)'" 
         template="THRESHOLD">
         <variables>
-          <string name="StartingIntensity" value="THR5" />
+          <string name="StartingIntensity" value="THR5.Intensity" />
           <string name="THRDependency" value="THR5" />
         </variables>
       </psychophysics-stimulus-presentation-constructor>
@@ -159,7 +159,7 @@
         name="var: f'Pressure Threshold (VAS 7)'" 
         template="THRESHOLD">
         <variables>
-          <string name="StartingIntensity" value="THR6" />
+          <string name="StartingIntensity" value="THR6.Intensity" />
           <string name="THRDependency" value="THR6" />
         </variables>
       </psychophysics-stimulus-presentation-constructor>      
