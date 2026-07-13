@@ -29,7 +29,7 @@
         <device-assignment device-id="cpar" instrument-name="PressureAlgometer" />
         <device-assignment device-id="display.image" instrument-name="ImageDisplay" />
         <device-assignment device-id="cpar" instrument-name="Button" />
-        <device-assignment device-id="display.vas" instrument-name="cpar" />
+        <device-assignment device-id="cpar" instrument-name="RatioScale" />
       </device-mapping>
     </experimental-setup>
   </experimental-setup-variants>                     
@@ -55,6 +55,9 @@
         <psychophysics-stimulus-presentation id="THRESHOLD" 
             experimental-setup-id="vas"
             stimulus-update-rate="50">
+            <dependencies>
+              <dependency id="var: THRDependency" virtual="true"/>
+            </dependencies>
             <procedure-events start="func: Script.DisplayScale(tc)"
                               complete="func: Script.ClearScale(tc)"
                               abort="func: Script.ClearScale(tc)">
@@ -63,7 +66,7 @@
 
             <responses response-collection="none"/>
 
-            <intensity type="linspace" x0="5" x1="100" n="40"/>
+            <intensity type="linspace" x0="StartingIntensity" x1="100" n="int(100 - StartingIntensity)"/>
 
             <stimulation>              
               <scripts 
@@ -116,11 +119,50 @@
       </procedure-templates>
     </templates>
     <procedures>
-      <foreach variable="threshold" in="Thresholds">
-        <psychophysics-stimulus-presentation-constructor id="var: f'THR{threshold}'" 
-          name="var: f'Pressure Threshold (VAS {threshold})'" 
-          template="THRESHOLD" />
-      </foreach>
+      <psychophysics-stimulus-presentation-constructor id="var: f'THR3'" 
+        name="var: f'Pressure Threshold (VAS 3)'" 
+        template="THRESHOLD">
+        <variables>
+          <string name="StartingIntensity" value="5" />
+          <string name="THRDependency" value="" />
+        </variables>
+      </psychophysics-stimulus-presentation-constructor>
+
+      <psychophysics-stimulus-presentation-constructor id="var: f'THR4'" 
+        name="var: f'Pressure Threshold (VAS 4)'" 
+        template="THRESHOLD">
+        <variables>
+          <string name="StartingIntensity" value="THR3" />
+          <string name="THRDependency" value="THR3" />
+        </variables>
+      </psychophysics-stimulus-presentation-constructor>
+
+      <psychophysics-stimulus-presentation-constructor id="var: f'THR5'" 
+        name="var: f'Pressure Threshold (VAS 5)'" 
+        template="THRESHOLD">
+        <variables>
+          <string name="StartingIntensity" value="THR4" />
+          <string name="THRDependency" value="THR4" />
+        </variables>
+      </psychophysics-stimulus-presentation-constructor>
+
+      <psychophysics-stimulus-presentation-constructor id="var: f'THR6'" 
+        name="var: f'Pressure Threshold (VAS 6)'" 
+        template="THRESHOLD">
+        <variables>
+          <string name="StartingIntensity" value="THR5" />
+          <string name="THRDependency" value="THR5" />
+        </variables>
+      </psychophysics-stimulus-presentation-constructor>
+
+      <psychophysics-stimulus-presentation-constructor id="var: f'THR7'" 
+        name="var: f'Pressure Threshold (VAS 7)'" 
+        template="THRESHOLD">
+        <variables>
+          <string name="StartingIntensity" value="THR6" />
+          <string name="THRDependency" value="THR6" />
+        </variables>
+      </psychophysics-stimulus-presentation-constructor>      
       
       <sequential-constructor id="TrainingPainRatingTask" 
         name="Pain Rating Task (Training)" 
