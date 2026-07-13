@@ -1,0 +1,153 @@
+/* ===== Base layout ===== */
+
+body {
+    max-width: 920px;
+    margin: 48px auto;
+    padding: 0 20px;
+
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+
+    color: #1f2933;
+    background: #ffffff;
+}
+
+/* ===== Headings ===== */
+
+h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+}
+
+h1 {
+    font-size: 2.2em;
+    color: #0f3d75;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 6px;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: #0f3d75;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+/* ===== Paragraph spacing ===== */
+
+p {
+    margin: 0.7em 0;
+}
+
+/* ===== Links ===== */
+
+a {
+    color: #1e6bd6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Code ===== */
+
+code {
+    font-family: Consolas, "Cascadia Code", monospace;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+pre {
+    background: #f3f4f6;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+}
+
+/* ===== Blockquotes ===== */
+
+blockquote {
+    border-left: 4px solid #1e6bd6;
+    margin: 1.2em 0;
+    padding: 0.5em 1em;
+    background: #f8fafc;
+    color: #374151;
+}
+
+/* ===== Lists ===== */
+
+ul, ol {
+    margin: 0.6em 0 0.6em 1.2em;
+}
+
+/* ===== Tables ===== */
+
+table {
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    font-size: 0.95em;
+
+    width: auto;          /* key change */
+    table-layout: auto;   /* content determines column width */
+}
+
+col {
+    width: auto !important;
+}
+
+th {
+    background: #f3f4f6;
+    text-align: left;
+    font-weight: 600;
+}
+
+th, td {
+    border: 1px solid #e5e7eb;
+    padding: 8px 10px;
+}
+
+/* ===== Images ===== */
+
+img {
+    max-width: 100%;
+    display: block;
+    margin: 1.4em auto;
+    border-radius: 6px;
+}
+
+/* ===== Horizontal rule ===== */
+
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 2em 0;
+}
+
+/* ===== Print / XPS friendliness ===== */
+
+@page {
+    margin: 15mm;
+}
+
+@media print {
+    body {
+        margin: 10mm;
+        font-size: 12pt;
+    }
+
+    
+}
