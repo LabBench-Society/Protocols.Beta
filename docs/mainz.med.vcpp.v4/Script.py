@@ -149,6 +149,8 @@ class ResponseTask:
       self.trials = [Condition(c, self.tc) for c in range(1, 17) for _ in range(5)]
       random.shuffle(self.trials)
 
+      self.tc.Log.Information(f"Number of trials: {numberOfTrials}", numberOfTrials)
+      
       if numberOfTrials < len(self.trials):
          self.trials = self.trials[:numberOfTrials]
 
@@ -165,7 +167,7 @@ class ResponseTask:
    def Complete(self):
       data = self.tc.Current
 
-      data.SetNumbers("ratings", self.ratings)
+      data.SetIntegers("ratings", self.ratings)
       data.SetBools("targetSelected", self.targetSelected)
       data.SetIntegers("conditions", [condition.Condition for condition in self.trials])
       data.SetString("targets", [condition.Target for condition in self.trials])
@@ -190,19 +192,18 @@ class ResponseTask:
          image.AlignMiddle()
          image.Color("#FFFFFF")
          image.TextSize(48)
-         image.Write(x /2, y /2, f"Rating: {self.currentRating:.1f}")
+         image.Write(x /2, y /2, f"Rating: {self.currentRating:.0f}")
          return image.GetImage()
 
    def PlotScale(self, rating):
       with self.tc.Image.GetCanvas(self.tc.Instruments.ImageDisplay, "#000000") as canvas:
-         nRating = int (10 *rating)
          canvas.AlignCenter()
          canvas.AlignMiddle()
          canvas.Font("Roboto")
          canvas.TextSize(200)
          canvas.Color("#FFFFFF")
 
-         canvas.Write(canvas.Width/2, canvas.Height/2, f'{nRating}')
+         canvas.Write(canvas.Width/2, canvas.Height/2, f'{rating}')
 
          self.tc.Instruments.ImageDisplay.Display(canvas.GetImage())
 
@@ -321,7 +322,7 @@ class ResponseTask:
          return "*" if self.tc.CurrentState.RunningTime < 2500 else "RATING"
       
       if id == "RATING":
-         self.currentRating = scale.GetRatioRating()
+         self.currentRating = int(10 * scale.GetRatioRating())
          self.PlotScale(self.currentRating)
 
          if button.IsLatched("1") or button.IsLatched("2"):
@@ -329,9 +330,9 @@ class ResponseTask:
             return "RESETRATING"         
          
       if id == "RESETRATING":
-         self.currentRating = algometer.GetRatioRating()
+         self.currentRating = int(10 * algometer.GetRatioRating())
 
-         if self.currentRating < 0.1:
+         if self.currentRating < 1:
             return "PAUSE"
 
       if id == "PAUSE":
@@ -339,7 +340,7 @@ class ResponseTask:
             return "*"
          
          self.index = self.index + 1
-
+         self.tc.Log.Debug("TRIAL [ {index} / {trials}]", self.index, len(self.trials))
          if self.index == len(self.trials):
             return "complete"
          

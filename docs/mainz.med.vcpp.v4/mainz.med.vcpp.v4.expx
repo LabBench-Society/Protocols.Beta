@@ -85,7 +85,7 @@
 
         <sequential id="PainRatingTask"
           experimental-setup-id="image">
-          <procedure-events start="var: f'Task.Start([THR3.Intensity, THR4.Intensity, THR5.Intensity, THR6.Intensity, THR7.Intensity])'"
+          <procedure-events start="var: f'Task.Start([THR3.Intensity, THR4.Intensity, THR5.Intensity, THR6.Intensity, THR7.Intensity], {NumberOfTrials})'"
             complete="Task.Complete()">
             <instrument interface="pressure-algometer" />
             <instrument interface="ratio-scale" />
