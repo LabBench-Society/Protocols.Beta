@@ -76,6 +76,10 @@
             name="Offset Modulation (Cuff Pressure Algometry) (Version 4)"
             labbench-version="6.0"
             category="Pain Perception Processes"/>
+          <protocol id="mainz.med.oa.v5" 
+            name="Offset Modulation (Cuff Pressure Algometry) (Version 5)"
+            labbench-version="6.0"
+            category="Pain Perception Processes"/>
         </category>
         <category name="Veridical Cued Pain Paradigm" id="mainz.med.vcpp">
           <protocol id="mainz.med.vcpp.v1" 
