@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
+    <participant-validator regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
+                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
+    <experimental-setup-variants default="SetupID">
+        <experimental-setup id="SetupID" name="Name of experimental setup">
+            <devices>
+                <!--  Contents omitted for brevity -->
+            </devices>
+            <device-mapping>
+                <!--  Contents omitted for brevity -->
+            </device-mapping>
+        </experimental-setup>    
+    </experimental-setup-variants>
+    <protocol>
+        <languages>
+            <!--  Contents omitted for brevity -->
+        </languages>
+        <sessions>
+            <!--  Contents omitted for brevity -->
+        </sessions>
+        <properties>
+            <!--  Contents omitted for brevity -->
+        </properties>
+        <persistent-variables>
+            <!--  Contents omitted for brevity -->
+        </persistent-variables>        
+        <variables>
+            <!--  Contents omitted for brevity -->
+        </variables>
+        <templates>
+              <includes>
+                  <!--  Contents omitted for brevity -->
+              </includes>
+              <protocol-variables>
+                  <!--  Contents omitted for brevity -->
+              </protocol-variables>
+              <template-variables>
+                  <!--  Contents omitted for brevity -->
+              </template-variables>
+              <procedure-templates>
+                  <!--  Contents omitted for brevity -->
+              </procedure-templates>
+              <assets>
+                  <!--  Contents omitted for brevity -->
+              </assets>           
+        </templates>
+        <procedures>
+            <!--  Contents omitted for brevity -->
+        </procedures>
+        <assets>
+            <!--  Contents omitted for brevity -->
+        </assets>
+    </protocol>
+    <post-actions>
+        <!--  Contents omitted for brevity -->
+    </post-actions>
+</experiment>

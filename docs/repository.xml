@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <repository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="https://labbench.io/xsd/5.0/repository.xsd"
+            xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.1/repository.xsd"
             name="LabBench Beta Repository"
             id="beta.labbench.io">
     <category name="School of Sport, Exercise and Rehabilitation Sciences (University of Birmingham" id="bham">
@@ -36,6 +36,14 @@
                     name="Synaps QST Protocol (Work Package 2), Ver. 1"
                     category="LabBench CPAR+"
                     labbench-version="5.1"  />
+            </category>
+            <category name="Musculoskeletal Research Group (MSK)" id="kuleuven.gbiomed.MSK">
+                <category id="SOMIMOVEqst" name="kuleuven.gbiomed.MSK.SOMIMOVEqst">
+                  <protocol id="kuleuven.gbiomed.MSK.SOMIMOVEqst.v1" 
+                    name="SOMIMOVEqst (Version 1)" 
+                    category="LabBench CPAR+"
+                    labbench-version="6.0" />
+                </category>
             </category>
         </category>
     </category>
