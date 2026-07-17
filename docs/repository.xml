@@ -38,7 +38,7 @@
                     labbench-version="5.1"  />
             </category>
             <category name="Musculoskeletal Research Group (MSK)" id="kuleuven.gbiomed.MSK">
-                <category id="SOMIMOVEqst" name="kuleuven.gbiomed.MSK.SOMIMOVEqst">
+                <category name="SOMIMOVEqst" id="kuleuven.gbiomed.MSK.SOMIMOVEqst">
                   <protocol id="kuleuven.gbiomed.MSK.SOMIMOVEqst.v1" 
                     name="SOMIMOVEqst (Version 1)" 
                     category="LabBench CPAR+"
