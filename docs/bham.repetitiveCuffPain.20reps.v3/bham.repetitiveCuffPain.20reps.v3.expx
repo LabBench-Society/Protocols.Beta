@@ -107,8 +107,13 @@
             <questionnaire id="SETUP" 
                 name="Configuration">
                 <properties>
-                    <instructions ready="dynamic: 'Instructions.LeftCuff' if Current.Cuff else 'Instructions.RightCuff'"/>
+                    <instructions blocked="Assets.Instructions.Default"
+                                  ready="func: Script.GetInstructions(tc)" 
+                                  completed="func: Script.GetInstructions(tc)" />
                 </properties>
+                <dependencies>
+                    <dependency id="CONFIGURATION" />
+                </dependencies>
                 <content>
                     <boolean id="Setup"
                         true-label="Yes" 
@@ -140,6 +145,7 @@
         </procedures>
         <assets>
             <file-asset id="Instructions" file="Instructions.zip" />
+            <file-asset file="Script.py" />
         </assets>
     </protocol>    
     <post-actions>    
