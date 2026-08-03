@@ -43,7 +43,7 @@
                         <!-- New version: wait 30s from end (button press) of prior repetition -->
                         <time-constraint procedure-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
                         time-reference="end"
-                        min="10 if 'TEST' in Subject else CONFIGURATION.Tisi"/>
+                        min="10 if 'TEST' in Participant else CONFIGURATION.Tisi"/>
                     </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="false" />
@@ -60,7 +60,7 @@
                     <properties>
                         <time-constraint procedure-id="CH1M10" 
                             time-reference="end"
-                            min="15 if 'TEST' in Subject else 5*60"/>
+                            min="15 if 'TEST' in Participant else 5*60"/>
                     </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="false" />
@@ -84,7 +84,7 @@
                         <!-- New version: wait 30s from end (button press) of prior repetition -->
                         <time-constraint procedure-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
                         time-reference="end"
-                        min="10 if 'TEST' in Subject else CONFIGURATION.Tisi"/>
+                        min="10 if 'TEST' in Participant else CONFIGURATION.Tisi"/>
                     </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="false" />
