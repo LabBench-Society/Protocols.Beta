@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
-  <participant-validator regex="^[0-9]+$|^PILOT[0-9]{3}$|^TEST[0-9]{3}"
-                     advice="Please enter an ID in the form of a number, or TESTXXX/PILOTXXX in the form of X, where X is a number" />
+  <participant-validator regex="^[0-9]+$|^PILOT[0-9]{3}$|^TEST[0-9]{3}$"
+                     advice="Please enter an ID in the form of a number, or in the form TESTXXX / PILOTXXX where X is a three-digit number" />
   <experimental-setup-variants default="cparplus">
     <experimental-setup id="cpar" name="Nocitech CPAR">
         <devices>
@@ -34,13 +34,7 @@
                     primary-cuff="1"
                     second-cuff="false">   
                     <properties>
-                        <!-- Previous version: wait 130s from start of prior repetition -->
-                        <!--
-                        <time-constraint test-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
-                            time-reference="start"
-                            min="10 if 'TEST' in Subject else 130"/>
-                        -->
-                        <!-- New version: wait 30s from end (button press) of prior repetition -->
+                        <!-- Wait the time interval (s) set in CONFIGURATIONS from the end (button press) of prior repetition -->
                         <time-constraint procedure-id="var: '' if m == '1' else 'CH1M{0}'.format(int(m) - 1)" 
                         time-reference="end"
                         min="10 if 'TEST' in Participant else CONFIGURATION.Tisi"/>
@@ -58,13 +52,13 @@
                     primary-cuff="2"
                     second-cuff="false">                    
                     <properties>
-                        <time-constraint procedure-id="CH1M10" 
+                        <time-constraint procedure-id="CH1M20" 
                             time-reference="end"
-                            min="15 if 'TEST' in Participant else 5*60"/>
+                            min="10 if 'TEST' in Participant else CONFIGURATION.Tside"/>
                     </properties>
                     <dependencies>
                         <dependency id="CONFIGURATION" virtual="false" />
-                        <dependency id="CH1M10" virtual="true" />
+                        <dependency id="CH1M20" virtual="true" />
                     </dependencies>                 
                 </algometry-stimulus-rating>
 
@@ -75,13 +69,6 @@
                     primary-cuff="2"
                     second-cuff="false">                    
                     <properties>
-                        <!-- Previous version: wait 130s from start of prior repetition -->
-                        <!--
-                        <time-constraint test-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
-                            time-reference="start"
-                            min="10 if 'TEST' in Subject else 130"/>
-                        -->
-                        <!-- New version: wait 30s from end (button press) of prior repetition -->
                         <time-constraint procedure-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
                         time-reference="end"
                         min="10 if 'TEST' in Participant else CONFIGURATION.Tisi"/>
@@ -95,28 +82,59 @@
         </templates>
         <procedures>
             <questionnaire id="CONFIGURATION" 
-                name="Handedness of the participant">
+                name="LeftCuff">
                 <content>
                     <boolean id="Cuff"
                         true-label="Left" 
                         false-label="Right" 
                         title="Starting cuff" 
-                        instruction="Enter the initial arm that will be tested" />
+                        instruction="Enter the initial (first) arm to be tested:" />
                     <likert id="Rate"
                         title="Rate of pressure increase"
-                        instruction="Please select the rate of pressure increase.">
+                        instruction="Please select the rate of pressure increase:">
+                        <choice value="1" label="1 kPa/s" />
                         <choice value="2" label="2 kPa/s" />
                         <choice value="3" label="3 kPa/s" />
                         <choice value="4" label="4 kPa/s" />
                         <choice value="5" label="5 kPa/s" />
+                        <choice value="6" label="6 kPa/s" />
+                        <choice value="7" label="7 kPa/s" />
+                        <choice value="8" label="8 kPa/s" />
+                        <choice value="9" label="9 kPa/s" />
+                        <choice value="10" label="10 kPa/s" />
                     </likert>
                     <likert id="Tisi"
                         title="Inter-stimulus-interval"
-                        instruction="Please select the rate by which the pressure will be increased.">
-                        <choice value="10" label="10 kPa/s" />
-                        <choice value="20" label="20 kPa/s" />
-                        <choice value="30" label="30 kPa/s" />
+                        instruction="Please select the time interval between measurements (stimuli):">
+                        <choice value="0" label="None" />
+                        <choice value="5" label="5 s" />
+                        <choice value="10" label="10 s" />
+                        <choice value="15" label="15 s" />
+                        <choice value="20" label="20 s" />
+                        <choice value="25" label="25 s" />
+                        <choice value="30" label="30 s" />
+                        <choice value="35" label="35 s" />
+                        <choice value="40" label="40 s" />
+                        <choice value="45" label="45 s" />
+                        <choice value="50" label="50 s" />
+                        <choice value="55" label="55 s" />
+                        <choice value="60" label="60 s" />
                     </likert>
+                    <likert id="Tside"
+                        title="Time between sides"
+                        instruction="Please select the period of time between testing the first and second arm:">
+                        <choice value="0"  label="None" />
+                        <choice value="60"  label="1 min" />
+                        <choice value="120" label="2 mins" />
+                        <choice value="180" label="3 mins" />
+                        <choice value="240" label="4 mins" />
+                        <choice value="300" label="5 mins" />
+                        <choice value="360" label="6 mins" />
+                        <choice value="420" label="7 mins" />
+                        <choice value="480" label="8 mins" />
+                        <choice value="540" label="9 mins" />
+                        <choice value="600" label="10 mins" />
+                    </likert>            
                 </content>
             </questionnaire>
 
@@ -134,8 +152,8 @@
                     <boolean id="Setup"
                         true-label="Yes" 
                         false-label="No" 
-                        title="Connecting cufs" 
-                        instruction="Have you setup the cuffs according to instructions" />                   
+                        title="Connecting cuffs" 
+                        instruction="Have you setup the cuffs according to the instructions?" />                   
                 </content>
             </questionnaire>
 
@@ -169,21 +187,24 @@
             level="information"
             location="C:\LabBenchData\repetitiveCuffPain"
             id="Repetitive Cuff Pain, Version 1"
-            filename="dynamic: '{s} Session Log.pdf'.format(s = Subject)"/>       
+            filename="dynamic: '{s} Session Log.pdf'.format(s = Participant)"/>       
 
         <export-data name="Export Raw Data"
             format="json"
             location="C:\LabBenchData\repetitiveCuffPain"
-            filename="dynamic: '{s}.json'.format(s = Subject)"/>
+            filename="dynamic: '{s}.json'.format(s = Participant)"/>
 
         <export-to-csv name="Export to CSV"
             culture="en-GB"
             header="true"
             separator=";"
             location="C:\LabBenchData\repetitiveCuffPain"
-            filename="dynamic: '{s}.csv'.format(s = Subject)">
-            <item name="ID" value="Subject" default="NA"/>
+            filename="dynamic: '{s}.csv'.format(s = Participant)">
+            <item name="ID" value="Participant" default="NA"/>
             <item name="LeftCuff" value="CONFIGURATION.Cuff" default="NA"/>
+            <item name="Rate_kPa_s" value="CONFIGURATION.Rate"  default="NA"/>
+            <item name="ISI_s" value="CONFIGURATION.Tisi"  default="NA"/>
+            <item name="SideInterval_s" value="CONFIGURATION.Tside" default="NA"/>
             <item name="CH1M1"  value="'{:.1f}'.format(CH1M1.PDT)" default="NA"/>
             <item name="CH1M2"  value="'{:.1f}'.format(CH1M2.PDT)" default="NA"/>
             <item name="CH1M3"  value="'{:.1f}'.format(CH1M3.PDT)" default="NA"/>
