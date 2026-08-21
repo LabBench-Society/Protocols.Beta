@@ -2,23 +2,49 @@
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
     <participant-validator regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
-                       advice="Please enter an ID in the form of SXXX, where X is a digit" />
-    <experimental-setup-variants default="SetupID">
-        <experimental-setup id="SetupID" name="Name of experimental setup">
-            <devices>
-                <!--  Contents omitted for brevity -->
+                       advice="Please enter an ID in the form of SXXX, where X is a digit (e.g. S001), or TESTXXX for test runs" />
+    <experimental-setup-variants default="SOMNIMOVEsetup">
+        <experimental-setup id="SOMNIMOVEsetup" name="SOMNIMOVE QST setup">
+           
+           <devices>
+                <joystick id="joystick">
+                    <map>
+                        <button-assignment code="1" button="up" label="Up" />
+                        <button-assignment code="4" button="down" label="Down" />
+                        <button-assignment code="8" button="decrease" label="Unmark" />
+                        <button-assignment code="2" button="increase" label="Mark" />
+                        <button-assignment code="16" button="previous" label="Previous" />
+                        <button-assignment code="32" button="next" label="Next" />
+                    </map>
+                </joystick> 
+                
+                <display
+                    id="display" normative-distance="40">   
+
+                    <configurations>
+                        <questionnaire id="questionnaire"
+                        controller-device="joystick"
+                        experimental-setup-id="questionnaire"/>
+                    </configurations>
+                </display>               
             </devices>
+
             <device-mapping>
-                <!--  Contents omitted for brevity -->
+                <device-assignment device-id="joystick" instrument-name="Button" />
+                <device-assignment device-id="display.questionnaire" instrument-name="Questionnaire" />
             </device-mapping>
+
         </experimental-setup>    
     </experimental-setup-variants>
+    
     <protocol>
         <languages>
-            <!--  Contents omitted for brevity -->
+            <language code="NL" name="Dutch" />
         </languages>
         <sessions>
-            <!--  Contents omitted for brevity -->
+            <session id="T0" name="Baseline"/>
+            <session id="T1" name="Post-interventie"/>
+            <session id="T2" name="6 maanden follow-up"/>
         </sessions>
         <properties>
             <!--  Contents omitted for brevity -->
@@ -29,26 +55,65 @@
         <variables>
             <!--  Contents omitted for brevity -->
         </variables>
-        <templates>
-              <includes>
-                  <!--  Contents omitted for brevity -->
-              </includes>
-              <protocol-variables>
-                  <!--  Contents omitted for brevity -->
-              </protocol-variables>
-              <template-variables>
-                  <!--  Contents omitted for brevity -->
-              </template-variables>
-              <procedure-templates>
-                  <!--  Contents omitted for brevity -->
-              </procedure-templates>
-              <assets>
-                  <!--  Contents omitted for brevity -->
-              </assets>           
+        <templates>            
+                <includes>
+                    <!--  Contents omitted for brevity -->
+                </includes>
+                <protocol-variables>
+                    <!--  Contents omitted for brevity -->
+                </protocol-variables>
+                <template-variables>
+                    <!--  Contents omitted for brevity -->
+                </template-variables>
+                <procedure-templates>
+                    <!--  Contents omitted for brevity -->
+                </procedure-templates>
+                <assets>
+                    <!--  Contents omitted for brevity --> 
+                </assets>           
         </templates>
         <procedures>
-            <!--  Contents omitted for brevity -->
+            <!-- T0: Baseline -->
+            <questionnaire id="PreTestChecklist"
+                name="PreTestChecklist"
+                session="T0"
+                experimental-setup-id="SOMNIMOVEsetup"
+                control="participant"
+                progress-format="percentage">
+                <content>
+                    <boolean id="Q01"
+                        title="Alcohol"
+                        instruction="Heeft u de afgelopen 24 uur alcohol gedronken?"
+                        true-label="Ja"
+                        false-label="Nee"/>
+
+                    <boolean id="Q02"
+                        title="Pijnstillers"
+                        instruction="Heeft u de afgelopen 24 uur pijnstillers ingenomen?"                        
+                        true-label="Ja"
+                        false-label="Nee"/>
+
+                    <boolean id="Q03"
+                        title="Cafeïne"
+                        instruction="Heeft u de afgelopen 24 uur cafeïne geconsumeerd?"
+                        true-label="Ja"
+                        false-label="Nee"/>
+
+                    <boolean id="Q04"
+                        title="Nicotine"
+                        instruction="Heeft u de afgelopen 24 uur nicotine gebruikt?"
+                        true-label="Ja"
+                        false-label="Nee"/>
+
+                    <boolean id="Q05"
+                        title="Intensief sporten"
+                        instruction="Heeft u de afgelopen 24 uur intensief gesport?"                        
+                        true-label="Ja"
+                        false-label="Nee"/>
+                </content>
+            </questionnaire>
         </procedures>
+        
         <assets>
             <!--  Contents omitted for brevity -->
         </assets>
