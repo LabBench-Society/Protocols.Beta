@@ -1,46 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="https://files.labbench.io/xsd/6.0/experiment.xsd">
+
+    <!-- (1) Controle van het deelnemers-ID -->
     <participant-validator regex="^S[0-9]{3}$|^TEST[0-9]{3}$"
-                       advice="Please enter an ID in the form of SXXX, where X is a digit (e.g. S001), or TESTXXX for test runs" />
+                       advice="Geef een ID in de vorm SXXX (bv. S001), of TESTXXX voor testruns" />
+    
+    <!-- (2) Experimentele setup: welke toestellen er zijn -->
     <experimental-setup-variants default="SOMNIMOVEsetup">
-        <experimental-setup id="SOMNIMOVEsetup" name="SOMNIMOVE QST setup">
-           
+        <experimental-setup id="SOMNIMOVEsetup" name="SOMNIMOVE QST setup (LabBench CPAR+ met VAS op tweede scherm)">
            <devices>
+                <!-- (2a) Joystick: bediening van vragenlijsten -->
                 <joystick id="joystick">
                     <map>
-                        <button-assignment code="1" button="up" label="Up" />
-                        <button-assignment code="4" button="down" label="Down" />
-                        <button-assignment code="8" button="decrease" label="Unmark" />
-                        <button-assignment code="2" button="increase" label="Mark" />
-                        <button-assignment code="16" button="previous" label="Previous" />
-                        <button-assignment code="32" button="next" label="Next" />
+                        <button-assignment code="1" button="up" label="Omhoog" />
+                        <button-assignment code="4" button="down" label="Omlaag" />
+                        <button-assignment code="8" button="decrease" label="Verminderen" />
+                        <button-assignment code="2" button="increase" label="Vermeerderen" />
+                        <button-assignment code="16" button="previous" label="Vorige" />
+                        <button-assignment code="32" button="next" label="Volgende" />
                     </map>
                 </joystick> 
                 
-                <display
-                    id="display" normative-distance="40">   
+                <!-- (2b) Cuff-algometer; de LabBench SCALE hangt aan zijn response-poort -->
+                <cpar-plus id="cpar" />
 
+                <!-- (2c) Tweede scherm voor de deelnemer -->
+                <display id="display" normative-distance="40">
+                    <typography active-colour="rgb(255,0,0)"
+                                inactive-colour="rgb(16,16,16)"
+                                foreground-colour="rgb(0,0,0)"
+                                background-colour="rgb(255,255,255)" />
                     <configurations>
+                        <!-- VAS tijdens de cuff-procedures, gestuurd door de SCALE via de CPAR+ -->
+                        <visual-analogue-scale id="vas"
+                            experimental-setup-id="vas"
+                            length="10"
+                            controller-device="cpar">
+                            <anchors>
+                                <modality text="Pijn" />
+                                <bottom-anchor text="0 = geen pijn" />
+                                <top-anchor text="10 = maximaal verdraagbare pijn" />
+                            </anchors>
+                        </visual-analogue-scale>
+
+                        <!-- Instructies (afbeeldingen) voor de deelnemer -->
+                        <image-display id="image"
+                            experimental-setup-id="image" />
+
+                        <!-- Vragenlijsten, bediend met de joystick -->
                         <questionnaire id="questionnaire"
-                        controller-device="joystick"
-                        experimental-setup-id="questionnaire"/>
+                            experimental-setup-id="questionnaire"
+                            controller-device="joystick" />
                     </configurations>
-                </display>               
+                </display>
             </devices>
 
+            <!-- (3) Koppeling toestellen -> instrumenten die procedures nodig hebben -->
             <device-mapping>
-                <device-assignment device-id="joystick" instrument-name="Button" />
-                <device-assignment device-id="display.questionnaire" instrument-name="Questionnaire" />
+                <device-assignment instrument-name="PressureAlgometer" device-id="cpar" />
+                <device-assignment instrument-name="Button"            device-id="joystick" />
+                <device-assignment instrument-name="ImageDisplay"      device-id="display.image" />
+                <device-assignment instrument-name="Questionnaire"     device-id="display.questionnaire" />
             </device-mapping>
-
-        </experimental-setup>    
+        </experimental-setup>
     </experimental-setup-variants>
     
     <protocol>
         <languages>
             <language code="NL" name="Dutch" />
         </languages>
+
+        <!-- (4) Sessies -->
         <sessions>
             <session id="T0" name="Baseline"/>
             <session id="T1" name="Post-interventie"/>
