@@ -31,7 +31,7 @@
                     delta-pressure="CONFIGURATION.Rate"
                     measurement="pdt"
                     pressure-limit="100"
-                    primary-cuff="1"
+                    primary-cuff="1 if CONFIGURATION.Cuff else 2"
                     second-cuff="false">   
                     <properties>
                         <!-- Wait the time interval (s) set in CONFIGURATIONS from the end (button press) of prior repetition -->
@@ -49,7 +49,7 @@
                     delta-pressure="CONFIGURATION.Rate"
                     measurement="pdt"
                     pressure-limit="100"
-                    primary-cuff="2"
+                    primary-cuff="2 if CONFIGURATION.Cuff else 1"
                     second-cuff="false">                    
                     <properties>
                         <time-constraint procedure-id="CH1M20" 
@@ -66,7 +66,7 @@
                     delta-pressure="CONFIGURATION.Rate"
                     measurement="pdt"
                     pressure-limit="100"
-                    primary-cuff="2"
+                    primary-cuff="2 if CONFIGURATION.Cuff else 1"
                     second-cuff="false">                    
                     <properties>
                         <time-constraint procedure-id="var: '' if m == '1' else 'CH2M{0}'.format(int(m) - 1)" 
@@ -82,7 +82,7 @@
         </templates>
         <procedures>
             <questionnaire id="CONFIGURATION" 
-                name="LeftCuff">
+                name="Protocol setup">
                 <content>
                     <boolean id="Cuff"
                         true-label="Left" 
