@@ -104,43 +104,42 @@
                 </assets>           
         </templates>
         <procedures>
-            <!-- T0: Baseline -->
+            <!-- (1) Pre-test checklist: de deelnemer antwoordt met de joystick -->
             <questionnaire id="PreTestChecklist"
-                name="PreTestChecklist"
+                name="Pre-test checklist"
                 session="T0"
-                experimental-setup-id="SOMNIMOVEsetup"
+                experimental-setup-id="questionnaire"
                 control="participant"
                 progress-format="percentage">
                 <content>
-                    <boolean id="Q01"
-                        title="Alcohol"
-                        instruction="Heeft u de afgelopen 24 uur alcohol gedronken?"
-                        true-label="Ja"
-                        false-label="Nee"/>
+                    <boolean id="Q01" title="Alcohol"
+                        instruction="Heeft u de afgelopen 12 uur alcohol gedronken?"
+                        true-label="Ja" false-label="Nee" />
+                    <boolean id="Q02" title="Pijnstillers"
+                        instruction="Heeft u de afgelopen 12 uur pijnstillers ingenomen?"
+                        true-label="Ja" false-label="Nee" />
+                    <boolean id="Q03" title="Cafeïne"
+                        instruction="Heeft u de afgelopen 12 uur cafeïne geconsumeerd (bv. koffie, thee, cola, energiedrank)?"
+                        true-label="Ja" false-label="Nee" />
+                    <boolean id="Q04" title="Nicotine"
+                        instruction="Heeft u de afgelopen 4 uur nicotine gebruikt (bv. roken, vapen, nicotinekauwgom)?"
+                        true-label="Ja" false-label="Nee" />
+                    <boolean id="Q05" title="Intensief sporten"
+                        instruction="Heeft u de afgelopen 12 uur intensief gesport?"
+                        true-label="Ja" false-label="Nee" />
+                </content>
+            </questionnaire>
 
-                    <boolean id="Q02"
-                        title="Pijnstillers"
-                        instruction="Heeft u de afgelopen 24 uur pijnstillers ingenomen?"                        
-                        true-label="Ja"
-                        false-label="Nee"/>
-
-                    <boolean id="Q03"
-                        title="Cafeïne"
-                        instruction="Heeft u de afgelopen 24 uur cafeïne geconsumeerd?"
-                        true-label="Ja"
-                        false-label="Nee"/>
-
-                    <boolean id="Q04"
-                        title="Nicotine"
-                        instruction="Heeft u de afgelopen 24 uur nicotine gebruikt?"
-                        true-label="Ja"
-                        false-label="Nee"/>
-
-                    <boolean id="Q05"
-                        title="Intensief sporten"
-                        instruction="Heeft u de afgelopen 24 uur intensief gesport?"                        
-                        true-label="Ja"
-                        false-label="Nee"/>
+             <!-- (2) Testzijde: in te vullen door de onderzoeker -->
+            <questionnaire id="Testzijde"
+                name="Testzijde"
+                session="T0"
+                experimental-setup-id="questionnaire"
+                control="operator">
+                <content>
+                    <boolean id="Zijde" title="Testzijde"
+                        instruction="Wat is de aangedane (of meest aangedane) kant? Dit is de ipsilaterale testzijde."
+                        true-label="Rechts" false-label="Links" />
                 </content>
             </questionnaire>
         </procedures>
