@@ -251,6 +251,26 @@
                     <dependency id="FAM3" />
                 </dependencies>
             </algometry-stimulus-response>
+
+            <!-- (6) Temporal summation, ipsilateraal been -->
+            <algometry-temporal-summation id="TS"
+                name="Temporal summation (ipsilateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                no-of-stimuli="12"
+                pressure-static="1"
+                pressure-stimulate="(EXP.PDT + (EXP.PTT if EXP.Responder else 100)) / 2"
+                primary-cuff="1"
+                second-cuff="false"
+                t-on="1"
+                t-off="1">
+                <properties>
+                    <time-constraint procedure-id="EXP" min="300" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="EXP" />
+                </dependencies>
+            </algometry-temporal-summation>
         </procedures>
         
         <assets>
