@@ -234,6 +234,23 @@
                 </dependencies>
                 <condition expression="abs(FAM3.PDT - FAM2.PDT) &gt;= 5 and abs(FAM4.PDT - FAM3.PDT) &gt;= 5" help="Wordt overgeslagen als de PDT van de laatste twee oefenramps minder dan 5 kPa verschilt" />
             </algometry-stimulus-response>
+
+            <!-- (5) Experimentele ramp: cPDT / PVAS4 / cPTT, ipsilateraal been -->
+            <algometry-stimulus-response id="EXP"
+                name="cPDT/cPTT experimentele ramp (ipsilateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <dependencies>
+                    <dependency id="FAM3" />
+                </dependencies>
+            </algometry-stimulus-response>
         </procedures>
         
         <assets>
