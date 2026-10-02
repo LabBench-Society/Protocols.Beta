@@ -138,14 +138,106 @@
                 control="operator">
                 <content>
                     <boolean id="Zijde" title="Testzijde"
-                        instruction="Wat is de aangedane (of meest aangedane) kant? Dit is de ipsilaterale testzijde."
+                        instruction="Wat is de aangedane (of meest aangedane) kant?"
                         true-label="Rechts" false-label="Links" />
                 </content>
             </questionnaire>
+
+            <!-- (3) Familiarisatie: oefenramp 1, contralateraal been -->
+            <algometry-stimulus-response id="FAM1"
+                name="Familiarisatie ramp 1 (contralateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-when-button-pressed"
+                vas-pdt="0.1"
+                conditioning-time="0" />
+            
+            <!-- (4) Familiarisatie: oefenramps 2 t.e.m. 5 -->
+            <algometry-stimulus-response id="FAM2"
+                name="Familiarisatie ramp 2 (contralateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-when-button-pressed"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <properties>
+                    <time-constraint procedure-id="FAM1" min="10" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="FAM1" />
+                </dependencies>
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="FAM3"
+                name="Familiarisatie ramp 3 (contralateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-when-button-pressed"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <properties>
+                    <time-constraint procedure-id="FAM2" min="10" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="FAM2" />
+                </dependencies>
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="FAM4"
+                name="Familiarisatie ramp 4 (contralateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-when-button-pressed"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <properties>
+                    <time-constraint procedure-id="FAM3" min="10" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="FAM3" />
+                </dependencies>
+                <condition expression="abs(FAM3.PDT - FAM2.PDT) &gt;= 5" help="Wordt overgeslagen als de PDT van de laatste twee oefenramps minder dan 5 kPa verschilt" />
+            </algometry-stimulus-response>
+
+            <algometry-stimulus-response id="FAM5"
+                name="Familiarisatie ramp 5 (contralateraal)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-when-button-pressed"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <properties>
+                    <time-constraint procedure-id="FAM4" min="10" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="FAM4" />
+                </dependencies>
+                <condition expression="abs(FAM3.PDT - FAM2.PDT) &gt;= 5 and abs(FAM4.PDT - FAM3.PDT) &gt;= 5" help="Wordt overgeslagen als de PDT van de laatste twee oefenramps minder dan 5 kPa verschilt" />
+            </algometry-stimulus-response>
         </procedures>
         
         <assets>
-            <!--  Contents omitted for brevity -->
+            <file-asset id="Script" file="Script.py" />
         </assets>
     </protocol>
     <post-actions>
