@@ -172,7 +172,7 @@
                 </content>
             </questionnaire>
 
-            <!-- (3) Familiarisatie: oefenramp 1, contralateraal been -->
+            <!-- (4) Familiarisatie: oefenramp 1, contralateraal been -->
             <algometry-stimulus-response id="FAM1"
                 name="Familiarisatie ramp 1 (contralateraal)"
                 session="T0"
@@ -191,7 +191,7 @@
                 </properties>
             </algometry-stimulus-response>
             
-            <!-- (4) Familiarisatie: oefenramps 2 t.e.m. 5 -->
+            <!-- (5) Familiarisatie: oefenramps 2 t.e.m. 5 -->
             <algometry-stimulus-response id="FAM2"
                 name="Familiarisatie ramp 2 (contralateraal)"
                 session="T0"
@@ -270,7 +270,7 @@
                 <condition expression="abs(FAM3.PDT - FAM2.PDT) &gt;= 5 and abs(FAM4.PDT - FAM3.PDT) &gt;= 5" help="Wordt overgeslagen als de PDT van de laatste twee oefenramps minder dan 5 kPa verschilt" />
             </algometry-stimulus-response>
 
-            <!-- (5) Experimentele ramp: cPDT / PVAS4 / cPTT, ipsilateraal been -->
+            <!-- (6) Experimentele ramp: cPDT / PVAS4 / cPTT, ipsilateraal been -->
             <algometry-stimulus-response id="EXP"
                 name="cPDT/cPTT experimentele ramp (ipsilateraal)"
                 session="T0"
@@ -292,7 +292,7 @@
                 </dependencies>
             </algometry-stimulus-response>
 
-            <!-- (6) Temporal summation, ipsilateraal been -->
+            <!-- (7) Temporal summation, ipsilateraal been -->
             <algometry-temporal-summation id="TS"
                 name="Temporal summation (ipsilateraal)"
                 session="T0"
@@ -305,7 +305,7 @@
                 t-on="1"
                 t-off="1">
                 <properties>
-                    <time-constraint procedure-id="EXP" min="300" time-reference="end" notification="true" />
+                    <time-constraint procedure-id="EXP" min="180" time-reference="end" notification="true" />
                     <instructions default="Assets.Instructies.TS" override-results="false" />
                     <participant-instructions experimental-setup-id="image"
                         default="Assets.Instructies.TS" />
@@ -314,6 +314,82 @@
                     <dependency id="EXP" />
                 </dependencies>
             </algometry-temporal-summation>
+
+            <!-- (8) ===================== CPM ===================== -->
+
+            <!-- (CPM 1) Baseline: cPDT + PVAS4, ipsilateraal been (cuff 1) -->
+            <algometry-stimulus-response id="CPMbase"
+                name="CPM 1 - baseline (ipsilateraal been)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <properties>
+                    <time-constraint procedure-id="TS" min="180" time-reference="end" notification="true" />
+                </properties>
+                <dependencies>
+                    <dependency id="TS" />
+                </dependencies>
+            </algometry-stimulus-response>
+
+            <!-- (CPM 2) Kalibratie conditioneringsstimulus: contralaterale arm (cuff 2),
+                 max 80 kPa, onderzoeker zegt "Nu" bij VAS 6, deelnemer drukt op de stopknop -->
+            <algometry-stimulus-response id="CPMcs"
+                name="CPM 2 - kalibratie CS (contralaterale arm)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="80"
+                primary-cuff="2"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <dependencies>
+                    <dependency id="CPMbase" />
+                </dependencies>
+            </algometry-stimulus-response>
+
+            <!-- (CPM 3) Parallel: arm (cuff 2) op CS-druk, tegelijk ramp op het been (cuff 1).
+                 CS-druk = druk bij VAS 6 uit CPMcs; niet bereikt = hoogste gegeven druk -->
+            <algometry-conditioned-pain-modulation id="CPMpar"
+                name="CPM 3 - parallel (been tijdens CS op arm)"
+                session="T0"
+                experimental-setup-id="vas"
+                conditional-pressure="CPMcs.GetPressureFromPerception(6) if CPMcs.IsScoreAvailable(6) else max(CPMcs.StimulationPressure)"
+                delta-conditional-pressure="10"
+                conditioning-time="10"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1">
+                <dependencies>
+                    <dependency id="CPMcs" />
+                </dependencies>
+            </algometry-conditioned-pain-modulation>
+
+            <!-- (CPM 4) Sequentieel: meteen na CPM 3, CS uit, ramp op het been (cuff 1) -->
+            <algometry-stimulus-response id="CPMseq"
+                name="CPM 4 - sequentieel (been na CS)"
+                session="T0"
+                experimental-setup-id="vas"
+                delta-pressure="1"
+                pressure-limit="100"
+                primary-cuff="1"
+                second-cuff="false"
+                stop-mode="stop-on-maximal-rating"
+                vas-pdt="0.1"
+                conditioning-time="0">
+                <dependencies>
+                    <dependency id="CPMpar" />
+                </dependencies>
+            </algometry-stimulus-response>
         </procedures>
         
         <assets>
