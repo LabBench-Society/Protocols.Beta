@@ -104,42 +104,71 @@
                 </assets>           
         </templates>
         <procedures>
-            <!-- (1) Pre-test checklist: de deelnemer antwoordt met de joystick -->
+            <!-- (1) Testmoment: datum en starttijd, in te vullen door de onderzoeker -->
+            <questionnaire id="Testmoment"
+                name="Testdatum en starttijd"
+                session="T0"
+                experimental-setup-id="image"
+                control="operator">
+                <content>
+                    <time id="Start" title="Testdatum en starttijd"
+                        instruction="Vul de datum en het startuur (uu:mm) van de meting in." />
+                </content>
+            </questionnaire>
+
+            <!-- (2) Testzijde: in te vullen door de onderzoeker -->
+            <questionnaire id="Testzijde"
+                name="Testzijde"
+                session="T0"
+                experimental-setup-id="image"
+                control="operator">
+                <content>
+                    <boolean id="Zijde" title="Testzijde"
+                        instruction="Vraag: 'Welk been is het meest aangedaan door uw artrose?' Bij gelijk: been met de meeste pijn in de afgelopen week."
+                        true-label="Rechts" false-label="Links" />
+                </content>
+            </questionnaire>
+
+            <!-- (3) Pre-test checklist: de deelnemer antwoordt met de joystick -->
             <questionnaire id="PreTestChecklist"
                 name="Pre-test checklist"
                 session="T0"
                 experimental-setup-id="questionnaire"
                 control="participant"
-                progress-format="percentage">
+                progress-format="index">
                 <content>
                     <boolean id="Q01" title="Alcohol"
-                        instruction="Heeft u de afgelopen 12 uur alcohol gedronken?"
+                        instruction="Heeft u de afgelopen 24 uur alcohol gedronken?"
                         true-label="Ja" false-label="Nee" />
-                    <boolean id="Q02" title="Pijnstillers"
-                        instruction="Heeft u de afgelopen 12 uur pijnstillers ingenomen?"
-                        true-label="Ja" false-label="Nee" />
+                    <numeric id="Q02" title="Alcohol"
+                        instruction="Hoeveel glazen alcohol drinkt u gewoonlijk per week?">
+                        <validation min="0" min-included="true" max="100" max-included="true" />
+                    </numeric>
                     <boolean id="Q03" title="Cafeïne"
-                        instruction="Heeft u de afgelopen 12 uur cafeïne geconsumeerd (bv. koffie, thee, cola, energiedrank)?"
+                        instruction="Heeft u de afgelopen 12 uur koffie, zwarte of groene thee, cola of energiedrank gedronken? (Cafeïnevrije koffie en kruidenthee tellen niet mee.)"
                         true-label="Ja" false-label="Nee" />
-                    <boolean id="Q04" title="Nicotine"
-                        instruction="Heeft u de afgelopen 4 uur nicotine gebruikt (bv. roken, vapen, nicotinekauwgom)?"
+                    <numeric id="Q04" title="Cafeïne"
+                        instruction="Hoeveel koppen koffie, zwarte of groene thee, glazen cola of energiedrank drinkt u gewoonlijk per dag?">
+                        <validation min="0" min-included="true" max="30" max-included="true" />
+                    </numeric>
+                    <boolean id="Q05" title="Nicotine"
+                        instruction="Heeft u de afgelopen 4 uur gerookt of andere nicotineproducten gebruikt (e-sigaret, nicotinekauwgom of -pleister)?"
                         true-label="Ja" false-label="Nee" />
-                    <boolean id="Q05" title="Intensief sporten"
-                        instruction="Heeft u de afgelopen 12 uur intensief gesport?"
+                    <likert id="Q06" title="Nicotine"
+                        instruction="Rookt u gewoonlijk of gebruikt u gewoonlijk nicotineproducten?">
+                        <choice value="0" label="Nee" />
+                        <choice value="1" label="Ja, af en toe" />
+                        <choice value="2" label="Ja, dagelijks" />
+                    </likert>
+                    <boolean id="Q07" title="Pijnmedicatie"
+                        instruction="Neemt u regelmatig pijnmedicatie, bijvoorbeeld elke dag of volgens een vast schema dat uw arts heeft voorgeschreven?"
                         true-label="Ja" false-label="Nee" />
-                </content>
-            </questionnaire>
-
-             <!-- (2) Testzijde: in te vullen door de onderzoeker -->
-            <questionnaire id="Testzijde"
-                name="Testzijde"
-                session="T0"
-                experimental-setup-id="questionnaire"
-                control="operator">
-                <content>
-                    <boolean id="Zijde" title="Testzijde"
-                        instruction="Wat is de aangedane (of meest aangedane) kant?"
-                        true-label="Rechts" false-label="Links" />
+                    <boolean id="Q08" title="Pijnmedicatie"
+                        instruction="Heeft u de afgelopen 24 uur extra pijnmedicatie genomen, bovenop uw gewone medicatie? Dit is pijnmedicatie die u maar af en toe neemt, bijvoorbeeld wanneer uw pijn erger is (zoals paracetamol of ibuprofen)."
+                        true-label="Ja" false-label="Nee" />
+                    <boolean id="Q09" title="Fysieke activiteit"
+                        instruction="Heeft u de afgelopen 24 uur een fysieke activiteit gedaan die zwaarder of ongewoner was dan normaal voor u?"
+                        true-label="Ja" false-label="Nee" />
                 </content>
             </questionnaire>
 
@@ -154,7 +183,13 @@
                 second-cuff="false"
                 stop-mode="stop-when-button-pressed"
                 vas-pdt="0.1"
-                conditioning-time="0" />
+                conditioning-time="0">
+                <properties>
+                    <instructions default="Assets.Instructies.Familarisatie" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.Familarisatie" />
+                </properties>
+            </algometry-stimulus-response>
             
             <!-- (4) Familiarisatie: oefenramps 2 t.e.m. 5 -->
             <algometry-stimulus-response id="FAM2"
@@ -247,6 +282,11 @@
                 stop-mode="stop-on-maximal-rating"
                 vas-pdt="0.1"
                 conditioning-time="0">
+                <properties>
+                    <instructions default="Assets.Instructies.Eigenlijke_test" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.Eigenlijke_test" />
+                </properties>
                 <dependencies>
                     <dependency id="FAM3" />
                 </dependencies>
@@ -266,6 +306,9 @@
                 t-off="1">
                 <properties>
                     <time-constraint procedure-id="EXP" min="300" time-reference="end" notification="true" />
+                    <instructions default="Assets.Instructies.TS" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.TS" />
                 </properties>
                 <dependencies>
                     <dependency id="EXP" />
@@ -275,6 +318,7 @@
         
         <assets>
             <file-asset id="Script" file="Script.py" />
+            <file-asset id="Instructies" file="Instructies.zip" />
         </assets>
     </protocol>
     <post-actions>
