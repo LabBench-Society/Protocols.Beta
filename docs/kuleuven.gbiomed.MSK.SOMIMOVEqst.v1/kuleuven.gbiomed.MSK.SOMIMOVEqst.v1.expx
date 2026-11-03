@@ -331,6 +331,9 @@
                 conditioning-time="0">
                 <properties>
                     <time-constraint procedure-id="TS" min="180" time-reference="end" notification="true" />
+                    <instructions default="Assets.Instructies.CPM_baseline" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.CPM_baseline" />
                 </properties>
                 <dependencies>
                     <dependency id="TS" />
@@ -350,6 +353,11 @@
                 stop-mode="stop-on-maximal-rating"
                 vas-pdt="0.1"
                 conditioning-time="0">
+                <properties>
+                    <instructions default="Assets.Instructies.CPM_kalibratie_CS" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.CPM_kalibratie_CS" />
+                </properties>
                 <dependencies>
                     <dependency id="CPMbase" />
                 </dependencies>
@@ -369,6 +377,11 @@
                 primary-cuff="1"
                 stop-mode="stop-on-maximal-rating"
                 vas-pdt="0.1">
+                <properties>
+                    <instructions default="Assets.Instructies.CPM_parallel_sequentieel" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.CPM_parallel_sequentieel" />
+                </properties>
                 <dependencies>
                     <dependency id="CPMcs" />
                 </dependencies>
