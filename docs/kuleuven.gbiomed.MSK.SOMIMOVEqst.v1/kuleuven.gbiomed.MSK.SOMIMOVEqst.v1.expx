@@ -299,7 +299,7 @@
                 experimental-setup-id="vas"
                 no-of-stimuli="12"
                 pressure-static="1"
-                pressure-stimulate="(EXP.PDT + (EXP.PTT if EXP.Responder else 100)) / 2"
+                pressure-stimulate="(EXP.PDT + EXP.PTT) / 2"
                 primary-cuff="1"
                 second-cuff="false"
                 t-on="1"
