@@ -12,13 +12,19 @@
            <devices>
                 <!-- (2a) Joystick: bediening van vragenlijsten -->
                 <joystick id="joystick">
-                    <map>
+                    <map experimental-setup-id="questionnaire">
                         <button-assignment code="1" button="up" label="Omhoog" />
                         <button-assignment code="4" button="down" label="Omlaag" />
                         <button-assignment code="8" button="decrease" label="Verminderen" />
                         <button-assignment code="2" button="increase" label="Vermeerderen" />
                         <button-assignment code="16" button="previous" label="Vorige" />
                         <button-assignment code="32" button="next" label="Volgende" />
+                    </map>
+                    <map experimental-setup-id="image">
+                        <button-assignment code="4" button="button-01" label="blauw" />
+                        <button-assignment code="8" button="button-02" label="geel" />
+                        <button-assignment code="1" button="button-03" label="rood" />
+                        <button-assignment code="2" button="button-04" label="groen" />
                     </map>
                 </joystick> 
                 
@@ -46,7 +52,8 @@
 
                         <!-- Instructies (afbeeldingen) voor de deelnemer -->
                         <image-display id="image"
-                            experimental-setup-id="image" />
+                            experimental-setup-id="image"
+                            background-colour="rgb(0,0,0)" />
 
                         <!-- Vragenlijsten, bediend met de joystick -->
                         <questionnaire id="questionnaire"
@@ -84,7 +91,9 @@
             <!--  Contents omitted for brevity -->
         </persistent-variables>        
         <variables>
-            <!--  Contents omitted for brevity -->
+            <variable name="StroopDisplayTime" value="1500" />
+            <variable name="StroopColors" value="{'blauw': '#0000FF', 'geel': '#FFFF00', 'rood': '#FF0000', 'groen': '#00FF00'}" />
+            <variable name="StroopWords"  value="{'b': 'BLAUW', 'y': 'GEEL', 'r': 'ROOD', 'g': 'GROEN'}" />
         </variables>
         <templates>            
                 <includes>
@@ -115,6 +124,105 @@
                         instruction="Vul de datum en het startuur (uu:mm) van de meting in." />
                 </content>
             </questionnaire>
+
+            <!-- ===================== STROOP ===================== -->
+
+            <!-- (Stroop 1) Oefenblok: 16 woorden (50 % congruent), ±1 min -->
+            <stimulation-sequence id="STROOPoefen"
+                name="Stroop - oefenblok"
+                session="T0"
+                experimental-setup-id="image"
+                response-collection="yes-no"
+                stimulus-update-rate="10000">
+
+                <procedure-events complete="func: StroopScript.StroopEvaluate(tc)" />
+
+                <properties>
+                    <instructions default="Assets.Instructies.StroopInstructies_NL" override-results="false" />
+                    <participant-instructions experimental-setup-id="image"
+                        default="Assets.Instructies.StroopInstructies_NL" />
+                </properties>
+
+                <stimulation-scripts
+                    initialize="True"
+                    stimulate="func: StroopScript.StroopStimulate(tc,x)"
+                    stimulus-description="Woord"
+                    stimulus-unit="N/A">
+                    <instrument name="ImageDisplay" interface="image-display" />
+                </stimulation-scripts>
+
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1">
+                        <sequence iterations="1" Tperiod="4" stimulate="false" />
+                        <uniformly-distributed-sequence minTperiod="2" maxTperiod="2.5" iterations="8" />
+                    </sequence>
+                </stimulation-pattern>
+
+                <!-- Naam = [kleur van de letters][betekenis van het woord]; b=blauw, y=geel, r=rood, g=groen -->
+                <stimuli order="block-random">
+                    <stimulus name="rood_rood" />
+                    <stimulus name="groen_groen" />
+                    <stimulus name="blauw_blauw" />
+                    <stimulus name="geel_geel" />
+                    <stimulus name="rood_groen" />
+                    <stimulus name="groen_blauw" />
+                    <stimulus name="blauw_geel" />
+                    <stimulus name="geel_rood" />
+                </stimuli>
+            </stimulation-sequence>
+
+            <!-- (Stroop 2) Echte taak: 72 woorden (50 % congruent), ±5 min -->
+            <stimulation-sequence id="STROOP"
+                name="Stroop"
+                session="T0"
+                experimental-setup-id="image"
+                response-collection="yes-no"
+                stimulus-update-rate="10000">
+
+                <procedure-events complete="func: StroopScript.StroopEvaluate(tc)" />
+
+                <dependencies>
+                    <dependency id="STROOPoefen" />
+                </dependencies>
+
+                <stimulation-scripts
+                    initialize="True"
+                    stimulate="func: StroopScript.StroopStimulate(tc,x)"
+                    stimulus-description="Woord"
+                    stimulus-unit="N/A">
+                    <instrument name="ImageDisplay" interface="image-display" />
+                </stimulation-scripts>
+
+                <stimulation-pattern time-base="seconds">
+                    <sequence iterations="1">
+                        <sequence iterations="1" Tperiod="4" stimulate="false" />
+                        <uniformly-distributed-sequence minTperiod="2" maxTperiod="2.5" iterations="72" />
+                    </sequence>
+                </stimulation-pattern>
+
+                <!-- Per blok van 24: 12 congruent (elke kleur 3x) en 12 incongruent (elke combinatie 1x) -->
+                <stimuli order="block-random">
+                    <stimulus name="rood_rood" count="3" />
+                    <stimulus name="rood_groen" />
+                    <stimulus name="rood_blauw" />
+                    <stimulus name="rood_geel" />
+
+                    <stimulus name="groen_rood" />
+                    <stimulus name="groen_groen" count="3" />
+                    <stimulus name="groen_blauw" />
+                    <stimulus name="groen_geel" />
+
+                    <stimulus name="blauw_rood" />
+                    <stimulus name="blauw_groen" />
+                    <stimulus name="blauw_blauw" count="3" />
+                    <stimulus name="blauw_geel" />
+
+                    <stimulus name="geel_rood" />
+                    <stimulus name="geel_blauw" />
+                    <stimulus name="geel_groen" />
+                    <stimulus name="geel_geel" count="3" />
+                </stimuli>
+            </stimulation-sequence>
 
             <!-- (2) Testzijde: in te vullen door de onderzoeker -->
             <questionnaire id="Testzijde"
@@ -408,9 +516,98 @@
         <assets>
             <file-asset id="Script" file="Script.py" />
             <file-asset id="Instructies" file="Instructies.zip" />
+            <file-asset id="StroopScript" file="StroopScript.py" />
+            <file-asset id="Roboto" file="Roboto-Regular.ttf" />
         </assets>
     </protocol>
-    <post-actions>
-        <!--  Contents omitted for brevity -->
+         <post-actions>
+        <!-- Alle ruwe data (curves, Stroop per woord) als back-up -->
+        <export-data name="Ruwe data"
+                     format="json"
+                     location="L:\GBW-0044_MSK\0044_AlineVanStallen\SOMNIMOVE\LabBenchData"
+                     filename="dynamic: '{s}.json'.format(s = Participant)" />
+
+        <!-- Uitkomsten: één rij per deelnemer -->
+        <export-to-csv name="Exporting session"
+                       location="L:\GBW-0044_MSK\0044_AlineVanStallen\SOMNIMOVE\LabBenchData"
+                       header="true"
+                       separator=";"
+                       culture="nl-BE"
+                       filename="dynamic: '{s}.csv'.format(s = Participant)">
+
+            <!-- Algemeen -->
+            <item name="ProtocolID" value="EXP.ProtocolID" default="NA" />
+            <item name="MachineName" value="EXP.MachineID" default="NA" />
+            <item name="Testmoment" value="Testmoment.RecordingTime.ToString('yyyy-MM-dd HH:mm')" default="NA" />
+            <item name="Testzijde" value="Testzijde.Zijde" default="NA" />
+
+            <!-- Pre-test checklist -->
+            <item name="Q01" value="PreTestChecklist.Q01" default="NA" />
+            <item name="Q02" value="PreTestChecklist.Q02" default="NA" />
+            <item name="Q03" value="PreTestChecklist.Q03" default="NA" />
+            <item name="Q04" value="PreTestChecklist.Q04" default="NA" />
+            <item name="Q05" value="PreTestChecklist.Q05" default="NA" />
+            <item name="Q06" value="PreTestChecklist.Q06" default="NA" />
+            <item name="Q07" value="PreTestChecklist.Q07" default="NA" />
+            <item name="Q08" value="PreTestChecklist.Q08" default="NA" />
+            <item name="Q09" value="PreTestChecklist.Q09" default="NA" />
+
+            <!-- Familiarisatie (NA = ramp overgeslagen door de stopregel) -->
+            <item name="FAM1PDT" value="int(FAM1.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="FAM2PDT" value="int(FAM2.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="FAM3PDT" value="int(FAM3.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="FAM4PDT" value="int(FAM4.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="FAM5PDT" value="int(FAM5.PDT * 10 + 0.5) / 10.0" default="NA" />
+
+            <!-- Experimentele ramp -->
+            <item name="EXPPDT" value="int(EXP.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="EXPPTT" value="int(EXP.PTT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="EXPPVAS4" value="int(EXP.GetPressureFromPerception(4) * 10 + 0.5) / 10.0" default="NA" />
+
+            <!-- Temporal summation -->
+            <item name="TSdruk" value="int(TS.NominalStimulatingPressure * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS01" value="int(TS.Responses[0] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS02" value="int(TS.Responses[1] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS03" value="int(TS.Responses[2] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS04" value="int(TS.Responses[3] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS05" value="int(TS.Responses[4] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS06" value="int(TS.Responses[5] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS07" value="int(TS.Responses[6] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS08" value="int(TS.Responses[7] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS09" value="int(TS.Responses[8] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS10" value="int(TS.Responses[9] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS11" value="int(TS.Responses[10] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TS12" value="int(TS.Responses[11] * 10 + 0.5) / 10.0" default="NA" />
+            <item name="TSeffect" value="int(((TS.Responses[9] + TS.Responses[10] + TS.Responses[11]) / 3 - (TS.Responses[2] + TS.Responses[3] + TS.Responses[4]) / 3) * 10 + (0.5 if (TS.Responses[9] + TS.Responses[10] + TS.Responses[11]) &gt;= (TS.Responses[2] + TS.Responses[3] + TS.Responses[4]) else -0.5)) / 10.0" default="NA" />
+
+            <!-- CPM -->
+            <item name="CPMbasePDT" value="int(CPMbase.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMbasePTT" value="int(CPMbase.PTT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMbasePVAS4" value="int(CPMbase.GetPressureFromPerception(4) * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMcsPVAS6" value="int(CPMcs.GetPressureFromPerception(6) * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMcsDruk" value="int((CPMcs.GetPressureFromPerception(6) if CPMcs.IsScoreAvailable(6) else CPMcs.PTT) * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMparPDT" value="int(CPMpar.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMparPTT" value="int(CPMpar.PTT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMparPVAS4" value="int(CPMpar.GetPressureFromPerception(4) * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMseqPDT" value="int(CPMseq.PDT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMseqPTT" value="int(CPMseq.PTT * 10 + 0.5) / 10.0" default="NA" />
+            <item name="CPMseqPVAS4" value="int(CPMseq.GetPressureFromPerception(4) * 10 + 0.5) / 10.0" default="NA" />
+
+            <!-- Stroop (samenvatting berekend door StroopScript.py) -->
+            <item name="StroopOefenAcc" value="STROOPoefen.Annotations['accuratesse']" default="NA" />
+            <item name="StroopAcc" value="STROOP.Annotations['accuratesse']" default="NA" />
+            <item name="StroopAccCon" value="STROOP.Annotations['accCongruent']" default="NA" />
+            <item name="StroopAccIncon" value="STROOP.Annotations['accIncongruent']" default="NA" />
+            <item name="StroopFoutInterf" value="STROOP.Annotations['foutInterferentie']" default="NA" />
+            <item name="StroopRTcon" value="STROOP.Annotations['rtCongruent']" default="NA" />
+            <item name="StroopRTincon" value="STROOP.Annotations['rtIncongruent']" default="NA" />
+            <item name="StroopInterf" value="STROOP.Annotations['interferentie']" default="NA" />
+            <item name="StroopRelInterf" value="STROOP.Annotations['relInterferentie']" default="NA" />
+            <item name="StroopIEScon" value="STROOP.Annotations['iesCongruent']" default="NA" />
+            <item name="StroopIESincon" value="STROOP.Annotations['iesIncongruent']" default="NA" />
+            <item name="StroopIESinterf" value="STROOP.Annotations['iesInterferentie']" default="NA" />
+            <item name="StroopTeSnel" value="STROOP.Annotations['aantalTeSnel']" default="NA" />
+            <item name="StroopGeenAntw" value="STROOP.Annotations['aantalGeenAntwoord']" default="NA" />
+        </export-to-csv>
     </post-actions>
 </experiment>
